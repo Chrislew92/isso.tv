@@ -30,9 +30,26 @@ das Spiel zuläuft, ist der Punkt, an dem Geld aufhört, eine Zahl zu sein. Gena
 das passiert im Ende **KRYPTO-KÖNIG**: 1 ZED = 500 Billiarden, das Konzept Geld
 ist zerstört, `#dieletztedigitalewaehrung`.
 
-Die Gegenkraft dazu ist das T4SCH€N-Prinzip. Beide Sätze zusammen sind das
-Spiel: **jede Woche nimmt sich einer seinen Teil — und der einzige Ausweg ist,
-so weit zu kommen, dass sein Anteil bedeutungslos wird.**
+Und weiter, sein zweiter Satz dazu: **„Wer sich selbst schafft zu kopieren in
+3D World, wird praktisch unsterblich — aber nicht jeder hat Zugang."**
+
+Da schließt sich das Ganze. Unsterblichkeit ist im Spiel nichts Mystisches,
+sondern eine **Zugangsfrage** — und deshalb ist die Zugangsschranke am Anfang
+(`b0`, die Kennung, die begrenzte Mitgliederzahl, die SafeIDs) keine Deko,
+sondern die Aussage selbst. Das Bonzenviertel ist der Ort, an dem die drin
+sind. Der Homebunker ist der Versuch, sich von unten einen Platz zu betonieren.
+
+**Und das eine geht nicht ohne das andere.** Kein Reichtum ohne einen, der
+abschöpft — sonst wäre er nichts wert. Kein Zugang ohne eine Schranke — sonst
+wäre er keiner. Das Spiel funktioniert nur, weil beide Hälften da sind: wer
+T4SCH€N rausnimmt, nimmt dem Reichtum den Sinn; wer die Schranke aufmacht,
+nimmt der Unsterblichkeit den ihren. **Nie nur eine Hälfte bauen.**
+
+Die Gegenkraft dazu ist das T4SCH€N-Prinzip. Alles zusammen ist das Spiel:
+**jede Woche nimmt sich einer seinen Teil — und der einzige Ausweg ist, so weit
+zu kommen, dass sein Anteil bedeutungslos wird.** Wer da ankommt, kommt rein.
+Wer nicht, bleibt draußen und wird abgeschöpft. Genau das ist der Vorwurf, den
+das Spiel erhebt.
 
 ### Das T4SCH€N-Prinzip
 
