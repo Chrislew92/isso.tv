@@ -91,9 +91,9 @@ läuft — sonst könnte man mit leerem Konto risikofrei durchsaugen, weil das
 Die **500 Billiarden** pro ZED gelten nur im Ende **KRYPTO-KÖNIG** — der Moment,
 in dem Geld aufhört, eine Zahl zu sein (`#dieletztedigitalewaehrung`).
 
-> **Schreibweise noch offen:** im Code steht `ZEDCOINZ` (mit Z am Ende), Chris
-> schreibt inzwischen meist `ZEDCOINS`. Steht in **einer** Konstante (`COIN`),
-> ist also ein Ein-Wort-Wechsel. Nicht raten — fragen.
+**Schreibweise entschieden (8.8.2026): `ZEDCOINZ`, mit Z am Ende.** Chris hat
+zwischendurch `ZEDCOINS` geschrieben und sich dann festgelegt: *„also eher
+ZEDCOINZ"*. Steht in der Konstante `COIN` — nicht anfassen.
 
 Markenschreibweise ist Pflicht: **MedalGuard.com · IronMind-BlackCore.com ·
 ISSO.TV · S7V3N.com · EyTonLand.com**

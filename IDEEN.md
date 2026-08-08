@@ -6,7 +6,7 @@ Alles, was bisher gilt. Nichts hier ist in Stein, aber alles ist gebaut.
 
 ## Der Kern
 
-**Du bist 34, arbeitest im Lager in Eitelstedt. Du willst 25.000 € zusammenkriegen.
+**Du bist 34, arbeitest im Lager in Eitelstedt. Du willst 50.000 € zusammenkriegen.
 Einer nimmt sich jede Woche was davon.**
 
 Das sind die drei Zeilen, mit denen das Spiel aufmacht. Mehr Story braucht es zum Start nicht.
@@ -104,3 +104,42 @@ Dafür bräuchte es einen Illustrator oder fertige PNGs zum Einhängen.
   taugt später für VR. Echtes 3D würde die flache Optik kaputtmachen.
 - Live gehen auf isso.tv (DNS bei STRATO — das kann nur Chris)
 - Echtzeit-Modus: ein Zug pro Tag, ja oder nein
+
+---
+
+## Namen, die im Raum stehen — nicht gekauft, nicht gebaut
+
+**Z2Z** (auch `Z2Z.COM`, `ZZZ`) — von ZED zu ZEE, die ganze Spannweite des
+Geldes vom tausendstel Cent bis zum ZEDCOIN. Als **Slogan** trägt das sofort:
+*„from Z2Z"*. Als **Domain** ist es eine neue laufende Rechnung.
+
+Erinnerung an die eigene Regel: *„EINE App über die Ziellinie"* — und im
+Arbeitsauftrag steht ausdrücklich **keine weiteren Domains**. ISSO.TV ist noch
+nicht draußen. Z2Z liegt hier, bis das erledigt ist.
+
+**€URO$** — Schreibweise für Geld als Sache, nicht als Betrag.
+
+## Zahlen gegen die Wirklichkeit geprüft (8.8.2026)
+
+**Korrigiert:** Bürgergeld von 150 auf **130 €/Woche** = 563 €/Monat, der echte
+Regelsatz 2026 (Nullrunde, nicht erhöht).
+
+**Offen, weil es Design-Entscheidungen sind:**
+
+*Code-Scraping und Logo-Design stehen falsch herum.* Im Spiel zahlt Design
+350 €, Code 180 €. In echt ist Code der bestbezahlte Teil: IT-Freelancer
+100–105 €/h gegen 82 €/h bei Kreativen, Einstiegsgehalt Informatik
+42.400–54.300 € gegen Grafikdesign ~32.500 €.
+
+*Domain-Flipping widerspricht sich.* Steht als „extremes Risiko" da und zahlt
+zuverlässig 550 €/Woche — den höchsten Lohn im Spiel, garantiert. Das sind
+ungefähr 40 Stunden Mindestlohn (13,90 €/h seit 1.1.2026 = 556 €/Woche brutto).
+In der Wirklichkeit ist Domain-Flipping Median nahe null.
+
+*Bürgergeld und Fixkosten doppeln sich.* Wer Bürgergeld bezieht, zahlt die Miete
+nicht aus dem Regelsatz — die Kosten der Unterkunft laufen getrennt. Das Spiel
+zieht bei „Ohne Gigs" trotzdem die vollen Fixkosten ab.
+
+**Die Wachstumskurve ist bewusst Fantasie.** +40 % die Woche macht kein Job und
+keine Geldanlage. Das ist in Ordnung — es heißt Highroller-Simulator. Nur die
+*Einstiegszahlen* müssen stimmen, sonst fällt der Absturz in die Fantasie nicht auf.

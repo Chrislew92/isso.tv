@@ -1229,7 +1229,10 @@ const BERUFE=[
  {id:'scraping',n:'Code-Scraping',e:'Skripte schreiben, die Daten abgreifen. Monoton aber sicher.',
   p:'180 € · sicheres Ding',      lohn:180, nerv:.35, idee:1.00, haus:1.25, geld:0, nerven:7},
  {id:'ohne',   n:'Ohne Gigs',     e:'Kein Auftrag, kein Geld. Aber der Tag gehört dir.',
-  p:'Bürgergeld · viel Zeit',     lohn:0,   nerv:.15, idee:1.15, haus:1.00, geld:0, nerven:9, buerger:150},
+  /* 130 €/Woche = 563 €/Monat, der echte Regelsatz 2026 (Stufe 1, allein
+     lebend). Für 2026 gab es eine Nullrunde, er ist also nicht gestiegen.
+     Vorher standen hier 150 €, das wären ~650 € gewesen. */
+  p:'Bürgergeld · viel Zeit',     lohn:0,   nerv:.15, idee:1.15, haus:1.00, geld:0, nerven:9, buerger:130},
  {id:'agent',  n:'KI Agenten',    e:'Autonome Systeme bauen. Läuft im Hintergrund.',
   p:'450 € · High End',           lohn:450, nerv:.30, idee:1.35, haus:1.00, geld:0, nerven:8},
  {id:'domains',n:'Domain-Flipping',e:'Brachliegende Domains snipen und teuer weiterverkaufen.',
