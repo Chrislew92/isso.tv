@@ -1215,7 +1215,11 @@ const ZIEL=50000, KW=6, KX=4.0, JOKER=3, PSCHUTZ=1000;
    dem Gig, den man sich hier aussucht. Deshalb ist es für alle dieselbe
    Zahl, und deshalb bringt die Berufswahl am Anfang genau nichts.
    Man startet nicht mit einem Vorsprung. Man startet unten. */
-const SCHULDEN=500, KRANK_START=4, KRANKENGELD=300;
+const SCHULDEN=1000, KRANK_START=4, KRANKENGELD=300;
+/* 1.000 € Schulden bei 1.500 € Verfügungsrahmen: man startet auf zwei
+   Dritteln des Limits. Mit 500 kamen kluge Spieler auf 86 % — das
+   Krankengeld war ein Anschub in genau den Wochen, wo Zinseszins am
+   meisten zählt. Jetzt frisst der Sockel den Vorsprung wieder auf. */
 /* Der Verfügungsrahmen. Steht seit zehn Jahren auf derselben Zahl,
    während alles andere teurer wird. Genau das ist die Zange. */
 const DISPO=1500;
@@ -1332,7 +1336,10 @@ const TU={
    /* Selten mal zäh — aber nie eine komplett verbrannte Woche. */
    if(zuf()<.12){ const k=rund(rn(100,300)); s.geld+=k;
      return 'Zäh diesmal. Am Ende nur '+eur(k)+', aber nicht nichts.'; }
-   const g=rund((rn(500,1000)+Math.max(0,s.geld)*.40)*JOB().idee); s.geld+=g;
+   /* 30 %, nicht 40. Bei 40 kamen kluge Spieler auf 82 % — über zwanzig
+      Wochen fällt jeder Prozentpunkt hier enorm ins Gewicht, viel mehr als
+      Startgeld oder Schulden. Wer an der Balance dreht, dreht zuerst hier. */
+   const g=rund((rn(500,1000)+Math.max(0,s.geld)*.30)*JOB().idee); s.geld+=g;
    return 'Läuft. '+eur(g)+', und keiner hat blöd gefragt.';},
  haus:s=>{
    if(s.geld<500) return 'Dafür ist nichts da. Erst muss was reinkommen.';
