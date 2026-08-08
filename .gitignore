@@ -1,0 +1,6 @@
+﻿# Betriebssystem-Kram
+Thumbs.db
+desktop.ini
+.DS_Store
+# Build-Ausgabe
+*.exe

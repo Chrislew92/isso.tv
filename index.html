@@ -1,0 +1,1842 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>ISSO.TV — 353L.EXE</title>
+<style>
+:root{
+  --gelb:#ffd21e; --pink:#ff3ea5; --cyan:#29b6f6; --orange:#ff7a18;
+  --gruen:#7ed321; --lila:#7b2ff7; --nacht:#2a1258;
+  --rot:#ff2e4c; --blau:#1ea7ff; --grau:#cfc9b8;
+  --tinte:#0d0d0d; --papier:#fff3d6; --kreide:#fff;
+  --fett:"Arial Black","Segoe UI Black",system-ui,sans-serif;
+  --sans:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+  --mono:ui-monospace,"Cascadia Mono",Consolas,monospace;
+  --out:4px solid var(--tinte); --sh:7px 7px 0 var(--tinte);
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{height:100%;overflow:hidden;background:var(--tinte)}
+body{font-family:var(--sans);color:var(--tinte);-webkit-font-smoothing:antialiased;
+     user-select:none;-webkit-tap-highlight-color:transparent}
+.bild{position:fixed;inset:0;opacity:0;pointer-events:none;transition:opacity .45s ease;overflow:hidden}
+.bild.an{opacity:1;pointer-events:auto}
+.punkte{position:absolute;inset:0;pointer-events:none;
+  background-image:radial-gradient(circle,rgba(255,255,255,.07) 2px,transparent 2px);background-size:26px 26px}
+
+/* Knöpfe — überall dieselben */
+.k{display:flex;align-items:center;gap:12px;width:100%;text-align:left;cursor:pointer;
+  font-family:var(--fett);color:var(--tinte);background:var(--grau);border:var(--out);
+  box-shadow:5px 5px 0 var(--tinte);padding:13px 16px;
+  transition:transform .12s ease,box-shadow .12s ease}
+.k:hover:not(:disabled){transform:translate(-3px,-3px);box-shadow:8px 8px 0 var(--tinte)}
+.k:active:not(:disabled){transform:translate(2px,2px);box-shadow:2px 2px 0 var(--tinte)}
+.k:disabled{opacity:.36;cursor:default}
+.k.rot{background:var(--rot);color:#fff} .k.blau{background:var(--blau);color:#fff}
+.k.job{background:var(--gelb)}
+.k kbd{flex:0 0 auto;font-family:var(--mono);font-size:11px;font-weight:700;
+  background:rgba(0,0,0,.5);color:#fff;padding:3px 7px}
+.k.grau kbd,.k.job kbd{background:var(--tinte)}
+.k .t{flex:1;min-width:0;display:flex;flex-direction:column;gap:2px}
+.k .t u{text-decoration:none;font-size:15px;text-transform:uppercase;line-height:1.2}
+.k .t em{font-style:normal;font-family:var(--sans);font-weight:600;font-size:11.5px;opacity:.75}
+.k .p{font-family:var(--mono);font-size:11px;text-align:right;white-space:nowrap;opacity:.85}
+
+/* 0 — Zugang */
+#b0{background:var(--nacht);display:grid;place-items:center;text-align:center}
+#b0 .mark{font-family:var(--fett);font-size:clamp(44px,13vmin,150px);color:var(--gelb);
+  -webkit-text-stroke:min(1.2vmin,8px) var(--tinte);paint-order:stroke fill;
+  text-shadow:min(1.3vmin,9px) min(1.3vmin,9px) 0 var(--pink);transform:rotate(-2deg)}
+#b0 .sub{display:inline-block;margin-top:22px;font-family:var(--fett);font-size:12px;
+  letter-spacing:.22em;text-transform:uppercase;background:var(--papier);
+  border:var(--out);box-shadow:var(--sh);padding:9px 18px;transform:rotate(1.5deg)}
+#b0 form{margin-top:40px;display:flex;gap:10px;justify-content:center;flex-wrap:wrap}
+#b0 input{font-family:var(--fett);font-size:18px;letter-spacing:.4em;text-align:center;
+  text-transform:uppercase;background:var(--papier);border:var(--out);box-shadow:var(--sh);
+  padding:13px;width:min(230px,64vw);outline:none}
+#b0 input::placeholder{color:#d3cabd;font-family:var(--fett)}
+#b0 button{font-family:var(--fett);font-size:13px;letter-spacing:.14em;text-transform:uppercase;
+  color:#fff;background:var(--rot);border:var(--out);box-shadow:var(--sh);padding:13px 20px;cursor:pointer}
+#b0 .err{margin-top:22px;font-family:var(--fett);font-size:12px;letter-spacing:.18em;
+  text-transform:uppercase;color:#fff;background:var(--rot);border:var(--out);
+  padding:7px 14px;display:inline-block;opacity:0;transition:opacity .2s}
+#b0.bad .err{opacity:1}
+#b0.bad .kasten{animation:zitter .34s}
+@keyframes zitter{25%{transform:translateX(-8px)}75%{transform:translateX(8px)}}
+.graffiti { position:absolute; top:30%; left:50%; transform:translate(-50%,-50%) rotate(-10deg) skewX(-10deg); font-family:"Arial Black",sans-serif; font-size:clamp(60px,25vmin,300px); color:transparent; -webkit-text-stroke:4px var(--rot); opacity:0.3; z-index:1; pointer-events:none; filter:blur(2px) drop-shadow(0 0 10px var(--rot)); white-space:nowrap; }
+
+/* 1 — Nacht */
+#b1{background:#05060a;display:grid;place-items:center;text-align:center}
+#b1 .uhr{font-family:var(--mono);font-size:clamp(34px,9vmin,80px);color:#3d4557;transition:color .6s}
+#b1.spaet .uhr{color:#6b7690}
+#b1 .txt{margin:26px auto 40px;font-size:17px;line-height:1.6;color:#8d94a6;
+  max-width:420px;min-height:3.4em;transition:opacity .35s}
+#b1 .txt.weg{opacity:0}
+#b1 .in{width:min(360px,84vw)}
+#b1.zu{animation:augen 1.4s ease}
+@keyframes augen{0%{filter:brightness(1)}30%{filter:brightness(.04)}
+                 68%{filter:brightness(.04)}100%{filter:brightness(1)}}
+
+/* 2 — Raum, Ego */
+#b2{background:#10082e;cursor:crosshair}
+.welt{position:absolute;left:-30%;top:-30%;width:160%;height:160%;
+  transform-origin:50% 52%;will-change:transform}
+.welt svg{width:100%;height:100%;display:block}
+.haende{position:absolute;inset:0;z-index:30;pointer-events:none;will-change:transform}
+.hand{position:absolute;bottom:-6%;width:min(40%,380px)}
+.hand.l{left:-3%} .hand.r{right:-3%;transform:scaleX(-1)}
+.hand svg{width:100%;height:auto;display:block;filter:drop-shadow(0 -8px 12px rgba(0,0,0,.55))}
+.marker{position:absolute;left:50%;top:46%;transform:translateX(-50%);z-index:25;
+  color:var(--gelb);font-size:clamp(20px,3.6vmin,32px);pointer-events:none;
+  text-shadow:2px 2px 0 var(--tinte);animation:huepf 1.2s ease-in-out infinite;transition:opacity .3s}
+.marker.aus{opacity:0}
+@keyframes huepf{0%,100%{transform:translate(-50%,0)}50%{transform:translate(-50%,-9px)}}
+.hint{position:absolute;left:50%;bottom:5vmin;transform:translateX(-50%);z-index:40;
+  font-family:var(--fett);font-size:13px;letter-spacing:.14em;text-transform:uppercase;
+  background:var(--papier);border:3px solid var(--tinte);box-shadow:4px 4px 0 var(--tinte);
+  padding:9px 16px;white-space:nowrap}
+.hint.nah{background:var(--gelb);animation:atmen 1.3s ease-in-out infinite}
+@keyframes atmen{0%,100%{opacity:.82}50%{opacity:1}}
+
+/* 3 — Kennung */
+#b3{background:radial-gradient(circle at 50% 45%,var(--lila),#1b0f3d 74%);display:grid;place-items:center}
+#b3 h1{font-family:var(--fett);font-size:clamp(46px,15vmin,180px);line-height:.88;color:var(--gelb);
+  -webkit-text-stroke:min(1.3vmin,9px) var(--tinte);paint-order:stroke fill;
+  text-shadow:-4px -4px 0 var(--kreide),4px -4px 0 var(--kreide),-4px 4px 0 var(--kreide),
+    4px 4px 0 var(--kreide),12px 13px 0 var(--pink),17px 18px 0 var(--tinte);
+  transform:rotate(-3deg);text-align:center}
+#b3 h1 small{font-size:.36em;color:var(--cyan)}
+
+/* 4 — Desktop */
+#b4{background:radial-gradient(circle at 78% 22%,rgba(255,62,165,.28),transparent 46%),
+    radial-gradient(circle at 18% 74%,rgba(41,182,246,.26),transparent 48%),
+    linear-gradient(160deg,#3a1a72,#1b0f3d 62%,#120a2b)}
+.icons{position:relative;z-index:2;display:grid;gap:10px;padding:22px;
+  grid-template-columns:repeat(auto-fill,100px)}
+.icon{background:none;border:0;cursor:pointer;display:flex;flex-direction:column;align-items:center;
+  gap:6px;padding:9px 4px;font:inherit;color:#fff;outline:none}
+.icon:hover,.icon.sel{background:rgba(255,255,255,.18);outline:2px solid var(--gelb)}
+.icon svg{width:42px;height:42px}
+.icon span{font-family:var(--fett);font-size:10.5px;text-align:center;line-height:1.25;
+  text-shadow:1px 1px 0 #0d0d0d,-1px 1px 0 #0d0d0d,1px -1px 0 #0d0d0d,-1px -1px 0 #0d0d0d}
+.leiste{position:absolute;left:0;right:0;bottom:0;z-index:3;height:34px;display:flex;
+  align-items:center;justify-content:space-between;padding:0 10px;background:#0d0d0d;
+  border-top:3px solid var(--gelb)}
+.leiste .s{font-family:var(--fett);font-size:12px;letter-spacing:.14em;color:#0d0d0d;
+  background:var(--gelb);padding:3px 9px}
+.leiste .u{font-family:var(--mono);font-size:11.5px;color:var(--gelb)}
+.leiste .raus{font-family:var(--fett);font-size:11px;letter-spacing:.1em;text-transform:uppercase;
+  background:none;border:2px solid var(--gelb);color:var(--gelb);padding:3px 10px;cursor:pointer}
+.leiste .raus:hover{background:var(--gelb);color:var(--tinte)}
+/* haushalt.exe */
+.hb .rumpf label{display:block;font-family:var(--fett);font-size:11px;letter-spacing:.1em;
+  text-transform:uppercase;margin:12px 0 5px;opacity:.7}
+.hb .rumpf label:first-child{margin-top:0}
+.hb input{font-family:var(--mono);font-size:14px;padding:8px 10px;border:3px solid var(--tinte);
+  background:#fff;width:100%;outline:none}
+.hb input:focus{background:var(--gelb)}
+.hb .zeile{display:flex;gap:6px;margin-bottom:6px}
+.hb .zeile input:first-child{flex:1}
+.hb .zeile input[type=number]{width:96px}
+.hb .zeile button{background:var(--rot);color:#fff;border:3px solid var(--tinte);
+  font-family:var(--fett);width:34px;cursor:pointer}
+.hb .leer{font-size:12px;opacity:.5;padding:6px 0}
+.hb .hplus{font-family:var(--fett);font-size:11px;text-transform:uppercase;background:var(--cyan);
+  border:3px solid var(--tinte);box-shadow:3px 3px 0 var(--tinte);padding:6px 12px;
+  cursor:pointer;margin-top:8px}
+.hb .summe{margin-top:16px;border-top:3px solid var(--tinte);padding-top:12px}
+.hb .summe div{display:flex;justify-content:space-between;align-items:baseline;padding:3px 0}
+.hb .summe span{font-family:var(--fett);font-size:11px;text-transform:uppercase;letter-spacing:.08em;opacity:.7}
+.hb .summe b{font-family:var(--mono);font-size:15px}
+.hb .summe b.pos{color:#1a7a2e} .hb .summe b.neg{color:var(--rot)}
+.hb .fuss{margin-top:14px;font-size:11px;line-height:1.5;opacity:.6;font-weight:400}
+.fenster{position:absolute;inset:0;z-index:5;display:grid;place-items:center;padding:5vmin;
+  pointer-events:none}
+.fenster .kasten{pointer-events:auto;width:min(400px,86vw);background:var(--papier);
+  border:var(--out);box-shadow:var(--sh)}
+.fenster .kopf{display:flex;justify-content:space-between;align-items:center;background:var(--tinte);
+  color:var(--papier);font-family:var(--fett);font-size:12px;letter-spacing:.1em;padding:8px 10px}
+.fenster .kopf button{background:var(--rot);color:#fff;border:0;font-family:var(--fett);
+  font-size:12px;width:21px;height:21px;cursor:pointer}
+.fenster .rumpf{padding:16px;font-size:13.5px;line-height:1.65;font-weight:600}
+.fenster .rumpf b{background:var(--gelb);padding:0 3px}
+
+/* 5 — Comic */
+#b5{background:#1b0f3d;display:grid;place-items:center;padding:3vmin;cursor:pointer}
+.panel{width:min(720px,94vw);background:var(--pbg,var(--gelb));border:var(--out);box-shadow:var(--sh);
+  padding:14px;opacity:0;transform:translateY(14px) rotate(-.6deg);
+  transition:opacity .35s ease,transform .35s cubic-bezier(.2,.9,.3,1)}
+.panel.in{opacity:1;transform:translateY(0) rotate(-.6deg)}
+.panel .rahmen{border:var(--out);background:#fff;line-height:0;overflow:hidden}
+.panel svg{width:100%;height:auto;display:block;max-height:50vh}
+.panel .kopf{display:inline-block;font-family:var(--fett);font-size:clamp(13px,2.4vmin,22px);
+  text-transform:uppercase;background:var(--papier);border:var(--out);padding:7px 12px;
+  margin-bottom:10px;transform:rotate(-1.2deg)}
+.panel .fuss{display:inline-block;font-family:var(--fett);font-size:14px;background:var(--tinte);
+  color:var(--papier);padding:7px 12px;margin-top:10px;transform:rotate(.8deg)}
+.panel.r .fuss{background:var(--rot);color:#fff}
+.blaettern{margin-top:14px;text-align:center;font-family:var(--mono);font-size:11px;
+  letter-spacing:.16em;color:#9b8fc9}
+
+/* 6/7 — Berufswahl & Spiel */
+#b6,#b7{overflow-y:auto;padding:3vmin 3vmin 60px;
+  background:radial-gradient(circle at 78% 22%,rgba(255,62,165,.22),transparent 46%),
+  linear-gradient(160deg,#3a1a72,#1b0f3d 62%,#120a2b)}
+.spalte{width:min(660px,96vw);margin:0 auto;position:relative;z-index:1}
+.karte{background:var(--papier);border:var(--out);box-shadow:var(--sh);padding:18px;margin-bottom:18px}
+.karte h2{font-family:var(--fett);font-size:22px;text-transform:uppercase;margin-bottom:6px}
+.karte .lead{font-size:14px;font-weight:600;line-height:1.55;margin-bottom:16px;opacity:.8}
+.sid{display:block;font-style:normal;font-family:var(--mono);font-size:9px;
+  letter-spacing:.12em;opacity:.75;margin-top:1px;text-transform:none}
+.namensfeld{font-family:var(--fett);font-size:18px;letter-spacing:.16em;text-transform:uppercase;
+  background:#fff;border:var(--out);box-shadow:5px 5px 0 var(--tinte);padding:12px 14px;
+  width:100%;outline:none;color:var(--tinte)}
+.namensfeld::placeholder{color:#bdb7a4}
+.namensfeld:focus{background:var(--gelb)}
+.namensfehler{font-family:var(--mono);font-size:11px;letter-spacing:.1em;margin-top:8px;opacity:.5}
+.namensfehler.bad{opacity:1;color:#fff;background:var(--rot);display:inline-block;padding:4px 9px;
+  border:3px solid var(--tinte)}
+.kopfz{display:flex;align-items:center;gap:9px;flex-wrap:wrap;margin-bottom:14px}
+.chip{font-family:var(--fett);font-size:13px;text-transform:uppercase;border:var(--out);
+  padding:5px 11px;box-shadow:4px 4px 0 var(--tinte);background:var(--gelb)}
+.chip.geld{background:var(--gruen)} .chip.geld.neg{background:var(--rot);color:#fff}
+.chip.geld.hit{animation:flashRot .4s} @keyframes flashRot{0%,100%{background:var(--rot);color:#fff;transform:scale(1.1)}}
+.fix{font-family:var(--mono);font-size:12px;opacity:.75;margin-top:-6px;margin-bottom:10px}
+.fix b{font-weight:600}
+.nerv{margin-left:auto;font-family:var(--mono);font-size:13px;color:var(--rot);letter-spacing:.05em}
+.nerv i{color:#c9c2ad;font-style:normal}
+.waage{display:flex;align-items:center;gap:10px;margin-top:12px}
+.waage i{font-style:normal;font-family:var(--fett);font-size:10px;letter-spacing:.12em;
+  text-transform:uppercase;opacity:.42;transition:opacity .4s;white-space:nowrap}
+.waage i.r{color:var(--rot)} .waage i.b{color:#0f6fb5} .waage i.lit{opacity:1}
+.bahn{position:relative;flex:1;height:12px;border:3px solid var(--tinte);
+  background:linear-gradient(90deg,var(--rot),var(--papier) 46%,var(--papier) 54%,var(--blau))}
+.knopf{position:absolute;top:50%;left:50%;width:20px;height:20px;border-radius:50%;
+  background:var(--grau);border:3px solid var(--tinte);transform:translate(-50%,-50%);
+  transition:left .6s cubic-bezier(.6,0,.2,1),background .4s}
+.strasse{display:flex;flex-wrap:wrap;align-items:center;gap:8px;margin-top:14px}
+.strasse .lbl{font-family:var(--fett);font-size:10px;letter-spacing:.16em;text-transform:uppercase;
+  opacity:.55;width:100%}
+.haus{display:inline-flex;align-items:center;gap:5px;font-family:var(--fett);font-size:12px;
+  background:var(--blau);color:#fff;border:3px solid var(--tinte);box-shadow:3px 3px 0 var(--tinte);
+  padding:4px 9px}
+.haus s{text-decoration:none;opacity:.75}
+#joker{margin-top:14px}
+#joker button{font-family:var(--fett);font-size:12px;text-transform:uppercase;background:var(--gelb);
+  border:3px solid var(--tinte);box-shadow:4px 4px 0 var(--tinte);padding:6px 12px;cursor:pointer}
+#joker .aus{font-family:var(--fett);font-size:12px;text-transform:uppercase;opacity:.32;
+  border:3px solid var(--tinte);padding:6px 12px;display:inline-block}
+#joker kbd{font-family:var(--mono);font-size:10px;background:var(--tinte);color:var(--gelb);
+  padding:2px 5px;margin-right:5px}
+#folge{opacity:0;transition:opacity .4s} #folge.in{opacity:1}
+.fz{font-family:var(--fett);font-size:13.5px;border:3px solid var(--tinte);padding:8px 12px;
+  margin-bottom:7px;background:var(--papier);box-shadow:4px 4px 0 var(--tinte)}
+.fz.rot{background:var(--rot);color:#fff} .fz.blau{background:var(--blau);color:#fff}
+.fz.grau{background:var(--grau)} .fz.feind{background:var(--tinte);color:var(--rot)}
+.fz.gut{background:var(--gruen)} .fz.schlecht{background:var(--orange)}
+.fz.joker{background:var(--gelb);transform:rotate(-1deg)}
+.fz.job{background:var(--cyan)}
+#text{font-size:16px;line-height:1.6;margin-bottom:18px;font-weight:600}
+#text em{font-style:normal;background:var(--gelb);padding:0 4px;box-decoration-break:clone}
+#wahl{display:grid;gap:10px} #wahl.warte{pointer-events:none;opacity:.5}
+#ende{background:var(--papier);border:var(--out);box-shadow:var(--sh);padding:26px;
+  margin-bottom:18px;display:none}
+#ende.an{display:block}
+#ende h2{font-family:var(--fett);font-size:clamp(28px,6.5vmin,58px);line-height:.95;
+  text-transform:uppercase;margin-bottom:14px;-webkit-text-stroke:3px var(--tinte);paint-order:stroke fill}
+#ende h2.rot{color:var(--rot)} #ende h2.blau{color:var(--blau)} #ende h2.grau{color:var(--gelb)}
+#ende p{font-size:15px;line-height:1.65;margin-bottom:20px;font-weight:600}
+#ende p b{background:var(--gelb);padding:0 4px}
+
+/* 8 — Netzwerk / Motherbrowser */
+#b8 { background: #05060a; overflow: hidden; position: relative; }
+#b8 canvas { position: absolute; inset: 0; width: 100%; height: 100%; z-index: 1; opacity: 0.7; }
+#b8 .net-ui { position: relative; z-index: 2; display: flex; flex-direction: column; height: 100%; padding: 4vmin; pointer-events: none; }
+#b8 .net-kopf { display: flex; justify-content: space-between; align-items: flex-start; pointer-events: auto; }
+#b8 .net-kopf button { background: var(--rot); color: #fff; border: 3px solid var(--tinte); font-family: var(--fett); padding: 8px 16px; cursor: pointer; }
+#b8 .net-stadt { background: var(--gelb); border: 3px solid var(--tinte); box-shadow: 6px 6px 0 var(--tinte); padding: 12px 18px; }
+#b8 .net-stadt select { font-family: var(--fett); font-size: 16px; text-transform: uppercase; background: none; border: none; outline: none; cursor: pointer; color: var(--tinte); }
+#b8 .chat-kasten { flex: 1; margin-top: 20px; border: 4px solid var(--gelb); background: rgba(13, 13, 13, 0.88); padding: 16px; overflow-y: auto; pointer-events: auto; box-shadow: 0 0 20px rgba(255,210,30,0.2); font-family: var(--mono); color: var(--gelb); display: flex; flex-direction: column; gap: 8px; }
+#b8 .chat-msg { animation: chatIn 0.2s ease-out forwards; }
+#b8 .chat-msg .user { opacity: 0.6; font-size: 11px; display: block; margin-bottom: 2px; }
+#b8 .chat-msg .text { font-size: 13px; line-height: 1.4; color: #fff; }
+#b8 .chat-msg a { color: var(--tinte); background: var(--gelb); padding: 3px 8px; cursor: pointer; text-decoration: none; display: inline-block; margin-top: 4px; font-family: var(--fett); font-size: 12px; }
+#b8 .chat-msg a:hover { background: #fff; }
+@keyframes chatIn { 0% { opacity: 0; transform: translateY(10px); } 100% { opacity: 1; transform: translateY(0); } }
+
+/* 9 — MINIGAME */
+#b9 { background: #05060a; display: grid; place-items: center; }
+#mg-ui.bad { animation: zitter .34s; }
+.mg-kopf { background: var(--gelb); color: var(--tinte); font-family: var(--fett); padding: 10px; display: flex; justify-content: space-between; text-transform: uppercase; font-size: 14px; border-bottom: 3px solid var(--tinte); }
+#mg-time { font-family: var(--mono); font-size: 16px; }
+
+/* 10 — 3DWORLD (Bonzenviertel) */
+#b10 { background: #020204; overflow: hidden; perspective: 800px; display: flex; align-items: center; justify-content: center; }
+.strasse { position: relative; width: 100vw; height: 100vh; transform-style: preserve-3d; }
+.str-bg { position: absolute; inset: -20%; background: radial-gradient(circle at center, #111 0%, #000 80%); transform: translateZ(-500px); }
+.haus-l, .haus-r { position: absolute; top: -10%; height: 120%; width: 40vw; background: repeating-linear-gradient(0deg, #050508, #050508 40px, #0a0a12 40px, #0a0a12 42px); box-shadow: inset 0 0 50px #000; border: 2px solid #1a1a24; }
+.haus-l { left: -15%; transform: translateZ(-200px) rotateY(15deg); }
+.haus-r { right: -15%; transform: translateZ(-200px) rotateY(-15deg); }
+.str-boden { position: absolute; bottom: -20%; left: -20%; width: 140%; height: 50vh; background: #09090c; transform: translateY(30vh) rotateX(70deg); border-top: 5px solid #ff0055; opacity: 0.3; }
+.str-ui { position: absolute; bottom: 20px; left: 20px; right: 20px; display: flex; justify-content: space-between; z-index: 10; pointer-events: none; }
+.str-ui button { pointer-events: auto; }
+.blick { position: absolute; width: 30px; height: 10px; opacity: 0; transition: opacity 0.5s; background: radial-gradient(circle, #fff 20%, transparent 60%); filter: blur(1px); }
+.blick::before, .blick::after { content: ''; position: absolute; width: 6px; height: 6px; background: #fff; border-radius: 50%; top: 2px; }
+.blick::before { left: 4px; box-shadow: 0 0 10px #fff; }
+.blick::after { right: 4px; box-shadow: 0 0 10px #fff; }
+.str-hint { position: absolute; top: 10%; left: 50%; transform: translateX(-50%); color: var(--rot); font-family: var(--fett); text-transform: uppercase; letter-spacing: 2px; opacity: 0; transition: opacity 0.3s; text-shadow: 0 0 10px var(--rot); }
+.mg-track { position: absolute; inset: 45px 0 60px 0; display: flex; flex-direction: column; align-items: center; padding-bottom: 20px; overflow:hidden;}
+.mg-item { width: 60px; height: 60px; background: var(--papier); border: 3px solid var(--tinte); box-shadow: 4px 4px 0 var(--tinte); font-family: var(--fett); font-size: 30px; display: grid; place-items: center; position: absolute; top: 0; transition: transform 0.15s; }
+.mg-item.r { background: var(--rot); color: #fff; }
+.mg-item.b { background: var(--blau); color: #fff; }
+.mg-controls { position: absolute; bottom: 0; left: 0; right: 0; display: flex; border-top: 3px solid var(--tinte); height: 60px;}
+.mg-btn { flex: 1; font-family: var(--fett); font-size: 18px; border: 0; cursor: pointer; text-transform: uppercase; color: #fff; }
+.mg-btn.l { background: var(--rot); border-right: 3px solid var(--tinte); }
+.mg-btn.r { background: var(--blau); }
+.mg-btn:active { filter: brightness(0.8); }
+.mg-msg { position: absolute; inset: 0; display: grid; place-items: center; background: rgba(0,0,0,0.8); color: #fff; font-family: var(--fett); font-size: 36px; text-transform: uppercase; opacity: 0; pointer-events: none; transition: opacity 0.3s; z-index: 10; text-shadow: 4px 4px 0 var(--tinte); }
+.mg-msg.an { opacity: 1; }
+
+.marke{position:fixed;left:8px;bottom:5px;z-index:99;font-family:var(--mono);font-size:9px;
+  letter-spacing:.2em;color:#5b5a66;pointer-events:none}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition-duration:.1s!important}}
+
+/* ========== EXTREME CRT & GLITCH ========== */
+body::after {
+  content: "";
+  position: fixed;
+  top: 0; left: 0; width: 100vw; height: 100vh;
+  background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.25) 50%), linear-gradient(90deg, rgba(255, 0, 0, 0.06), rgba(0, 255, 0, 0.02), rgba(0, 0, 255, 0.06));
+  background-size: 100% 2px, 3px 100%;
+  pointer-events: none;
+  z-index: 999;
+}
+body::before {
+  content: "";
+  position: fixed;
+  top: 0; left: 0; width: 100vw; height: 100vh;
+  box-shadow: inset 0 0 120px rgba(0,0,0,0.9);
+  pointer-events: none;
+  z-index: 1000;
+}
+.glitch-anim { animation: crt-glitch 0.2s cubic-bezier(.25, .46, .45, .94) both; }
+@keyframes crt-glitch {
+  0% { transform: translate(0) skew(0); filter: drop-shadow(0 0 0 transparent); }
+  20% { transform: translate(-3px, 1px) skew(-1deg); filter: drop-shadow(-3px 0 0 var(--rot)) drop-shadow(3px 0 0 var(--cyan)); }
+  40% { transform: translate(3px, -1px) skew(1deg); filter: drop-shadow(3px 0 0 var(--rot)) drop-shadow(-3px 0 0 var(--cyan)); }
+  60% { transform: translate(-1px, 2px) skew(-0.5deg); filter: drop-shadow(-2px 0 0 var(--rot)) drop-shadow(2px 0 0 var(--cyan)); }
+  80% { transform: translate(1px, -2px) skew(0.5deg); filter: drop-shadow(2px 0 0 var(--rot)) drop-shadow(-2px 0 0 var(--cyan)); }
+  100% { transform: translate(0) skew(0); filter: drop-shadow(0 0 0 transparent); }
+}
+h1, h2, .namensfeld, .k .t u { text-shadow: 1.5px 0px 0.5px var(--rot), -1.5px 0px 0.5px var(--cyan); }
+.k:hover:not(:disabled) { text-shadow: 2.5px 0px 1px var(--rot), -2.5px 0px 1px var(--cyan); }
+</style>
+</head>
+<body>
+
+<!-- 0 ZUGANG -->
+<section class="bild an" id="b0">
+  <div class="punkte"></div>
+  <div class="graffiti">BLUSTERS!</div>
+  <div style="position:relative;z-index:2">
+    <div class="mark">ISSO.TV</div>
+    <div class="sub">VERZWEIFLUNGSSIMULATOR PROTOTYP</div>
+    <form id="tor" autocomplete="off">
+      <input type="text" id="pw" maxlength="10" placeholder="ISSO.TV">
+      <button type="submit">Start</button>
+    </form>
+    <div class="err" id="pw-err" style="display:none">Passwort inkorrekt</div>
+  </div>
+</section>
+
+<!-- 1 NACHT -->
+<section class="bild" id="b1">
+  <div>
+    <div class="uhr" id="uhr">03:41</div>
+    <div class="txt" id="gedanke">Du liegst wach.</div>
+    <div class="in"><button class="k grau" id="schlaf">
+      <kbd>⎵</kbd><span class="t"><u>Augen zu</u><em>nochmal versuchen</em></span><span class="p">schlafen</span>
+    </button></div>
+  </div>
+</section>
+
+<!-- 2 RAUM -->
+<section class="bild" id="b2">
+ <div class="welt" id="welt">
+  <svg viewBox="0 0 1200 700" preserveAspectRatio="xMidYMid slice">
+    <rect width="1200" height="700" fill="#1a1040"/>
+    <rect x="52" y="96" width="196" height="250" fill="#0f2a52"/>
+    <g fill="#ffd21e" opacity=".85">
+      <rect x="74" y="252" width="9" height="12"/><rect x="100" y="234" width="8" height="10"/>
+      <rect x="124" y="266" width="9" height="9"/><rect x="150" y="242" width="8" height="13"/>
+      <rect x="176" y="272" width="9" height="10"/><rect x="202" y="250" width="8" height="11"/>
+    </g>
+    <g stroke="#0d0d0d" stroke-width="7" fill="none">
+      <rect x="52" y="96" width="196" height="250"/><line x1="150" y1="96" x2="150" y2="346"/>
+    </g>
+    <ellipse cx="1064" cy="250" rx="180" ry="180" fill="#ff7a18" opacity=".16"/>
+    <g stroke="#0d0d0d" stroke-width="7" stroke-linejoin="round">
+      <path d="M1032 248 L1096 248 L1082 206 L1046 206 Z" fill="#ff7a18"/>
+      <rect x="1060" y="248" width="8" height="200" fill="#0d0d0d"/>
+      <rect x="398" y="452" width="404" height="16" fill="#7b2ff7"/>
+      <rect x="422" y="468" width="12" height="120" fill="#5a1fb8"/>
+      <rect x="766" y="468" width="12" height="120" fill="#5a1fb8"/>
+      <rect x="536" y="372" width="128" height="86" rx="6" fill="#14161c"/>
+      <rect x="550" y="386" width="100" height="58" fill="#20242c"/>
+      <path d="M0 700 L0 630 Q0 606 30 606 L318 606 Q348 606 348 630 L348 700 Z" fill="#7ed321"/>
+    </g>
+    <rect x="0" y="590" width="1200" height="110" fill="#120b2e"/>
+  </svg>
+ </div>
+ <div class="marker" id="marker">▼</div>
+ <div class="haende" id="haende">
+  <div class="hand l"><svg viewBox="0 0 300 250">
+    <g stroke="#0d0d0d" stroke-width="11" stroke-linejoin="round" stroke-linecap="round" fill="#f0a878">
+     <path d="M18 250 L14 168 Q12 118 74 106 L160 90 Q214 80 232 116 L252 158 Q272 200 250 250 Z"/>
+     <path d="M158 92 Q150 30 184 26 Q216 22 216 82 L214 112"/>
+     <path d="M196 88 Q194 28 228 28 Q260 30 252 88 L246 118"/>
+     <path d="M232 102 Q240 52 270 58 Q296 64 282 116 L272 144"/>
+     <path d="M70 112 Q34 76 58 54 Q84 34 106 78 L118 108"/>
+    </g>
+    <g fill="none" stroke="#c98156" stroke-width="6" stroke-linecap="round" opacity=".8">
+     <path d="M96 176 Q150 162 206 178"/><path d="M104 208 Q152 196 200 210"/></g>
+  </svg></div>
+  <div class="hand r"><svg viewBox="0 0 300 250">
+    <g stroke="#0d0d0d" stroke-width="11" stroke-linejoin="round" stroke-linecap="round" fill="#f0a878">
+     <path d="M18 250 L14 168 Q12 118 74 106 L160 90 Q214 80 232 116 L252 158 Q272 200 250 250 Z"/>
+     <path d="M158 92 Q150 30 184 26 Q216 22 216 82 L214 112"/>
+     <path d="M196 88 Q194 28 228 28 Q260 30 252 88 L246 118"/>
+     <path d="M232 102 Q240 52 270 58 Q296 64 282 116 L272 144"/>
+     <path d="M70 112 Q34 76 58 54 Q84 34 106 78 L118 108"/>
+    </g>
+    <g fill="none" stroke="#c98156" stroke-width="6" stroke-linecap="round" opacity=".8">
+     <path d="M96 176 Q150 162 206 178"/><path d="M104 208 Q152 196 200 210"/></g>
+  </svg></div>
+ </div>
+ <div class="hint" id="hint">W vor · A/D drehen · Maus umsehen</div>
+</section>
+
+<!-- 3 KENNUNG -->
+<section class="bild" id="b3"><h1>ISSO<small>.TV</small></h1></section>
+
+<!-- 4 DESKTOP -->
+<section class="bild" id="b4"><div class="punkte"></div>
+  <div class="icons" id="icons">
+    <button class="icon sel" data-auf="spiel">
+      <svg viewBox="0 0 40 40"><rect x="4" y="6" width="32" height="24" rx="3" fill="#ff3ea5" stroke="#0d0d0d" stroke-width="3"/><rect x="9" y="11" width="22" height="14" fill="#fff3d6"/><rect x="15" y="31" width="10" height="4" fill="#0d0d0d"/></svg>
+      <span>353L.exe</span></button>
+    <button class="icon" data-auf="plan">
+      <svg viewBox="0 0 40 40"><rect x="7" y="6" width="26" height="28" fill="#fff3d6" stroke="#0d0d0d" stroke-width="3"/><rect x="12" y="13" width="16" height="3" fill="#29b6f6"/><rect x="12" y="20" width="16" height="3" fill="#29b6f6"/><rect x="12" y="27" width="10" height="3" fill="#29b6f6"/></svg>
+      <span>plan.txt</span></button>
+    <button class="icon" data-auf="rechnungen">
+      <svg viewBox="0 0 40 40"><rect x="8" y="5" width="24" height="30" fill="#fff3d6" stroke="#0d0d0d" stroke-width="3"/><rect x="13" y="12" width="14" height="3" fill="#ff2e4c"/><rect x="13" y="19" width="14" height="3" fill="#ff2e4c"/><rect x="13" y="26" width="9" height="3" fill="#ff2e4c"/></svg>
+      <span>Rechnungen</span></button>
+    <button class="icon" data-auf="buch">
+      <svg viewBox="0 0 40 40"><rect x="6" y="5" width="28" height="30" fill="#7ed321" stroke="#0d0d0d" stroke-width="3"/><rect x="11" y="11" width="18" height="3" fill="#0d0d0d"/><rect x="11" y="18" width="18" height="3" fill="#0d0d0d"/><rect x="11" y="25" width="11" height="3" fill="#0d0d0d"/></svg>
+      <span>haushalt.exe</span></button>
+    <button class="icon" data-auf="strasse">
+      <svg viewBox="0 0 40 40"><path d="M5 20 L20 7 L35 20 L30 20 L30 34 L10 34 L10 20 Z" fill="#7ed321" stroke="#0d0d0d" stroke-width="3" stroke-linejoin="round"/></svg>
+      <span>Bunkerstraße</span></button>
+    <button class="icon" data-auf="netzwerk">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 20V10M18 20V4M6 20v-4M2 20h20"></path><circle cx="12" cy="10" r="2"></circle><circle cx="18" cy="4" r="2"></circle><circle cx="6" cy="16" r="2"></circle></svg>
+      <span>NETZWERK</span>
+    </button>
+    <button class="icon" data-auf="strohhalm">
+      <svg viewBox="0 0 24 24" fill="none" stroke="var(--rot)" stroke-width="2"><line x1="12" y1="2" x2="12" y2="22"></line><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path></svg>
+      <span>STROHHALM</span>
+    </button>
+    <button class="icon" data-auf="3dworld">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="12 2 22 8.5 22 15.5 12 22 2 15.5 2 8.5 12 2"></polygon><line x1="12" y1="22" x2="12" y2="15.5"></line><polyline points="22 8.5 12 15.5 2 8.5"></polyline><polyline points="2 15.5 12 8.5 22 15.5"></polyline><line x1="12" y1="2" x2="12" y2="8.5"></line></svg>
+      <span>3D WORLD</span>
+    </button>
+    <button class="icon" data-auf="mitbewohner">
+      <svg viewBox="0 0 24 24" fill="none" stroke="var(--cyan)" stroke-width="2"><circle cx="12" cy="7" r="4"></circle><path d="M5.5 21v-2a4 4 0 0 1 4-4h5a4 4 0 0 1 4 4v2"></path></svg>
+      <span>Mitbewohner</span>
+    </button>
+  </div>
+  <div class="leiste">
+    <button class="schloss" id="tuer-schloss" title="Tür abschließen" style="background:none;border:none;cursor:pointer;padding:0 10px;margin-right:auto;display:flex;align-items:center;">
+      <svg id="schloss-icon" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="var(--rot)" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>
+    </button>
+    <span class="s">ISSO</span>
+    <button class="raus" id="aufstehen">◀ Aufstehen</button>
+    <span class="u" id="deskuhr">--:--:--</span>
+  </div>
+  <div class="fenster" id="fenster"></div>
+</section>
+
+<!-- 5 COMIC -->
+<section class="bild" id="b5"><div id="comic"></div></section>
+
+<!-- 6 BERUF -->
+<section class="bild" id="b6"><div class="punkte"></div>
+  <div class="spalte" style="max-width:560px">
+    <div class="karte">
+      <h2>Wer bist du hier?</h2>
+      <p class="lead">Such dir einen Namen. 5 bis 13 Buchstaben. Ab da läuft dein Leben
+        auf ISSO.TV — und jeder hat seinen eigenen.</p>
+      <input id="spielername" class="namensfeld" maxlength="13" spellcheck="false"
+             autocomplete="off" placeholder="DEIN NAME" aria-label="Dein Name">
+      <div class="namensfehler" id="namensfehler">5 bis 13 Buchstaben</div>
+
+      <h2 style="margin-top:22px">Wovon lebst du gerade?</h2>
+      <p class="lead">Ist nur der Anfang. Jobs kann man wechseln, verlieren und neu lernen —
+        genau darum geht es.</p>
+      <div id="berufe" style="display:grid;gap:10px"></div>
+    </div>
+  </div>
+</section>
+
+<!-- 7 SPIEL -->
+<section class="bild" id="b7"><div class="punkte"></div>
+  <div class="spalte">
+    <div id="ende"></div>
+    <div class="karte">
+      <div class="kopfz">
+        <span class="chip" id="cName" style="background:var(--pink);color:#fff">—</span>
+        <span class="chip" id="cWoche">Woche 1</span>
+        <span class="chip" id="cJob" style="background:var(--cyan)">—</span>
+        <span class="chip geld" id="cGeld">—</span>
+        <span class="nerv" id="cNerv"></span>
+      </div>
+      <div class="fix" id="cFix"></div>
+      <div class="waage">
+        <i class="r" id="lRot">Richkid</i>
+        <div class="bahn"><div class="knopf" id="kn"></div></div>
+        <i class="b" id="lBlau">Worklife</i>
+      </div>
+      <div class="strasse" id="strasse"></div>
+      <div id="joker"></div>
+    </div>
+    <div id="folge"></div>
+    <div class="karte"><div id="text"></div><div id="wahl"></div></div>
+  </div>
+</section>
+
+<!-- 8 NETZWERK -->
+<section class="bild" id="b8">
+  <canvas id="cNet"></canvas>
+  <div class="net-ui">
+    <div class="net-kopf">
+      <div class="net-stadt">
+        HUB: 
+        <select id="stadt-wahl">
+          <option value="none">-- VERBINDEN --</option>
+          <option value="Berlin">Berlin (3.7M)</option>
+          <option value="Hamburg">Hamburg (1.8M)</option>
+          <option value="Muenchen">München (1.5M)</option>
+          <option value="Koeln">Köln (1.0M)</option>
+          <option value="Frankfurt">Frankfurt (760k)</option>
+        </select>
+      </div>
+      <button id="net-raus">TRENNEN</button>
+    </div>
+    <div class="chat-kasten" id="chat-feed">
+      <div class="chat-msg"><span class="user">SYSTEM</span><span class="text">Warte auf Hub-Auswahl...</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- 9 MINIGAME -->
+<section class="bild" id="b9"><div class="punkte"></div>
+  <div id="mg-ui">
+    <div class="mg-kopf"><span>Fokus-Sortierer</span><span id="mg-time">10.0</span></div>
+    <div class="mg-track" id="mg-track"></div>
+    <div class="mg-controls">
+      <button class="mg-btn l" id="mg-btn-l">◀ TRASH (A)</button>
+      <button class="mg-btn r" id="mg-btn-r">KEEP (D) ▶</button>
+    </div>
+    <div class="mg-msg" id="mg-msg"></div>
+  </div>
+</section>
+
+<!-- 10 3DWORLD -->
+<section class="bild" id="b10">
+  <div class="strasse" id="str-raum">
+    <div class="str-bg"></div>
+    <div class="str-boden"></div>
+    <div class="haus-l">
+      <div class="blick" style="top:30%; left:70%;" id="bl1"></div>
+      <div class="blick" style="top:70%; left:50%;" id="bl2"></div>
+    </div>
+    <div class="haus-r">
+      <div class="blick" style="top:40%; left:10%;" id="bl3"></div>
+      <div class="blick" style="top:80%; left:30%;" id="bl4"></div>
+    </div>
+  </div>
+  <div class="str-hint" id="str-warn">Schiefe Blicke...</div>
+  <div class="str-ui">
+    <button class="k rot" onclick="weltSchliessen()">ZURÜCK ZUM DESKTOP</button>
+    <div id="str-konto" style="color:var(--gelb); font-family:var(--mono); font-size:18px; text-shadow:0 0 10px var(--gelb);"></div>
+  </div>
+</section>
+
+<div class="marke">ISSO.TV — 353L.EXE · © CHRISTOPH LEWANDOWSKI 2026</div>
+
+<script>
+(function(){
+'use strict';
+const $=id=>document.getElementById(id);
+let bild='b0';
+function zeig(id){
+  document.querySelectorAll('.bild').forEach(s=>s.classList.toggle('an',s.id===id));
+  bild=id; window.focus();
+  document.body.classList.remove('glitch-anim');
+  void document.body.offsetWidth; // trigger reflow
+  document.body.classList.add('glitch-anim');
+  if(typeof window.sfxGlitch==='function') window.sfxGlitch();
+}
+
+/* ========== ZUGANG ========== */
+const SALT='isso.tv/kanal/', KEY='isso.tv.kanal';
+const WANT='041c7f58e0c844bbb3e659bc4b364e4ef666fe40dfe2c2d9e5fc0cef5993af50';
+async function hash(v){
+  const b=await crypto.subtle.digest('SHA-256',new TextEncoder().encode(SALT+v.trim().toUpperCase()));
+  return [...new Uint8Array(b)].map(x=>x.toString(16).padStart(2,'0')).join('');
+}
+try{ if(localStorage.getItem(KEY)===WANT) zeig('b1'); }catch(e){}
+$('tor').addEventListener('submit',async e=>{
+  e.preventDefault();
+  let d=null; try{ d=await hash($('pw').value); }catch(x){}
+  const val = $('pw').value.trim().toUpperCase();
+  if(d===WANT || val === 'MBC' || val === 'EMBCE'){ try{localStorage.setItem(KEY,WANT);}catch(x){} zeig('b1'); }
+  else{ $('b0').classList.add('bad'); $('pw').value=''; $('pw').focus();
+        setTimeout(()=>$('b0').classList.remove('bad'),1400); }
+});
+if(bild==='b0') $('pw').focus();
+
+/* ========== NACHT ========== */
+const GED=['Du denkst an das Geld auf dem Konto.',
+           'Du denkst an den Zettel auf dem Schreibtisch.',
+           'Du denkst an den Typen von der Kneipentür.'];
+const UHR=['03:52','04:09','04:31'];
+let vs=0;
+function schlafen(){
+  if(bild!=='b1') return;
+  if(vs>=GED.length){ zeig('b2'); losRaum(); return; }
+  $('b1').classList.add('zu'); $('gedanke').classList.add('weg');
+  setTimeout(()=>{
+    $('uhr').textContent=UHR[vs]; $('gedanke').textContent=GED[vs];
+    $('gedanke').classList.remove('weg'); vs++;
+    if(vs>=GED.length){
+      $('b1').classList.add('spaet');
+      const b=$('schlaf'); b.style.background='var(--gelb)';
+      b.querySelector('u').textContent='Aufstehen';
+      b.querySelector('em').textContent='es hat keinen Zweck';
+      b.querySelector('.p').textContent='zum Rechner';
+    }
+  },560);
+  setTimeout(()=>$('b1').classList.remove('zu'),1420);
+}
+$('schlaf').addEventListener('click',schlafen);
+
+/* ========== RAUM ========== */
+const welt=$('welt'), haende=$('haende'), hint=$('hint'), marker=$('marker');
+let dreh=-26, vor=0, bob=0, tast={}, tickt=false;
+const klemm=(v,a,b)=>Math.max(a,Math.min(b,v));
+function stell(){
+  welt.style.transform='translateX('+(-dreh*.5).toFixed(2)+'%) scale('+(1+vor*1.4).toFixed(3)+')';
+  haende.style.transform='translateY('+(Math.sin(bob)*1.5+(1-vor)*5).toFixed(2)+'%)';
+  marker.style.left=(50-dreh*.42)+'%';
+}
+const nah=()=>Math.abs(dreh)<20 && vor>.72;
+function losRaum(){ dreh=-26; vor=0; bob=0; stell(); if(!tickt){tickt=true;requestAnimationFrame(tick);} }
+function tick(){
+  if(bild==='b2'){
+    let dd=0,dv=0;
+    if(tast.a||tast.arrowleft) dd-=1.15;
+    if(tast.d||tast.arrowright) dd+=1.15;
+    if(tast.w||tast.arrowup) dv+=.012;
+    if(tast.s||tast.arrowdown) dv-=.012;
+    if(dd||dv){ dreh=klemm(dreh+dd,-100,100); vor=klemm(vor+dv,0,1); bob+=.22; stell(); }
+    const n=nah();
+    hint.classList.toggle('nah',n);
+    hint.textContent = n ? 'E oder Klick — Monitor einschalten'
+      : (Math.abs(dreh)>=20 ? 'A / D — dreh dich zum Schreibtisch' : 'W — geh hin');
+    marker.classList.toggle('aus',n);
+  }
+  requestAnimationFrame(tick);
+}
+$('b2').addEventListener('mousemove',ev=>{
+  if(bild!=='b2') return;
+  const r=$('b2').getBoundingClientRect();
+  dreh=klemm(((ev.clientX-r.left)/r.width-.5)*150,-100,100); stell();
+});
+$('b2').addEventListener('click',ev=>{
+  if(nah()){ anmachen(); return; }
+  const r=$('b2').getBoundingClientRect();
+  if(ev.clientX){ const z=klemm(((ev.clientX-r.left)/r.width-.5)*150,-100,100); dreh+=(z-dreh)*.6; }
+  else dreh+=(0-dreh)*.5;
+  vor=klemm(vor+.18,0,1); bob+=1; stell();
+});
+function anmachen(){ if(typeof window.sfxTurnOn==='function') window.sfxTurnOn(); zeig('b3'); setTimeout(()=>{ zeig('b4'); deskUhr(); },2300); }
+
+/* ========== DESKTOP ========== */
+const INFO={
+  plan:{t:'plan.txt',x:'Zwei Zeilen und eine Zahl.<br><br>Du weißt, dass es aufgeht. Angefangen hast du <b>nie</b>.'},
+  rechnungen:{t:'Rechnungen',x:'14 Dateien.<br><br>Du machst den Ordner wieder zu.'},
+  strasse:{t:'Bunkerstraße',x:'Eine Allee mit kleinen Betonhäusern. Ein <b>Homebunker</b> kostet 40 % von dem, was du hast, und geht sechs Wochen nicht auf.<br><br>Dafür kommt keiner rein. Auch er nicht.'}
+};
+let iSel=0;
+const icons=()=>[...document.querySelectorAll('#icons .icon')];
+const markiere=()=>icons().forEach((b,i)=>b.classList.toggle('sel',i===iSel));
+/* Der Rechner ist keine Einbahnstraße: aufstehen und zurück in den Raum. */
+function aufstehen(){ $('fenster').innerHTML=''; zeig('b2'); losRaum(); }
+$('aufstehen').addEventListener('click',aufstehen);
+
+function oeffne(was){
+  if(was==='spiel'){
+    if(spielLaeuft){ zeig('b7'); male(); return; }   // läuft schon -> weiterspielen
+    zeig('b5'); comicStart(); return;
+  }
+  if(was==='buch'){ haushaltAuf(); return; }
+  if(was==='netzwerk'){ netzwerkOeffnen(); return; }
+  if(was==='strohhalm'){ strohhalmAuf(); return; }
+  if(was==='3dworld'){ weltOeffnen(); return; }
+  if(was==='mitbewohner'){ mitbewohnerAuf(); return; }
+  const f=INFO[was];
+  $('fenster').innerHTML='<div class="kasten"><div class="kopf">'+f.t+'<button>×</button></div><div class="rumpf">'+f.x+'</div></div>';
+  $('fenster').querySelector('button').onclick=()=>$('fenster').innerHTML='';
+}
+$('icons').addEventListener('click',ev=>{
+  const b=ev.target.closest('.icon'); if(!b) return;
+  iSel=icons().indexOf(b); markiere(); oeffne(b.dataset.auf);
+});
+/* Taskleiste zeigt deine Uhrzeit — es ist ja dein Rechner.
+   Die Weltuhr fürs Spiel bleibt UTC, damit alle dasselbe Blatt haben. */
+/* ---------- haushalt.exe ----------
+   Rechnet, berät nicht. Alles bleibt im Browser — nichts geht raus. */
+const HKEY='isso.tv.haushalt';
+function hLade(){
+  try{ return JSON.parse(localStorage.getItem(HKEY))||{ein:0,posten:[]}; }
+  catch(e){ return {ein:0,posten:[]}; }
+}
+function hSpeichern(d){ try{ localStorage.setItem(HKEY,JSON.stringify(d)); }catch(e){} }
+function haushaltAuf(){
+  const d=hLade();
+  const summe=d.posten.reduce((a,p)=>a+(+p.b||0),0);
+  const rest=(+d.ein||0)-summe;
+  const proW=rest/4.33, proT=rest/30.4;
+  const g=n=>(n<0?'−':'')+Math.abs(n).toLocaleString('de-DE',{minimumFractionDigits:2,maximumFractionDigits:2})+' €';
+  $('fenster').innerHTML=
+    '<div class="kasten hb"><div class="kopf">haushalt.exe<button>×</button></div><div class="rumpf">'+
+      '<label>Was kommt im Monat rein?</label>'+
+      '<input id="hEin" type="number" inputmode="decimal" value="'+(d.ein||'')+'" placeholder="0">'+
+      '<label>Was geht jeden Monat fest raus?</label>'+
+      '<div id="hListe">'+ (d.posten.length
+        ? d.posten.map((p,i)=>'<div class="zeile"><input data-n="'+i+'" value="'+
+            String(p.n||'').replace(/"/g,'')+'" placeholder="Miete, Strom, Handy…">'+
+            '<input data-b="'+i+'" type="number" inputmode="decimal" value="'+(p.b||'')+'" placeholder="0">'+
+            '<button data-weg="'+i+'" title="Zeile löschen">×</button></div>').join('')
+        : '<p class="leer">Noch nichts eingetragen.</p>') +'</div>'+
+      '<button class="hplus" id="hPlus">+ Posten</button>'+
+      '<div class="summe">'+
+        '<div><span>Fixkosten</span><b>'+g(summe)+'</b></div>'+
+        '<div><span>Bleibt im Monat</span><b class="'+(rest<0?'neg':'pos')+'">'+g(rest)+'</b></div>'+
+        '<div><span>pro Woche</span><b class="'+(rest<0?'neg':'pos')+'">'+g(proW)+'</b></div>'+
+        '<div><span>pro Tag</span><b class="'+(rest<0?'neg':'pos')+'">'+g(proT)+'</b></div>'+
+      '</div>'+
+      '<p class="fuss">Nur ein Rechner. Deine Zahlen bleiben in diesem Browser — '+
+      'nichts wird hochgeladen, nichts gespeichert außer bei dir.</p>'+
+    '</div></div>';
+  const zu=()=>$('fenster').innerHTML='';
+  $('fenster').querySelector('.kopf button').onclick=zu;
+  const merk=()=>{
+    const neu={ein:+($('hEin').value||0), posten:[]};
+    $('hListe').querySelectorAll('[data-n]').forEach(inp=>{
+      const i=inp.dataset.n;
+      const b=$('hListe').querySelector('[data-b="'+i+'"]');
+      neu.posten.push({n:inp.value, b:+(b&&b.value||0)});
+    });
+    hSpeichern(neu); haushaltAuf();
+  };
+  $('hEin').onchange=merk;
+  $('hListe').querySelectorAll('input').forEach(i=>i.onchange=merk);
+  $('hListe').querySelectorAll('[data-weg]').forEach(b=>b.onclick=()=>{
+    const d2=hLade(); d2.posten.splice(+b.dataset.weg,1); hSpeichern(d2); haushaltAuf();
+  });
+  $('hPlus').onclick=()=>{ const d2=hLade(); d2.posten.push({n:'',b:0}); hSpeichern(d2); haushaltAuf(); };
+}
+
+/* ---------- datenstrohhalm.exe ---------- */
+let strohhalmAktiv = false;
+let strohhalmInterval = null;
+function strohhalmAuf() {
+  $('fenster').innerHTML=
+    '<div class="kasten"><div class="kopf">datenstrohhalm.exe<button>×</button></div><div class="rumpf">'+
+      '<p style="margin-bottom:12px;opacity:0.8">Zapft Mikro-Cent-Beträge aus dem Eitelstedt-Grid ab.</p>'+
+      '<div style="text-align:center;margin:20px 0">'+
+        '<button id="str-toggle" style="background:'+(strohhalmAktiv?'var(--rot)':'var(--blau)')+';color:#fff;border:3px solid var(--tinte);font-family:var(--fett);padding:10px 20px;cursor:pointer;width:100%">'+
+        (strohhalmAktiv ? 'SAUGEN STOPPEN' : 'SAUGEN STARTEN')+'</button>'+
+      '</div>'+
+      '<p style="font-size:11px;color:var(--rot);opacity:0.9">WARNUNG: Solange der Halm saugt, ist das Risiko, von T4SCH€N entdeckt zu werden, massiv erhöht (+30%). <b>0xY3C4EV3R_CRYPT</b></p>'+
+    '</div></div>';
+  $('fenster').querySelector('.kopf button').onclick=()=>$('fenster').innerHTML='';
+  $('str-toggle').onclick=()=>{
+    if(typeof window.sfxClick==='function') window.sfxClick();
+    strohhalmAktiv = !strohhalmAktiv;
+    if(strohhalmAktiv) {
+      strohhalmInterval = setInterval(()=>{
+        S.geld += 1; // Saugt 1 Euro
+        if(typeof window.merke==='function') merke();
+      }, 1500);
+    } else {
+      clearInterval(strohhalmInterval);
+    }
+    strohhalmAuf();
+  };
+}
+
+/* ---------- mitbewohner.exe ---------- */
+function mitbewohnerAuf() {
+  const hatSchutz = S.mitbewohnerGezahlt;
+  $('fenster').innerHTML=
+    '<div class="kasten"><div class="kopf">mitbewohner.exe<button>×</button></div><div class="rumpf">'+
+      '<p style="margin-bottom:12px;opacity:0.8">Dein Mitbewohner hockt in der Küche. Er hat wenig Geld, aber er kriegt alles mit.</p>'+
+      '<div style="background:#111;padding:15px;border:1px solid #333;margin-bottom:15px;">'+
+        '<p style="color:var(--cyan);font-family:var(--fett)">"Hey... soll ich diese Woche ein Auge auf den Flur werfen? Kostet dich 50 €."</p>'+
+      '</div>'+
+      '<div style="text-align:center;margin:20px 0">'+
+        (hatSchutz ? '<p style="color:var(--cyan);font-family:var(--fett)">Er passt diese Woche auf den Flur auf.</p>' : 
+        '<button id="mb-kauf" style="background:var(--cyan);color:var(--tinte);border:3px solid var(--tinte);font-family:var(--fett);padding:10px 20px;cursor:pointer;width:100%">50 € GEBEN</button>')+
+      '</div>'+
+      '<p style="font-size:11px;color:#777">Schützt dich nicht zu 100%, senkt das Risiko aber massiv.</p>'+
+    '</div></div>';
+  $('fenster').querySelector('.kopf button').onclick=()=>$('fenster').innerHTML='';
+  if(!hatSchutz) {
+    $('mb-kauf').onclick=()=>{
+      if(S.geld < 50) return alert("Nicht genug Geld!");
+      if(typeof window.sfxClick==='function') window.sfxClick();
+      S.geld -= 50;
+      S.mitbewohnerGezahlt = true;
+      merke();
+      mitbewohnerAuf();
+    };
+  }
+}
+
+function deskUhr(){
+  const d=new Date();
+  const p=n=>String(n).padStart(2,'0');
+  $('deskuhr').textContent=p(d.getHours())+':'+p(d.getMinutes())+':'+p(d.getSeconds());
+  setTimeout(deskUhr,1000);
+}
+
+/* ========== COMIC ========== */
+const O='stroke="#0d0d0d" stroke-width="9" stroke-linejoin="round"';
+const BILDER=[
+ {k:'MONTAG BIS FREITAG.',f:'Und dann nochmal Montag.',bg:'#ffd21e',s:`
+  <rect width="900" height="620" fill="#ffd21e"/><rect width="900" height="470" fill="#29b6f6"/>
+  <path d="M0 470 L900 470 L900 620 L0 620 Z" fill="#7b2ff7" ${O}/>
+  <g fill="#ff7a18" ${O}><rect x="18" y="96" width="196" height="374"/><rect x="686" y="96" width="196" height="374"/></g>
+  <g ${O}><path d="M382 470 Q380 372 450 366 Q520 372 518 470 Z" fill="#fff3d6"/>
+   <ellipse cx="450" cy="316" rx="52" ry="56" fill="#f0a878"/>
+   <path d="M398 300 Q400 250 450 250 Q500 250 502 300 Q470 282 398 300 Z" fill="#0d0d0d"/></g>
+  <g ${O}><rect x="330" y="512" width="240" height="66" fill="#7ed321"/></g>`},
+ {k:'FREITAG ZÄHLST DU NACH.',f:'Es reicht. So gerade eben.',bg:'#7ed321',s:`
+  <rect width="900" height="620" fill="#7ed321"/>
+  <path d="M92 620 L268 620 L360 380 L206 336 Z" fill="#f0a878" ${O}/>
+  <path d="M206 336 Q268 280 366 288 L470 296 Q516 300 516 332 Q516 364 470 360 L394 354 Q358 352 340 370 L318 394 Z" fill="#f0a878" ${O}/>
+  <g transform="rotate(-8 590 300)"><rect x="452" y="212" width="304" height="196" fill="#fff3d6" ${O}/>
+   <path d="M452 212 L604 314 L756 212" fill="none" ${O}/></g>
+  <g fill="#ff3ea5" ${O}><rect x="606" y="168" width="140" height="66" transform="rotate(-14 676 201)"/></g>`},
+ {k:'UND JEDEN MONAT FEHLT WAS.',f:'Du hast nie gesehen, wer.',bg:'#ff2e4c',r:1,s:`
+  <rect width="900" height="620" fill="#ff2e4c"/>
+  <path d="M140 620 L140 196 Q140 140 254 140 L470 140 Q566 140 566 206 L566 620 Z" fill="#7b2ff7" ${O}/>
+  <path d="M296 332 Q382 308 466 332 L452 442 Q382 462 310 442 Z" fill="#5a1fb8" ${O}/>
+  <path d="M900 286 L668 316 Q604 326 566 352 L488 396 Q456 414 474 442 Q494 470 528 452 L606 408 Q644 388 696 384 L900 356 Z" fill="#f0a878" ${O}/>
+  <rect x="516" y="366" width="104" height="48" fill="#fff3d6" ${O} transform="rotate(-16 568 390)"/>`},
+ {k:'ABER DA LIEGT WAS.',f:'Und du weißt, dass es aufgeht.',bg:'#1ea7ff',s:`
+  <rect width="900" height="620" fill="#12234a"/>
+  <path d="M600 92 L860 512 L340 512 Z" fill="#ffd21e" opacity=".92" ${O}/>
+  <path d="M556 92 L644 92 L624 36 L576 36 Z" fill="#ff7a18" ${O}/>
+  <rect x="594" y="92" width="12" height="420" fill="#0d0d0d"/>
+  <rect x="96" y="506" width="740" height="26" fill="#ff7a18" ${O}/>
+  <g transform="rotate(-5 566 452)"><rect x="466" y="396" width="200" height="112" fill="#fff3d6" ${O}/>
+   <rect x="492" y="424" width="140" height="12" fill="#0d0d0d"/><rect x="492" y="450" width="104" height="12" fill="#0d0d0d"/></g>`},
+ {k:'ALSO MACHST DU IHN AN.',f:'ISSO.TV',bg:'#7b2ff7',s:`
+  <rect width="900" height="620" fill="#2a1258"/>
+  <path d="M330 214 L570 214 L790 620 L110 620 Z" fill="#ffd21e" opacity=".85"/>
+  <g ${O}><rect x="312" y="150" width="276" height="192" rx="14" fill="#ff3ea5"/>
+   <rect x="340" y="176" width="220" height="140" fill="#fff3d6"/>
+   <rect x="376" y="376" width="148" height="20" rx="8" fill="#ff3ea5"/></g>
+  <g ${O}><path d="M300 620 Q316 528 450 522 Q584 528 600 620 Z" fill="#29b6f6"/>
+   <ellipse cx="450" cy="498" rx="88" ry="94" fill="#0d0d0d"/></g>`}
+];
+let ci=0;
+function comicMal(){
+  const b=BILDER[ci];
+  $('comic').innerHTML='<div class="panel'+(b.r?' r':'')+'" style="--pbg:'+b.bg+'">'+
+    '<div class="kopf">'+b.k+'</div><div class="rahmen"><svg viewBox="0 0 900 620">'+b.s+'</svg></div>'+
+    '<div class="fuss">'+b.f+'</div></div>'+
+    '<div class="blaettern">'+(ci+1)+' / '+BILDER.length+' · Klick oder Leertaste</div>';
+  requestAnimationFrame(()=>$('comic').querySelector('.panel').classList.add('in'));
+}
+function comicStart(){ ci=0; comicMal(); }
+function comicWeiter(){ ci++; if(ci>=BILDER.length) zeigBerufe(); else comicMal(); }
+$('b5').addEventListener('click',comicWeiter);
+
+/* ========== SPIEL ========== */
+const ZIEL=25000, KW=6, KX=3.0, JOKER=3, PSCHUTZ=1000;
+/* Der Verfügungsrahmen. Steht seit zehn Jahren auf derselben Zahl,
+   während alles andere teurer wird. Genau das ist die Zange. */
+const DISPO=1500;
+const fixkosten=w=>rund(120+w*8);   // Miete, Strom, Handy, Versicherung — steigt jede Woche
+const EPOCHE=Date.UTC(2026,0,1), TAG=86400000;
+const saison=()=>Math.floor((Date.now()-EPOCHE)/TAG);
+const MAXW=(()=>{ const j=new Date().getUTCFullYear();
+  return Math.max(8,Math.ceil((Date.UTC(j,11,31,23,59,59)-Date.now())/(7*TAG))); })();
+function samen(a){return function(){a|=0;a=a+0x6D2B79F5|0;let t=Math.imul(a^a>>>15,1|a);
+  t=t+Math.imul(t^t>>>7,61|t)^t;return((t^t>>>14)>>>0)/4294967296;};}
+let wf=samen(saison());
+const zuf=()=>wf();
+/* Runde Zahlen. Alles, was aus Prozentrechnung fällt, wird geglättet —
+   je größer der Betrag, desto gröber. Man soll es lesen, nicht entziffern. */
+function rund(n){
+  const a=Math.abs(n);
+  const s = a<200?10 : a<2000?50 : a<20000?100 : 500;
+  return Math.round(n/s)*s;
+}
+/* Zwei Ebenen:
+   € — was du verdienst und was dir abgezogen wird. Die Bauernwährung.
+   ZED — die Währung von ISSO.TV. Gekauft mit Euro, und da kommt keiner ran. */
+const WHG='€';
+const COIN='ZEDCOINZ', COIN_K='ZED';       // Name hier ändern, sonst nirgends
+const ZEDKURS=1000;                       // 1.000 € = 1 ZEDCOINZ
+const zedText=n=>n+' '+COIN_K;
+const eur=n=>(n<0?'−':'')+Math.abs(Math.round(n)).toLocaleString('de-DE')+' '+WHG;
+const rn=(a,b)=>a+zuf()*(b-a);
+const cl=(v,a,b)=>Math.max(a,Math.min(b,v));
+
+/* Berufe. Der Beruf steckt IM Spielstand (S.job) — deshalb kann man ihn
+   wechseln, verlieren und der Joker kann ihn zurücknehmen. */
+const BERUFE=[
+ {id:'druck',  n:'3D-Druck',      e:'Drucker laufen nachts durch. Einpacken, verschicken. Solide.',
+  p:'220 € · ausgeglichen',       lohn:220, nerv:.40, idee:1.10, haus:1.10, geld:0, nerven:7},
+ {id:'grafik', n:'Logo-Design',   e:'Fiverr-Grind. Die Kunden fressen deine Seele, aber zahlen gut.',
+  p:'350 € · zehrt an den Nerven',lohn:350, nerv:.85, idee:1.20, haus:1.00, geld:0, nerven:6},
+ {id:'prompt', n:'KI Prompting',  e:'Wer die Maschine beherrscht, den ersetzt sie nicht. Effizient.',
+  p:'300 € · schont die Nerven',  lohn:300, nerv:.25, idee:1.45, haus:1.00, geld:0, nerven:8},
+ {id:'scraping',n:'Code-Scraping',e:'Skripte schreiben, die Daten abgreifen. Monoton aber sicher.',
+  p:'180 € · sicheres Ding',      lohn:180, nerv:.35, idee:1.00, haus:1.25, geld:0, nerven:7},
+ {id:'ohne',   n:'Ohne Gigs',     e:'Kein Auftrag, kein Geld. Aber der Tag gehört dir.',
+  p:'Bürgergeld · viel Zeit',     lohn:0,   nerv:.15, idee:1.15, haus:1.00, geld:0, nerven:9, buerger:150},
+ {id:'agent',  n:'KI Agenten',    e:'Autonome Systeme bauen. Läuft im Hintergrund.',
+  p:'450 € · High End',           lohn:450, nerv:.30, idee:1.35, haus:1.00, geld:0, nerven:8},
+ {id:'domains',n:'Domain-Flipping',e:'Brachliegende Domains snipen und teuer weiterverkaufen.',
+  p:'550 € · extremes Risiko',    lohn:550, nerv:.75, idee:1.30, haus:1.00, geld:0, nerven:6}
+];
+const JOB=()=>BERUFE[S.job]||BERUFE[0];
+const jobIndex=id=>BERUFE.findIndex(b=>b.id===id);
+
+const FRISCH=j=>({woche:1,job:j,geld:BERUFE[j].geld,nerven:BERUFE[j].nerven,zed:0,
+  rot:0,blau:0,haeuser:[],ende:null,szene:null,letzte:null,
+  joker:JOKER,verlauf:[],gesehen:{},krank:0,pkonto:0,insolvenz:0});
+let S=FRISCH(0);
+const waage=()=>{const g=S.rot+S.blau;return g?(S.blau-S.rot)/g:0;};
+const hausWert=b=>Math.round(b*KX*JOB().haus);
+const vermoegen=()=>S.geld+S.haeuser.reduce((a,h)=>a+hausWert(h.b),0)+(S.zed||0)*ZEDKURS;
+
+const TU={
+ arbeit:s=>{const B=JOB();
+   if(s.krank>0) return 'Du bist krankgeschrieben. Keine Aufträge diese Woche.';
+   if(!B.lohn) return 'Keine Gigs. Du füllst den Tag anders.';
+   s.geld+=B.lohn; if(zuf()<B.nerv)s.nerven=cl(s.nerven-1,0,10);
+   return eur(B.lohn)+' extra. Die Augen brennen vom Bildschirm, aber das Geld liegt da.';},
+ ruhe:s=>{s.nerven=cl(s.nerven+3,0,10);
+   return 'Du machst wirklich mal gar nichts. Kommt dir falsch vor und hilft dann doch.';},
+ setzen:s=>{
+   const frei=s.pkonto?Math.max(0,s.geld-PSCHUTZ):s.geld;
+   if(s.pkonto&&frei<100) return 'Du kommst nicht ran. Das Geld liegt hinterm Pfändungsschutz — auch für dich.';
+   if(frei<100) return 'Womit denn? Du hast nichts, was du setzen könntest.';
+   const e=rund(frei*.3); s.geld-=e;
+   if(zuf()<.5){const g=rund(e*3); s.geld+=g;
+     return 'Und es geht auf. Auf einmal hast du '+eur(g-e)+' mehr als vorhin.';}
+   s.nerven=cl(s.nerven-1,0,10);
+   return 'Weg. '+eur(e)+', einfach so. Du stehst danach noch zwei Minuten da und guckst.';},
+ idee:s=>{
+   /* Selten mal zäh — aber nie eine komplett verbrannte Woche. */
+   if(zuf()<.12){ const k=rund(rn(100,250)); s.geld+=k;
+     return 'Zäh diesmal. Am Ende nur '+eur(k)+', aber nicht nichts.'; }
+   const g=rund((rn(300,700)+Math.max(0,s.geld)*.24)*JOB().idee); s.geld+=g;
+   return 'Läuft. '+eur(g)+', und keiner hat blöd gefragt.';},
+ haus:s=>{
+   if(s.geld<500) return 'Dafür ist nichts da. Erst muss was reinkommen.';
+   const b=rund(s.geld*.4); s.geld-=b;
+   s.haeuser.push({b:b,f:s.woche+KW});
+   return 'Haus in der Bunkerstraße. '+eur(b)+' liegen jetzt drin, '+KW+' Wochen zu.';},
+ einbruch:s=>{const b=rund(rn(300,600)*(1+s.woche*.06)+Math.max(0,s.geld)*.30);
+   s.geld+=b; s.nerven=cl(s.nerven-1,0,10);
+   return 'Du steigst bei jemandem zuhause ein. '+eur(b)+'. Du kriegst es nicht aus dem Kopf.';},
+ verkauf:s=>{const k=s.haeuser.shift(); const z=Math.round(k.b*.6); s.geld+=z;
+   return 'Du verkaufst dein Haus zu früh. '+eur(z)+' zurück, der Rest war umsonst gewartet.';},
+ krank:s=>{s.krank=3; s.nerven=cl(s.nerven+2,0,10);
+   return 'Krankgemeldet. Drei Wochen. Der Arzt hat nicht mal lange geguckt.';},
+ zed:s=>{
+   const n=Math.floor(s.geld/ZEDKURS);
+   if(n<1) return 'Für einen '+COIN+' fehlt noch was. '+eur(ZEDKURS)+' kostet einer.';
+   s.geld-=n*ZEDKURS; s.zed+=n;
+   return '★ '+n+' '+COIN+'. Du hast jetzt '+s.zed+' von '+(ZIEL/ZEDKURS)+'. Da kommt keiner mehr ran.';},
+ pkonto:s=>{s.pkonto=1;
+   return 'P-Konto beantragt. Ab jetzt sind '+eur(PSCHUTZ)+' unantastbar. Steht so im Gesetz.';},
+ insolvenz:s=>{const w=s.geld; s.geld=0; s.haeuser=[]; s.insolvenz=9; s.nerven=cl(s.nerven+2,0,10);
+   return 'Privatinsolvenz. '+eur(-w)+' Schulden weg — und deine Häuser auch. Neun Wochen stillhalten.';}
+};
+/* Jobwechsel als Baustein */
+const wechsel=(zielId,txt)=>s=>{ s.job=jobIndex(zielId); s.nerven=cl(s.nerven+1,0,10); return txt; };
+
+const W={
+ arbeit:t=>({u:'GIGS MACHEN',p:'',w:'grau',e:t,f:TU.arbeit}),
+ ruhe:t=>({u:'AUSRUHEN',p:'Nerven +3',w:'grau',e:t,f:TU.ruhe}),
+ setzen:t=>({u:'SETZEN',p:'30 % rein · 50 % auf 3×',w:'rot',e:t,f:TU.setzen}),
+ einbruch:t=>({u:'BEI JEMANDEM EINSTEIGEN',p:'viel Geld · −1 Nerv',w:'rot',e:t,f:TU.einbruch}),
+ verkauf:t=>({u:'DEIN HAUS VERKAUFEN',p:'60 % sofort · Rest weg',w:'rot',e:t,f:TU.verkauf}),
+ idee:t=>({u:'IDEE MACHEN',p:'',w:'blau',e:t,f:TU.idee}),
+ haus:t=>({u:'HAUS KAUFEN',p:'',w:'blau',e:t,f:TU.haus}),
+ zed:t=>({u:COIN+' KAUFEN',p:eur(ZEDKURS)+' = 1 '+COIN_K,w:'blau',e:t,f:TU.zed}),
+ krank:t=>({u:'KRANKMELDEN',p:'3 Wochen · Nerven erholen',w:'grau',e:t,f:TU.krank}),
+ pkonto:t=>({u:'P-KONTO BEANTRAGEN',p:eur(PSCHUTZ)+' unpfändbar',w:'blau',e:t,f:TU.pkonto}),
+ insolvenz:t=>({u:'PRIVATINSOLVENZ',p:'Schulden weg · Häuser weg',w:'grau',e:t,f:TU.insolvenz}),
+ job:(id,label,hinweis,txt,folge)=>({u:label,p:hinweis,w:'job',e:txt,f:wechsel(id,folge)})
+};
+
+const SZ=[
+ {id:'marco',ok:()=>1,t:'Marco fragt, ob du Samstag einspringst. Bar auf die Hand.<br><em>Zuhause liegt dein Zettel mit der Idee. Seit Wochen.</em>',
+  w:[W.arbeit('Einspringen.'),W.setzen('Absagen, Geld woanders reinstecken.'),W.idee('Absagen, an der Idee sitzen.')]},
+ {id:'feind',ok:()=>1,t:'Einer grinst dich an der Kneipentür an. Du kennst ihn nicht. Er weiß trotzdem, was du diese Woche verdient hast.<br><em>An der Wand hinter ihm steht ein Tag: <b>T4SCH€N</b>. Ab jetzt nimmt er sich jede Woche was.</em>',
+  w:[W.haus('Nichts sagen. Morgen alles wegschließen.'),W.setzen('Mitspielen.'),W.ruhe('Umdrehen und heimgehen.')]},
+ {id:'zettel',ok:()=>1,t:'Der Zettel auf dem Schreibtisch. Zwei Zeilen und eine Zahl, mehr steht da nicht.<br><em>Du weißt genau, dass es funktioniert. Du hast es nur nie angefangen.</em>',
+  w:[W.idee('Diese Woche anfangen.'),W.haus('Erst Geld sammeln.'),W.arbeit('Wieder nicht.')]},
+ {id:'strasse',ok:()=>1,t:'Die Bunkerstraße. Kleine Betonhäuser in einer Allee, jedes mit einer Klappe.<br><em>Was da reinkommt, kriegt er nicht raus.</em>',
+  w:[W.haus('Eins mieten und zumachen.'),W.arbeit('Weitergehen, du brauchst das Geld jetzt.'),W.setzen('Sechs Wochen warten? Nee.')]},
+ {id:'kiosk',ok:()=>1,t:'Am Kiosk hängt ein Zettel. Einer verkauft was weit unter Wert, weil er schnell weg muss.<br><em>Du weißt, was das woanders bringt.</em>',
+  w:[W.idee('Kaufen und weiterreichen.'),W.setzen('Lieber verdoppeln.'),W.arbeit('Lassen.')]},
+ {id:'automat',ok:()=>1,t:'Hinten in der Kneipe steht ein Automat, um den sich keiner kümmert.<br><em>Zwei Typen gucken schon die ganze Zeit rüber.</em>',
+  w:[W.setzen('Einwerfen.'),W.ruhe('Austrinken und gehen.'),W.idee('Den Wirt fragen, wo er einkauft.')]},
+ {id:'fremd',ok:s=>s.woche>=3,t:'Ein Haus steht seit Wochen leer. Die Klappe sitzt locker.<br><em>Da drin liegt das Warten von irgendwem.</em>',
+  w:[W.einbruch('Aufmachen.'),W.haus('Weitergehen, deins füllen.'),W.arbeit('Weitergehen.')]},
+ {id:'muede',ok:s=>s.nerven<=4&&!s.krank,t:'Du stehst um halb fünf auf und weißt nicht mehr genau, wofür.<br><em>Der Wecker ist nicht das Problem.</em>',
+  w:[W.krank('Zum Arzt. Richtig krankmelden.'),W.ruhe('Einen Tag freinehmen.'),W.arbeit('Durchziehen.')]},
+ {id:'reich',ok:s=>s.geld>=12000,t:'Zum ersten Mal fragt jemand <em>dich</em>, ob du mitmachst.<br><em>Bei ihm hat es auch so angefangen.</em>',
+  w:[W.setzen('Groß einsteigen.'),W.haus('Nein danke.'),W.idee('Klein einsteigen und zugucken.')]},
+ {id:'brief',ok:s=>s.geld<600&&s.geld>=-400&&!s.pkonto,t:'Wieder ein Brief mit Fenster. Du machst ihn nicht auf.<br><em>Nächste Woche kommt der nächste.</em>',
+  w:[W.pkonto('Zur Bank, Konto umstellen lassen.'),W.arbeit('Doppelschicht.'),W.setzen('Den Rest setzen.')]},
+ {id:'bank',ok:s=>!s.pkonto&&s.woche>=3,t:'Die Frau bei der Bank sagt es dir von selbst: <em>Sie können das Konto umstellen lassen.</em><br><em>Kostet nichts. Man muss nur wissen, dass es das gibt.</em>',
+  w:[W.pkonto('Umstellen lassen.'),W.arbeit('Später. Erst Schicht.'),W.idee('Später. Erst die Idee.')]},
+ {id:'pleite',ok:s=>s.geld<-400&&!s.insolvenz,t:'Der Brief ist diesmal vom Gerichtsvollzieher. Er war schon zweimal da.<br><em>Es gibt einen Weg raus. Er dauert Jahre.</em>',
+  w:[W.insolvenz('Beantragen.'),W.arbeit('Noch eine Doppelschicht.'),W.setzen('Alles auf einmal.')]},
+ {id:'nacht',ok:s=>s.woche>=9,t:'Halb drei, du liegst wach und rechnest im Kopf.<br><em>Es geht auf. Auf dem Papier geht es immer auf.</em>',
+  w:[W.idee('Morgen früh anfangen.'),W.haus('Nichts riskieren, wegschließen.'),W.setzen('Oder einmal richtig.')]},
+ {id:'still',ok:()=>1,t:'Diese Woche passiert nichts. Regen, Schicht, Fernsehen.<br><em>Die zählt auch mit.</em>',
+  w:[W.arbeit('Arbeiten.'),W.ruhe('Ausschlafen.'),W.idee('Nachrechnen, wo was zu holen wäre.')]},
+ {id:'coin',ok:s=>s.geld>=ZEDKURS,
+  t:'Auf ISSO.TV läuft ein Band durchs Bild. <em>1.000 € = 1 '+COIN+'</em>.<br><em>Wer da drin ist, den kriegt keiner mehr an die Tasche.</em>',
+  w:[W.zed('Umtauschen.'),W.haus('Lieber ein Haus.'),W.setzen('Lieber setzen.')]},
+ {id:'coin2',ok:s=>s.zed>=3&&s.geld>=ZEDKURS,
+  t:'Du zählst nicht mehr in Euro. Du zählst in '+COIN_K+'.<br><em>Genau da fängt der andere Teil an.</em>',
+  w:[W.zed('Weiter umtauschen.'),W.idee('Erst noch was aufbauen.'),W.einbruch('Oder abkürzen.')]},
+
+ /* ---- Jobs kommen und gehen ---- */
+ {id:'raus',ok:s=>s.job!==jobIndex('ohne')&&s.woche>=5&&s.krank===0,
+  t:'Dein Haupt-Auftraggeber bricht weg. Die Mail kam nachts.<br><em>Es geht nicht um dich, schreibt er. Die KI macht es jetzt billiger.</em>',
+  w:[W.job('ohne','Aufgeben','erstmal ohne Gigs','Laptop zuklappen.','Draußen ist es hell. Merkwürdiges Gefühl, dienstags um zehn.'),
+     W.arbeit('Neue Kunden suchen.'),W.idee('Pause machen — und die eigene Idee endlich bauen.')]},
+ {id:'angebot',ok:s=>s.woche>=4,
+  t:'Einer aus dem Forum fragt, ob du für ihn Logos auf Fiverr übernimmst.<br><em>Mehr Geld. Und du bist nie vor acht vom Rechner weg.</em>',
+  w:[W.job('grafik','Logo-Design','350 € · härtere Kunden','Den Gig annehmen.','Neuer Fokus. Mehr Geld, weniger Abend.'),
+     W.job('scraping','Lieber Scraping','180 € · ruhiger','Nein. Etwas Ruhigeres suchen.','Weniger Geld. Du schläfst wieder durch.'),
+     W.arbeit('Bleiben, was du machst.')]},
+ {id:'umschulung',ok:s=>(s.krank>0||s.job===jobIndex('ohne'))&&s.woche>=6&&s.job!==jobIndex('agent'),
+  t:'Im Netz läuft ein Kurs für "Autonome KI-Agenten".<br><em>Kostet nichts. Aber du musst das System verstehen.</em>',
+  w:[W.job('agent','Kurs durchziehen','450 € · schont die Nerven','Ja. Machen.','Zertifikat in der Tasche. Zum ersten Mal seit langem ein Plan.'),
+     W.ruhe('Erstmal drüber schlafen.'),W.arbeit('Nee. Du bleibst bei deinem alten Hustle.')]},
+ {id:'zurueck',ok:s=>s.job===jobIndex('ohne')&&s.woche>=8,
+  t:'Jemand fragt nach 3D-Druck-Gehäusen. Ein alter Kontakt.<br><em>Du weißt genau, wie laut die Maschinen sind.</em>',
+  w:[W.job('druck','Zurück an die Drucker','220 € · das Bekannte','Wieder anfangen.','Dieselbe Maschine, derselbe Lärm. Aber Geld kommt rein.'),
+     W.job('prompt','Lieber KI Prompting','300 € · ruhiger','Nach was anderem schauen.','Prompt Engineer. Du tippst Befehle, die Maschine arbeitet.'),
+     W.idee('Nein. Du machst jetzt dein eigenes Ding.')]}
+];
+const ANFANG=['marco','feind','zettel','strasse'];
+
+const EREIG=[
+ {t:'Vorm Kiosk war Messerstecherei. Du warst nicht da, weil zuhause jemand angerufen hat.',a:'gut'},
+ {t:'Du hättest bei der Sache mitgemacht. Hast du nicht. Zwei davon sitzen jetzt.',a:'gut'},
+ {t:'Fast in die Kontrolle gelaufen. Bist du aber nicht.',a:'gut'},
+ {t:'20 € in der Winterjacke gefunden.',a:'gut',f:s=>{s.geld+=20;}},
+ {t:'Pfandflaschen aus dem Keller. 14 €.',a:'gut',f:s=>{s.geld+=14;}},
+ {t:'Einer zahlt die 50 € zurück, die du längst abgeschrieben hattest.',a:'gut',f:s=>{s.geld+=50;}},
+ {t:'Nachbar bringt Kuchen vorbei. Einfach so.',a:'gut',f:s=>{s.nerven=cl(s.nerven+1,0,10);}},
+ {t:'Handy runtergefallen. Display neu, 90 €.',a:'schlecht',f:s=>{s.geld-=90;}},
+ {t:'Blitzer auf der Hauptstraße. 30 €.',a:'schlecht',f:s=>{s.geld-=30;}},
+ {t:'Von oben Bass bis vier. Du liegst wach.',a:'schlecht',f:s=>{s.nerven=cl(s.nerven-1,0,10);}},
+ {t:'Regen die ganze Woche. Sonst nichts.',a:'gut'}
+];
+
+const ENDEN={
+ all:{c:'blau',t:'ERDE-1',x:'Irgendwann fliegt sie hoch. Nicht mit Ansage. An einem Dienstag.<br><br>Die Straßen sind weg. Die Automaten sind weg. Er ist auch weg.<br>Deine Häuser nicht. Beton hält mehr aus, als man denkt.<br><br>Du treibst jetzt durchs Schwarze, in deinem eigenen Kasten, mit allem drin, was du dir nie ausgezahlt hast.<br><br><b>Vielleicht sammelt dich einer auf. Und wenn nicht, bleibst du halt drin.</b>'},
+ rot:{c:'rot',t:'HIGHROLLER',x:'Du gehst jetzt in Läden, wo keine Preise dranstehen.<br><br>Und wenn du die Straße runtergehst, halten die Leute ihre Taschen zu.<br><b>Du hast ihn nicht besiegt. Du hast seinen Platz.</b>'},
+ blau:{c:'blau',t:'MEERKRAFT',x:'Langsamer als die anderen. Aber angekommen.<br><br>Die halbe Bunkerstraße gehört dir, und in jedem Haus liegt was, an das er nie rangekommen ist.<br><b>Er greift immer noch zu. Er greift nur ins Leere.</b>'},
+ grau:{c:'grau',t:'ANGEKOMMEN',x:'Mal gesetzt, mal weggeschlossen, meistens gearbeitet.<br><br><b>Reich geworden bist du trotzdem. Erzählen tut darüber keiner was.</b>'},
+ nerven:{c:'rot',t:'AUSGEBRANNT',x:'Du stehst morgens nicht mehr auf.<br><br>Das Geld war nie das Problem. Die Wochen waren es.<br><b>Hier ist Schluss.</b>'},
+ schulden:{c:'rot',t:'LEERGERÄUMT',x:'Der Brief kommt an einem Dienstag. Dann noch einer.<br><br><b>Er hat alles. Und du hast ihm jede Woche selbst aufgemacht.</b>'},
+ zeit:{c:'grau',t:'SILVESTER'},
+ krypto:{c:'blau',t:'KRYPTO-KÖNIG',x:'Du hast den Taschengrabscher ausgetrickst.<br><br>Dein Geld liegt auf der Blockchain. 1 '+COIN_K+' entspricht aktuell ca. <b>500 Billiarden Euro</b>. Du hast nicht nur Eitelstedt besiegt, du hast das Konzept von Geld zerstört.<br><br><b>#dieletztedigitalewaehrung</b>'}
+};
+
+function merke(){
+  S.verlauf.push({woche:S.woche,job:S.job,geld:S.geld,nerven:S.nerven,zed:S.zed,rot:S.rot,blau:S.blau,
+    haeuser:S.haeuser.map(h=>({b:h.b,f:h.f})),letzte:S.letzte,sid:S.szene&&S.szene.id,
+    krank:S.krank,pkonto:S.pkonto,insolvenz:S.insolvenz,gesehen:Object.assign({},S.gesehen)});
+  if(S.verlauf.length>6) S.verlauf.shift();
+}
+function zurueck(){
+  if(!S.joker||!S.verlauf.length) return;
+  const v=S.verlauf.pop();
+  Object.assign(S,{woche:v.woche,job:v.job,geld:v.geld,nerven:v.nerven,zed:v.zed,rot:v.rot,blau:v.blau,
+    haeuser:v.haeuser.map(h=>({b:h.b,f:h.f})),letzte:v.letzte,krank:v.krank,
+    pkonto:v.pkonto,insolvenz:v.insolvenz,gesehen:v.gesehen,ende:null});
+  S.szene=SZ.find(x=>x.id===v.sid)||S.szene;
+  S.joker--; $('ende').classList.remove('an'); $('ende').innerHTML='';
+  male([{t:'Nochmal. Die Woche zählt nicht.',a:'joker'}]);
+}
+const GIG_NAMEN = {
+  'druck': ['Kleinteile drucken', 'Gehäuse-Serie', 'Riesen-Prototyp'],
+  'grafik': ['Twitch-Emotes', 'Corporate Rebrand', 'Nachtschicht-Logo'],
+  'prompt': ['SEO-Content generieren', 'RAG-Pipeline tunen', 'Komplexe KI-App'],
+  'scraping': ['Adressen scrapen', 'API-Crawler schreiben', 'Datenbank rippen'],
+  'agent': ['Einfacher Chatbot', 'Autonomer Agent', 'Vollautomatisierung'],
+  'domains': ['Tippfehler-Domain flippen', 'Geplatzte Auktion snipen', 'Premium .com verkaufen']
+};
+function generiereGigs() {
+   const B = JOB();
+   if (!B.lohn) return [W.ruhe('Nichts da. Tag rumkriegen.'), W.idee('Nachrechnen, wo was zu holen wäre.')];
+   
+   const namen = GIG_NAMEN[B.id] || ['Einfacher Gig', 'Standard Gig', 'Rush Job'];
+   const gigs = [];
+   const basis = B.lohn;
+   const nBase = B.nerv;
+   
+   const pay1 = rund(basis * 0.6);
+   gigs.push({
+      u: namen[0].toUpperCase(), p: eur(pay1) + ' · sicher', w: 'grau', e: 'Ein kleiner Auftrag. Schnell erledigt.',
+      f: (s, win) => { 
+         let p = win ? pay1 : rund(pay1*0.5); 
+         s.geld += p; 
+         if(!win) s.nerven = cl(s.nerven-1, 0, 10);
+         return (win?'Einfaches Geld. ':'Kunde reklamiert. Halber Preis. ') + eur(p) + ' auf dem Konto.'; 
+      }
+   });
+   
+   const pay2 = rund(basis * (1 + (zuf()*0.4 - 0.2))); 
+   gigs.push({
+      u: namen[1].toUpperCase(), p: eur(pay2) + ' · normal', w: 'grau', e: 'Dein normales Tagesgeschäft.',
+      f: (s, win) => { 
+         let p = win ? pay2 : rund(pay2*0.5);
+         s.geld += p; 
+         let dmg = win ? (zuf() < nBase ? 1 : 0) : 2;
+         s.nerven = cl(s.nerven-dmg, 0, 10);
+         return (win?'Standard-Gig durchgeboxt. ':'Horror-Gig. Komplett verkackt. ') + eur(p) + ' verdient.'; 
+      }
+   });
+   
+   if (zuf() < 0.05) {
+      gigs.push({
+         u: 'DARKNET GIG', p: '1 ' + COIN_K + ' · hohes Risiko', w: 'rot', e: 'Jemand zahlt direkt in Krypto.',
+         f: (s, win) => {
+            if(win) {
+               s.zed += 1;
+               s.nerven = cl(s.nerven-2, 0, 10);
+               return '★ 1 ' + COIN_K + ' direkt bekommen. Das war den Stress wert.';
+            } else {
+               s.nerven = cl(s.nerven-4, 0, 10);
+               return 'Krypto-Gig geplatzt. Nichts bekommen. Nerven liegen völlig blank.';
+            }
+         }
+      });
+   } else {
+      const pay3 = rund(basis * 2.2);
+      gigs.push({
+         u: namen[2].toUpperCase(), p: eur(pay3) + ' · -2 Nerven', w: 'rot', e: 'Deadline morgen. Das brennt dich aus.',
+         f: (s, win) => {
+            let p = win ? pay3 : rund(pay3*0.2);
+            s.geld += p;
+            s.nerven = cl(s.nerven-(win?2:4), 0, 10);
+            return (win?'Abgeliefert. ':'Komplett zusammengebrochen. ') + eur(p) + ', und du bist im Eimer.';
+         }
+      });
+   }
+   return gigs;
+}
+
+function ziehe(){
+  wf=samen(saison()*1009+S.woche);
+  if(S.woche<=ANFANG.length){ S.szene=SZ.find(x=>x.id===ANFANG[S.woche-1]); S.letzte=S.szene.id; return; }
+  const m=SZ.filter(x=>x.ok(S)&&x.id!==S.letzte&&ANFANG.indexOf(x.id)<0);
+  const p=m.length?m:SZ.filter(x=>x.ok(S));
+  let gewaehlt = p[Math.floor(zuf()*p.length)];
+  
+  if (gewaehlt.id === 'still') {
+     S.szene = Object.assign({}, gewaehlt);
+     S.szene.w = generiereGigs();
+     S.szene.t = 'Das Gig-Board. Drei Anfragen in deiner Inbox.<br><em>Welchen Auftrag nimmst du an?</em>';
+  } else {
+     S.szene = gewaehlt;
+  }
+  S.letzte=S.szene.id;
+}
+const GESPERRT=['SETZEN','HAUS KAUFEN','BEI JEMANDEM EINSTEIGEN'];
+/* Was gerade wirklich nicht geht — und warum. Ein Knopf, der eine Woche
+   frisst und dann "geht nicht" sagt, wäre genauso gelogen wie einer,
+   der immer funktioniert. */
+function gesperrt(u){
+  if(S.insolvenz>0 && GESPERRT.includes(u)) return 'gesperrt · Insolvenz';
+  if(S.krank>0 && u==='ARBEITEN') return 'gesperrt · krankgeschrieben';
+  if(u==='ARBEITEN' && !JOB().lohn) return 'gesperrt · kein Job';
+  if(u==='SETZEN' && S.geld<100) return 'gesperrt · nichts da';
+  if(u==='HAUS KAUFEN' && S.geld<500) return 'gesperrt · nichts da';
+  if(u===COIN+' KAUFEN' && S.geld<ZEDKURS) return 'gesperrt · unter '+eur(ZEDKURS);
+  return null;
+}
+function waehle(i){
+  if(S.ende) return;
+  const w=S.szene.w[i]; if(!w) return;
+  if(gesperrt(w.u)) return;
+  
+  if (S.szene.id === 'still') {
+     let diff = 2;
+     if (w.p.includes('sicher')) diff = 1;
+     else if (w.p.includes('Nerven') || w.p.includes(COIN_K)) diff = 3;
+     
+     starteMinigame(diff, (win) => {
+        merke();
+        if(w.w==='rot') S.rot+=2; if(w.w==='blau') S.blau+=2;
+        const txt = w.f(S, win);
+        abschliessenWoche([{t:txt, a:w.w}]);
+     });
+     return;
+  }
+  
+  merke();
+  if(w.w==='rot') S.rot+=2; if(w.w==='blau') S.blau+=2;
+  abschliessenWoche([{t:w.f(S, true),a:w.w}]);
+}
+function abschliessenWoche(z) {
+  const faellig=S.haeuser.filter(h=>h.f<=S.woche);
+  S.haeuser=S.haeuser.filter(h=>h.f>S.woche);
+  faellig.forEach(h=>{const a=hausWert(h.b); S.geld+=a;
+    z.push({t:'Haus auf. '+eur(h.b)+' sind '+eur(a)+' geworden.',a:'blau'});});
+
+  if(zuf()<.34){const e=EREIG[Math.floor(zuf()*EREIG.length)]; if(e.f)e.f(S); z.push({t:e.t,a:e.a});}
+
+  const B=JOB();
+  if(B.buerger){ S.geld+=B.buerger; z.push({t:'Bürgergeld: '+eur(B.buerger)+'.',a:'grau'}); }
+
+  const fix=fixkosten(S.woche);
+  if(S.pkonto && S.geld-fix<0){
+    const ging=Math.max(0,S.geld); S.geld=0;
+    z.push({t:'Lastschrift geplatzt. Nur '+eur(ging)+' von '+eur(fix)+' durchgegangen.',a:'schlecht'});
+  } else {
+    S.geld-=fix;
+    z.push({t:'Fixkosten: '+eur(-fix)+'.'+(S.woche%5===0?' Und sie steigen weiter.':''),a:'schlecht'});
+  }
+  if(S.krank>0){
+    S.krank--; S.nerven=cl(S.nerven+2,0,10);
+    const lf=Math.round(B.lohn*.7); if(lf) S.geld+=lf;
+    z.push({t:(lf?'Lohnfortzahlung '+eur(lf)+'. ':'')+'Krankgeschrieben, noch '+S.krank+' Wochen.',a:'grau'});
+  }
+  if(S.insolvenz>0){
+    S.insolvenz--;
+    z.push({t:'Wohlverhaltensphase. Er darf nicht ran. Noch '+S.insolvenz+' Wochen.',a:'gut'});
+  } else {
+    let taschenChance = 0.22;
+    if(strohhalmAktiv) taschenChance += 0.30;
+    if(tuerAbgeschlossen) taschenChance -= 0.15;
+    if(S.mitbewohnerGezahlt) taschenChance -= 0.25;
+    
+    const gier=1+Math.max(0,-waage())*.6;
+    let griff=rund(Math.max(0,S.geld)*.03*gier);
+    if(S.pkonto) griff=Math.max(0,Math.min(griff,S.geld-PSCHUTZ));
+    if(zuf() < taschenChance) griff += rund(Math.max(0,S.geld)*0.15);
+    
+    if(griff > 0 && tuerAbgeschlossen && zuf() < 0.35) {
+      griff = 0;
+      z.push({t:'Jemand hat an der Klinke gerüttelt. Aber du hattest abgeschlossen.',a:'gut'});
+    } else if(griff > 0 && S.mitbewohnerGezahlt && zuf() < 0.6) {
+      griff = 0;
+      z.push({t:'Dein Mitbewohner stand im Flur, als T4SCH€N kam. Er hat ihn abgewimmelt.',a:'gut'});
+    } else {
+      S.geld-=griff;
+      z.push(griff>0
+        ? {t:'<b>T4SCH€N</b> war da. '+eur(-griff)+'.',a:'feind'}
+        : S.pkonto
+          ? {t:'<b>T4SCH€N</b> greift zu und kommt nicht ran. P-Konto.',a:'gut'}
+          : {t:'<b>T4SCH€N</b> war da. Bei dir war nichts zu holen.',a:'feind'});
+      if(griff>0){ $('b7').classList.add('bad'); setTimeout(()=>$('b7').classList.remove('bad'),600); }
+    }
+  }
+  S.woche++;
+    merke();
+    netDropGenutzt = false; 
+    S.mitbewohnerGezahlt = false; // Reset Mitbewohner-Schutz
+    if(S.woche>52) return ende('silvester');
+    male();
+}
+function pruefe(){
+  const w=waage(), v=vermoegen();
+  if(v>=ZIEL&&S.haeuser.length>=3&&w>.4) S.ende='all';
+  else if(v>=ZIEL) S.ende=w<-.15?'rot':(w>.15?'blau':'grau');
+  else if(S.nerven<=0) S.ende='nerven';
+  else if(S.geld< -DISPO) S.ende='schulden';   // Verfügungsrahmen gerissen
+  else if(S.woche>MAXW) S.ende='zeit';
+}
+function male(z){
+  const B=JOB(), v=vermoegen();
+  $('cName').innerHTML=(spielerName||'—')+'<i class="sid">'+safeID+'</i>';
+  $('cWoche').textContent='Woche '+Math.min(S.woche,MAXW)+' / '+MAXW;
+  $('cJob').textContent = S.insolvenz>0 ? 'Insolvenz ('+S.insolvenz+')'
+                        : S.krank>0     ? B.n+' · krank ('+S.krank+')'
+                        : B.n+(S.pkonto?' · P-Konto':'');
+  $('cJob').style.background = S.insolvenz>0?'var(--orange)':(S.krank>0?'var(--grau)':'var(--cyan)');
+  const altGeld = parseInt($('cGeld').dataset.v || v);
+  $('cGeld').dataset.v = v;
+  $('cGeld').textContent=eur(v)+' / '+eur(ZIEL)+(v!==S.geld?' ('+eur(S.geld)+' bar)':'');
+  $('cGeld').className='chip geld'+(S.geld<0?' neg':'');
+  if (v < altGeld) {
+    $('cGeld').classList.add('hit');
+    setTimeout(() => $('cGeld').classList.remove('hit'), 400);
+  }
+  $('cFix').innerHTML='Fixkosten <b>'+eur(fixkosten(S.woche))+'</b>'+
+    (S.geld<0?' · Dispo '+eur(-S.geld)+' / '+eur(DISPO):'')+
+    ' · <b>'+(S.zed||0)+' / '+(ZIEL/ZEDKURS)+' '+COIN_K+'</b>';
+  $('cNerv').innerHTML='●'.repeat(S.nerven)+'<i>'+'●'.repeat(10-S.nerven)+'</i>';
+  const w=waage();
+  $('kn').style.left=(50-w*38)+'%';
+  $('kn').style.background=w<-.15?'var(--rot)':(w>.15?'var(--blau)':'var(--grau)');
+  $('lRot').classList.toggle('lit',w<-.15); $('lBlau').classList.toggle('lit',w>.15);
+  const H='<svg viewBox="0 0 24 24" width="13" height="13"><path d="M2.5 12 L12 3.5 L21.5 12 L18.5 12 L18.5 20.5 L5.5 20.5 L5.5 12 Z" fill="currentColor" stroke="#0d0d0d" stroke-width="2.4" stroke-linejoin="round"/></svg>';
+  $('strasse').innerHTML=S.haeuser.length
+    ? '<span class="lbl">Bunkerstraße</span>'+S.haeuser.slice().sort((a,b)=>a.f-b.f)
+        .map(h=>'<span class="haus">'+H+' '+eur(h.b)+' <s>'+Math.max(0,h.f-S.woche)+' W</s></span>').join('')
+    : '<span class="lbl">Bunkerstraße — noch kein Haus</span>';
+  $('joker').innerHTML=S.joker>0&&S.verlauf.length
+    ? '<button id="zur"><kbd>Z</kbd>Zurück ('+S.joker+')</button>'
+    : '<span class="aus">Zurück ('+S.joker+')</span>';
+  const zb=$('zur'); if(zb) zb.onclick=zurueck;
+  if(z&&z.length){
+    $('folge').innerHTML=z.map(x=>'<div class="fz '+x.a+'">'+x.t+'</div>').join('');
+    $('folge').classList.add('in');
+    $('wahl').classList.add('warte'); setTimeout(()=>$('wahl').classList.remove('warte'),700);
+  }
+  if(S.ende){ zeigeEnde(); return; }
+  $('text').innerHTML=S.szene.t;
+
+  /* Wenn wirklich nichts geht, bleibt genau eine Sache: den Tag rumkriegen.
+     Das ist kein Trostpreis, das ist manchmal die ganze Woche. */
+  if(S.szene.w.every(x=>gesperrt(x.u)) && !S.szene.w.some(x=>x.u==='AUSRUHEN')){
+    S.szene={...S.szene, w:[...S.szene.w, W.ruhe('Nichts davon geht. Tag rumkriegen.')]};
+  }
+  $('wahl').innerHTML=S.szene.w.map((x,i)=>{
+    const sperre=gesperrt(x.u), aus=!!sperre;
+    const p = aus ? sperre
+      : x.u==='ARBEITEN'    ? '+'+eur(B.lohn)
+      : x.u==='IDEE MACHEN' ? 'sicher · rund +'+Math.round(20*B.idee)+' %'
+      : x.u==='HAUS KAUFEN' ? '40 % rein · '+(KX*B.haus).toFixed(1)+'× in '+KW+' W'
+      : x.p;
+    return '<button class="k '+x.w+'" data-i="'+i+'"'+(aus?' disabled':'')+'><kbd>'+(i+1)+
+      '</kbd><span class="t"><u>'+x.u+'</u><em>'+x.e+'</em></span><span class="p">'+p+'</span></button>';
+  }).join('');
+}
+function zeigeEnde(){
+  const e=ENDEN[S.ende];
+  const x = S.ende==='zeit'
+    ? 'Silvester. Zusammen hast du '+eur(vermoegen())+'.<br><br><b>Nicht die 50.000. Aber auch nicht nichts.</b>'
+    : e.x;
+  $('text').innerHTML=''; $('wahl').innerHTML='';
+  $('ende').innerHTML='<h2 class="'+e.c+'">'+e.t+'</h2><p>'+x+'</p>'+
+    '<button class="k grau" id="neu"><kbd>⏎</kbd><span class="t"><u>Nochmal</u></span><span class="p">Berufswahl</span></button>';
+  $('ende').classList.add('an');
+  $('neu').onclick=()=>{ $('ende').classList.remove('an'); $('ende').innerHTML='';
+    $('folge').classList.remove('in'); $('folge').innerHTML=''; zeigBerufe(); };
+}
+const startText=()=>[
+  {t:spielerName+'. 34, Homeoffice, '+JOB().n+'.',a:'grau'},
+  {t:'Du willst '+eur(ZIEL)+' zusammenkriegen. Bis Silvester.',a:'blau'},
+  {t:'<b>T4SCH€N</b> nimmt sich jede Woche was davon.',a:'feind'}];
+
+let spielerName='', safeID='', spielLaeuft=false;
+/* SafeID wie eine ICQ-UIN: neunstellig, aus dem Namen abgeleitet.
+   Gleicher Name = immer dieselbe Nummer. Kein Server nötig. */
+function macheSafeID(name){
+  let h=2166136261;
+  for(let i=0;i<name.length;i++){ h^=name.charCodeAt(i); h=Math.imul(h,16777619); }
+  const n=100000000+(Math.abs(h)%899999999);
+  return String(n).replace(/(\d{3})(\d{3})(\d{3})/,'$1-$2-$3');
+}
+function zeigBerufe(){
+  zeig('b6');
+  try{ const n=localStorage.getItem('isso.tv.name'); if(n) $('spielername').value=n; }catch(e){}
+  $('berufe').innerHTML=BERUFE.filter(b=>b.id!=='agent').map((b,i)=>
+    '<button class="k grau" data-b="'+BERUFE.indexOf(b)+'"><kbd>'+(i+1)+'</kbd>'+
+    '<span class="t"><u>'+b.n+'</u><em>'+b.e+'</em></span><span class="p">'+b.p+'</span></button>').join('');
+  setTimeout(()=>$('spielername').focus(),80);
+}
+function nameOk(){
+  const n=$('spielername').value.trim();
+  return n.length>=5 && n.length<=13;
+}
+function nimmBeruf(j){
+  if(j<0||j>=BERUFE.length) return;
+  if(!nameOk()){
+    $('namensfehler').classList.add('bad');
+    $('namensfehler').textContent='5 bis 13 Buchstaben — so geht das nicht';
+    $('spielername').focus();
+    return;
+  }
+  $('namensfehler').classList.remove('bad');
+  spielerName=$('spielername').value.trim().toUpperCase();
+  safeID=macheSafeID(spielerName);
+  try{ localStorage.setItem('isso.tv.name',spielerName); }catch(e){}
+  S=FRISCH(j); spielLaeuft=true;
+  zeig('b7'); ziehe(); male(startText());
+}
+$('berufe').addEventListener('click',ev=>{
+  const b=ev.target.closest('button[data-b]'); if(b) nimmBeruf(+b.dataset.b);
+});
+$('wahl').addEventListener('click',ev=>{
+  const b=ev.target.closest('button[data-i]'); if(b) waehle(+b.dataset.i);
+});
+
+/* ========== TASTATUR ========== */
+window.addEventListener('keydown',e=>{
+  if (document.activeElement && document.activeElement.tagName === 'INPUT' && e.key !== 'Escape' && e.key !== 'Enter') return;
+  const k=e.key.toLowerCase(); tast[k]=true;
+  if(bild==='b1'&&(k===' '||k==='enter')){ e.preventDefault(); schlafen(); }
+  else if(bild==='b2'){
+    if(k==='e'&&nah()){ e.preventDefault(); anmachen(); }
+    if(['w','a','s','d','arrowup','arrowdown','arrowleft','arrowright'].includes(k)) e.preventDefault();
+  }
+  else if(bild==='b4'){
+    const n=icons().length;
+    if(k==='arrowright'||k==='d'){ iSel=(iSel+1)%n; markiere(); e.preventDefault(); }
+    if(k==='arrowleft'||k==='a'){ iSel=(iSel-1+n)%n; markiere(); e.preventDefault(); }
+    if(k==='enter'||k===' '){ e.preventDefault(); oeffne(icons()[iSel].dataset.auf); }
+    if(k==='escape') $('fenster').innerHTML='';
+  }
+  else if(bild==='b5'&&(k===' '||k==='enter')){ e.preventDefault(); comicWeiter(); }
+  else if(bild==='b6'){
+    /* Nicht auslösen, während im Namensfeld getippt wird. */
+    if(document.activeElement===$('spielername')){
+      if(k==='enter'){ e.preventDefault(); $('spielername').blur(); }
+      return;
+    }
+    if(k>='1'&&k<='9'){
+      const b=$('berufe').querySelectorAll('button')[+k-1];
+      if(b){ e.preventDefault(); b.click(); }
+    }
+  }
+  else if(bild==='b7'){
+    if(k==='escape'){ e.preventDefault(); zeig('b4'); return; }   // zurück zum Desktop
+    if(k>='1'&&k<='3'){ const b=$('wahl').querySelectorAll('button')[+k-1]; if(b){e.preventDefault();b.click();} }
+    if(k==='z'){ const b=$('zur'); if(b){e.preventDefault();b.click();} }
+    if(k==='enter'){ const b=$('neu'); if(b){e.preventDefault();b.click();} }
+  }
+  else if(bild==='b9'){
+    if(k==='a'||k==='arrowleft'){ e.preventDefault(); mgInput('l'); }
+    if(k==='d'||k==='arrowright'){ e.preventDefault(); mgInput('r'); }
+  }
+});
+window.addEventListener('keyup',e=>{ tast[e.key.toLowerCase()]=false; });
+window.addEventListener('click',()=>window.focus());
+
+/* ========== MINIGAME LOGIK ========== */
+let mgTimer = 0, mgScore = 0, mgZiel = 0, mgAktiv = false, mgLauf = null, mgCallback = null, mgLast = 0;
+let mgItems = [];
+function starteMinigame(diff, cb) {
+  mgCallback = cb; mgAktiv = true; mgScore = 0; mgTimer = 10.0;
+  mgZiel = diff * 5 + 3; // safe: 8, normal: 13, rush: 18
+  $('mg-time').textContent = mgTimer.toFixed(1);
+  $('mg-msg').classList.remove('an');
+  $('mg-track').innerHTML = ''; mgItems = [];
+  zeig('b9');
+  for(let i=0; i<3; i++) spawnMgItem(i);
+  mgLast = performance.now();
+  mgLauf = requestAnimationFrame(mgTick);
+}
+function spawnMgItem(delayIndex = 0) {
+  if(!mgAktiv) return;
+  const isB = zuf() > 0.5;
+  const div = document.createElement('div');
+  div.className = 'mg-item ' + (isB ? 'b' : 'r');
+  div.dataset.type = isB ? 'b' : 'r';
+  div.textContent = isB ? '✔' : '✖';
+  div.style.top = '-80px';
+  $('mg-track').appendChild(div);
+  mgItems.push({el: div, y: -80 - (delayIndex * 120), spd: 15 + (mgZiel/1.5)});
+}
+function mgTick(time) {
+  if(!mgAktiv) return;
+  const dt = Math.min((time - mgLast) / 1000, 0.1);
+  mgLast = time;
+  mgTimer -= dt;
+  $('mg-time').textContent = Math.max(0, mgTimer).toFixed(1);
+  if(mgTimer <= 0) { endeMinigame(false); return; }
+  mgItems.forEach(it => {
+    it.y += it.spd * (dt * 10);
+    it.el.style.top = it.y + 'px';
+  });
+  if (mgItems.length > 0 && mgItems[0].y > $('mg-track').clientHeight - 60) {
+    $('mg-track').removeChild(mgItems[0].el);
+    mgItems.shift();
+    if(typeof window.sfxGlitch==='function') window.sfxGlitch();
+    mgScore = Math.max(0, mgScore - 1);
+    spawnMgItem();
+  }
+  mgLauf = requestAnimationFrame(mgTick);
+}
+function mgInput(dir) {
+  if(!mgAktiv || mgItems.length === 0) return;
+  const first = mgItems[0];
+  if(first.y < 0) return; // not on screen yet
+  const type = first.el.dataset.type;
+  if((dir === 'l' && type === 'r') || (dir === 'r' && type === 'b')) {
+    mgScore++;
+    if(typeof window.sfxClick==='function') window.sfxClick();
+    first.el.style.transform = dir === 'l' ? 'translateX(-200px) rotate(-45deg)' : 'translateX(200px) rotate(45deg)';
+    first.el.style.opacity = '0';
+    setTimeout(() => { if(first.el.parentNode) first.el.parentNode.removeChild(first.el); }, 200);
+    mgItems.shift(); spawnMgItem();
+    if(mgScore >= mgZiel) endeMinigame(true);
+  } else {
+    mgTimer -= 1.5;
+    if(typeof window.sfxGlitch==='function') window.sfxGlitch();
+    $('mg-ui').classList.add('bad'); setTimeout(() => $('mg-ui').classList.remove('bad'), 200);
+  }
+}
+document.getElementById('mg-btn-l').onclick = () => mgInput('l');
+document.getElementById('mg-btn-r').onclick = () => mgInput('r');
+function endeMinigame(win) {
+  mgAktiv = false; cancelAnimationFrame(mgLauf);
+  $('mg-msg').textContent = win ? 'PERFEKT' : 'VERKACKT';
+  $('mg-msg').style.color = win ? 'var(--gruen)' : 'var(--rot)';
+  $('mg-msg').classList.add('an');
+  setTimeout(() => { zeig('b7'); mgCallback(win); }, 1400);
+}
+
+window.ISSO={get S(){return S;},BERUFE,SZ,W,TU,ENDEN,waehle,pruefe,waage,vermoegen,
+             nimmBeruf,zeigBerufe,zeig,MAXW,ZIEL,JOB,gesperrt,male,ziehe};
+
+/* ========== AUDIO (TV SURPASS) ========== */
+let actx=null, humOsc=null, humGain=null;
+function initAudio() {
+  if(actx) return;
+  actx = new (window.AudioContext || window.webkitAudioContext)();
+  humOsc = actx.createOscillator();
+  humOsc.type = 'sawtooth';
+  humOsc.frequency.setValueAtTime(50, actx.currentTime); // 50Hz mains hum
+  humGain = actx.createGain();
+  humGain.gain.setValueAtTime(0.012, actx.currentTime); // very subtle
+  const lpf = actx.createBiquadFilter();
+  lpf.type = 'lowpass'; lpf.frequency.value = 130;
+  humOsc.connect(lpf); lpf.connect(humGain); humGain.connect(actx.destination);
+  humOsc.start();
+}
+function playBeep(freq, type, dur, vol) {
+  if(!actx) return;
+  const osc = actx.createOscillator();
+  const gain = actx.createGain();
+  osc.type = type; osc.frequency.setValueAtTime(freq, actx.currentTime);
+  gain.gain.setValueAtTime(vol, actx.currentTime);
+  gain.gain.exponentialRampToValueAtTime(0.001, actx.currentTime + dur);
+  osc.connect(gain); gain.connect(actx.destination);
+  osc.start(); osc.stop(actx.currentTime + dur);
+}
+window.sfxClick = function() { playBeep(120, 'square', 0.05, 0.1); playBeep(400, 'triangle', 0.02, 0.05); }
+window.sfxGlitch = function() { playBeep(60, 'sawtooth', 0.15, 0.2); playBeep(2000, 'square', 0.05, 0.03); }
+window.sfxTurnOn = function() { playBeep(15000, 'sine', 1.5, 0.03); playBeep(80, 'square', 0.2, 0.15); }
+
+document.addEventListener('click', (e) => {
+  initAudio();
+  if(e.target.closest('button') || e.target.closest('.k') || e.target.closest('.icon')) window.sfxClick();
+});
+
+/* ========== NETZWERK / MOTHERBROWSER ========== */
+let netAktiv = false;
+let netGl = null, netProg = null, netLocVP, netLocOff, netIdxLen;
+let netChatTimer = null;
+let netDropGenutzt = false; // nur ein Drop pro Woche!
+const feed = document.getElementById('chat-feed');
+const msgs = [
+  "suche 3D drucker für kleinserie, zahle in ZEE",
+  "t4sch€n war bei mir. 3 wochen grind weg. fml.",
+  "hamburg ranking update: x_shadow ist auf #1.",
+  "verkaufe datensätze, pm me.",
+  "wer hat den rush job bei 40h überlebt?",
+  "bunkerstraße 4 ist frei geworden.",
+  "ZEE kurs geht hoch, haltet eure coins!",
+  "brauche jemanden für grafik, zahle 1000",
+  "hat jemand den zeed für nächste woche geknackt?",
+  "[WARNUNG] aktivität von t4sch€n im umkreis 100m"
+];
+function addChatMsg(user, text, isGig=false) {
+  if(!netAktiv) return;
+  const div = document.createElement('div');
+  div.className = 'chat-msg';
+  if(isGig) {
+    div.innerHTML = '<span class="user" style="color:var(--rot)">'+user+'</span><span class="text">'+text+'<br><a onclick="nimmNetGig()">[GIG ANNEHMEN]</a></span>';
+  } else {
+    div.innerHTML = '<span class="user">'+user+'</span><span class="text">'+text+'</span>';
+  }
+  feed.appendChild(div);
+  feed.scrollTop = feed.scrollHeight;
+  if(feed.children.length > 50) feed.removeChild(feed.firstChild);
+}
+function netzwerkChatTick() {
+  if(!netAktiv) return;
+  if($('stadt-wahl').value === 'none') {
+    netChatTimer = setTimeout(netzwerkChatTick, 1000);
+    return;
+  }
+  if(Math.random() < 0.08 && !netDropGenutzt) {
+    addChatMsg('ANONYM', 'DARKNET DROP GEFUNDEN. SCHNELL!', true);
+    netDropGenutzt = true; // Chat spawnt es nur einmal
+  } else {
+    const u = 'USER_' + Math.floor(Math.random()*9999);
+    const m = msgs[Math.floor(Math.random()*msgs.length)];
+    addChatMsg(u, m);
+  }
+  netChatTimer = setTimeout(netzwerkChatTick, 1500 + Math.random()*3500);
+}
+window.nimmNetGig = function() {
+  if(typeof window.sfxClick==='function') window.sfxClick();
+  netzwerkSchliessen();
+  zeig('b9');
+  starteMinigame(2, (win) => {
+    zeig('b7');
+    if(win) { 
+      const diff = 1500;
+      S.geld += diff;
+      document.getElementById('b7').innerHTML = '<div class="spalte" style="margin-top:20vh"><div class="karte" style="border-color:var(--gelb)"><h2>DARKNET DROP ERFOLGREICH</h2><p>Du hast den Drop gesichert und warst schneller als der Taschengrabscher.</p><div class="kopfz"><span class="chip geld">+'+diff+' €</span></div><button onclick="ISSO.zeig(\'b4\');" class="k job"><div class="t"><u>ZURÜCK ZUM DESKTOP</u></div></button></div></div>';
+    } else {
+      S.nerv += 3;
+      document.getElementById('b7').innerHTML = '<div class="spalte" style="margin-top:20vh"><div class="karte" style="border-color:var(--rot)"><h2>DROP VERLOREN</h2><p>Du warst zu langsam. Du hast nichts bekommen und deine Nerven liegen blank.</p><div class="kopfz"><span class="chip geld neg">NERVEN VERLOREN</span></div><button onclick="ISSO.zeig(\'b4\');" class="k rot"><div class="t"><u>ZURÜCK ZUM DESKTOP</u></div></button></div></div>';
+    }
+    merke();
+  });
+}
+
+function initNetGL() {
+  const cvs = document.getElementById('cNet');
+  netGl = cvs.getContext("webgl", { antialias: true });
+  if(!netGl) return;
+  const VS = 'attribute vec3 aPos; uniform mat4 uViewProj; uniform float uOffset; varying vec3 vWorldPos; float h(vec2 p) { return sin(p.x*0.05*0.5 + p.y*0.05*0.3)*4.0 + sin(p.x*0.05*1.2 - p.y*0.05*0.8)*2.0; } void main() { vec3 wp=aPos; wp.y+=h(vec2(wp.x, wp.z+uOffset)); vWorldPos=wp; gl_Position=uViewProj*vec4(wp,1.0); }';
+  const FS = 'precision mediump float; varying vec3 vWorldPos; const vec3 SAND=vec3(0.16,0.07,0.34); const vec3 FOG=vec3(0.02,0.02,0.04); const vec3 CAM=vec3(0.0,5.0,0.0); void main() { float d=length(CAM-vWorldPos); float f=clamp((d-10.0)/120.0,0.0,1.0); vec3 c=mix(SAND, SAND*0.2, clamp(vWorldPos.y/4.0,0.0,1.0)); float g = mod(vWorldPos.x, 2.0) < 0.1 || mod(vWorldPos.z, 2.0) < 0.1 ? 1.0 : 0.0; c = mix(c, vec3(0.48,0.18,0.96), g*0.3); gl_FragColor=vec4(mix(c,FOG,f),1.0); }';
+  function cmp(type,src){ const s=netGl.createShader(type); netGl.shaderSource(s,src); netGl.compileShader(s); return s; }
+  netProg = netGl.createProgram(); netGl.attachShader(netProg, cmp(netGl.VERTEX_SHADER,VS)); netGl.attachShader(netProg, cmp(netGl.FRAGMENT_SHADER,FS)); netGl.linkProgram(netProg); netGl.useProgram(netProg);
+  const SIZE=200, SEG=100; const v=new Float32Array((SEG+1)*(SEG+1)*3); let vi=0;
+  for(let iz=0;iz<=SEG;iz++) for(let ix=0;ix<=SEG;ix++){ v[vi++]=-SIZE/2+(ix/SEG)*SIZE; v[vi++]=0; v[vi++]=-SIZE/2+(iz/SEG)*SIZE; }
+  const idx=new Uint16Array(SEG*SEG*6); let ii=0;
+  for(let iz=0;iz<SEG;iz++) for(let ix=0;ix<SEG;ix++){
+    const a=iz*(SEG+1)+ix, b=a+1, c2=a+SEG+1, d=c2+1;
+    idx[ii++]=a; idx[ii++]=c2; idx[ii++]=b; idx[ii++]=b; idx[ii++]=c2; idx[ii++]=d;
+  }
+  netIdxLen=idx.length;
+  const vbo=netGl.createBuffer(); netGl.bindBuffer(netGl.ARRAY_BUFFER,vbo); netGl.bufferData(netGl.ARRAY_BUFFER,v,netGl.STATIC_DRAW);
+  const ibo=netGl.createBuffer(); netGl.bindBuffer(netGl.ELEMENT_ARRAY_BUFFER,ibo); netGl.bufferData(netGl.ELEMENT_ARRAY_BUFFER,idx,netGl.STATIC_DRAW);
+  const locPos=netGl.getAttribLocation(netProg,"aPos"); netGl.enableVertexAttribArray(locPos); netGl.vertexAttribPointer(locPos,3,netGl.FLOAT,false,0,0);
+  netLocVP=netGl.getUniformLocation(netProg,"uViewProj"); netLocOff=netGl.getUniformLocation(netProg,"uOffset");
+  netGl.enable(netGl.DEPTH_TEST); netGl.clearColor(0.02, 0.02, 0.04, 1);
+  const dpr = Math.min(window.devicePixelRatio||1, 2); cvs.width = Math.round(cvs.clientWidth*dpr); cvs.height = Math.round(cvs.clientHeight*dpr); netGl.viewport(0,0,cvs.width,cvs.height);
+}
+function pers(f,a,n,fa){ const t=1/Math.tan(f/2),nf=1/(n-fa); return [t/a,0,0,0,0,t,0,0,0,0,(fa+n)*nf,-1,0,0,2*fa*n*nf,0]; }
+function mul(a,b){ const o=new Array(16); for(let r=0;r<4;r++) for(let c=0;c<4;c++){ o[c*4+r]=a[r]*b[c*4]+a[4+r]*b[c*4+1]+a[8+r]*b[c*4+2]+a[12+r]*b[c*4+3]; } return o; }
+const netView = [-1,0,0,0,0,1,0,0,0,0,-1,0,0,-5,0,1];
+
+function netzwerkFrame(){
+  if(!netAktiv) return;
+  const cvs = document.getElementById('cNet');
+  if(cvs.width !== Math.round(cvs.clientWidth*Math.min(window.devicePixelRatio||1,2))) {
+    const dpr = Math.min(window.devicePixelRatio||1, 2); cvs.width = Math.round(cvs.clientWidth*dpr); cvs.height = Math.round(cvs.clientHeight*dpr); netGl.viewport(0,0,cvs.width,cvs.height);
+  }
+  const off = ((Date.now()-Date.UTC(2026,0,1))/1000*2.0)%(400*Math.PI);
+  const proj = pers(Math.PI/3, cvs.width/cvs.height, 0.3, 300);
+  netGl.uniformMatrix4fv(netLocVP, false, new Float32Array(mul(proj,netView)));
+  netGl.uniform1f(netLocOff, off);
+  netGl.clear(netGl.COLOR_BUFFER_BIT | netGl.DEPTH_BUFFER_BIT);
+  netGl.drawElements(netGl.TRIANGLES, netIdxLen, netGl.UNSIGNED_SHORT, 0);
+  requestAnimationFrame(netzwerkFrame);
+}
+
+window.netzwerkOeffnen = function() {
+  zeig('b8');
+  netAktiv = true;
+  $('stadt-wahl').value = 'none';
+  feed.innerHTML = '<div class="chat-msg"><span class="user" style="color:var(--gelb)">MOTHERBROWSER v3.5.3</span><span class="text">Wähle einen lokalen Hub aus, um beizutreten.</span></div>';
+  if(!netGl) initNetGL();
+  netzwerkFrame();
+  netzwerkChatTick();
+}
+window.netzwerkSchliessen = function() {
+  netAktiv = false;
+  clearTimeout(netChatTimer);
+  zeig('b4'); 
+}
+document.getElementById('net-raus').addEventListener('click', netzwerkSchliessen);
+document.getElementById('stadt-wahl').addEventListener('change', (e) => {
+  if(e.target.value !== 'none') {
+    addChatMsg('SYSTEM', 'Verbindung zu Hub ' + e.target.value.toUpperCase() + ' hergestellt.');
+  }
+});
+
+/* ========== 3DWORLD (BONZENVIERTEL) ========== */
+let weltAktiv = false;
+let weltTimer = null;
+const strRaum = document.getElementById('str-raum');
+const bl1 = document.getElementById('bl1');
+const bl2 = document.getElementById('bl2');
+const bl3 = document.getElementById('bl3');
+const bl4 = document.getElementById('bl4');
+const strWarn = document.getElementById('str-warn');
+let strMouseX = 0, strMouseY = 0;
+
+function spawnTratsch(msgs, color, isDaemon) {
+  const msg = msgs[Math.floor(Math.random()*msgs.length)];
+  const div = document.createElement('div');
+  div.textContent = msg;
+  div.style.position = 'absolute';
+  div.style.top = (20 + Math.random()*60) + '%';
+  div.style.left = (10 + Math.random()*80) + '%';
+  div.style.color = color;
+  div.style.fontFamily = 'var(--fett)';
+  div.style.fontSize = isDaemon ? '14px' : '12px';
+  div.style.pointerEvents = 'none';
+  div.style.opacity = '0';
+  div.style.transition = 'opacity 2s';
+  div.style.textShadow = isDaemon ? '0 0 8px var(--rot)' : '0 0 5px #000';
+  strRaum.appendChild(div);
+  setTimeout(() => div.style.opacity = '1', 50);
+  setTimeout(() => {
+    div.style.opacity = '0';
+    setTimeout(() => div.remove(), 2000);
+  }, 3000);
+}
+
+function weltTick() {
+  if(!weltAktiv) return;
+  const blank = S.geld < 100;
+  const daemon = S.geld > 10000; // Dämonische Aura, wenn zu reich
+  
+  // Parallax
+  const rotY = (strMouseX - 0.5) * 15;
+  const rotX = (strMouseY - 0.5) * -10;
+  strRaum.style.transform = 'rotateX('+rotX+'deg) rotateY('+rotY+'deg)';
+  
+  if(blank) {
+    strWarn.style.opacity = '1';
+    strWarn.textContent = 'Schiefe Blicke...';
+    strWarn.style.color = 'var(--rot)';
+    strWarn.style.textShadow = '0 0 10px var(--rot)';
+    bl1.style.opacity = Math.random() > 0.3 ? '1' : '0.2';
+    bl2.style.opacity = Math.random() > 0.5 ? '1' : '0.2';
+    bl3.style.opacity = Math.random() > 0.4 ? '1' : '0.2';
+    bl4.style.opacity = Math.random() > 0.6 ? '1' : '0.2';
+    
+    // Leichter Nerven-Drain
+    if(Math.random() < 0.2) {
+      S.nerv += 1;
+      if(S.nerv > 100) S.nerv = 100;
+      if(typeof window.merke==='function') merke();
+      document.body.classList.remove('glitch-anim');
+      void document.body.offsetWidth;
+      document.body.classList.add('glitch-anim');
+      if(typeof window.sfxGlitch==='function') window.sfxGlitch();
+    }
+    
+    // Nachbarn tratschen (Flüstern) - Alle denken, sie wüssten was
+    if(Math.random() < 0.1) {
+      spawnTratsch([
+        '"Ich hab gehört, der hat sich verspekuliert..."', 
+        '"Mein Broker meinte schon, das geht schief."', 
+        '"Das passiert, wenn man den Seed nicht checkt."', 
+        '"Der weiß doch gar nicht, wie das Game läuft."', 
+        '"Ich hab Insider-Infos... der ist durch."',
+        '"Typisch. Hat die Zeichen nicht gelesen."',
+        '"Wir wussten das alle schon gestern."'
+      ], '#555', false);
+    }
+    
+  } else if(daemon) {
+    strWarn.style.opacity = '1';
+    strWarn.textContent = 'DÄMONISCHE AURA';
+    strWarn.style.color = '#fff';
+    strWarn.style.textShadow = '0 0 15px var(--rot)';
+    
+    // Rot glühende Augen bei Dämonen-Aura
+    bl1.style.opacity = '1'; bl1.style.filter = 'drop-shadow(0 0 5px red)';
+    bl2.style.opacity = '1'; bl2.style.filter = 'drop-shadow(0 0 5px red)';
+    bl3.style.opacity = '1'; bl3.style.filter = 'drop-shadow(0 0 5px red)';
+    bl4.style.opacity = '1'; bl4.style.filter = 'drop-shadow(0 0 5px red)';
+    
+    if(Math.random() < 0.15) {
+      spawnTratsch([
+        '"Lass uns lieber auf die andere Straßenseite gehen..."', 
+        '"Ich sag da besser gar nichts zu."', 
+        '"Irgendwas stimmt mit dem nicht."', 
+        '"Hast du dieses Gefühl auch?"', 
+        '"Lächeln und weitergehen. Bloß nicht ansehen."',
+        '"Man weiß nie, was so jemand vorhat."'
+      ], 'var(--rot)', true);
+    }
+  } else {
+    strWarn.style.opacity = '0';
+    bl1.style.opacity = '0'; bl1.style.filter = 'none';
+    bl2.style.opacity = '0'; bl2.style.filter = 'none';
+    bl3.style.opacity = '0'; bl3.style.filter = 'none';
+    bl4.style.opacity = '0'; bl4.style.filter = 'none';
+  }
+  
+  $('str-konto').textContent = S.geld + ' €';
+  weltTimer = setTimeout(weltTick, 1000);
+}
+
+document.getElementById('b10').addEventListener('mousemove', (e) => {
+  if(!weltAktiv) return;
+  strMouseX = e.clientX / window.innerWidth;
+  strMouseY = e.clientY / window.innerHeight;
+});
+
+window.weltOeffnen = function() {
+  zeig('b10');
+  weltAktiv = true;
+  strMouseX = 0.5; strMouseY = 0.5;
+  weltTick();
+}
+window.weltSchliessen = function() {
+  weltAktiv = false;
+  clearTimeout(weltTimer);
+  zeig('b4');
+}
+
+/* ========== PARANOIA (TÜR ABSCHLIESSEN) ========== */
+let tuerAbgeschlossen = false;
+document.getElementById('tuer-schloss').addEventListener('click', () => {
+  tuerAbgeschlossen = !tuerAbgeschlossen;
+  const icn = document.getElementById('schloss-icon');
+  if(tuerAbgeschlossen) {
+    icn.setAttribute('stroke', 'var(--gelb)');
+    // Schloss zu (Bügel runter)
+    icn.innerHTML = '<rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path>';
+    if(typeof window.sfxClick==='function') window.sfxClick();
+    S.log.push({t:'Du hast die Tür von innen zweimal abgeschlossen.',a:'blau'});
+  } else {
+    icn.setAttribute('stroke', 'var(--rot)');
+    // Schloss auf (Bügel offen)
+    icn.innerHTML = '<rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 9.9-1"></path>';
+    if(typeof window.sfxClick==='function') window.sfxClick();
+  }
+  if(typeof window.merke==='function') merke();
+});
+
+})();
+</script>
+</body>
+</html>
