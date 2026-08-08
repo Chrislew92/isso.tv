@@ -1,81 +1,74 @@
-# Baut 353L.ico — das ISSO.TV-Quadrat vom Startbildschirm über dem 353L.EXE-Text.
+# Baut 353L.ico — der ISSO.TV-Schriftzug aus dem Hauptmenü, im Quadrat.
 #
-# Warum von Hand und nicht mit einem Werkzeug: das Projekt hat null externe
-# Abhängigkeiten, und das soll auch für die Werkzeuge drumherum gelten.
-# System.Drawing liegt auf jedem Windows, mehr braucht es nicht.
+# Exakt die Werte aus dem Spiel (#b0 .mark in der index.html):
+#   Hintergrund  --nacht  #2a1258
+#   Schrift      Arial Black, --gelb #ffd21e
+#   Kontur       --tinte  #0d0d0d
+#   Schatten     --pink   #ff3ea5, nach rechts unten versetzt
+#   Neigung      -2 Grad
 #
-# Kleine Größen kriegen weniger Text — 16 Pixel fassen kein "353L.EXE".
+# Kein externes Werkzeug: System.Drawing liegt auf jedem Windows. Das Projekt
+# hat null Abhängigkeiten, und das gilt auch für die Werkzeuge drumherum.
 
 Add-Type -AssemblyName System.Drawing
 
 $ordner = Split-Path -Parent $MyInvocation.MyCommand.Path
 $ziel   = Join-Path $ordner '353L.ico'
 
-$GELB   = [System.Drawing.Color]::FromArgb(255, 255, 210, 31)
-$TINTE  = [System.Drawing.Color]::FromArgb(255, 13, 13, 13)
-$PAPIER = [System.Drawing.Color]::FromArgb(255, 240, 237, 225)
+$NACHT  = [System.Drawing.Color]::FromArgb(255, 0x2a, 0x12, 0x58)
+$GELB   = [System.Drawing.Color]::FromArgb(255, 0xff, 0xd2, 0x1e)
+$TINTE  = [System.Drawing.Color]::FromArgb(255, 0x0d, 0x0d, 0x0d)
+$PINK   = [System.Drawing.Color]::FromArgb(255, 0xff, 0x3e, 0xa5)
 
 function Zeichne([int]$px) {
   $bmp = New-Object System.Drawing.Bitmap($px, $px, [System.Drawing.Imaging.PixelFormat]::Format32bppArgb)
   $g   = [System.Drawing.Graphics]::FromImage($bmp)
-  $g.SmoothingMode     = [System.Drawing.Drawing2D.SmoothingMode]::AntiAlias
-  $g.TextRenderingHint = [System.Drawing.Text.TextRenderingHint]::AntiAliasGridFit
+  $g.SmoothingMode = [System.Drawing.Drawing2D.SmoothingMode]::AntiAlias
+  $g.Clear($NACHT)
 
-  # Grund: schwarzes Quadrat mit gelbem Rahmen
-  $g.Clear($TINTE)
-  $rand = [Math]::Max(1, [int]($px * 0.06))
-  $stift = New-Object System.Drawing.Pen($GELB, $rand)
-  $g.DrawRectangle($stift, [int]($rand/2), [int]($rand/2), $px - $rand, $px - $rand)
+  # Der Schriftzug als Pfad, damit Kontur und Füllung getrennt gehen —
+  # genau wie paint-order:stroke fill im CSS.
+  $pfad = New-Object System.Drawing.Drawing2D.GraphicsPath
+  $fam  = New-Object System.Drawing.FontFamily('Arial Black')
+  $pfad.AddString('ISSO.TV', $fam, [int][System.Drawing.FontStyle]::Bold, ($px * 0.5),
+                  (New-Object System.Drawing.PointF(0, 0)),
+                  [System.Drawing.StringFormat]::GenericTypographic)
 
-  # Scanlines wie auf dem Startbildschirm
-  if ($px -ge 32) {
-    $dunkel = New-Object System.Drawing.SolidBrush([System.Drawing.Color]::FromArgb(40, 0, 0, 0))
-    for ($y = 0; $y -lt $px; $y += 3) { $g.FillRectangle($dunkel, 0, $y, $px, 1) }
-    $dunkel.Dispose()
+  # Auf die Kachel einpassen, Rand lassen
+  $b = $pfad.GetBounds()
+  if ($b.Width -gt 0 -and $b.Height -gt 0) {
+    $rand  = $px * 0.10
+    $platz = $px - 2 * $rand
+    $skala = [Math]::Min($platz / $b.Width, ($px * 0.34) / $b.Height)
+    $m = New-Object System.Drawing.Drawing2D.Matrix
+    $m.Translate(($px / 2), ($px / 2))
+    $m.Rotate(-2)                                   # die 2 Grad aus dem CSS
+    $m.Scale($skala, $skala)
+    $m.Translate((-$b.X - $b.Width / 2), (-$b.Y - $b.Height / 2))
+    $pfad.Transform($m)
+    $m.Dispose()
   }
 
-  $mitte = New-Object System.Drawing.StringFormat
-  $mitte.Alignment     = [System.Drawing.StringAlignment]::Center
-  $mitte.LineAlignment = [System.Drawing.StringAlignment]::Center
+  # Pinker Versatz-Schatten
+  $v = [Math]::Max(1, $px * 0.045)
+  $ms = New-Object System.Drawing.Drawing2D.Matrix
+  $ms.Translate($v, $v)
+  $schatten = $pfad.Clone()
+  $schatten.Transform($ms)
+  $g.FillPath((New-Object System.Drawing.SolidBrush($PINK)), $schatten)
+  $schatten.Dispose(); $ms.Dispose()
 
-  $pinselP = New-Object System.Drawing.SolidBrush($PAPIER)
-  $pinselG = New-Object System.Drawing.SolidBrush($GELB)
+  # Schwarze Kontur, dann gelbe Füllung
+  $breite = [Math]::Max(1.2, $px * 0.055)
+  $stift = New-Object System.Drawing.Pen($TINTE, $breite)
+  $stift.LineJoin = [System.Drawing.Drawing2D.LineJoin]::Round
+  $g.DrawPath($stift, $pfad)
+  $g.FillPath((New-Object System.Drawing.SolidBrush($GELB)), $pfad)
 
-  if ($px -ge 48) {
-    # Groß: ISSO.TV oben, 353L.EXE unten — genau wie gewünscht
-    # 0.20 lief bei 256 px über den Rahmen hinaus — 0.165 passt in allen Größen
-    $f1 = New-Object System.Drawing.Font('Arial Black', ($px * 0.165), [System.Drawing.FontStyle]::Bold, [System.Drawing.GraphicsUnit]::Pixel)
-    $f2 = New-Object System.Drawing.Font('Consolas',    ($px * 0.125), [System.Drawing.FontStyle]::Bold, [System.Drawing.GraphicsUnit]::Pixel)
-    $r1 = New-Object System.Drawing.RectangleF(0, ($px * 0.20), $px, ($px * 0.30))
-    $r2 = New-Object System.Drawing.RectangleF(0, ($px * 0.56), $px, ($px * 0.24))
-    $g.DrawString('ISSO.TV', $f1, $pinselP, $r1, $mitte)
-    $g.DrawString('353L.EXE', $f2, $pinselG, $r2, $mitte)
-    # Trennstrich zwischen beiden
-    $linie = New-Object System.Drawing.Pen($GELB, [Math]::Max(1, [int]($px * 0.02)))
-    $g.DrawLine($linie, ($px * 0.28), ($px * 0.53), ($px * 0.72), ($px * 0.53))
-    $linie.Dispose(); $f1.Dispose(); $f2.Dispose()
-  }
-  elseif ($px -ge 32) {
-    # Mittel: nur 353L, sonst wird es Matsch. 0.34 brach in zwei Zeilen um.
-    $f = New-Object System.Drawing.Font('Arial Black', ($px * 0.24), [System.Drawing.FontStyle]::Bold, [System.Drawing.GraphicsUnit]::Pixel)
-    $r = New-Object System.Drawing.RectangleF(0, 0, $px, $px)
-    $mitte.FormatFlags = [System.Drawing.StringFormatFlags]::NoWrap
-    $g.DrawString('353L', $f, $pinselP, $r, $mitte)
-    $f.Dispose()
-  }
-  else {
-    # Klein: eine Ziffer, sonst ist nichts mehr zu erkennen
-    $f = New-Object System.Drawing.Font('Arial Black', ($px * 0.72), [System.Drawing.FontStyle]::Bold, [System.Drawing.GraphicsUnit]::Pixel)
-    $r = New-Object System.Drawing.RectangleF(0, 0, $px, $px)
-    $g.DrawString('3', $f, $pinselG, $r, $mitte)
-    $f.Dispose()
-  }
-
-  $pinselP.Dispose(); $pinselG.Dispose(); $mitte.Dispose(); $stift.Dispose(); $g.Dispose()
+  $stift.Dispose(); $pfad.Dispose(); $fam.Dispose(); $g.Dispose()
   return $bmp
 }
 
-# Jede Größe als PNG in den Speicher. PNG-in-ICO können alle Windows ab Vista.
 $groessen = @(16, 32, 48, 64, 128, 256)
 $bloecke = @()
 foreach ($px in $groessen) {
@@ -86,22 +79,18 @@ foreach ($px in $groessen) {
   $ms.Dispose(); $bmp.Dispose()
 }
 
-# ICO zusammensetzen: 6 Byte Kopf, dann 16 Byte je Eintrag, dann die PNGs
+# ICO zusammensetzen: 6 Byte Kopf, 16 Byte je Eintrag, dann die PNGs
 $aus = New-Object System.IO.MemoryStream
 $w   = New-Object System.IO.BinaryWriter($aus)
 $w.Write([UInt16]0); $w.Write([UInt16]1); $w.Write([UInt16]$bloecke.Count)
-
 $offset = 6 + (16 * $bloecke.Count)
 foreach ($b in $bloecke) {
   $p = $b.px
-  if ($p -ge 256) { $w.Write([Byte]0) } else { $w.Write([Byte]$p)   }   # 0 heisst 256
-  if ($p -ge 256) { $w.Write([Byte]0) } else { $w.Write([Byte]$p)   }
-  $w.Write([Byte]0)                 # keine Palette
-  $w.Write([Byte]0)                 # reserviert
-  $w.Write([UInt16]1)               # Farbebenen
-  $w.Write([UInt16]32)              # Bit pro Pixel
-  $w.Write([UInt32]$b.daten.Length)
-  $w.Write([UInt32]$offset)
+  if ($p -ge 256) { $w.Write([Byte]0); $w.Write([Byte]0) }
+  else            { $w.Write([Byte]$p); $w.Write([Byte]$p) }
+  $w.Write([Byte]0); $w.Write([Byte]0)
+  $w.Write([UInt16]1); $w.Write([UInt16]32)
+  $w.Write([UInt32]$b.daten.Length); $w.Write([UInt32]$offset)
   $offset += $b.daten.Length
 }
 foreach ($b in $bloecke) { $w.Write($b.daten) }
@@ -109,5 +98,4 @@ $w.Flush()
 [System.IO.File]::WriteAllBytes($ziel, $aus.ToArray())
 $w.Dispose(); $aus.Dispose()
 
-$kb = [Math]::Round((Get-Item $ziel).Length / 1KB, 1)
-"353L.ico gebaut: $kb KB, Groessen $($groessen -join ', ')"
+"353L.ico gebaut: $([Math]::Round((Get-Item $ziel).Length / 1KB, 1)) KB, Groessen $($groessen -join ', ')"

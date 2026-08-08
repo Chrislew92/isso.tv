@@ -144,3 +144,27 @@ zieht bei „Ohne Gigs" trotzdem die vollen Fixkosten ab.
 keine Geldanlage. Das ist in Ordnung — es heißt Highroller-Simulator. Nur die
 *Einstiegszahlen* müssen stimmen, sonst fällt der Absturz in die Fantasie nicht auf.
 
+
+## Realtimeplay — entschieden, noch nicht gebaut
+
+Chris am 8.8.2026: *„und ab hier kann man starten, 8.8.26"* + *„realtimeplay"*.
+
+Ein Zug pro echtem Tag statt einer Runde am Stück. Die Weltuhr kann das schon:
+`saison()` zählt UTC-Tage ab dem 1.1.2026, der Zufall hängt an
+`saison()*1009 + woche`. Es fehlt nur die Sperre, die einen zweiten Zug am
+selben Tag verhindert, plus ein Zustand, der über Tage hält (heute gibt es
+**keinen** gespeicherten Spielstand — `S` lebt nur im Speicher).
+
+**Das ist eine andere Sorte Spiel:** Tagesritual statt Hinsetzen. Vorher zu
+klären, weil es alles andere umstellt.
+
+## Echte Zahlen von Chris (8.8.2026) — als Prüfstein
+
+| | Wirklichkeit | im Spiel |
+|---|---|---|
+| Krankengeld | 1.300–1.400 €/Monat | 300 €/Woche = 1.303 € ✓ |
+| Verfügungsrahmen P-Konto | genau 1.500 € | `DISPO` 1.500 ✓ |
+| P-Konto Grundfreibetrag | 1.590 € seit 1.7.2026 | `PSCHUTZ` 1.500 (rund) |
+
+Er ist krankgeschrieben seit dem **9. März 2026**, also im Krankengeld — die
+sechs Wochen Lohnfortzahlung sind durch. Genau so startet jeder im Spiel.
