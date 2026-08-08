@@ -1330,6 +1330,13 @@ const zeeWert=()=>Math.floor((S.zee||0)/ZEE_PRO_ZED*ZEDKURS);
 const vermoegen=()=>S.geld+S.haeuser.reduce((a,h)=>a+hausWert(h.b),0)
   +(S.zed||0)*ZEDKURS+zeeWert();
 
+/* Was man tatsächlich anfassen kann — im Unterschied zu dem, was dasteht.
+   Mit P-Konto reicht der Zugriff nur bis zum Freibetrag; alles darüber liegt
+   fest, reserviert für Gläubiger, ob die nun kommen oder nicht. Man sieht
+   das Geld und kommt nicht ran. Diese Regel gehört an EINE Stelle: SETZEN
+   hatte sie (falsch herum), HAUS KAUFEN gar nicht. */
+const verfuegbar=s=> s.pkonto ? Math.max(0,Math.min(s.geld,PSCHUTZ)) : s.geld;
+
 const TU={
  arbeit:s=>{const B=JOB();
    if(s.krank>0) return 'Du bist krankgeschrieben. Keine Aufträge diese Woche.';
@@ -1345,7 +1352,13 @@ const TU={
     Jetzt zahlt der Treffer das Vierfache und die Waage zahlt mit: wer sich
     zu Rot bekennt, kriegt größere Ausschläge in beide Richtungen. */
  setzen:s=>{
-   const frei=s.pkonto?Math.max(0,s.geld-PSCHUTZ):s.geld;
+   /* Das P-Konto war hier genau falsch herum: frei = geld − PSCHUTZ hätte
+      geheißen, man kommt an den Teil ÜBER dem Freibetrag ran. In Wirklichkeit
+      ist es andersrum — der Freibetrag ist das, was man anfassen darf, alles
+      darüber liegt fest. Wer 2.100 € auf dem Konto hat, verfügt über 1.500
+      und sieht die restlichen 600 nur. Der Text sagte das schon richtig,
+      der Code tat das Gegenteil. */
+   const frei=verfuegbar(s);
    if(s.pkonto&&frei<100) return 'Du kommst nicht ran. Das Geld liegt hinterm Pfändungsschutz — auch für dich.';
    if(frei<100) return 'Womit denn? Du hast nichts, was du setzen könntest.';
    const rotAnteil=Math.max(0,-waage());              // 0 bis 1
@@ -1366,8 +1379,11 @@ const TU={
    const g=rund((rn(500,1000)+Math.max(0,s.geld)*.30)*JOB().idee); s.geld+=g;
    return 'Läuft. '+eur(g)+', und keiner hat blöd gefragt.';},
  haus:s=>{
-   if(s.geld<500) return 'Dafür ist nichts da. Erst muss was reinkommen.';
-   const b=rund(s.geld*.4); s.geld-=b;
+   const frei=verfuegbar(s);
+   if(frei<500) return s.pkonto&&s.geld>=500
+     ? 'Auf dem Papier reicht es. Dran kommst du trotzdem nicht — der Rest liegt hinterm Pfändungsschutz.'
+     : 'Dafür ist nichts da. Erst muss was reinkommen.';
+   const b=rund(frei*.4); s.geld-=b;
    s.haeuser.push({b:b,f:s.woche+KW});
    return 'Haus in der Bunkerstraße. '+eur(b)+' liegen jetzt drin, '+KW+' Wochen zu.';},
  einbruch:s=>{const b=rund(rn(500,1000)*(1+s.woche*.10)+Math.max(0,s.geld)*.40);
@@ -1383,7 +1399,10 @@ const TU={
    s.geld-=n*ZEDKURS; s.zed+=n;
    return '★ '+n+' '+COIN+'. Du hast jetzt '+s.zed+' von '+(ZIEL/ZEDKURS)+'. Da kommt keiner mehr ran.';},
  pkonto:s=>{s.pkonto=1;
-   return 'P-Konto beantragt. Ab jetzt sind '+eur(PSCHUTZ)+' unantastbar. Steht so im Gesetz.';},
+   if(s.geld<0) s.geld=0;          // kein Dispo mehr, das Minus fällt weg
+   return 'P-Konto beantragt. '+eur(PSCHUTZ)+' sind unantastbar — steht so im Gesetz.<br>'+
+     'Dafür ist der Dispo weg. Du kannst nicht mehr ins Minus, und über mehr als '+
+     eur(PSCHUTZ)+' verfügst du auch nicht. Der Rest liegt da und guckt dich an.';},
  insolvenz:s=>{const w=s.geld; s.geld=0; s.haeuser=[]; s.insolvenz=9; s.nerven=cl(s.nerven+2,0,10);
    return 'Privatinsolvenz. '+eur(-w)+' Schulden weg — und deine Häuser auch. Neun Wochen stillhalten.';}
 };
@@ -1400,7 +1419,10 @@ const W={
  haus:t=>({u:'HAUS KAUFEN',p:'',w:'blau',e:t,f:TU.haus}),
  zed:t=>({u:COIN+' KAUFEN',p:eur(ZEDKURS)+' = 1 '+COIN_K,w:'blau',e:t,f:TU.zed}),
  krank:t=>({u:'KRANKMELDEN',p:'3 Wochen · Nerven erholen',w:'grau',e:t,f:TU.krank}),
- pkonto:t=>({u:'P-KONTO BEANTRAGEN',p:eur(PSCHUTZ)+' unpfändbar',w:'blau',e:t,f:TU.pkonto}),
+ /* Beide Seiten müssen am Knopf stehen. Das P-Konto schützt und fesselt
+    gleichzeitig — wer nur "unpfändbar" liest, tappt in eine Falle. */
+ pkonto:t=>({u:'P-KONTO BEANTRAGEN',p:'sicher, aber nur '+eur(PSCHUTZ)+' verfügbar · kein Dispo',
+   w:'blau',e:t,f:TU.pkonto}),
  insolvenz:t=>({u:'PRIVATINSOLVENZ',p:'Schulden weg · Häuser weg',w:'grau',e:t,f:TU.insolvenz}),
  job:(id,label,hinweis,txt,folge)=>({u:label,p:hinweis,w:'job',e:txt,f:wechsel(id,folge)})
 };
@@ -1782,8 +1804,13 @@ function gesperrt(u){
   if(S.insolvenz>0 && GESPERRT.includes(u)) return 'gesperrt · Insolvenz';
   if(S.krank>0 && u==='ARBEITEN') return 'gesperrt · krankgeschrieben';
   if(u==='ARBEITEN' && !JOB().lohn) return 'gesperrt · kein Job';
-  if(u==='SETZEN' && S.geld<100) return 'gesperrt · nichts da';
-  if(u==='HAUS KAUFEN' && S.geld<500) return 'gesperrt · nichts da';
+  /* Der Knopf muss sagen, WARUM. "Nichts da" ist gelogen, wenn Geld
+     dasteht und nur hinterm Pfändungsschutz liegt. */
+  const frei=verfuegbar(S);
+  if(u==='SETZEN' && frei<100)
+    return S.pkonto&&S.geld>=100 ? 'gesperrt · hinterm P-Konto' : 'gesperrt · nichts da';
+  if(u==='HAUS KAUFEN' && frei<500)
+    return S.pkonto&&S.geld>=500 ? 'gesperrt · hinterm P-Konto' : 'gesperrt · nichts da';
   if(u===COIN+' KAUFEN' && S.geld<ZEDKURS) return 'gesperrt · unter '+eur(ZEDKURS);
   return null;
 }
@@ -1953,6 +1980,11 @@ function pruefe(z){
       : 'Schon wieder umgekippt. Beim nächsten Mal stehst du nicht mehr auf.');
     return;
   }
+
+  /* Mit P-Konto gibt es keinen Dispo — man kann gar nicht ins Minus, also
+     kann einen das Minus auch nicht umbringen. Das ist die Gegenleistung
+     dafür, dass man nur noch über den Freibetrag verfügt. */
+  if(S.pkonto && S.geld<0) S.geld=0;
 
   if(S.geld < -DISPO){
     if(gott){ S.geld=-DISPO; sag('Die Bank zieht den Strich — und du stehst noch. (Godmode)'); return; }

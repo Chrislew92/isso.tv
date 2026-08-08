@@ -168,3 +168,36 @@ klären, weil es alles andere umstellt.
 
 Er ist krankgeschrieben seit dem **9. März 2026**, also im Krankengeld — die
 sechs Wochen Lohnfortzahlung sind durch. Genau so startet jeder im Spiel.
+
+## Das P-Konto ist jetzt echt — und es tut weh
+
+Chris' Lage am 8.8.2026, wörtlich: *„jedes mal wenn ich mehr als 1,5k verdiene
+bleibt der rest aufm konto, ich kann jeden monat exakt nur genau über 1,5k €
+verfügen"* · *„ich habe keinen dispo, kann nicht ins minus gehen"* ·
+*„aufm konto liegen ca. 2.100 €, verfügbar 0 €, pfändbar 0 €"* ·
+*„nur gesperrt praktisch für gläubiger gedacht"*.
+
+**Der Code hatte es genau falsch herum.** `frei = geld − PSCHUTZ` hieß: man
+kommt an den Teil *über* dem Freibetrag ran. Richtig ist das Gegenteil — der
+Freibetrag ist das Zugängliche, alles darüber liegt fest. Der Szenentext sagte
+das schon immer richtig („auch für dich"), nur die Rechnung tat das Gegenteil.
+`HAUS KAUFEN` hat den Pfändungsschutz sogar komplett ignoriert.
+
+Die Regel steht jetzt an **einer** Stelle: `verfuegbar(s)`.
+
+**Und die Gegenleistung ist drin:** kein Dispo, also auch kein Tod durch
+Schulden. Mit P-Konto kann man nicht ins Minus.
+
+### Die Zahl, die man aushalten muss
+
+| | 50.000 € geschafft |
+|---|---|
+| mit P-Konto | **21 %** |
+| ohne P-Konto | **75 %** |
+
+Das bleibt so. Es ist keine Falle, weil am Knopf beide Seiten stehen
+(*„sicher, aber nur 1.500 € verfügbar · kein Dispo"*). Es ist die schärfste
+Aussage im ganzen Spiel: **der Schutz, der dich rettet, hält dich unten.**
+Wer ihn nimmt, stirbt nicht mehr — und kommt fast nicht mehr hoch.
+
+Wer daran dreht, dreht am Kern. Vorher lesen, was oben steht.
