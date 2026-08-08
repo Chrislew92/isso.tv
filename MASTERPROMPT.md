@@ -8,8 +8,12 @@ drei Fehler, siehe ganz unten.
 
 ## 1 · Die Welt
 
-Der Spieler ist 34, lebt in **Eitelstedt**, will **25.000 €** zusammenkriegen.
+Der Spieler ist 34, lebt in **Eitelstedt**, will **50.000 €** zusammenkriegen.
 **TA$CH€N** (der Taschengrabscher) nimmt sich jede Woche seinen Teil.
+
+Es geht um **€URO$** — so schreibt Chris das Geld, wenn er es als Sache meint,
+nicht als Betrag. In Beträgen bleibt es `1.250 €`, sonst kann man die Zahlen
+nicht mehr lesen.
 
 **Die Waage:** **Rot = RICHKID** (nehmen, schnell, riskant) ·
 **Blau = WORKLIFE** (bauen, sichern) · **Grau = Arbeit** ist kein Weg, nur der Boden.
@@ -147,6 +151,39 @@ Jeder spielt am selben Tag dasselbe Spiel. **Die Zeit ist der Server.**
 > Käme die Deko aus der Weltuhr, würde **bloßes Herumstehen auf der Straße den
 > Zufallsfaden weiterdrehen** — zwei Leute am selben Tag hätten verschiedene
 > Angriffe, und die Garantie wäre wertlos. Niemals wieder zusammenlegen.
+
+---
+
+## 3b · Die Balance — gemessen, nicht geschätzt
+
+**Stand 8.8.2026, 168 Läufe je Messung.** Mit klugem Spiel schaffen **57 %** die
+50.000 €, mit gedankenlosem **13 %**. Beide Farben können gewinnen.
+
+Wie es vorher war und warum es nicht ging — das sind die Fallen, in die jeder
+wieder tappt, der an den Zahlen dreht:
+
+**SETZEN war ein Vermögensvernichter.** 30 % Einsatz auf 50 % Chance aufs
+Dreifache klingt fair, ist aber multiplikativ Gewinn ×1,6 / Verlust ×0,7 — im
+Schnitt **×1,058 die Woche**. Bei 1.000 € sind das 58 €, während die Fixkosten
+200 € nehmen. **Rot konnte mathematisch nicht wachsen**, egal wie gut jemand
+spielte. Deshalb lieferte Rot über sechs Berufe hinweg exakt 550 €.
+
+**Rund die Hälfte aller Wochen bot keinen Weg nach oben.** Jobangebote und
+Gig-Boards zahlen flach, während Fixkosten und TA$CH€N weiterlaufen. Das war
+die eigentliche Bremse — nicht zu schwache Aktionen. `ziehe()` hängt jetzt eine
+Wachstumsoption an, wenn die Szene keine hat.
+
+**Rot hatte keinen Anlauf.** SETZEN ist reine Multiplikation ohne Sockel und
+unter 100 € gesperrt. Blau hatte seinen Sockel immer in IDEE (500–1.000 € flat).
+Wer rot und arm war, kam nie hoch.
+
+> **Beim Nachmessen aufgepasst:** Der Prüfstand braucht einen Namen im Feld
+> (`spielername`), sonst bricht `nimmBeruf()` ab und alles kommt als 0 zurück.
+> Und Gig-Wochen starten das Minispiel — über `ISSO.gig = (d,cb)=>cb(true)`
+> lässt sich das im Test überspringen, sonst hängt jede Messung.
+
+> **Blau ist deterministisch.** Gleicher Tag, gleiches Ergebnis — das ist die
+> Weltuhr, kein Fehler. Streuung kommt nur aus dem Minispiel.
 
 ---
 
