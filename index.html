@@ -384,6 +384,14 @@ body.dritte #haende { display:none; }
 
 /* Immer erreichbar, auf jedem Bildschirm. Zustand steht im Wort, nicht in
    der Farbe — sonst weiß der halbe Planet nicht, ob der Ton an ist. */
+/* Vorwarnung. Wer gleich einen lauten Ton abbekommen kann, muss das vorher
+   wissen — sonst trifft es Leute mit Kopfhoerern ohne jede Chance. */
+.warnt{margin:14px auto 0;padding:11px 13px;max-width:34em;text-align:left;
+  border:3px solid var(--gelb);background:rgba(40,30,0,.55);
+  font-family:var(--mono);font-size:11px;line-height:1.6;color:#ffeeb8}
+.warnt b{color:var(--gelb)}
+.warnt b:first-child{display:block;font-family:var(--fett);font-size:12px;
+  letter-spacing:.1em;margin-bottom:5px}
 /* Die Wand am Tor. Reine Anzeige — sie schlaegt nicht zurueck, sie steht nur
    da und macht klar, dass hier nichts weitergeht. */
 .abwehr{margin-top:16px;padding:12px 14px;max-width:34em;
@@ -450,6 +458,13 @@ h1, h2, .namensfeld, .k .t u { text-shadow: 1.5px 0px 0.5px var(--rot), -1.5px 0
       <input type="text" id="pw" maxlength="10" placeholder="ISSO.TV">
       <button type="submit">Start</button>
     </form>
+    <div class="warnt">
+      <b>⚠ Passwortgeschützt · mit Alarm</b>
+      Ohne Kennung geht hier nichts. Nach mehreren Fehlversuchen ertönt ein
+      lautes Signal und der Zugang wird gesperrt — die Sperre verdoppelt sich
+      jedes Mal. <b>Ton vorher leiser stellen.</b> Der Schalter unten rechts
+      stellt ihn ganz ab.
+    </div>
     <div class="err" id="pw-err" style="display:none">Passwort inkorrekt</div>
     <div class="abwehr" id="abwehr" hidden>
       <b>IRONMIND · ZUTRITT VERWEIGERT</b>
@@ -1492,6 +1507,13 @@ function gesperrt(u){
   if(u===COIN+' KAUFEN' && S.geld<ZEDKURS) return 'gesperrt · unter '+eur(ZEDKURS);
   return null;
 }
+/* Alle Gig-Minispiele laufen über diesen Haken statt direkt über
+   starteMinigame. Zwei Gründe: so lässt sich der Wochenmotor ohne
+   Reflexspiel durchmessen (Balance), und hier hängt später der
+   Zugänglichkeits-Schalter dran, für alle die das Minispiel nicht
+   spielen können. Normalbetrieb ändert sich dadurch nicht. */
+let gigSpiel = (diff, cb) => starteMinigame(diff, cb);
+
 function waehle(i){
   if(S.ende) return;
   const w=S.szene.w[i]; if(!w) return;
@@ -1506,7 +1528,7 @@ function waehle(i){
         Woche geht nie weiter — der Spieler sieht nur eine tote Szene. */
      merke();
      zeig('b9');
-     starteMinigame(diff, (win) => {
+     gigSpiel(diff, (win) => {
         zeig('b7');
         if(w.w==='rot') S.rot+=2; if(w.w==='blau') S.blau+=2;
         const txt = w.f(S, win);
@@ -1881,7 +1903,9 @@ function endeMinigame(win) {
 /* Ego ist Standard. Wer einmal auf Schulter stellt, kriegt es wieder. */
 try{ if(localStorage.getItem('isso.tv.sicht')==='3') perspektive(true); }catch(e){}
 
-window.ISSO={get S(){return S;},perspektive,BERUFE,SZ,W,TU,ENDEN,waehle,pruefe,waage,vermoegen,
+window.ISSO={get S(){return S;},perspektive,
+             set gig(f){ gigSpiel = f || ((d,cb)=>starteMinigame(d,cb)); },
+             get gig(){ return gigSpiel; },BERUFE,SZ,W,TU,ENDEN,waehle,pruefe,waage,vermoegen,
              nimmBeruf,zeigBerufe,zeig,MAXW,ZIEL,JOB,gesperrt,male,ziehe,
              rausgehen,aufstehen,anDerTuer,nah};
 
