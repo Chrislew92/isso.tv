@@ -21,6 +21,19 @@ Der Spieler ist 34, lebt in **Eitelstedt**, will **25.000 €** zusammenkriegen.
 `ZEDCOINZ` (Kurzform `ZED`, 1.000 € = 1 ZED) · `BLUSTERS!` (**ein** Ausrufezeichen) ·
 `T4SCH€N` · `Homebunker` · `Datenstrohhalm` · `Eitelstedt`
 
+### Die These
+
+**„Mit unendlichem Reichtum generiert man Unsterblichkeit."** — Chris, 8.8.2026.
+
+Das ist das Ziel hinter dem Ziel. Die 50.000 € sind nur die erste Stufe; worauf
+das Spiel zuläuft, ist der Punkt, an dem Geld aufhört, eine Zahl zu sein. Genau
+das passiert im Ende **KRYPTO-KÖNIG**: 1 ZED = 500 Billiarden, das Konzept Geld
+ist zerstört, `#dieletztedigitalewaehrung`.
+
+Die Gegenkraft dazu ist das T4SCH€N-Prinzip. Beide Sätze zusammen sind das
+Spiel: **jede Woche nimmt sich einer seinen Teil — und der einzige Ausweg ist,
+so weit zu kommen, dass sein Anteil bedeutungslos wird.**
+
 ### Das T4SCH€N-Prinzip
 
 Chris' Satz dazu: **„wir werden die ganze Zeit gerippt."** Das ist der Kern des
