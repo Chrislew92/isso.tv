@@ -21,6 +21,32 @@ Der Spieler ist 34, lebt in **Eitelstedt**, will **25.000 €** zusammenkriegen.
 `ZEDCOINZ` (Kurzform `ZED`, 1.000 € = 1 ZED) · `BLUSTERS!` (**ein** Ausrufezeichen) ·
 `T4SCH€N` · `Homebunker` · `Datenstrohhalm` · `Eitelstedt`
 
+### Das T4SCH€N-Prinzip
+
+Chris' Satz dazu: **„wir werden die ganze Zeit gerippt."** Das ist der Kern des
+Spiels, nicht bloß eine Mechanik. Jede Woche nimmt sich jemand seinen Teil,
+ohne zu fragen, unabhängig davon, was man richtig gemacht hat. Die Fixkosten
+steigen, der Dispo steht seit zehn Jahren still. Wer das aus dem Spiel nimmt,
+nimmt ihm den Sinn.
+
+Deshalb ist T4SCH€N **kein Gegner, den man besiegt** — er ist die Steuer aufs
+Dasein. Man kann sich nur schützen (Tür, Mitbewohner, Bunker) oder so weit
+kommen, dass sein Anteil egal wird.
+
+### Die zwei Währungen — notiert, noch nicht gebaut
+
+Chris am 8.8.2026: **„es gibt ZEDCOINS und ZEECOINS"** und
+**„1 ZEDCOIN = 500 Billiarden"**.
+
+Im Code existiert bisher **nur eine**: `ZEDCOINZ` / `ZED`, 1.000 € = 1 ZED.
+Die 500 Billiarden stehen schon drin — im Ende **KRYPTO-KÖNIG**, als der Moment,
+in dem Geld aufhört, eine Zahl zu sein (`#dieletztedigitalewaehrung`).
+
+**Offen und vor dem Bauen zu klären:** Was ist ZEECOIN gegenüber ZEDCOIN —
+eine zweite, konkurrierende Währung? Die Stufe darüber? Die von S7V3N gegen
+die vom Volk? Solange das nicht entschieden ist, **keine zweite Währung
+einbauen** — ein halb gedachtes Geldsystem macht das Spiel unlesbar.
+
 Markenschreibweise ist Pflicht: **MedalGuard.com · IronMind-BlackCore.com ·
 ISSO.TV · S7V3N.com · EyTonLand.com**
 
@@ -64,8 +90,19 @@ Krankschreibung · steigende Fixkosten gegen einen Dispo, der stillsteht ·
 Türschloss + Mitbewohner als Schutz · 3 Joker · 20 Szenen · **8 Enden** ·
 `haushalt.exe` · `unterstuetzen`
 
+**Die Straße (`b10`) ist begehbar.** WASD/Pfeile, 3.120 Meter, fünf Orte:
+Dein Haus · Kiosk · Die Bunker · Haltestelle · Ende der Straße. `E` geht hin,
+`Esc` zurück. Die Häuserreihe recycelt sich im Kreis, die Beine laufen mit.
+
 **Weltuhr:** Zufall gesät aus `saison() * 1009 + woche`, Saison = UTC-Tag.
 Jeder spielt am selben Tag dasselbe Spiel. **Die Zeit ist der Server.**
+
+> **Zwei Zufallsquellen, und das ist Absicht.** `zuf()` ist die Weltuhr — alles,
+> was über Geld, Nerven, Szene oder T4SCH€N entscheidet. `deko()` ist Ambiente
+> (Flackern, Getuschel, Chat-Ticker, Minispiel-Klötze) und läuft pro Bild.
+> Käme die Deko aus der Weltuhr, würde **bloßes Herumstehen auf der Straße den
+> Zufallsfaden weiterdrehen** — zwei Leute am selben Tag hätten verschiedene
+> Angriffe, und die Garantie wäre wertlos. Niemals wieder zusammenlegen.
 
 ---
 

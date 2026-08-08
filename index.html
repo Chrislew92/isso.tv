@@ -1,4 +1,4 @@
-<!doctype html>
+﻿<!doctype html>
 <html lang="de">
 <head>
 <meta charset="utf-8">
@@ -276,11 +276,55 @@ body{font-family:var(--sans);color:var(--tinte);-webkit-font-smoothing:antialias
 /* 10 — 3DWORLD (Bonzenviertel) */
 #b10 { background: #020204; overflow: hidden; perspective: 800px; display: flex; align-items: center; justify-content: center; }
 .strasse { position: relative; width: 100vw; height: 100vh; transform-style: preserve-3d; }
-.str-bg { position: absolute; inset: -20%; background: radial-gradient(circle at center, #111 0%, #000 80%); transform: translateZ(-500px); }
+/* Horizont statt Sackgasse: ein schmutziger Lichtschein am Fluchtpunkt,
+   damit die Straße weitergeht statt gegen eine schwarze Wand zu laufen. */
+.str-bg { position: absolute; inset: -20%; transform: translateZ(-500px);
+  background:
+    radial-gradient(ellipse 40% 22% at 50% 62%, rgba(255,210,31,.20) 0%, rgba(255,120,0,.07) 45%, transparent 75%),
+    radial-gradient(circle at center, #14141b 0%, #000 80%); }
 .haus-l, .haus-r { position: absolute; top: -10%; height: 120%; width: 40vw; background: repeating-linear-gradient(0deg, #050508, #050508 40px, #0a0a12 40px, #0a0a12 42px); box-shadow: inset 0 0 50px #000; border: 2px solid #1a1a24; }
 .haus-l { left: -15%; transform: translateZ(-200px) rotateY(15deg); }
 .haus-r { right: -15%; transform: translateZ(-200px) rotateY(-15deg); }
 .str-boden { position: absolute; bottom: -20%; left: -20%; width: 140%; height: 50vh; background: #09090c; transform: translateY(30vh) rotateX(70deg); border-top: 5px solid #ff0055; opacity: 0.3; }
+/* ---- LAUFEN ---- Die Straße ist ein Gang, kein Bild. #str-lauf schiebt sich
+   auf den Spieler zu; alles darin gehört zur Welt und rückt mit. */
+.str-lauf { position:absolute; inset:0; transform-style:preserve-3d; }
+.seg { position:absolute; top:-10%; height:120%; width:26vw;
+  background:repeating-linear-gradient(0deg,#050508,#050508 40px,#0a0a12 40px,#0a0a12 42px);
+  border:2px solid #1a1a24; box-shadow:inset 0 0 50px #000; }
+.seg.l { left:-4vw; transform-origin:right center; }
+.seg.r { right:-4vw; transform-origin:left center; }
+.seg .klappe { position:absolute; left:50%; bottom:34%; width:26px; height:16px;
+  margin-left:-13px; background:#15151f; border:2px solid #262636; }
+.lampe { position:absolute; left:50%; top:26%; width:8px; height:8px; margin-left:-4px;
+  border-radius:50%; background:var(--gelb); box-shadow:0 0 26px 10px rgba(255,210,31,.30); }
+.ort-schild { position:absolute; left:50%; top:40%; transform:translateX(-50%);
+  font-family:var(--fett); font-size:15px; letter-spacing:.12em; text-transform:uppercase;
+  color:var(--papier); background:var(--tinte); border:3px solid var(--papier);
+  padding:7px 13px; white-space:nowrap; box-shadow:5px 5px 0 rgba(0,0,0,.7); }
+.ort-schild.hier { background:var(--gelb); color:var(--tinte); border-color:var(--tinte); }
+/* Der Asphalt. Ohne mitlaufende Streifen merkt kein Mensch, dass er geht. */
+.str-asphalt { position:absolute; left:-60%; bottom:-34%; width:220%; height:135vh;
+  transform:rotateX(79deg); transform-origin:50% 100%; z-index:1;
+  background:
+    repeating-linear-gradient(90deg, transparent 0 46%, rgba(255,210,31,.5) 46% 54%, transparent 54% 100%),
+    linear-gradient(#0d0d12, #16161d);
+  background-size:100% 190px, 100% 100%; background-repeat:repeat-y, no-repeat;
+  border-top:3px solid #23232e; }
+/* Die Beine. Man sieht sich selbst laufen — sonst bewegt sich nur die Kulisse. */
+.str-beine { position:absolute; bottom:52px; left:50%; width:190px; height:120px;
+  margin-left:-95px; z-index:5; pointer-events:none; }
+.str-beine i { position:absolute; bottom:0; width:46px; height:104px; display:block;
+  background:#14141c; border:3px solid var(--papier); border-bottom:0;
+  border-radius:10px 10px 0 0; transform-origin:50% 100%; }
+.str-beine i.a { left:24px; } .str-beine i.b { right:24px; }
+.str-beine i::after { content:''; position:absolute; left:-9px; bottom:-3px;
+  width:58px; height:19px; background:var(--papier); border:3px solid var(--tinte);
+  border-radius:4px 9px 3px 3px; }
+.str-schritt { position:absolute; bottom:12px; left:50%; transform:translateX(-50%);
+  z-index:7; font-family:var(--mono); font-size:10px; letter-spacing:.18em;
+  color:var(--papier); background:rgba(13,13,13,.8); border:2px solid var(--tinte);
+  padding:5px 11px; text-transform:uppercase; }
 .str-ui { position: absolute; bottom: 20px; left: 20px; right: 20px; display: flex; justify-content: space-between; z-index: 10; pointer-events: none; }
 .str-ui button { pointer-events: auto; }
 .blick { position: absolute; width: 30px; height: 10px; opacity: 0; transition: opacity 0.5s; background: radial-gradient(circle, #fff 20%, transparent 60%); filter: blur(1px); }
@@ -294,7 +338,8 @@ body{font-family:var(--sans);color:var(--tinte);-webkit-font-smoothing:antialias
 .str-ort b { color:var(--gelb); }
 .str-ort i { display:block; font-style:normal; font-family:var(--sans); font-size:11.5px;
   letter-spacing:0; text-transform:none; opacity:.75; margin-top:3px; }
-.str-hint { position: absolute; top: 10%; left: 50%; transform: translateX(-50%); color: var(--rot); font-family: var(--fett); text-transform: uppercase; letter-spacing: 2px; opacity: 0; transition: opacity 0.3s; text-shadow: 0 0 10px var(--rot); }
+/* tiefer gelegt — lag vorher genau auf dem Ortsschild */
+.str-hint { position: absolute; top: 27%; left: 50%; transform: translateX(-50%); color: var(--rot); font-family: var(--fett); text-transform: uppercase; letter-spacing: 2px; opacity: 0; transition: opacity 0.3s; text-shadow: 0 0 10px var(--rot); }
 .mg-track { position: absolute; inset: 45px 0 60px 0; display: flex; flex-direction: column; align-items: center; padding-bottom: 20px; overflow:hidden;}
 .mg-item { width: 60px; height: 60px; background: var(--papier); border: 3px solid var(--tinte); box-shadow: 4px 4px 0 var(--tinte); font-family: var(--fett); font-size: 30px; display: grid; place-items: center; position: absolute; top: 0; transition: transform 0.15s; }
 .mg-item.r { background: var(--rot); color: #fff; }
@@ -575,16 +620,21 @@ h1, h2, .namensfeld, .k .t u { text-shadow: 1.5px 0px 0.5px var(--rot), -1.5px 0
 <section class="bild" id="b10">
   <div class="strasse" id="str-raum">
     <div class="str-bg"></div>
-    <div class="str-boden"></div>
-    <div class="haus-l">
-      <div class="blick" style="top:30%; left:70%;" id="bl1"></div>
-      <div class="blick" style="top:70%; left:50%;" id="bl2"></div>
-    </div>
-    <div class="haus-r">
-      <div class="blick" style="top:40%; left:10%;" id="bl3"></div>
-      <div class="blick" style="top:80%; left:30%;" id="bl4"></div>
+    <div class="str-lauf" id="str-lauf">
+      <div class="str-asphalt" id="str-asphalt"></div>
+      <div class="str-boden"></div>
+      <div class="haus-l">
+        <div class="blick" style="top:30%; left:70%;" id="bl1"></div>
+        <div class="blick" style="top:70%; left:50%;" id="bl2"></div>
+      </div>
+      <div class="haus-r">
+        <div class="blick" style="top:40%; left:10%;" id="bl3"></div>
+        <div class="blick" style="top:80%; left:30%;" id="bl4"></div>
+      </div>
     </div>
   </div>
+  <div class="str-beine" id="str-beine"><i class="a"></i><i class="b"></i></div>
+  <div class="str-schritt" id="str-schritt">W A S D — laufen · E — hingehen</div>
   <div class="str-hint" id="str-warn">Schiefe Blicke...</div>
   <div class="str-ort" id="str-ort"></div>
   <div class="str-ui">
@@ -986,7 +1036,7 @@ function comicWeiter(){ ci++; if(ci>=BILDER.length) zeigBerufe(); else comicMal(
 $('b5').addEventListener('click',comicWeiter);
 
 /* ========== SPIEL ========== */
-const ZIEL=25000, KW=6, KX=3.0, JOKER=3, PSCHUTZ=1000;
+const ZIEL=50000, KW=6, KX=3.0, JOKER=3, PSCHUTZ=1000;
 /* Der Verfügungsrahmen. Steht seit zehn Jahren auf derselben Zahl,
    während alles andere teurer wird. Genau das ist die Zange. */
 const DISPO=1500;
@@ -998,7 +1048,20 @@ const MAXW=(()=>{ const j=new Date().getUTCFullYear();
 function samen(a){return function(){a|=0;a=a+0x6D2B79F5|0;let t=Math.imul(a^a>>>15,1|a);
   t=t+Math.imul(t^t>>>7,61|t)^t;return((t^t>>>14)>>>0)/4294967296;};}
 let wf=samen(saison());
+
+/* ZWEI QUELLEN, und die Trennung ist wichtig.
+
+   zuf()  = die Weltuhr. Gesät aus saison()*1009 + woche. Alles, was über
+            Geld, Nerven, Szene oder T4SCH€N entscheidet, kommt hier raus.
+            Dadurch spielt am selben UTC-Tag jeder dasselbe Spiel.
+
+   deko()  = Ambiente. Flackernde Fenster, Getuschel, Chat-Ticker,
+            Minispiel-Klötze. Läuft pro Sekunde oder pro Bild.
+            Käme das aus der Weltuhr, würde bloßes Herumstehen auf der
+            Straße den Zufallsfaden weiterdrehen — und zwei Leute am
+            selben Tag hätten verschiedene Angriffe. Deshalb getrennt. */
 const zuf=()=>wf();
+const deko=Math.random;
 /* Runde Zahlen. Alles, was aus Prozentrechnung fällt, wird geglättet —
    je größer der Betrag, desto gröber. Man soll es lesen, nicht entziffern. */
 function rund(n){
@@ -1534,6 +1597,11 @@ window.addEventListener('keydown',e=>{
     else if(k==='e'&&anDerTuer()){ e.preventDefault(); rausgehen(); }
     if(['w','a','s','d','arrowup','arrowdown','arrowleft','arrowright'].includes(k)) e.preventDefault();
   }
+  else if(bild==='b10'){
+    if(k==='e'){ e.preventDefault(); strasseHier(); }
+    if(k==='escape'){ e.preventDefault(); window.weltSchliessen(); }
+    if(['w','a','s','d','arrowup','arrowdown','arrowleft','arrowright'].includes(k)) e.preventDefault();
+  }
   else if(bild==='b4'){
     const n=icons().length;
     if(k==='arrowright'||k==='d'){ iSel=(iSel+1)%n; markiere(); e.preventDefault(); }
@@ -1583,7 +1651,7 @@ function starteMinigame(diff, cb) {
 }
 function spawnMgItem(delayIndex = 0) {
   if(!mgAktiv) return;
-  const isB = zuf() > 0.5;
+  const isB = deko() > 0.5;
   const div = document.createElement('div');
   div.className = 'mg-item ' + (isB ? 'b' : 'r');
   div.dataset.type = isB ? 'b' : 'r';
@@ -1716,15 +1784,15 @@ function netzwerkChatTick() {
     netChatTimer = setTimeout(netzwerkChatTick, 1000);
     return;
   }
-  if(Math.random() < 0.08 && !netDropGenutzt) {
+  if(deko() < 0.08 && !netDropGenutzt) {
     addChatMsg('ANONYM', 'DARKNET DROP GEFUNDEN. SCHNELL!', true);
     netDropGenutzt = true; // Chat spawnt es nur einmal
   } else {
-    const u = 'USER_' + Math.floor(Math.random()*9999);
-    const m = msgs[Math.floor(Math.random()*msgs.length)];
+    const u = 'USER_' + Math.floor(deko()*9999);
+    const m = msgs[Math.floor(deko()*msgs.length)];
     addChatMsg(u, m);
   }
-  netChatTimer = setTimeout(netzwerkChatTick, 1500 + Math.random()*3500);
+  netChatTimer = setTimeout(netzwerkChatTick, 1500 + deko()*3500);
 }
 window.nimmNetGig = function() {
   if(typeof window.sfxClick==='function') window.sfxClick();
@@ -1819,12 +1887,12 @@ const strWarn = document.getElementById('str-warn');
 let strMouseX = 0, strMouseY = 0;
 
 function spawnTratsch(msgs, color, isDaemon) {
-  const msg = msgs[Math.floor(Math.random()*msgs.length)];
+  const msg = msgs[Math.floor(deko()*msgs.length)];
   const div = document.createElement('div');
   div.textContent = msg;
   div.style.position = 'absolute';
-  div.style.top = (20 + Math.random()*60) + '%';
-  div.style.left = (10 + Math.random()*80) + '%';
+  div.style.top = (20 + deko()*60) + '%';
+  div.style.left = (10 + deko()*80) + '%';
   div.style.color = color;
   div.style.fontFamily = 'var(--fett)';
   div.style.fontSize = isDaemon ? '14px' : '12px';
@@ -1855,13 +1923,13 @@ function weltTick() {
     strWarn.textContent = 'Schiefe Blicke...';
     strWarn.style.color = 'var(--rot)';
     strWarn.style.textShadow = '0 0 10px var(--rot)';
-    bl1.style.opacity = Math.random() > 0.3 ? '1' : '0.2';
-    bl2.style.opacity = Math.random() > 0.5 ? '1' : '0.2';
-    bl3.style.opacity = Math.random() > 0.4 ? '1' : '0.2';
-    bl4.style.opacity = Math.random() > 0.6 ? '1' : '0.2';
+    bl1.style.opacity = deko() > 0.3 ? '1' : '0.2';
+    bl2.style.opacity = deko() > 0.5 ? '1' : '0.2';
+    bl3.style.opacity = deko() > 0.4 ? '1' : '0.2';
+    bl4.style.opacity = deko() > 0.6 ? '1' : '0.2';
     
     // Leichter Nerven-Drain
-    if(Math.random() < 0.2) {
+    if(deko() < 0.2) {
       S.nerv += 1;
       if(S.nerv > 100) S.nerv = 100;
       if(typeof window.merke==='function') merke();
@@ -1872,7 +1940,7 @@ function weltTick() {
     }
     
     // Nachbarn tratschen (Flüstern) - Alle denken, sie wüssten was
-    if(Math.random() < 0.1) {
+    if(deko() < 0.1) {
       spawnTratsch([
         '"Ich hab gehört, der hat sich verspekuliert..."', 
         '"Mein Broker meinte schon, das geht schief."', 
@@ -1896,7 +1964,7 @@ function weltTick() {
     bl3.style.opacity = '1'; bl3.style.filter = 'drop-shadow(0 0 5px red)';
     bl4.style.opacity = '1'; bl4.style.filter = 'drop-shadow(0 0 5px red)';
     
-    if(Math.random() < 0.15) {
+    if(deko() < 0.15) {
       spawnTratsch([
         '"Lass uns lieber auf die andere Straßenseite gehen..."', 
         '"Ich sag da besser gar nichts zu."', 
@@ -1924,6 +1992,117 @@ document.getElementById('b10').addEventListener('mousemove', (e) => {
   strMouseY = e.clientY / window.innerHeight;
 });
 
+/* ========== STRASSE: LAUFEN ==========
+   Die Straße war eine Kulisse, die auf Mausbewegung schielte. Jetzt ist sie
+   ein Gang mit Orten drin. Die Häuserreihe recycelt sich im Kreis, damit man
+   nie ins Leere läuft; die Orte liegen auf festen Metern und kommen auf einen zu. */
+const ORTE=[
+  {z:0,    n:'Dein Haus',       i:'Ein Zimmer deins, eins dem Mitbewohner. Mehr brauchst du nicht — sagst du.', rein:true},
+  {z:780,  n:'Kiosk',           i:'Licht an, immer. Der Einzige hier, der dich grüßt.'},
+  {z:1560, n:'Die Bunker',      i:'Betonklappen in der Allee. Was da reinkommt, kriegt er nicht raus.'},
+  {z:2340, n:'Haltestelle',     i:'Linie ins Bonzenviertel. Fährt alle 20 Minuten, wenn sie fährt.'},
+  {z:3120, n:'Ende der Straße', i:'Absperrgitter. Dahinter fängt eine andere Stadt an.'}
+];
+const SEGN=9, SEGD=340, MAXZ=3120, RUNDE=SEGN*SEGD;
+let strZ=0, strX=0, strBob=0, strNah=null, strGebaut=false, strMeter=-1;
+
+function strasseBauen(){
+  if(strGebaut) return; strGebaut=true;
+  const lauf=$('str-lauf');
+  for(let i=0;i<SEGN;i++){
+    for(const s of ['l','r']){
+      const d=document.createElement('div');
+      d.className='seg '+s; d.dataset.i=i; d.dataset.s=s;
+      d.innerHTML='<span class="klappe"></span><span class="klappe" style="bottom:52%"></span>';
+      lauf.appendChild(d);
+    }
+    const la=document.createElement('div');
+    la.className='lampe'; la.dataset.i=i; lauf.appendChild(la);
+  }
+  for(const o of ORTE){
+    const d=document.createElement('div');
+    d.className='ort-schild'; d.textContent=o.n; o.el=d; lauf.appendChild(d);
+  }
+}
+
+function strasseStell(){
+  const lauf=$('str-lauf');
+  lauf.style.transform='translateX('+(-strX*7).toFixed(2)+'vw)';
+
+  for(const el of lauf.querySelectorAll('.seg,.lampe')){
+    const i=+el.dataset.i;
+    const d=((i*SEGD-strZ)%RUNDE+RUNDE)%RUNDE;
+    const dreh = el.dataset.s==='l' ? 15 : el.dataset.s==='r' ? -15 : 0;
+    el.style.transform='translateZ('+(-d-380)+'px)'+(dreh?' rotateY('+dreh+'deg)':'');
+    el.style.opacity = d>RUNDE-420 ? '0' : '1';
+  }
+  let nah=null;
+  for(const o of ORTE){
+    const d=o.z-strZ;
+    /* Beim Ausblenden die Markierung mit abräumen — sonst bleibt ein Ort,
+       den man längst hinter sich hat, für den Rest der Straße „hier". */
+    if(d<-140||d>2100){ o.el.style.display='none'; o.el.classList.remove('hier'); continue; }
+    o.el.style.display='block';
+    o.el.style.transform='translateX(-50%) translateZ('+(-Math.max(d,0))+'px)';
+    const hier = Math.abs(d)<190;
+    o.el.classList.toggle('hier',hier);
+    if(hier) nah=o;
+  }
+  /* Beine: zwei Stelzen, gegenläufig. Reicht völlig — man merkt nur, ob man geht. */
+  const asp=$('str-asphalt');
+  if(asp) asp.style.backgroundPositionY = (strZ*1.9).toFixed(0)+'px, 0px';
+  const b=$('str-beine');
+  if(b){
+    const a=Math.sin(strBob)*13, c=Math.sin(strBob+Math.PI)*13;
+    b.children[0].style.transform='rotate('+a.toFixed(1)+'deg)';
+    b.children[1].style.transform='rotate('+c.toFixed(1)+'deg)';
+    b.style.bottom=(Math.abs(Math.sin(strBob))*7-7).toFixed(1)+'px';
+  }
+  const o=$('str-ort'), s=$('str-schritt');
+  if(nah!==strNah){
+    strNah=nah; strMeter=-1;
+    if(o&&nah) o.innerHTML='<b>'+nah.n+'</b><i>'+nah.i+'</i>';
+    if(s) s.textContent = nah ? (nah.rein?'E — rein ins Haus':'E — '+nah.n+' ansehen')
+                              : 'W A S D — laufen · E — hingehen';
+  }
+  /* Zwischen den Orten zählt der Zähler mit. In Zehnerschritten, sonst
+     schreiben wir das Feld sinnlos sechzig Mal pro Sekunde neu. */
+  if(o && !nah){
+    const m=Math.round(strZ/10)*10;
+    if(m!==strMeter){
+      strMeter=m;
+      o.innerHTML='<b>Bunkerstraße · Eitelstedt</b><i>'+m+' von '+MAXZ+' Metern. W — weiter.</i>';
+    }
+  }
+}
+
+/* Nur eine Laufschleife darf leben. Ohne diese Marke startet jedes Rausgehen
+   eine zweite, und der Spieler rennt plötzlich doppelt so schnell. */
+let strLoop=0;
+function strasseTick(meins){
+  if(!weltAktiv || meins!==strLoop) return;
+  let dz=0, dx=0;
+  if(tast.w||tast.arrowup)    dz+=3.1;
+  if(tast.s||tast.arrowdown)  dz-=3.1;
+  if(tast.a||tast.arrowleft)  dx-=.022;
+  if(tast.d||tast.arrowright) dx+=.022;
+  if(dz||dx){
+    strZ=klemm(strZ+dz,0,MAXZ);
+    strX=klemm(strX+dx,-1,1);
+    strBob+=.15;
+  }
+  strasseStell();
+  requestAnimationFrame(()=>strasseTick(meins));
+}
+
+/* E an einem Ort: das Haus lässt einen rein, alles andere erzählt nur. */
+function strasseHier(){
+  if(!strNah) return;
+  if(strNah.rein && draussenVon==='raum'){ window.weltSchliessen(); return; }
+  const s=$('str-schritt');
+  if(s){ s.textContent=strNah.i; setTimeout(()=>{ if(strNah) s.textContent='E — '+strNah.n+' ansehen'; },3600); }
+}
+
 window.weltOeffnen = function() {
   if(draussenVon !== 'raum'){
     const b=document.querySelector('#b10 .str-ui .k');
@@ -1934,6 +2113,11 @@ window.weltOeffnen = function() {
   zeig('b10');
   weltAktiv = true;
   strMouseX = 0.5; strMouseY = 0.5;
+  strasseBauen();
+  strZ=0; strX=0; strBob=0; strNah=null;
+  strasseStell();
+  const meins = ++strLoop;
+  requestAnimationFrame(()=>strasseTick(meins));
   weltTick();
 }
 window.weltSchliessen = function() {
@@ -1967,3 +2151,4 @@ document.getElementById('tuer-schloss').addEventListener('click', () => {
 </script>
 </body>
 </html>
+
