@@ -402,6 +402,10 @@ body.dritte #haende { display:none; }
   color:#ff5c7a;margin-bottom:6px}
 @keyframes abwehrPuls{0%,100%{border-color:var(--rot)}50%{border-color:#ff9db0}}
 @media (prefers-reduced-motion:reduce){.abwehr{animation:none}}
+.gott-schild{position:fixed;left:50%;top:8px;transform:translateX(-50%);z-index:130;
+  font-family:var(--fett);font-size:11px;letter-spacing:.14em;text-transform:uppercase;
+  color:var(--tinte);background:var(--gelb);border:3px solid var(--tinte);
+  padding:6px 14px;box-shadow:4px 4px 0 rgba(0,0,0,.6);pointer-events:none}
 .ton-schalt{position:fixed;right:8px;bottom:5px;z-index:120;cursor:pointer;
   font-family:var(--mono);font-size:10px;letter-spacing:.1em;
   color:var(--papier);background:rgba(13,13,13,.85);border:2px solid var(--tinte);
@@ -433,6 +437,14 @@ body::before {
   z-index: 1000;
 }
 .glitch-anim { animation: crt-glitch 0.2s cubic-bezier(.25, .46, .45, .94) both; }
+
+/* Ruhiges Bild: kein Zucken, keine pulsenden Rahmen, schwächere Scanlines.
+   Für alle, denen das Geflacker auf die Augen geht — und für jeden, der
+   lichtempfindlich ist. Der Rest der Optik bleibt wie er ist. */
+body.ruhig .glitch-anim,
+body.ruhig .abwehr { animation: none !important; }
+body.ruhig::after { opacity: .35; }
+body.ruhig .hint.nah { animation: none !important; }
 @keyframes crt-glitch {
   0% { transform: translate(0) skew(0); filter: drop-shadow(0 0 0 transparent); }
   20% { transform: translate(-3px, 1px) skew(-1deg); filter: drop-shadow(-3px 0 0 var(--rot)) drop-shadow(3px 0 0 var(--cyan)); }
@@ -716,6 +728,10 @@ h1, h2, .namensfeld, .k .t u { text-shadow: 1.5px 0px 0.5px var(--rot), -1.5px 0
   </div>
 </section>
 
+<div class="gott-schild" id="gott-schild" hidden>GODMODE AN — du gehst nicht mehr drauf</div>
+
+<button class="ton-schalt" id="ruhe-schalt" type="button" aria-pressed="false"
+        style="right:104px">Bild: flimmert</button>
 <button class="ton-schalt" id="ton-schalt" type="button" aria-pressed="false">Ton: an</button>
 
 <div class="marke">ISSO.TV — 353L.EXE · © CHRISTOPH LEWANDOWSKI 2026 ·
@@ -727,12 +743,35 @@ h1, h2, .namensfeld, .k .t u { text-shadow: 1.5px 0px 0.5px var(--rot), -1.5px 0
 'use strict';
 const $=id=>document.getElementById(id);
 let bild='b0';
+
+/* ---- FLIMMERN ----
+   Der CRT-Glitch lief bei jedem Bildwechsel und auf der Straße zusätzlich
+   jede Sekunde mit 20 %. Das fühlt sich an, als würde man dauernd Schläge
+   kassieren — vor allem, weil dahinter gar keine Mechanik lag (siehe der
+   Phantom-Zähler S.nerv weiter unten). Alles Zucken läuft jetzt hier durch,
+   damit man es an einer Stelle abstellen kann. */
+let ruhig=false;
+try{ ruhig = localStorage.getItem('isso.tv.ruhe')==='an'; }catch(e){}
+
+function flimmer(){
+  if(ruhig) return;
+  document.body.classList.remove('glitch-anim');
+  void document.body.offsetWidth;
+  document.body.classList.add('glitch-anim');
+}
+function ruheSchalten(){
+  ruhig=!ruhig;
+  try{ localStorage.setItem('isso.tv.ruhe', ruhig?'an':'aus'); }catch(e){}
+  if(ruhig) document.body.classList.remove('glitch-anim');
+  document.body.classList.toggle('ruhig',ruhig);
+  const b=$('ruhe-schalt');
+  if(b){ b.textContent = ruhig?'Bild: ruhig':'Bild: flimmert';
+         b.setAttribute('aria-pressed', ruhig?'true':'false'); }
+}
 function zeig(id){
   document.querySelectorAll('.bild').forEach(s=>s.classList.toggle('an',s.id===id));
   bild=id; window.focus();
-  document.body.classList.remove('glitch-anim');
-  void document.body.offsetWidth; // trigger reflow
-  document.body.classList.add('glitch-anim');
+  flimmer();
   if(typeof window.sfxGlitch==='function') window.sfxGlitch();
 }
 
@@ -1167,6 +1206,16 @@ $('b5').addEventListener('click',comicWeiter);
    50.000 nie erreichen — 4.0 macht das Einbetonieren zur echten Alternative
    zum Zocken. Blaus Stärke ist Geduld, also muss Geduld sich lohnen. */
 const ZIEL=50000, KW=6, KX=4.0, JOKER=3, PSCHUTZ=1000;
+
+/* ALLE STARTEN GLEICH. Das ist Absicht, nicht Bequemlichkeit.
+
+   Null Euro, 500 € Schulden, krankgeschrieben seit dem 9. März — und damit
+   längst im Krankengeld, die sechs Wochen Lohnfortzahlung sind durch.
+   Krankengeld richtet sich nach dem Job, den man vorher hatte, nicht nach
+   dem Gig, den man sich hier aussucht. Deshalb ist es für alle dieselbe
+   Zahl, und deshalb bringt die Berufswahl am Anfang genau nichts.
+   Man startet nicht mit einem Vorsprung. Man startet unten. */
+const SCHULDEN=500, KRANK_START=4, KRANKENGELD=300;
 /* Der Verfügungsrahmen. Steht seit zehn Jahren auf derselben Zahl,
    während alles andere teurer wird. Genau das ist die Zange. */
 const DISPO=1500;
@@ -1241,9 +1290,10 @@ const BERUFE=[
 const JOB=()=>BERUFE[S.job]||BERUFE[0];
 const jobIndex=id=>BERUFE.findIndex(b=>b.id===id);
 
-const FRISCH=j=>({woche:1,job:j,geld:BERUFE[j].geld,nerven:BERUFE[j].nerven,zed:0,zee:0,
+const FRISCH=j=>({woche:1,job:j,geld:-SCHULDEN,nerven:BERUFE[j].nerven,zed:0,zee:0,
   rot:0,blau:0,haeuser:[],ende:null,szene:null,letzte:null,
-  joker:JOKER,verlauf:[],gesehen:{},krank:0,pkonto:0,insolvenz:0,zusammen:0,mahnung:0});
+  joker:JOKER,verlauf:[],gesehen:{},krank:KRANK_START,pkonto:0,insolvenz:0,
+  zusammen:0,mahnung:0});
 let S=FRISCH(0);
 const waage=()=>{const g=S.rot+S.blau;return g?(S.blau-S.rot)/g:0;};
 const hausWert=b=>Math.round(b*KX*JOB().haus);
@@ -1404,6 +1454,7 @@ const ENDEN={
  nerven:{c:'rot',t:'AUSGEBRANNT',x:'Du stehst morgens nicht mehr auf.<br><br>Das Geld war nie das Problem. Die Wochen waren es.<br><b>Hier ist Schluss.</b>'},
  schulden:{c:'rot',t:'LEERGERÄUMT',x:'Der Brief kommt an einem Dienstag. Dann noch einer.<br><br><b>Er hat alles. Und du hast ihm jede Woche selbst aufgemacht.</b>'},
  zeit:{c:'grau',t:'SILVESTER'},
+ driveby:{c:'rot',t:'FALSCHER MOMENT',x:'Ein Wagen wird langsamer, als du über die Kreuzung gehst. Du guckst hin, weil man hinguckt.<br><br>Es hat nichts mit dir zu tun. Es hat nie was mit dir zu tun. Du stehst nur gerade da.<br><br><b>Kein Joker. Keine zweite Woche. Von vorne, komplett.</b>'},
  krypto:{c:'blau',t:'KRYPTO-KÖNIG',x:'Du hast den Taschengrabscher ausgetrickst.<br><br>Dein Geld liegt auf der Blockchain. 1 '+COIN_K+' entspricht aktuell ca. <b>500 Billiarden Euro</b>. Du hast nicht nur Eitelstedt besiegt, du hast das Konzept von Geld zerstört.<br><br><b>#dieletztedigitalewaehrung</b>'}
 };
 
@@ -1605,8 +1656,12 @@ function abschliessenWoche(z) {
   }
   if(S.krank>0){
     S.krank--; S.nerven=cl(S.nerven+2,0,10);
-    const lf=Math.round(B.lohn*.7); if(lf) S.geld+=lf;
-    z.push({t:(lf?'Lohnfortzahlung '+eur(lf)+'. ':'')+'Krankgeschrieben, noch '+S.krank+' Wochen.',a:'grau'});
+    /* Krankengeld, nicht Lohnfortzahlung — die sechs Wochen sind seit dem
+       9. März durch. Es kommt von der Kasse und richtet sich nach dem alten
+       Job, also fester Betrag für alle. */
+    S.geld+=KRANKENGELD;
+    z.push({t:'Krankengeld '+eur(KRANKENGELD)+'. Krankgeschrieben, noch '+S.krank+
+              (S.krank===1?' Woche.':' Wochen.'),a:'grau'});
   }
   if(S.insolvenz>0){
     S.insolvenz--;
@@ -1667,14 +1722,43 @@ function abschliessenWoche(z) {
    (krankgeschrieben, Nerven zurück), die Bank mahnt zuerst. Erst wenn man da
    nicht rauskommt, ist Schluss. Das passt auch besser zur Sache — das System
    bringt einen nicht um, es mahlt einen. */
+/* GODMODE — für den, der das Spiel gebaut hat.
+
+   Schaltet die drei Verlier-Enden ab: Ausgebrannt, Leergeräumt, Driveby.
+   Gewinnen geht weiter normal, und ein Sieg unter Godmode sagt das auch,
+   damit man sich die Zahl nicht selbst schönlügt.
+
+   An und aus: in der Konsole ISSO.gott(true) / ISSO.gott(false),
+   oder im Spiel die Tastenfolge G-O-T-T hintereinander. */
+let gott=false;
+try{ gott = localStorage.getItem('isso.tv.gott')==='an'; }catch(e){}
+function gottSchalten(an){
+  gott = (an===undefined) ? !gott : !!an;
+  try{ localStorage.setItem('isso.tv.gott', gott?'an':'aus'); }catch(e){}
+  const b=$('gott-schild');
+  if(b) b.hidden = !gott;
+  return gott;
+}
+
 function pruefe(z){
   const w=waage(), v=vermoegen();
   const sag=t=>{ if(z) z.push({t:t,a:'schlecht'}); };
+
+  /* Das Driveby. Kein Münzwurf ins Blaue — es hängt daran, wie weit man
+     sich rausgelehnt hat. Wer blau baut, steht bei ~0,3 % die Woche; wer
+     ganz rot nimmt, bei ~1,5 %. Über die Wochen bis Silvester macht das
+     rund 6 % gegen rund 27 %. Das ist der Preis dafür, dass man sich
+     bei Leuten bedient, die zurückkommen. Der Joker greift hier nicht. */
+  if(S.woche>3 && !S.ende && !gott){
+    const rotAnteil=Math.max(0,-waage());
+    if(zuf() < .003 + rotAnteil*.012){ S.ende='driveby'; return; }
+  }
 
   if(v>=ZIEL&&S.haeuser.length>=3&&w>.4){ S.ende='all'; return; }
   if(v>=ZIEL){ S.ende=w<-.15?'rot':(w>.15?'blau':'grau'); return; }
 
   if(S.nerven<=0){
+    if(gott){ S.nerven=6; sag('Du kippst um — und stehst wieder auf. (Godmode)'); return; }
     if(S.zusammen>=2){ S.ende='nerven'; return; }
     S.zusammen++;
     S.nerven=4; S.krank=2;
@@ -1685,6 +1769,7 @@ function pruefe(z){
   }
 
   if(S.geld < -DISPO){
+    if(gott){ S.geld=-DISPO; sag('Die Bank zieht den Strich — und du stehst noch. (Godmode)'); return; }
     if(S.mahnung>=1){ S.ende='schulden'; return; }
     S.mahnung++;
     sag('Die Bank meldet sich: Verfügungsrahmen gerissen. Du hast eine Woche, das geradezuziehen.');
@@ -1946,7 +2031,23 @@ function endeMinigame(win) {
 /* Ego ist Standard. Wer einmal auf Schulter stellt, kriegt es wieder. */
 try{ if(localStorage.getItem('isso.tv.sicht')==='3') perspektive(true); }catch(e){}
 
-window.ISSO={get S(){return S;},perspektive,
+/* G-O-T-T hintereinander tippen. Läuft überall, auch mitten im Spiel. */
+let gottTipp='';
+window.addEventListener('keydown',e=>{
+  if(document.activeElement && document.activeElement.tagName==='INPUT') return;
+  gottTipp=(gottTipp+e.key.toLowerCase()).slice(-4);
+  if(gottTipp==='gott'){
+    gottTipp='';
+    const an=gottSchalten();
+    const s=$('gott-schild');
+    if(s){ s.textContent = an ? 'GODMODE AN — du gehst nicht mehr drauf' : 'Godmode aus';
+           s.hidden=false;
+           if(!an) setTimeout(()=>{ s.hidden=true; },2500); }
+  }
+});
+gottSchalten(gott);   // Schild gleich richtig setzen
+
+window.ISSO={get S(){return S;},perspektive,gott:gottSchalten,
              set gig(f){ gigSpiel = f || ((d,cb)=>starteMinigame(d,cb)); },
              get gig(){ return gigSpiel; },BERUFE,SZ,W,TU,ENDEN,waehle,pruefe,waage,vermoegen,
              nimmBeruf,zeigBerufe,zeig,MAXW,ZIEL,JOB,gesperrt,male,ziehe,
@@ -2024,6 +2125,11 @@ $('ton-schalt').addEventListener('click',tonSchalten);
 $('ton-schalt').textContent = stumm?'Ton: aus':'Ton: an';
 $('ton-schalt').setAttribute('aria-pressed', stumm?'true':'false');
 
+$('ruhe-schalt').addEventListener('click',ruheSchalten);
+$('ruhe-schalt').textContent = ruhig?'Bild: ruhig':'Bild: flimmert';
+$('ruhe-schalt').setAttribute('aria-pressed', ruhig?'true':'false');
+document.body.classList.toggle('ruhig',ruhig);
+
 /* ========== NETZWERK / MOTHERBROWSER ========== */
 let netAktiv = false;
 let netGl = null, netProg = null, netLocVP, netLocOff, netIdxLen;
@@ -2082,7 +2188,10 @@ window.nimmNetGig = function() {
       S.geld += diff;
       document.getElementById('b7').innerHTML = '<div class="spalte" style="margin-top:20vh"><div class="karte" style="border-color:var(--gelb)"><h2>DARKNET DROP ERFOLGREICH</h2><p>Du hast den Drop gesichert und warst schneller als der Taschengrabscher.</p><div class="kopfz"><span class="chip geld">+'+diff+' €</span></div><button onclick="ISSO.zeig(\'b4\');" class="k job"><div class="t"><u>ZURÜCK ZUM DESKTOP</u></div></button></div></div>';
     } else {
-      S.nerv += 3;
+      /* Stand vorher auf S.nerv — die Variable gibt es im Spielstand nicht.
+         Der Text sagte "deine Nerven liegen blank", der Chip "NERVEN VERLOREN",
+         passiert ist nie etwas. Jetzt kostet es wirklich zwei Nerven. */
+      S.nerven = cl(S.nerven - 2, 0, 10);
       document.getElementById('b7').innerHTML = '<div class="spalte" style="margin-top:20vh"><div class="karte" style="border-color:var(--rot)"><h2>DROP VERLOREN</h2><p>Du warst zu langsam. Du hast nichts bekommen und deine Nerven liegen blank.</p><div class="kopfz"><span class="chip geld neg">NERVEN VERLOREN</span></div><button onclick="ISSO.zeig(\'b4\');" class="k rot"><div class="t"><u>ZURÜCK ZUM DESKTOP</u></div></button></div></div>';
     }
     merke();
@@ -2205,14 +2314,14 @@ function weltTick() {
     bl3.style.opacity = deko() > 0.4 ? '1' : '0.2';
     bl4.style.opacity = deko() > 0.6 ? '1' : '0.2';
     
-    // Leichter Nerven-Drain
-    if(deko() < 0.2) {
-      S.nerv += 1;
-      if(S.nerv > 100) S.nerv = 100;
-      if(typeof window.merke==='function') merke();
-      document.body.classList.remove('glitch-anim');
-      void document.body.offsetWidth;
-      document.body.classList.add('glitch-anim');
+    /* Hier stand ein "leichter Nerven-Drain", der auf S.nerv schrieb — eine
+       Variable, die es im Spielstand gar nicht gibt (die echte heißt S.nerven).
+       Er zählte also stumm bis 100 und tat nichts, feuerte aber jede Sekunde
+       mit 20 % Glitch und Ton. Man kassierte Schläge, die es nicht gab.
+       Der Zähler ist raus. Was bleibt, ist ein seltenes Zucken als Stimmung —
+       und zwar wirklich selten. */
+    if(deko() < 0.02) {
+      flimmer();
       if(typeof window.sfxGlitch==='function') window.sfxGlitch();
     }
     
