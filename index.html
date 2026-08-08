@@ -31,7 +31,20 @@ body{font-family:var(--sans);color:var(--tinte);-webkit-font-smoothing:antialias
   transition:transform .12s ease,box-shadow .12s ease}
 .k:hover:not(:disabled){transform:translate(-3px,-3px);box-shadow:8px 8px 0 var(--tinte)}
 .k:active:not(:disabled){transform:translate(2px,2px);box-shadow:2px 2px 0 var(--tinte)}
-.k:disabled{opacity:.36;cursor:default}
+/* Gesperrt muss man SEHEN, nicht erraten. Vorher nur opacity:.36 — der Knopf
+   sah aus wie ein Knopf, nur blass, und der Grund war bei 36 % Deckkraft
+   praktisch unlesbar. Man drückt drauf und es passiert nichts.
+   Jetzt: flaches Grau ohne Sticker-Schatten, durchgestrichene Beschriftung
+   (ein Signal, das nicht an Farbe hängt) und der Grund in voller Lesbarkeit. */
+.k:disabled{opacity:1;cursor:not-allowed;
+  background:#33333d!important;color:#d2d2dc!important;
+  border-color:#5c5c6b!important;box-shadow:none!important;transform:none!important}
+/* muss .k .t u schlagen (das setzt text-decoration:none) — deshalb der
+   gleiche Aufbau statt !important */
+.k:disabled .t u{text-decoration:line-through;text-decoration-thickness:3px}
+.k:disabled em{color:#9a9aa8}
+.k:disabled .p{color:var(--gelb);font-weight:700}
+.k:disabled kbd{background:#4a4a58;color:#d2d2dc;border-color:#5c5c6b}
 .k.rot{background:var(--rot);color:#fff} .k.blau{background:var(--blau);color:#fff}
 .k.job{background:var(--gelb)}
 .k kbd{flex:0 0 auto;font-family:var(--mono);font-size:11px;font-weight:700;
@@ -119,7 +132,9 @@ body{font-family:var(--sans);color:var(--tinte);-webkit-font-smoothing:antialias
 .icon svg{width:42px;height:42px}
 .icon span{font-family:var(--fett);font-size:10.5px;text-align:center;line-height:1.25;
   text-shadow:1px 1px 0 #0d0d0d,-1px 1px 0 #0d0d0d,1px -1px 0 #0d0d0d,-1px -1px 0 #0d0d0d}
-.leiste{position:absolute;left:0;right:0;bottom:0;z-index:3;height:34px;display:flex;
+/* z-index 140: die Leiste ist Bedienung, die Marken-Zeile darunter ist nur
+   Beiwerk. Bei z-index 3 lag die Impressum-Zeile über dem Türschloss. */
+.leiste{position:absolute;left:0;right:0;bottom:0;z-index:140;height:34px;display:flex;
   align-items:center;justify-content:space-between;padding:0 10px;background:#0d0d0d;
   border-top:3px solid var(--gelb)}
 .leiste .s{font-family:var(--fett);font-size:12px;letter-spacing:.14em;color:#0d0d0d;
@@ -420,14 +435,21 @@ body.dritte #haende { display:none; }
   font-family:var(--fett);font-size:11px;letter-spacing:.14em;text-transform:uppercase;
   color:var(--tinte);background:var(--gelb);border:3px solid var(--tinte);
   padding:6px 14px;box-shadow:4px 4px 0 rgba(0,0,0,.6);pointer-events:none}
-.ton-schalt{position:fixed;right:8px;bottom:5px;z-index:120;cursor:pointer;
+/* Nach oben rechts. Unten liegt die Taskleiste des Spiel-Desktops, und dort
+   haben diese Schalter Aufstehen und die Uhr zugedeckt — man klickte auf die
+   Leiste und traf den Ton-Schalter. */
+.ton-schalt{position:fixed;right:8px;top:8px;z-index:120;cursor:pointer;
   font-family:var(--mono);font-size:10px;letter-spacing:.1em;
   color:var(--papier);background:rgba(13,13,13,.85);border:2px solid var(--tinte);
   padding:5px 10px}
 .ton-schalt:hover{background:var(--gelb);color:var(--tinte)}
 .ton-schalt[aria-pressed="true"]{border-style:dashed;opacity:.8}
 .marke{position:fixed;left:8px;bottom:5px;z-index:99;font-family:var(--mono);font-size:9px;
-  letter-spacing:.15em;color:#8a86a0;max-width:calc(100vw - 130px)}  /* Platz für den Ton-Schalter */
+  letter-spacing:.15em;color:#8a86a0;max-width:calc(100vw - 20px)}
+/* Auf dem Spiel-Desktop rückt die Marken-Zeile über die Taskleiste. Sie ist
+   `fixed` und bildet einen eigenen Stapel — ein höherer z-index an der Leiste
+   reicht deshalb nicht, sie lag trotzdem über Türschloss und Aufstehen. */
+body.desktop .marke{bottom:42px}
 .marke a{color:var(--gelb);text-decoration:none;border-bottom:1px solid rgba(255,210,31,.5)}
 .marke a:hover{color:#fff;border-bottom-color:#fff}
 @media (prefers-reduced-motion:reduce){*{animation:none!important;transition-duration:.1s!important}}
@@ -616,6 +638,7 @@ h1, h2, .namensfeld, .k .t u { text-shadow: 1.5px 0px 0.5px var(--rot), -1.5px 0
   <div class="leiste">
     <button class="schloss" id="tuer-schloss" title="Tür abschließen" style="background:none;border:none;cursor:pointer;padding:0 10px;margin-right:auto;display:flex;align-items:center;">
       <svg id="schloss-icon" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="var(--rot)" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>
+      <span id="schloss-text" style="margin-left:7px;font-family:var(--mono);font-size:11px;letter-spacing:.08em;color:var(--gelb)">Tür: offen</span>
     </button>
     <span class="s">ISSO</span>
     <button class="raus" id="aufstehen">◀ Aufstehen</button>
@@ -745,7 +768,7 @@ h1, h2, .namensfeld, .k .t u { text-shadow: 1.5px 0px 0.5px var(--rot), -1.5px 0
 <div class="gott-schild" id="gott-schild" hidden>GODMODE AN — du gehst nicht mehr drauf</div>
 
 <button class="ton-schalt" id="ruhe-schalt" type="button" aria-pressed="false"
-        style="right:104px">Bild: flimmert</button>
+        style="right:104px;top:8px">Bild: flimmert</button>
 <button class="ton-schalt" id="ton-schalt" type="button" aria-pressed="false">Ton: an</button>
 
 <div class="marke">ISSO.TV — 353L.EXE · © CHRISTOPH LEWANDOWSKI 2026 ·
@@ -791,6 +814,7 @@ function ruheSchalten(){
 function zeig(id){
   document.querySelectorAll('.bild').forEach(s=>s.classList.toggle('an',s.id===id));
   bild=id; window.focus();
+  document.body.classList.toggle('desktop', id==='b4');
   flimmer();
   if(typeof window.sfxGlitch==='function') window.sfxGlitch();
 }
@@ -1122,7 +1146,7 @@ function strohhalmAuf() {
         const a=$('str-zee');
         if(a){ a.textContent=zeeText(S.zee);
                a.nextElementSibling.textContent='macht '+eur(zeeWert()); }
-        if(typeof window.merke==='function') merke();
+        merke();
       }, 1500);
     } else {
       clearInterval(strohhalmInterval);
@@ -2764,19 +2788,35 @@ let tuerAbgeschlossen = false;
 document.getElementById('tuer-schloss').addEventListener('click', () => {
   tuerAbgeschlossen = !tuerAbgeschlossen;
   const icn = document.getElementById('schloss-icon');
+  const txt = document.getElementById('schloss-text');
+  const knopf = document.getElementById('tuer-schloss');
+
   if(tuerAbgeschlossen) {
     icn.setAttribute('stroke', 'var(--gelb)');
     // Schloss zu (Bügel runter)
     icn.innerHTML = '<rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path>';
-    if(typeof window.sfxClick==='function') window.sfxClick();
-    S.log.push({t:'Du hast die Tür von innen zweimal abgeschlossen.',a:'blau'});
+    /* Hier stand S.log.push(...) — S.log gibt es im Spielstand gar nicht.
+       Jeder Klick aufs Schloss ist also in einen Fehler gelaufen, und weil
+       der Handler dabei abbrach, wurde merke() nie erreicht: Tür abschließen
+       hat den Joker-Stand nie gesichert. Zwei Fehler in einer Zeile. */
   } else {
     icn.setAttribute('stroke', 'var(--rot)');
     // Schloss auf (Bügel offen)
     icn.innerHTML = '<rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 9.9-1"></path>';
-    if(typeof window.sfxClick==='function') window.sfxClick();
   }
-  if(typeof window.merke==='function') merke();
+  /* Der Zustand hing vorher allein an der Strichfarbe, rot gegen gelb. Das
+     sieht nicht jeder. Jetzt steht er als Wort daneben. */
+  if(txt) txt.textContent = tuerAbgeschlossen ? 'Tür: zu' : 'Tür: offen';
+  knopf.setAttribute('aria-pressed', tuerAbgeschlossen ? 'true' : 'false');
+  knopf.title = tuerAbgeschlossen
+    ? 'Tür ist abgeschlossen — TA$CH€N kommt schlechter rein'
+    : 'Tür ist offen — abschließen senkt das Risiko';
+
+  if(typeof window.sfxClick==='function') window.sfxClick();
+  /* Der Wächter fragte window.merke ab — merke() liegt aber im inneren
+     Bereich und steht auf window gar nicht. Die Bedingung war also immer
+     falsch und der Aufruf lief nie. Direkt aufrufen, wie gemeint. */
+  merke();
 });
 
 })();
