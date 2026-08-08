@@ -284,6 +284,13 @@ body{font-family:var(--sans);color:var(--tinte);-webkit-font-smoothing:antialias
 .blick::before, .blick::after { content: ''; position: absolute; width: 6px; height: 6px; background: #fff; border-radius: 50%; top: 2px; }
 .blick::before { left: 4px; box-shadow: 0 0 10px #fff; }
 .blick::after { right: 4px; box-shadow: 0 0 10px #fff; }
+.str-ort { position:absolute; top:20px; left:50%; transform:translateX(-50%); z-index:6;
+  font-family:var(--fett); font-size:12px; letter-spacing:.14em; text-transform:uppercase;
+  text-align:center; line-height:1.7; color:var(--papier); background:rgba(13,13,13,.78);
+  border:3px solid var(--tinte); padding:8px 16px; max-width:min(560px,88vw); }
+.str-ort b { color:var(--gelb); }
+.str-ort i { display:block; font-style:normal; font-family:var(--sans); font-size:11.5px;
+  letter-spacing:0; text-transform:none; opacity:.75; margin-top:3px; }
 .str-hint { position: absolute; top: 10%; left: 50%; transform: translateX(-50%); color: var(--rot); font-family: var(--fett); text-transform: uppercase; letter-spacing: 2px; opacity: 0; transition: opacity 0.3s; text-shadow: 0 0 10px var(--rot); }
 .mg-track { position: absolute; inset: 45px 0 60px 0; display: flex; flex-direction: column; align-items: center; padding-bottom: 20px; overflow:hidden;}
 .mg-item { width: 60px; height: 60px; background: var(--papier); border: 3px solid var(--tinte); box-shadow: 4px 4px 0 var(--tinte); font-family: var(--fett); font-size: 30px; display: grid; place-items: center; position: absolute; top: 0; transition: transform 0.15s; }
@@ -384,6 +391,11 @@ h1, h2, .namensfeld, .k .t u { text-shadow: 1.5px 0px 0.5px var(--rot), -1.5px 0
       <rect x="536" y="372" width="128" height="86" rx="6" fill="#14161c"/>
       <rect x="550" y="386" width="100" height="58" fill="#20242c"/>
       <path d="M0 700 L0 630 Q0 606 30 606 L318 606 Q348 606 348 630 L348 700 Z" fill="#7ed321"/>
+      <!-- Wohnungstür -->
+      <rect x="852" y="180" width="150" height="360" fill="#5a1fb8"/>
+      <rect x="866" y="196" width="122" height="150" fill="#3d1180"/>
+      <rect x="866" y="366" width="122" height="158" fill="#3d1180"/>
+      <circle cx="972" cy="372" r="11" fill="#ffd21e"/>
     </g>
     <rect x="0" y="590" width="1200" height="110" fill="#120b2e"/>
   </svg>
@@ -565,6 +577,7 @@ h1, h2, .namensfeld, .k .t u { text-shadow: 1.5px 0px 0.5px var(--rot), -1.5px 0
     </div>
   </div>
   <div class="str-hint" id="str-warn">Schiefe Blicke...</div>
+  <div class="str-ort" id="str-ort"></div>
   <div class="str-ui">
     <button class="k rot" onclick="weltSchliessen()">ZURÜCK ZUM DESKTOP</button>
     <div id="str-konto" style="color:var(--gelb); font-family:var(--mono); font-size:18px; text-shadow:0 0 10px var(--gelb);"></div>
@@ -640,6 +653,9 @@ function stell(){
   marker.style.left=(50-dreh*.42)+'%';
 }
 const nah=()=>Math.abs(dreh)<20 && vor>.72;
+/* Die Wohnungstür liegt rechts. Man muss sich wegdrehen vom Schreibtisch. */
+const anDerTuer=()=>dreh>62;
+let draussenVon='desktop';
 function losRaum(){ dreh=-26; vor=0; bob=0; stell(); if(!tickt){tickt=true;requestAnimationFrame(tick);} }
 function tick(){
   if(bild==='b2'){
@@ -649,11 +665,12 @@ function tick(){
     if(tast.w||tast.arrowup) dv+=.012;
     if(tast.s||tast.arrowdown) dv-=.012;
     if(dd||dv){ dreh=klemm(dreh+dd,-100,100); vor=klemm(vor+dv,0,1); bob+=.22; stell(); }
-    const n=nah();
-    hint.classList.toggle('nah',n);
+    const n=nah(), t=anDerTuer();
+    hint.classList.toggle('nah', n||t);
     hint.textContent = n ? 'E oder Klick — Monitor einschalten'
-      : (Math.abs(dreh)>=20 ? 'A / D — dreh dich zum Schreibtisch' : 'W — geh hin');
-    marker.classList.toggle('aus',n);
+      : t ? 'E — raus auf die Straße'
+      : (Math.abs(dreh)>=20 ? 'A / D — Schreibtisch links, Tür rechts' : 'W — geh hin');
+    marker.classList.toggle('aus', n||t);
   }
   requestAnimationFrame(tick);
 }
@@ -662,8 +679,21 @@ $('b2').addEventListener('mousemove',ev=>{
   const r=$('b2').getBoundingClientRect();
   dreh=klemm(((ev.clientX-r.left)/r.width-.5)*150,-100,100); stell();
 });
+/* Raus auf die Straße. Dein Haus steht zwischen den Blocks. */
+function rausgehen(){
+  draussenVon='raum';
+  const b=document.querySelector('#b10 .str-ui .k');
+  if(b) b.textContent='◀ ZURÜCK INS HAUS';
+  const o=$('str-ort');
+  if(o) o.innerHTML='<b>Bunkerstraße · Eitelstedt</b>'+
+    '<i>Dein Familienhaus steht zwischen den Blocks. Ein Zimmer gehört dir, '+
+    'eins dem Mitbewohner. Mehr brauchst du nicht — sagst du.</i>';
+  if(typeof window.weltOeffnen==='function') window.weltOeffnen();
+}
+
 $('b2').addEventListener('click',ev=>{
   if(nah()){ anmachen(); return; }
+  if(anDerTuer()){ rausgehen(); return; }
   const r=$('b2').getBoundingClientRect();
   if(ev.clientX){ const z=klemm(((ev.clientX-r.left)/r.width-.5)*150,-100,100); dreh+=(z-dreh)*.6; }
   else dreh+=(0-dreh)*.5;
@@ -692,7 +722,7 @@ function oeffne(was){
   if(was==='buch'){ haushaltAuf(); return; }
   if(was==='netzwerk'){ netzwerkOeffnen(); return; }
   if(was==='strohhalm'){ strohhalmAuf(); return; }
-  if(was==='3dworld'){ weltOeffnen(); return; }
+  if(was==='3dworld'){ draussenVon='desktop'; weltOeffnen(); return; }
   if(was==='mitbewohner'){ mitbewohnerAuf(); return; }
   const f=INFO[was];
   $('fenster').innerHTML='<div class="kasten"><div class="kopf">'+f.t+'<button>×</button></div><div class="rumpf">'+f.x+'</div></div>';
@@ -1413,6 +1443,7 @@ window.addEventListener('keydown',e=>{
   if(bild==='b1'&&(k===' '||k==='enter')){ e.preventDefault(); schlafen(); }
   else if(bild==='b2'){
     if(k==='e'&&nah()){ e.preventDefault(); anmachen(); }
+    else if(k==='e'&&anDerTuer()){ e.preventDefault(); rausgehen(); }
     if(['w','a','s','d','arrowup','arrowdown','arrowleft','arrowright'].includes(k)) e.preventDefault();
   }
   else if(bild==='b4'){
@@ -1523,7 +1554,8 @@ function endeMinigame(win) {
 }
 
 window.ISSO={get S(){return S;},BERUFE,SZ,W,TU,ENDEN,waehle,pruefe,waage,vermoegen,
-             nimmBeruf,zeigBerufe,zeig,MAXW,ZIEL,JOB,gesperrt,male,ziehe};
+             nimmBeruf,zeigBerufe,zeig,MAXW,ZIEL,JOB,gesperrt,male,ziehe,
+             rausgehen,aufstehen,anDerTuer,nah};
 
 /* ========== AUDIO (TV SURPASS) ========== */
 let actx=null, humOsc=null, humGain=null;
@@ -1805,6 +1837,12 @@ document.getElementById('b10').addEventListener('mousemove', (e) => {
 });
 
 window.weltOeffnen = function() {
+  if(draussenVon !== 'raum'){
+    const b=document.querySelector('#b10 .str-ui .k');
+    if(b) b.textContent='ZURÜCK ZUM DESKTOP';
+    const o=document.getElementById('str-ort');
+    if(o) o.innerHTML='<b>Bonzenviertel</b><i>Hier wohnt keiner, den du kennst.</i>';
+  }
   zeig('b10');
   weltAktiv = true;
   strMouseX = 0.5; strMouseY = 0.5;
@@ -1813,7 +1851,8 @@ window.weltOeffnen = function() {
 window.weltSchliessen = function() {
   weltAktiv = false;
   clearTimeout(weltTimer);
-  zeig('b4');
+  if(draussenVon === 'raum'){ zeig('b2'); losRaum(); }
+  else zeig('b4');
 }
 
 /* ========== PARANOIA (TÜR ABSCHLIESSEN) ========== */
