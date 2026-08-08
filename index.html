@@ -321,6 +321,30 @@ body{font-family:var(--sans);color:var(--tinte);-webkit-font-smoothing:antialias
 .str-beine i::after { content:''; position:absolute; left:-9px; bottom:-3px;
   width:58px; height:19px; background:var(--papier); border:3px solid var(--tinte);
   border-radius:4px 9px 3px 3px; }
+/* ---- ZWEITE PERSPEKTIVE ----
+   Standard ist Ego, wie im Egoshooter. V schaltet hinter die Figur.
+   Beides muss gehen, deshalb hängt alles an EINER Klasse am body. */
+.str-figur { position:absolute; bottom:15%; left:50%; width:130px; height:225px;
+  margin-left:-65px; z-index:5; display:none; pointer-events:none; }
+body.dritte .str-figur { display:block; }
+body.dritte .str-beine { display:none; }
+body.dritte #haende { display:none; }
+.str-figur span { position:absolute; background:#14141c; border:3px solid var(--papier); display:block; }
+.str-figur .kopf   { left:38px; top:0; width:54px; height:50px; border-radius:9px;
+  background:var(--papier); border-color:var(--tinte); }
+.str-figur .kopf::after { content:''; position:absolute; inset:8px 9px auto 9px; height:15px;
+  background:var(--tinte); border-radius:3px; }           /* Hinterkopf, kein Gesicht */
+.str-figur .rumpf  { left:22px; top:46px; width:86px; height:104px; border-radius:11px 11px 5px 5px; }
+.str-figur .arm    { top:56px; width:23px; height:88px; border-radius:8px; transform-origin:50% 0; }
+.str-figur .arm.l  { left:2px; } .str-figur .arm.r { right:2px; }
+.str-figur .bein   { top:146px; width:33px; height:80px; border-radius:5px 5px 8px 8px;
+  transform-origin:50% 0; }
+.str-figur .bein.l { left:26px; } .str-figur .bein.r { right:26px; }
+.p-schalt { position:absolute; top:112px; right:16px; z-index:11; pointer-events:auto;
+  font-family:var(--fett); font-size:11px; letter-spacing:.14em; text-transform:uppercase;
+  color:var(--tinte); background:var(--papier); border:3px solid var(--tinte);
+  padding:8px 12px; cursor:pointer; box-shadow:4px 4px 0 rgba(0,0,0,.65); }
+.p-schalt:hover { background:var(--gelb); }
 .str-schritt { position:absolute; bottom:12px; left:50%; transform:translateX(-50%);
   z-index:7; font-family:var(--mono); font-size:10px; letter-spacing:.18em;
   color:var(--papier); background:rgba(13,13,13,.8); border:2px solid var(--tinte);
@@ -634,6 +658,12 @@ h1, h2, .namensfeld, .k .t u { text-shadow: 1.5px 0px 0.5px var(--rot), -1.5px 0
     </div>
   </div>
   <div class="str-beine" id="str-beine"><i class="a"></i><i class="b"></i></div>
+  <div class="str-figur" id="str-figur">
+    <span class="arm l"></span><span class="arm r"></span>
+    <span class="bein l"></span><span class="bein r"></span>
+    <span class="rumpf"></span><span class="kopf"></span>
+  </div>
+  <button class="p-schalt" id="p-schalt" type="button">Ansicht: Ego · V</button>
   <div class="str-schritt" id="str-schritt">W A S D — laufen · E — hingehen</div>
   <div class="str-hint" id="str-warn">Schiefe Blicke...</div>
   <div class="str-ort" id="str-ort"></div>
@@ -1103,7 +1133,7 @@ const jobIndex=id=>BERUFE.findIndex(b=>b.id===id);
 
 const FRISCH=j=>({woche:1,job:j,geld:BERUFE[j].geld,nerven:BERUFE[j].nerven,zed:0,
   rot:0,blau:0,haeuser:[],ende:null,szene:null,letzte:null,
-  joker:JOKER,verlauf:[],gesehen:{},krank:0,pkonto:0,insolvenz:0});
+  joker:JOKER,verlauf:[],gesehen:{},krank:0,pkonto:0,insolvenz:0,zusammen:0,mahnung:0});
 let S=FRISCH(0);
 const waage=()=>{const g=S.rot+S.blau;return g?(S.blau-S.rot)/g:0;};
 const hausWert=b=>Math.round(b*KX*JOB().haus);
@@ -1258,7 +1288,8 @@ const ENDEN={
 function merke(){
   S.verlauf.push({woche:S.woche,job:S.job,geld:S.geld,nerven:S.nerven,zed:S.zed,rot:S.rot,blau:S.blau,
     haeuser:S.haeuser.map(h=>({b:h.b,f:h.f})),letzte:S.letzte,sid:S.szene&&S.szene.id,
-    krank:S.krank,pkonto:S.pkonto,insolvenz:S.insolvenz,gesehen:Object.assign({},S.gesehen)});
+    krank:S.krank,pkonto:S.pkonto,insolvenz:S.insolvenz,zusammen:S.zusammen,mahnung:S.mahnung,
+    gesehen:Object.assign({},S.gesehen)});
   if(S.verlauf.length>6) S.verlauf.shift();
 }
 function zurueck(){
@@ -1266,7 +1297,8 @@ function zurueck(){
   const v=S.verlauf.pop();
   Object.assign(S,{woche:v.woche,job:v.job,geld:v.geld,nerven:v.nerven,zed:v.zed,rot:v.rot,blau:v.blau,
     haeuser:v.haeuser.map(h=>({b:h.b,f:h.f})),letzte:v.letzte,krank:v.krank,
-    pkonto:v.pkonto,insolvenz:v.insolvenz,gesehen:v.gesehen,ende:null});
+    pkonto:v.pkonto,insolvenz:v.insolvenz,gesehen:v.gesehen,ende:null,
+    zusammen:v.zusammen||0,mahnung:v.mahnung||0});
   S.szene=SZ.find(x=>x.id===v.sid)||S.szene;
   S.joker--; $('ende').classList.remove('an'); $('ende').innerHTML='';
   male([{t:'Nochmal. Die Woche zählt nicht.',a:'joker'}]);
@@ -1456,18 +1488,48 @@ function abschliessenWoche(z) {
 
   /* Diese zwei Zeilen sind der Motor. Ohne sie klebt das Spiel
      ewig auf derselben Szene und kein Ende feuert je. */
-  pruefe();
+  pruefe(z);                          // z sammelt auch Warnungen ein
   if(!S.ende) ziehe();
 
   male(z);                            // z = die Ergebniszeilen dieser Woche
 }
-function pruefe(){
+/* Man geht hier nicht plötzlich drauf.
+
+   Vorher endete das Spiel in der Sekunde, in der die Nerven auf 0 fielen oder
+   der Dispo riss — ohne Vorwarnung, mitten im Zug. Das fühlte sich nicht nach
+   Verlieren an, sondern nach Abgeschaltetwerden.
+
+   Jetzt kriegt beides eine Vorstufe: der Körper macht zuerst schlapp
+   (krankgeschrieben, Nerven zurück), die Bank mahnt zuerst. Erst wenn man da
+   nicht rauskommt, ist Schluss. Das passt auch besser zur Sache — das System
+   bringt einen nicht um, es mahlt einen. */
+function pruefe(z){
   const w=waage(), v=vermoegen();
-  if(v>=ZIEL&&S.haeuser.length>=3&&w>.4) S.ende='all';
-  else if(v>=ZIEL) S.ende=w<-.15?'rot':(w>.15?'blau':'grau');
-  else if(S.nerven<=0) S.ende='nerven';
-  else if(S.geld< -DISPO) S.ende='schulden';   // Verfügungsrahmen gerissen
-  else if(S.woche>MAXW) S.ende='zeit';
+  const sag=t=>{ if(z) z.push({t:t,a:'schlecht'}); };
+
+  if(v>=ZIEL&&S.haeuser.length>=3&&w>.4){ S.ende='all'; return; }
+  if(v>=ZIEL){ S.ende=w<-.15?'rot':(w>.15?'blau':'grau'); return; }
+
+  if(S.nerven<=0){
+    if(S.zusammen>=2){ S.ende='nerven'; return; }
+    S.zusammen++;
+    S.nerven=4; S.krank=2;
+    sag(S.zusammen===1
+      ? 'Du klappst zusammen. Zwei Wochen krankgeschrieben — das war die Reißleine.'
+      : 'Schon wieder umgekippt. Beim nächsten Mal stehst du nicht mehr auf.');
+    return;
+  }
+
+  if(S.geld < -DISPO){
+    if(S.mahnung>=1){ S.ende='schulden'; return; }
+    S.mahnung++;
+    sag('Die Bank meldet sich: Verfügungsrahmen gerissen. Du hast eine Woche, das geradezuziehen.');
+    return;
+  }
+  /* Wieder im Rahmen? Dann ist die Mahnung vom Tisch. */
+  if(S.mahnung>0 && S.geld >= -DISPO) S.mahnung=0;
+
+  if(S.woche>MAXW) S.ende='zeit';
 }
 function male(z){
   const B=JOB(), v=vermoegen();
@@ -1595,10 +1657,12 @@ window.addEventListener('keydown',e=>{
   else if(bild==='b2'){
     if(k==='e'&&nah()){ e.preventDefault(); anmachen(); }
     else if(k==='e'&&anDerTuer()){ e.preventDefault(); rausgehen(); }
+    if(k==='v'){ e.preventDefault(); perspektive(); }
     if(['w','a','s','d','arrowup','arrowdown','arrowleft','arrowright'].includes(k)) e.preventDefault();
   }
   else if(bild==='b10'){
     if(k==='e'){ e.preventDefault(); strasseHier(); }
+    if(k==='v'){ e.preventDefault(); perspektive(); }
     if(k==='escape'){ e.preventDefault(); window.weltSchliessen(); }
     if(['w','a','s','d','arrowup','arrowdown','arrowleft','arrowright'].includes(k)) e.preventDefault();
   }
@@ -1709,7 +1773,10 @@ function endeMinigame(win) {
   setTimeout(() => { zeig('b7'); mgCallback(win); }, 1400);
 }
 
-window.ISSO={get S(){return S;},BERUFE,SZ,W,TU,ENDEN,waehle,pruefe,waage,vermoegen,
+/* Ego ist Standard. Wer einmal auf Schulter stellt, kriegt es wieder. */
+try{ if(localStorage.getItem('isso.tv.sicht')==='3') perspektive(true); }catch(e){}
+
+window.ISSO={get S(){return S;},perspektive,BERUFE,SZ,W,TU,ENDEN,waehle,pruefe,waage,vermoegen,
              nimmBeruf,zeigBerufe,zeig,MAXW,ZIEL,JOB,gesperrt,male,ziehe,
              rausgehen,aufstehen,anDerTuer,nah};
 
@@ -2025,9 +2092,22 @@ function strasseBauen(){
   }
 }
 
+/* Ego ist Standard. In der dritten Person rückt die Welt weg und nach oben,
+   damit die Figur davor Platz hat — sonst steht man in der eigenen Kulisse. */
+let dritte=false;
+function perspektive(an){
+  dritte = (an===undefined) ? !dritte : !!an;
+  document.body.classList.toggle('dritte',dritte);
+  const b=$('p-schalt');
+  if(b) b.textContent='Ansicht: '+(dritte?'Schulter':'Ego')+' · V';
+  try{ localStorage.setItem('isso.tv.sicht', dritte?'3':'1'); }catch(e){}
+  strasseStell();
+}
+
 function strasseStell(){
   const lauf=$('str-lauf');
-  lauf.style.transform='translateX('+(-strX*7).toFixed(2)+'vw)';
+  lauf.style.transform='translateX('+(-strX*7).toFixed(2)+'vw)'
+    + (dritte ? ' translateZ(-210px) translateY(-6vh)' : '');
 
   for(const el of lauf.querySelectorAll('.seg,.lampe')){
     const i=+el.dataset.i;
@@ -2051,12 +2131,21 @@ function strasseStell(){
   /* Beine: zwei Stelzen, gegenläufig. Reicht völlig — man merkt nur, ob man geht. */
   const asp=$('str-asphalt');
   if(asp) asp.style.backgroundPositionY = (strZ*1.9).toFixed(0)+'px, 0px';
+  const a=Math.sin(strBob)*13, c=Math.sin(strBob+Math.PI)*13;
   const b=$('str-beine');
-  if(b){
-    const a=Math.sin(strBob)*13, c=Math.sin(strBob+Math.PI)*13;
+  if(b && !dritte){
     b.children[0].style.transform='rotate('+a.toFixed(1)+'deg)';
     b.children[1].style.transform='rotate('+c.toFixed(1)+'deg)';
-    b.style.bottom=(Math.abs(Math.sin(strBob))*7-7).toFixed(1)+'px';
+    b.style.bottom=(Math.abs(Math.sin(strBob))*7+52).toFixed(1)+'px';
+  }
+  const f=$('str-figur');
+  if(f && dritte){
+    /* Arme gegenläufig zu den Beinen — sonst watschelt die Figur. */
+    f.querySelector('.bein.l').style.transform='rotate('+(a*1.5).toFixed(1)+'deg)';
+    f.querySelector('.bein.r').style.transform='rotate('+(c*1.5).toFixed(1)+'deg)';
+    f.querySelector('.arm.l').style.transform='rotate('+(c*1.1).toFixed(1)+'deg)';
+    f.querySelector('.arm.r').style.transform='rotate('+(a*1.1).toFixed(1)+'deg)';
+    f.style.bottom=(15+Math.abs(Math.sin(strBob))*1.1).toFixed(2)+'%';
   }
   const o=$('str-ort'), s=$('str-schritt');
   if(nah!==strNah){
@@ -2114,6 +2203,8 @@ window.weltOeffnen = function() {
   weltAktiv = true;
   strMouseX = 0.5; strMouseY = 0.5;
   strasseBauen();
+  const sb=$('p-schalt');
+  if(sb && !sb.dataset.an){ sb.dataset.an='1'; sb.addEventListener('click',()=>perspektive()); }
   strZ=0; strX=0; strBob=0; strNah=null;
   strasseStell();
   const meins = ++strLoop;
