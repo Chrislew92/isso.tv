@@ -1048,7 +1048,7 @@ function strohhalmAuf() {
         '<button id="str-toggle" style="background:'+(strohhalmAktiv?'var(--rot)':'var(--blau)')+';color:#fff;border:3px solid var(--tinte);font-family:var(--fett);padding:10px 20px;cursor:pointer;width:100%">'+
         (strohhalmAktiv ? 'SAUGEN STOPPEN' : 'SAUGEN STARTEN')+'</button>'+
       '</div>'+
-      '<p style="font-size:11px;color:var(--rot);opacity:0.9">WARNUNG: Solange der Halm saugt, ist das Risiko, von T4SCH€N entdeckt zu werden, massiv erhöht (+30%). <b>0xY3C4EV3R_CRYPT</b></p>'+
+      '<p style="font-size:11px;color:var(--rot);opacity:0.9">WARNUNG: Solange der Halm saugt, ist das Risiko, von TA$CH€N entdeckt zu werden, massiv erhöht (+30%). <b>0xY3C4EV3R_CRYPT</b></p>'+
     '</div></div>';
   $('fenster').querySelector('.kopf button').onclick=()=>$('fenster').innerHTML='';
   $('str-toggle').onclick=()=>{
@@ -1162,11 +1162,15 @@ function comicWeiter(){ ci++; if(ci>=BILDER.length) zeigBerufe(); else comicMal(
 $('b5').addEventListener('click',comicWeiter);
 
 /* ========== SPIEL ========== */
-const ZIEL=50000, KW=6, KX=3.0, JOKER=3, PSCHUTZ=1000;
+/* KX ist der Hebel von Blau: was im Haus liegt, kommt nach KW Wochen mit
+   diesem Faktor zurück. Bei 3.0 kam Blau nie über 28.000 und konnte die
+   50.000 nie erreichen — 4.0 macht das Einbetonieren zur echten Alternative
+   zum Zocken. Blaus Stärke ist Geduld, also muss Geduld sich lohnen. */
+const ZIEL=50000, KW=6, KX=4.0, JOKER=3, PSCHUTZ=1000;
 /* Der Verfügungsrahmen. Steht seit zehn Jahren auf derselben Zahl,
    während alles andere teurer wird. Genau das ist die Zange. */
 const DISPO=1500;
-const fixkosten=w=>rund(120+w*8);   // Miete, Strom, Handy, Versicherung — steigt jede Woche
+const fixkosten=w=>rund(100+w*10);   /* runde Zahlen: 110, 120, 130 … 310 */   // Miete, Strom, Handy, Versicherung — steigt jede Woche
 const EPOCHE=Date.UTC(2026,0,1), TAG=86400000;
 const saison=()=>Math.floor((Date.now()-EPOCHE)/TAG);
 const MAXW=(()=>{ const j=new Date().getUTCFullYear();
@@ -1178,7 +1182,7 @@ let wf=samen(saison());
 /* ZWEI QUELLEN, und die Trennung ist wichtig.
 
    zuf()  = die Weltuhr. Gesät aus saison()*1009 + woche. Alles, was über
-            Geld, Nerven, Szene oder T4SCH€N entscheidet, kommt hier raus.
+            Geld, Nerven, Szene oder TA$CH€N entscheidet, kommt hier raus.
             Dadurch spielt am selben UTC-Tag jeder dasselbe Spiel.
 
    deko()  = Ambiente. Flackernde Fenster, Getuschel, Chat-Ticker,
@@ -1253,27 +1257,36 @@ const TU={
    return eur(B.lohn)+' extra. Die Augen brennen vom Bildschirm, aber das Geld liegt da.';},
  ruhe:s=>{s.nerven=cl(s.nerven+3,0,10);
    return 'Du machst wirklich mal gar nichts. Kommt dir falsch vor und hilft dann doch.';},
+ /* Der Einsatz. Vorher rechnete sich das nie: 30 % setzen, 50 % auf das
+    Dreifache — das ist multiplikativ Gewinn ×1,6 / Verlust ×0,7, im Schnitt
+    ×1,058 die Woche. Bei 1.000 € sind das 58 €, während die Fixkosten 200 €
+    nehmen. Rot konnte also gar nicht wachsen, egal wie gut jemand spielt.
+    Jetzt zahlt der Treffer das Vierfache und die Waage zahlt mit: wer sich
+    zu Rot bekennt, kriegt größere Ausschläge in beide Richtungen. */
  setzen:s=>{
    const frei=s.pkonto?Math.max(0,s.geld-PSCHUTZ):s.geld;
    if(s.pkonto&&frei<100) return 'Du kommst nicht ran. Das Geld liegt hinterm Pfändungsschutz — auch für dich.';
    if(frei<100) return 'Womit denn? Du hast nichts, was du setzen könntest.';
+   const rotAnteil=Math.max(0,-waage());              // 0 bis 1
    const e=rund(frei*.3); s.geld-=e;
-   if(zuf()<.5){const g=rund(e*3); s.geld+=g;
+   if(zuf()<.5){
+     const g=rund(e*(4+rotAnteil*2));                 // ×4 bis ×6
+     s.geld+=g;
      return 'Und es geht auf. Auf einmal hast du '+eur(g-e)+' mehr als vorhin.';}
    s.nerven=cl(s.nerven-1,0,10);
    return 'Weg. '+eur(e)+', einfach so. Du stehst danach noch zwei Minuten da und guckst.';},
  idee:s=>{
    /* Selten mal zäh — aber nie eine komplett verbrannte Woche. */
-   if(zuf()<.12){ const k=rund(rn(100,250)); s.geld+=k;
+   if(zuf()<.12){ const k=rund(rn(100,300)); s.geld+=k;
      return 'Zäh diesmal. Am Ende nur '+eur(k)+', aber nicht nichts.'; }
-   const g=rund((rn(300,700)+Math.max(0,s.geld)*.24)*JOB().idee); s.geld+=g;
+   const g=rund((rn(500,1000)+Math.max(0,s.geld)*.40)*JOB().idee); s.geld+=g;
    return 'Läuft. '+eur(g)+', und keiner hat blöd gefragt.';},
  haus:s=>{
    if(s.geld<500) return 'Dafür ist nichts da. Erst muss was reinkommen.';
    const b=rund(s.geld*.4); s.geld-=b;
    s.haeuser.push({b:b,f:s.woche+KW});
    return 'Haus in der Bunkerstraße. '+eur(b)+' liegen jetzt drin, '+KW+' Wochen zu.';},
- einbruch:s=>{const b=rund(rn(300,600)*(1+s.woche*.06)+Math.max(0,s.geld)*.30);
+ einbruch:s=>{const b=rund(rn(500,1000)*(1+s.woche*.10)+Math.max(0,s.geld)*.40);
    s.geld+=b; s.nerven=cl(s.nerven-1,0,10);
    return 'Du steigst bei jemandem zuhause ein. '+eur(b)+'. Du kriegst es nicht aus dem Kopf.';},
  verkauf:s=>{const k=s.haeuser.shift(); const z=Math.round(k.b*.6); s.geld+=z;
@@ -1311,7 +1324,7 @@ const W={
 const SZ=[
  {id:'marco',ok:()=>1,t:'Marco fragt, ob du Samstag einspringst. Bar auf die Hand.<br><em>Zuhause liegt dein Zettel mit der Idee. Seit Wochen.</em>',
   w:[W.arbeit('Einspringen.'),W.setzen('Absagen, Geld woanders reinstecken.'),W.idee('Absagen, an der Idee sitzen.')]},
- {id:'feind',ok:()=>1,t:'Einer grinst dich an der Kneipentür an. Du kennst ihn nicht. Er weiß trotzdem, was du diese Woche verdient hast.<br><em>An der Wand hinter ihm steht ein Tag: <b>T4SCH€N</b>. Ab jetzt nimmt er sich jede Woche was.</em>',
+ {id:'feind',ok:()=>1,t:'Einer grinst dich an der Kneipentür an. Du kennst ihn nicht. Er weiß trotzdem, was du diese Woche verdient hast.<br><em>An der Wand hinter ihm steht ein Tag: <b>TA$CH€N</b>. Ab jetzt nimmt er sich jede Woche was.</em>',
   w:[W.haus('Nichts sagen. Morgen alles wegschließen.'),W.setzen('Mitspielen.'),W.ruhe('Umdrehen und heimgehen.')]},
  {id:'zettel',ok:()=>1,t:'Der Zettel auf dem Schreibtisch. Zwei Zeilen und eine Zahl, mehr steht da nicht.<br><em>Du weißt genau, dass es funktioniert. Du hast es nur nie angefangen.</em>',
   w:[W.idee('Diese Woche anfangen.'),W.haus('Erst Geld sammeln.'),W.arbeit('Wieder nicht.')]},
@@ -1492,6 +1505,33 @@ function ziehe(){
   } else {
      S.szene = gewaehlt;
   }
+
+  /* Jede Woche muss mindestens ein Weg nach oben offen sein.
+
+     Vorher war rund die Hälfte der Wochen tot: Jobangebote und Gig-Boards
+     zahlen flach, während Fixkosten und TA$CH€N unbeirrt weiterlaufen. Wer
+     nie bauen darf, baut nichts auf — genau daran sind die 50.000 gescheitert,
+     nicht an zu schwachen Aktionen. Die Szene wird dafür kopiert, sonst
+     würde der Anhang dauerhaft in der Szenenliste kleben. */
+  const WEGE=['IDEE MACHEN','SETZEN','HAUS KAUFEN','BEI JEMANDEM EINSTEIGEN'];
+  const rotDrauf = waage() < -.15;
+
+  /* Und der Weg muss zur Seite passen, auf der man steht.
+
+     SETZEN ist reine Multiplikation ohne Sockel: bei 500 € bringt es im
+     Schnitt 150 €, während die Fixkosten 200 € nehmen. Wer rot spielt und
+     arm ist, kommt damit nie hoch — Rot hatte schlicht keinen Anlauf.
+     Blau hat den Sockel in IDEE (500–1.000 € flat), Rot kriegt ihn hier. */
+  const hatWeg = S.szene.w.some(x=>WEGE.includes(x.u));
+  const nurGluecksspiel = rotDrauf && S.geld < 2000 &&
+        !S.szene.w.some(x=>x.u==='BEI JEMANDEM EINSTEIGEN');
+
+  if(!hatWeg || nurGluecksspiel){
+    S.szene = Object.assign({}, S.szene);
+    S.szene.w = [...S.szene.w, rotDrauf
+      ? W.einbruch('Du weißt, wo diese Woche keiner zuhause ist.')
+      : W.idee('Nebenbei an der eigenen Sache weiterbauen.')];
+  }
   S.letzte=S.szene.id;
 }
 const GESPERRT=['SETZEN','HAUS KAUFEN','BEI JEMANDEM EINSTEIGEN'];
@@ -1592,14 +1632,14 @@ function abschliessenWoche(z) {
       z.push({t:'Jemand hat an der Klinke gerüttelt. Aber du hattest abgeschlossen.',a:'gut'});
     } else if(griff > 0 && S.mitbewohnerGezahlt && zuf() < 0.6) {
       griff = 0;
-      z.push({t:'Dein Mitbewohner stand im Flur, als T4SCH€N kam. Er hat ihn abgewimmelt.',a:'gut'});
+      z.push({t:'Dein Mitbewohner stand im Flur, als TA$CH€N kam. Er hat ihn abgewimmelt.',a:'gut'});
     } else {
       S.geld-=griff;
       z.push(griff>0
-        ? {t:'<b>T4SCH€N</b> war da. '+eur(-griff)+'.',a:'feind'}
+        ? {t:'<b>TA$CH€N</b> war da. '+eur(-griff)+'.',a:'feind'}
         : S.pkonto
-          ? {t:'<b>T4SCH€N</b> greift zu und kommt nicht ran. P-Konto.',a:'gut'}
-          : {t:'<b>T4SCH€N</b> war da. Bei dir war nichts zu holen.',a:'feind'});
+          ? {t:'<b>TA$CH€N</b> greift zu und kommt nicht ran. P-Konto.',a:'gut'}
+          : {t:'<b>TA$CH€N</b> war da. Bei dir war nichts zu holen.',a:'feind'});
       if(griff>0){ $('b7').classList.add('bad'); setTimeout(()=>$('b7').classList.remove('bad'),600); }
     }
   }
@@ -1731,7 +1771,7 @@ function zeigeEnde(){
 const startText=()=>[
   {t:spielerName+'. 34, Homeoffice, '+JOB().n+'.',a:'grau'},
   {t:'Du willst '+eur(ZIEL)+' zusammenkriegen. Bis Silvester.',a:'blau'},
-  {t:'<b>T4SCH€N</b> nimmt sich jede Woche was davon.',a:'feind'}];
+  {t:'<b>TA$CH€N</b> nimmt sich jede Woche was davon.',a:'feind'}];
 
 let spielerName='', safeID='', spielLaeuft=false;
 /* SafeID wie eine ICQ-UIN: neunstellig, aus dem Namen abgeleitet.
@@ -1989,7 +2029,7 @@ let netDropGenutzt = false; // nur ein Drop pro Woche!
 const feed = document.getElementById('chat-feed');
 const msgs = [
   "suche 3D drucker für kleinserie, zahle in ZEE",
-  "t4sch€n war bei mir. 3 wochen grind weg. fml.",
+  "TA$CH€N war bei mir. 3 wochen grind weg. fml.",
   "hamburg ranking update: x_shadow ist auf #1.",
   "verkaufe datensätze, pm me.",
   "wer hat den rush job bei 40h überlebt?",
@@ -1997,7 +2037,7 @@ const msgs = [
   "ZEE kurs geht hoch, haltet eure coins!",
   "brauche jemanden für grafik, zahle 1000",
   "hat jemand den zeed für nächste woche geknackt?",
-  "[WARNUNG] aktivität von t4sch€n im umkreis 100m"
+  "[WARNUNG] aktivität von TA$CH€N im umkreis 100m"
 ];
 function addChatMsg(user, text, isGig=false) {
   if(!netAktiv) return;
@@ -2409,4 +2449,5 @@ document.getElementById('tuer-schloss').addEventListener('click', () => {
 </script>
 </body>
 </html>
+
 

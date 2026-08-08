@@ -1,4 +1,4 @@
-# Masterprompt — ISSO.TV / 353L.EXE
+﻿# Masterprompt — ISSO.TV / 353L.EXE
 
 Für jeden künftigen Agenten. **Stand 8. August 2026, gegen den Code geprüft.**
 Ersetzt die ältere Fassung aus `Downloads\claude_master_prompt.md` — die enthielt
@@ -9,17 +9,17 @@ drei Fehler, siehe ganz unten.
 ## 1 · Die Welt
 
 Der Spieler ist 34, lebt in **Eitelstedt**, will **25.000 €** zusammenkriegen.
-**T4SCH€N** (der Taschengrabscher) nimmt sich jede Woche seinen Teil.
+**TA$CH€N** (der Taschengrabscher) nimmt sich jede Woche seinen Teil.
 
 **Die Waage:** **Rot = RICHKID** (nehmen, schnell, riskant) ·
 **Blau = WORKLIFE** (bauen, sichern) · **Grau = Arbeit** ist kein Weg, nur der Boden.
 
-**Das Ökosystem:** **S7V3N** ist die Bank hinter T4SCH€N (eigene Seite, schwarz/gold,
-„T4SCH€N arbeitet für uns"). **EyTonLand** ist das Dach über allem.
+**Das Ökosystem:** **S7V3N** ist die Bank hinter TA$CH€N (eigene Seite, schwarz/gold,
+„TA$CH€N arbeitet für uns"). **EyTonLand** ist das Dach über allem.
 
 **Begriffe — exakt so schreiben:**
 `ZEDCOINZ` (Kurzform `ZED`, 1.000 € = 1 ZED) · `BLUSTERS!` (**ein** Ausrufezeichen) ·
-`T4SCH€N` · `Homebunker` · `Datenstrohhalm` · `Eitelstedt`
+`TA$CH€N` · `Homebunker` · `Datenstrohhalm` · `Eitelstedt`
 
 ### Die These
 
@@ -42,16 +42,16 @@ sind. Der Homebunker ist der Versuch, sich von unten einen Platz zu betonieren.
 **Und das eine geht nicht ohne das andere.** Kein Reichtum ohne einen, der
 abschöpft — sonst wäre er nichts wert. Kein Zugang ohne eine Schranke — sonst
 wäre er keiner. Das Spiel funktioniert nur, weil beide Hälften da sind: wer
-T4SCH€N rausnimmt, nimmt dem Reichtum den Sinn; wer die Schranke aufmacht,
+TA$CH€N rausnimmt, nimmt dem Reichtum den Sinn; wer die Schranke aufmacht,
 nimmt der Unsterblichkeit den ihren. **Nie nur eine Hälfte bauen.**
 
-Die Gegenkraft dazu ist das T4SCH€N-Prinzip. Alles zusammen ist das Spiel:
+Die Gegenkraft dazu ist das TA$CH€N-Prinzip. Alles zusammen ist das Spiel:
 **jede Woche nimmt sich einer seinen Teil — und der einzige Ausweg ist, so weit
 zu kommen, dass sein Anteil bedeutungslos wird.** Wer da ankommt, kommt rein.
 Wer nicht, bleibt draußen und wird abgeschöpft. Genau das ist der Vorwurf, den
 das Spiel erhebt.
 
-### Das T4SCH€N-Prinzip
+### Das TA$CH€N-Prinzip
 
 Chris' Satz dazu: **„wir werden die ganze Zeit gerippt."** Das ist der Kern des
 Spiels, nicht bloß eine Mechanik. Jede Woche nimmt sich jemand seinen Teil,
@@ -59,7 +59,7 @@ ohne zu fragen, unabhängig davon, was man richtig gemacht hat. Die Fixkosten
 steigen, der Dispo steht seit zehn Jahren still. Wer das aus dem Spiel nimmt,
 nimmt ihm den Sinn.
 
-Deshalb ist T4SCH€N **kein Gegner, den man besiegt** — er ist die Steuer aufs
+Deshalb ist TA$CH€N **kein Gegner, den man besiegt** — er ist die Steuer aufs
 Dasein. Man kann sich nur schützen (Tür, Mitbewohner, Bunker) oder so weit
 kommen, dass sein Anteil egal wird.
 
@@ -82,7 +82,7 @@ ab: er saugt ~100.000 ZEE pro Zug, was einem Euro entspricht. Vorher stand da
 **Der Halm ist die Sucht im Spiel.** Chris: *„der datenstrohhalm ist meine vape"*
 und *„wir haben auch süchte"*. Er kostet **jede Woche einen Nerv**, solange er
 läuft — sonst könnte man mit leerem Konto risikofrei durchsaugen, weil das
-+30 %-Risiko nur Bargeld trifft und ZEE außer Reichweite von T4SCH€N liegt.
++30 %-Risiko nur Bargeld trifft und ZEE außer Reichweite von TA$CH€N liegt.
 
 Die **500 Billiarden** pro ZED gelten nur im Ende **KRYPTO-KÖNIG** — der Moment,
 in dem Geld aufhört, eine Zahl zu sein (`#dieletztedigitalewaehrung`).
@@ -142,7 +142,7 @@ Dein Haus · Kiosk · Die Bunker · Haltestelle · Ende der Straße. `E` geht hi
 Jeder spielt am selben Tag dasselbe Spiel. **Die Zeit ist der Server.**
 
 > **Zwei Zufallsquellen, und das ist Absicht.** `zuf()` ist die Weltuhr — alles,
-> was über Geld, Nerven, Szene oder T4SCH€N entscheidet. `deko()` ist Ambiente
+> was über Geld, Nerven, Szene oder TA$CH€N entscheidet. `deko()` ist Ambiente
 > (Flackern, Getuschel, Chat-Ticker, Minispiel-Klötze) und läuft pro Bild.
 > Käme die Deko aus der Weltuhr, würde **bloßes Herumstehen auf der Straße den
 > Zufallsfaden weiterdrehen** — zwei Leute am selben Tag hätten verschiedene
@@ -187,9 +187,9 @@ das Skript mitziehen. Browser cachen hartnäckig → `?v=` an die URL.
 
 ## 6 · Nächste Stufen (alle ohne fremden Code baubar)
 
-**S7V3N-Kredite** — Kredit aufnehmen, Zinsen, Inkasso-Events härter als T4SCH€N
+**S7V3N-Kredite** — Kredit aufnehmen, Zinsen, Inkasso-Events härter als TA$CH€N
 **Auktions-Sniper** — eigenes Minispiel für Domain-Flipping statt Blocksortieren
-**T4SCH€N bekommt eine Stimme** — In-Game-Nachrichten ab Woche 10
+**TA$CH€N bekommt eine Stimme** — In-Game-Nachrichten ab Woche 10
 **Bunker-Brummen** — prozeduraler Ton über die Web Audio API, verzerrt sich mit
 sinkenden Nerven. Ohne MP3, ohne Bibliothek.
 **Schwarzmarkt im Motherbrowser** — Skripte kaufen, Strohhalm-Ertrag hoch, Rot hoch
@@ -208,3 +208,4 @@ sinkenden Nerven. Ohne MP3, ohne Bibliothek.
 ---
 
 © 2026 Christoph Lewandowski
+

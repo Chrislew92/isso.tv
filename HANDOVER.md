@@ -1,4 +1,4 @@
-# ISSO.TV — 353L.EXE · Handover
+﻿# ISSO.TV — 353L.EXE · Handover
 
 Fusion der beiden älteren Übergaben, korrigiert gegen die laufende Datei.
 **Stand: 2026-08-08.** Alles hier wurde im Code nachgeschlagen, nicht erinnert.
@@ -16,7 +16,7 @@ nachdem eine zu bittere Fassung gebaut war.)
 
 Schauplatz **Eitelstedt**, erfundene Schreibung eines echten Hamburger Stadtteils.
 Du wohnst in einem Zimmer eines Familienhauses zwischen den Blocks, mit einem
-Mitbewohner. Gegner ist **T4SCH€N** (der Taschengrabscher), der sich jede Woche
+Mitbewohner. Gegner ist **TA$CH€N** (der Taschengrabscher), der sich jede Woche
 etwas nimmt.
 
 ## 2. Ablauf
@@ -60,7 +60,7 @@ automatisch „Tag rumkriegen".
 |---|---|
 | Ziel | 25.000 € · Wochen aus dem Kalender (21) |
 | Sieben Berufe | 180–550 €, wechselbar im Spiel, inkl. **Arbeitslos** und **Umschulung** |
-| Homebunker | 40 % rein, **3,0×** nach 6 Wochen — geschützt vor T4SCH€N |
+| Homebunker | 40 % rein, **3,0×** nach 6 Wochen — geschützt vor TA$CH€N |
 | Setzen | 30 % rein, 50 % auf 3× |
 | Idee | ~+20 % vom Konto, 12 % zäh (aber nie null) |
 | ZEDCOINZ | 1.000 € = 1 ZED · geschützt, **wächst aber nicht mit** |
@@ -100,7 +100,7 @@ Alles in `localStorage`, **nichts verlässt den Browser**.
   Sticker-Schatten. Vorbild sind die AJ-Cover (*Wonderland*, *Back Am Block*).
   Nichts Rundes, nichts Web-2.0.
 - **Echtes 3D würde die flache Optik kaputtmachen** — 2.5D ist der Weg.
-- **Nicht ins Private kippen.** Eitelstedt und T4SCH€N bleiben; alles, was den
+- **Nicht ins Private kippen.** Eitelstedt und TA$CH€N bleiben; alles, was den
   Autor identifiziert, wurde bewusst entfernt (ISSO WATERS, Peet, echte Straßen,
   Bankname, Familienangehörige). Nicht wieder einbauen.
 - **Tabu:** das MedalGuard-System nicht anfassen.
@@ -148,3 +148,4 @@ oder Cloudflare Access.
 ---
 
 © 2026 Christoph Lewandowski
+
