@@ -1312,8 +1312,12 @@ function waehle(i){
      if (w.p.includes('sicher')) diff = 1;
      else if (w.p.includes('Nerven') || w.p.includes(COIN_K)) diff = 3;
      
+     /* Ohne diesen Wechsel laeuft das Minispiel unsichtbar und die
+        Woche geht nie weiter — der Spieler sieht nur eine tote Szene. */
+     merke();
+     zeig('b9');
      starteMinigame(diff, (win) => {
-        merke();
+        zeig('b7');
         if(w.w==='rot') S.rot+=2; if(w.w==='blau') S.blau+=2;
         const txt = w.f(S, win);
         abschliessenWoche([{t:txt, a:w.w}]);
@@ -1380,11 +1384,15 @@ function abschliessenWoche(z) {
     }
   }
   S.woche++;
-    merke();
-    netDropGenutzt = false; 
-    S.mitbewohnerGezahlt = false; // Reset Mitbewohner-Schutz
-    if(S.woche>52) return ende('silvester');
-    male();
+  netDropGenutzt = false;
+  S.mitbewohnerGezahlt = false;      // Mitbewohner-Schutz gilt nur eine Woche
+
+  /* Diese zwei Zeilen sind der Motor. Ohne sie klebt das Spiel
+     ewig auf derselben Szene und kein Ende feuert je. */
+  pruefe();
+  if(!S.ende) ziehe();
+
+  male(z);                            // z = die Ergebniszeilen dieser Woche
 }
 function pruefe(){
   const w=waage(), v=vermoegen();

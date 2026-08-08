@@ -22,8 +22,8 @@ using System.Reflection;
 [assembly: AssemblyProduct("ISSO.TV")]
 [assembly: AssemblyCompany("Christoph Lewandowski")]
 [assembly: AssemblyCopyright("\u00A9 2026 Christoph Lewandowski")]
-[assembly: AssemblyVersion("1.0.0.0")]
-[assembly: AssemblyFileVersion("1.0.0.0")]
+[assembly: AssemblyVersion("1.1.0.0")]
+[assembly: AssemblyFileVersion("1.1.0.0")]
 
 static class Starter
 {
@@ -32,7 +32,11 @@ static class Starter
 
     static int Main()
     {
-        string ziel = File.Exists(LOKAL) ? LOKAL : LIVE;
+        // Cache-Buster: sonst zeigt der Browser eine alte Kopie.
+        string stempel = DateTime.Now.ToString("yyyyMMddHHmmss");
+        string ziel = File.Exists(LOKAL)
+            ? "file:///" + LOKAL.Replace('\\', '/') + "?v=" + stempel
+            : LIVE + "?v=" + stempel;
         try
         {
             var psi = new ProcessStartInfo(ziel);
