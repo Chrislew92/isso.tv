@@ -202,6 +202,12 @@ body{font-family:var(--sans);color:var(--tinte);-webkit-font-smoothing:antialias
 .kopfz{display:flex;align-items:center;gap:9px;flex-wrap:wrap;margin-bottom:14px}
 .chip{font-family:var(--fett);font-size:13px;text-transform:uppercase;border:var(--out);
   padding:5px 11px;box-shadow:4px 4px 0 var(--tinte);background:var(--gelb)}
+/* Nebensätze im HUD. Bedeutung steht im Wort, nicht in der Farbe. */
+.chip i.steigt,.chip i.starr{font-style:normal;font-family:var(--mono);
+  font-size:10px;letter-spacing:.04em;text-transform:none;opacity:.82;
+  border-bottom:1px dotted currentColor;padding-bottom:1px}
+.chip i.steigt::before{content:"▲ "}
+.chip i.starr::before{content:"— "}
 .chip.geld{background:var(--gruen)} .chip.geld.neg{background:var(--rot);color:#fff}
 .chip.geld.hit{animation:flashRot .4s} @keyframes flashRot{0%,100%{background:var(--rot);color:#fff;transform:scale(1.1)}}
 .fix{font-family:var(--mono);font-size:12px;opacity:.75;margin-top:-6px;margin-bottom:10px}
@@ -953,7 +959,13 @@ let strohhalmInterval = null;
 function strohhalmAuf() {
   $('fenster').innerHTML=
     '<div class="kasten"><div class="kopf">datenstrohhalm.exe<button>×</button></div><div class="rumpf">'+
-      '<p style="margin-bottom:12px;opacity:0.8">Zapft Mikro-Cent-Beträge aus dem Eitelstedt-Grid ab.</p>'+
+      '<p style="margin-bottom:12px;opacity:0.8">Zapft <b>'+ZEE_K+'</b> aus dem Eitelstedt-Grid ab — '+
+        'die kleinste Einheit. 100 Millionen davon sind <b>1 '+COIN_K+'</b>.</p>'+
+      '<div style="text-align:center;margin:14px 0;font-family:var(--mono);font-size:15px">'+
+        '<b id="str-zee">'+zeeText(S.zee||0)+'</b>'+
+        '<span style="display:block;font-size:11px;opacity:.75;margin-top:3px">'+
+          'macht '+eur(zeeWert())+'</span>'+
+      '</div>'+
       '<div style="text-align:center;margin:20px 0">'+
         '<button id="str-toggle" style="background:'+(strohhalmAktiv?'var(--rot)':'var(--blau)')+';color:#fff;border:3px solid var(--tinte);font-family:var(--fett);padding:10px 20px;cursor:pointer;width:100%">'+
         (strohhalmAktiv ? 'SAUGEN STOPPEN' : 'SAUGEN STARTEN')+'</button>'+
@@ -966,7 +978,13 @@ function strohhalmAuf() {
     strohhalmAktiv = !strohhalmAktiv;
     if(strohhalmAktiv) {
       strohhalmInterval = setInterval(()=>{
-        S.geld += 1; // Saugt 1 Euro
+        /* Rund 100.000 ZEE pro Zug — ein Euro in Staub. Gleicher Ertrag wie
+           vorher, nur ehrlich benannt. deko(), nicht die Weltuhr: das hier
+           läuft in Echtzeit und darf den Wochenzufall nicht verdrehen. */
+        S.zee = (S.zee||0) + 80000 + Math.floor(deko()*40000);
+        const a=$('str-zee');
+        if(a){ a.textContent=zeeText(S.zee);
+               a.nextElementSibling.textContent='macht '+eur(zeeWert()); }
         if(typeof window.merke==='function') merke();
       }, 1500);
     } else {
@@ -1104,6 +1122,13 @@ function rund(n){
    ZED — die Währung von ISSO.TV. Gekauft mit Euro, und da kommt keiner ran. */
 const WHG='€';
 const COIN='ZEDCOINZ', COIN_K='ZED';       // Name hier ändern, sonst nirgends
+/* ZEECOIN ist keine zweite Währung, sondern die kleinste Einheit:
+   1 ZEE = 0,00000001 ZED — sieben Nullen, dann die Eins.
+   Also 100 Millionen ZEE auf einen ZEDCOIN. Bei 1 ZED = 1.000 € ist ein
+   einzelnes ZEE ein tausendstel Cent. Deshalb kann der Datenstrohhalm
+   ehrlich behaupten, er zapfe Mikro-Beträge ab. */
+const ZEE_K='ZEE', ZEE_PRO_ZED=100000000;
+const zeeText=n=>Math.round(n).toLocaleString('de-DE')+' '+ZEE_K;
 const ZEDKURS=1000;                       // 1.000 € = 1 ZEDCOINZ
 const zedText=n=>n+' '+COIN_K;
 const eur=n=>(n<0?'−':'')+Math.abs(Math.round(n)).toLocaleString('de-DE')+' '+WHG;
@@ -1131,13 +1156,16 @@ const BERUFE=[
 const JOB=()=>BERUFE[S.job]||BERUFE[0];
 const jobIndex=id=>BERUFE.findIndex(b=>b.id===id);
 
-const FRISCH=j=>({woche:1,job:j,geld:BERUFE[j].geld,nerven:BERUFE[j].nerven,zed:0,
+const FRISCH=j=>({woche:1,job:j,geld:BERUFE[j].geld,nerven:BERUFE[j].nerven,zed:0,zee:0,
   rot:0,blau:0,haeuser:[],ende:null,szene:null,letzte:null,
   joker:JOKER,verlauf:[],gesehen:{},krank:0,pkonto:0,insolvenz:0,zusammen:0,mahnung:0});
 let S=FRISCH(0);
 const waage=()=>{const g=S.rot+S.blau;return g?(S.blau-S.rot)/g:0;};
 const hausWert=b=>Math.round(b*KX*JOB().haus);
-const vermoegen=()=>S.geld+S.haeuser.reduce((a,h)=>a+hausWert(h.b),0)+(S.zed||0)*ZEDKURS;
+/* Der Staub zählt mit. Sonst saugt man stundenlang und es war für nichts. */
+const zeeWert=()=>Math.floor((S.zee||0)/ZEE_PRO_ZED*ZEDKURS);
+const vermoegen=()=>S.geld+S.haeuser.reduce((a,h)=>a+hausWert(h.b),0)
+  +(S.zed||0)*ZEDKURS+zeeWert();
 
 const TU={
  arbeit:s=>{const B=JOB();
@@ -1286,7 +1314,7 @@ const ENDEN={
 };
 
 function merke(){
-  S.verlauf.push({woche:S.woche,job:S.job,geld:S.geld,nerven:S.nerven,zed:S.zed,rot:S.rot,blau:S.blau,
+  S.verlauf.push({woche:S.woche,job:S.job,geld:S.geld,nerven:S.nerven,zed:S.zed,zee:S.zee,rot:S.rot,blau:S.blau,
     haeuser:S.haeuser.map(h=>({b:h.b,f:h.f})),letzte:S.letzte,sid:S.szene&&S.szene.id,
     krank:S.krank,pkonto:S.pkonto,insolvenz:S.insolvenz,zusammen:S.zusammen,mahnung:S.mahnung,
     gesehen:Object.assign({},S.gesehen)});
@@ -1295,7 +1323,7 @@ function merke(){
 function zurueck(){
   if(!S.joker||!S.verlauf.length) return;
   const v=S.verlauf.pop();
-  Object.assign(S,{woche:v.woche,job:v.job,geld:v.geld,nerven:v.nerven,zed:v.zed,rot:v.rot,blau:v.blau,
+  Object.assign(S,{woche:v.woche,job:v.job,geld:v.geld,nerven:v.nerven,zed:v.zed,zee:v.zee||0,rot:v.rot,blau:v.blau,
     haeuser:v.haeuser.map(h=>({b:h.b,f:h.f})),letzte:v.letzte,krank:v.krank,
     pkonto:v.pkonto,insolvenz:v.insolvenz,gesehen:v.gesehen,ende:null,
     zusammen:v.zusammen||0,mahnung:v.mahnung||0});
@@ -1457,7 +1485,15 @@ function abschliessenWoche(z) {
     z.push({t:'Wohlverhaltensphase. Er darf nicht ran. Noch '+S.insolvenz+' Wochen.',a:'gut'});
   } else {
     let taschenChance = 0.22;
-    if(strohhalmAktiv) taschenChance += 0.30;
+    /* Der Halm kostet auch dann etwas, wenn nichts auf der Hand liegt.
+       Sonst könnte man mit leerem Konto risikofrei durchsaugen — das
+       Risiko trifft ja nur Bargeld, und ZEE kriegt er nicht. Er zieht
+       an den Nerven, wie jede Sache, die man nicht weglegt. */
+    if(strohhalmAktiv){
+      taschenChance += 0.30;
+      S.nerven=cl(S.nerven-1,0,10);
+      z.push({t:'Der Halm lief die ganze Woche. Du hast schlecht geschlafen.',a:'schlecht'});
+    }
     if(tuerAbgeschlossen) taschenChance -= 0.15;
     if(S.mitbewohnerGezahlt) taschenChance -= 0.25;
     
@@ -1548,9 +1584,15 @@ function male(z){
     $('cGeld').classList.add('hit');
     setTimeout(() => $('cGeld').classList.remove('hit'), 400);
   }
-  $('cFix').innerHTML='Fixkosten <b>'+eur(fixkosten(S.woche))+'</b>'+
-    (S.geld<0?' · Dispo '+eur(-S.geld)+' / '+eur(DISPO):'')+
-    ' · <b>'+(S.zed||0)+' / '+(ZIEL/ZEDKURS)+' '+COIN_K+'</b>';
+  /* Der Vergleich ist der Punkt: die Fixkosten klettern jede Woche, der
+     Verfügungsrahmen steht. Beides nebeneinander, in Worten statt in Farbe. */
+  const fixJetzt=fixkosten(S.woche), fixStart=fixkosten(1);
+  $('cFix').innerHTML='Fixkosten <b>'+eur(fixJetzt)+'</b>'+
+    (fixJetzt>fixStart ? ' <i class="steigt">+'+eur(fixJetzt-fixStart)+' seit Woche 1</i>' : '')+
+    ' · Dispo <b>'+eur(DISPO)+'</b> <i class="starr">unverändert</i>'+
+    (S.geld<0 ? ' <i class="starr">'+eur(-S.geld)+' gezogen</i>' : '')+
+    ' · <b>'+(S.zed||0)+' / '+(ZIEL/ZEDKURS)+' '+COIN_K+'</b>'+
+    (S.zee ? ' <i class="starr">'+zeeText(S.zee)+' = '+eur(zeeWert())+'</i>' : '');
   $('cNerv').innerHTML='●'.repeat(S.nerven)+'<i>'+'●'.repeat(10-S.nerven)+'</i>';
   const w=waage();
   $('kn').style.left=(50-w*38)+'%';

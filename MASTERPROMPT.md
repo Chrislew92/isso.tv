@@ -33,19 +33,33 @@ Deshalb ist T4SCH€N **kein Gegner, den man besiegt** — er ist die Steuer auf
 Dasein. Man kann sich nur schützen (Tür, Mitbewohner, Bunker) oder so weit
 kommen, dass sein Anteil egal wird.
 
-### Die zwei Währungen — notiert, noch nicht gebaut
+### ZED und ZEE — eine Währung, zwei Einheiten
 
-Chris am 8.8.2026: **„es gibt ZEDCOINS und ZEECOINS"** und
-**„1 ZEDCOIN = 500 Billiarden"**.
+**Es ist keine zweite Währung.** ZEECOIN ist die kleinste Einheit von ZEDCOIN,
+so wie Satoshi zu Bitcoin. Chris am 8.8.2026:
+*„der zeecoin ist 0,00000001 zedcoin"* — sieben Nullen, dann die Eins.
 
-Im Code existiert bisher **nur eine**: `ZEDCOINZ` / `ZED`, 1.000 € = 1 ZED.
-Die 500 Billiarden stehen schon drin — im Ende **KRYPTO-KÖNIG**, als der Moment,
+| | |
+|---|---|
+| 1 `ZED` | 1.000 € (`ZEDKURS`) |
+| 1 `ZED` | 100.000.000 `ZEE` (`ZEE_PRO_ZED`) |
+| 1 `ZEE` | ein tausendstel Cent |
+
+Deshalb kann der **Datenstrohhalm** ehrlich behaupten, er zapfe Mikro-Beträge
+ab: er saugt ~100.000 ZEE pro Zug, was einem Euro entspricht. Vorher stand da
+„Mikro-Cent-Beträge" und es kam 1 € pro 1,5 Sekunden — der Satz war gelogen.
+
+**Der Halm ist die Sucht im Spiel.** Chris: *„der datenstrohhalm ist meine vape"*
+und *„wir haben auch süchte"*. Er kostet **jede Woche einen Nerv**, solange er
+läuft — sonst könnte man mit leerem Konto risikofrei durchsaugen, weil das
++30 %-Risiko nur Bargeld trifft und ZEE außer Reichweite von T4SCH€N liegt.
+
+Die **500 Billiarden** pro ZED gelten nur im Ende **KRYPTO-KÖNIG** — der Moment,
 in dem Geld aufhört, eine Zahl zu sein (`#dieletztedigitalewaehrung`).
 
-**Offen und vor dem Bauen zu klären:** Was ist ZEECOIN gegenüber ZEDCOIN —
-eine zweite, konkurrierende Währung? Die Stufe darüber? Die von S7V3N gegen
-die vom Volk? Solange das nicht entschieden ist, **keine zweite Währung
-einbauen** — ein halb gedachtes Geldsystem macht das Spiel unlesbar.
+> **Schreibweise noch offen:** im Code steht `ZEDCOINZ` (mit Z am Ende), Chris
+> schreibt inzwischen meist `ZEDCOINS`. Steht in **einer** Konstante (`COIN`),
+> ist also ein Ein-Wort-Wechsel. Nicht raten — fragen.
 
 Markenschreibweise ist Pflicht: **MedalGuard.com · IronMind-BlackCore.com ·
 ISSO.TV · S7V3N.com · EyTonLand.com**
