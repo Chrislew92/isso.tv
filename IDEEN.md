@@ -1,4 +1,4 @@
-# ISSO.TV — Stand der Welt
+﻿# ISSO.TV — Stand der Welt
 
 Alles, was bisher gilt. Nichts hier ist in Stein, aber alles ist gebaut.
 
@@ -33,7 +33,7 @@ Ein **Homebunker** ist gleichzeitig Haus und Zeitkapsel:
 
 - Du kaufst einen, 40 % vom Konto gehen rein
 - Sechs Wochen zu. Du kommst nicht ran. **Das ist der Preis.**
-- Danach 2,6×
+- Danach 4×
 - **Der Taschengrabscher kommt nicht rein.** Zu ist zu.
 
 Deshalb wiegt Rot schwerer als früher: „fremden Bunker knacken" heißt jetzt
@@ -41,15 +41,15 @@ Deshalb wiegt Rot schwerer als früher: „fremden Bunker knacken" heißt jetzt
 
 ## Die Enden
 
-Sieben Stück, alle geprüft:
+Acht Stück, alle geprüft:
 
 - **HIGHROLLER** (rot) — du hast seinen Platz eingenommen
 - **MEERKRAFT** (blau) — er greift ins Leere
 - **ANGEKOMMEN** (grau) — reich ohne Entscheidung
 - **AUSGEBRANNT** — Nerven auf null
 - **LEERGERÄUMT** — er hat alles
-- **DIE JAHRE** — 40 Wochen um, weder reich noch kaputt
-- **ERDE-1** *(geheim: 25.000 € + 3 Homebunker + tief blau)*
+- **DIE JAHRE** — die Wochen bis Silvester um, weder reich noch kaputt
+- **ERDE-1** *(geheim: 50.000 € + 3 Homebunker + tief blau)*
 
 **ERDE-1** ist die Antwort auf „was kommt nach dem Reichtum":
 Die Erde fliegt an einem Dienstag hoch. Straßen weg, Automaten weg, *er* weg.
@@ -143,3 +143,4 @@ zieht bei „Ohne Gigs" trotzdem die vollen Fixkosten ab.
 **Die Wachstumskurve ist bewusst Fantasie.** +40 % die Woche macht kein Job und
 keine Geldanlage. Das ist in Ordnung — es heißt Highroller-Simulator. Nur die
 *Einstiegszahlen* müssen stimmen, sonst fällt der Absturz in die Fantasie nicht auf.
+
