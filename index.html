@@ -37,7 +37,7 @@
 html,body{height:100%;overflow:hidden;background:#1a1b1f}
 body{font-family:var(--sans);color:var(--tinte);-webkit-font-smoothing:antialiased;
      user-select:none;-webkit-tap-highlight-color:transparent}
-.bild{position:fixed;inset:0;opacity:0;pointer-events:none;transition:opacity .45s ease;overflow:hidden}
+.bild{position:absolute;inset:0;opacity:0;pointer-events:none;transition:opacity .45s ease;overflow:hidden}
 .bild.an{opacity:1;pointer-events:auto}
 .punkte{position:absolute;inset:0;pointer-events:none;
   background-image:radial-gradient(circle,rgba(255,255,255,.07) 2px,transparent 2px);background-size:26px 26px}
@@ -492,20 +492,20 @@ body.dritte #haende { display:none; }
 .szenenbild .k{stroke:var(--papier);stroke-width:2.5;fill:none}   /* Kreidekontur */
 .szenenbild .d{fill:var(--tinte)}
 @media (max-width:520px){ .szenenbild{box-shadow:4px 4px 0 rgba(0,0,0,.55)} }
-.gott-schild{position:fixed;left:50%;top:8px;transform:translateX(-50%);z-index:130;
+.gott-schild{position:absolute;left:50%;top:8px;transform:translateX(-50%);z-index:130;
   font-family:var(--fett);font-size:11px;letter-spacing:.14em;text-transform:uppercase;
   color:var(--tinte);background:var(--gelb);border:3px solid var(--tinte);
   padding:6px 14px;box-shadow:4px 4px 0 rgba(0,0,0,.6);pointer-events:none}
 /* Nach oben rechts. Unten liegt die Taskleiste des Spiel-Desktops, und dort
    haben diese Schalter Aufstehen und die Uhr zugedeckt — man klickte auf die
    Leiste und traf den Ton-Schalter. */
-.ton-schalt{position:fixed;right:8px;top:8px;z-index:120;cursor:pointer;
+.ton-schalt{position:absolute;right:8px;top:8px;z-index:120;cursor:pointer;
   font-family:var(--mono);font-size:10px;letter-spacing:.1em;
   color:var(--papier);background:rgba(13,13,13,.85);border:2px solid var(--tinte);
   padding:5px 10px}
 .ton-schalt:hover{background:var(--gelb);color:var(--tinte)}
 .ton-schalt[aria-pressed="true"]{border-style:dashed;opacity:.8}
-.marke{position:fixed;left:8px;bottom:5px;z-index:99;font-family:var(--mono);font-size:9px;
+.marke{position:absolute;left:8px;bottom:5px;z-index:99;font-family:var(--mono);font-size:9px;
   letter-spacing:.15em;color:#8a86a0;max-width:calc(100vw - 20px)}
 /* Auf dem Spiel-Desktop rückt die Marken-Zeile über die Taskleiste. Sie ist
    `fixed` und bildet einen eigenen Stapel — ein höherer z-index an der Leiste
@@ -557,9 +557,57 @@ h1, h2, .namensfeld, .k .t u { text-shadow: 1.5px 0px 0.5px var(--rot), -1.5px 0
   50% { opacity: 0.82; }
   100% { opacity: 0.85; }
 }
+
+#kino-frame {
+  position: relative;
+  width: 100vw;
+  height: 56.25vw;
+  max-height: 100vh;
+  max-width: 177.78vh;
+  margin: auto;
+  overflow: hidden;
+  background: #1a1b1f;
+  box-shadow: 0 0 50px rgba(0,0,0,0.8);
+}
+body {
+  display: flex;
+  background: #000 !important;
+  justify-content: center;
+  align-items: center;
+}
+#gedanken {
+  position: absolute;
+  bottom: 8%;
+  left: 0;
+  right: 0;
+  text-align: center;
+  z-index: 99999;
+  pointer-events: none;
+  opacity: 0;
+  transform: translateY(20px);
+  transition: opacity 0.5s ease, transform 0.5s ease;
+}
+#gedanken.show {
+  opacity: 1;
+  transform: translateY(0);
+}
+#gedanken span {
+  display: inline-block;
+  background: rgba(20, 20, 24, 0.85);
+  color: #fff;
+  padding: 12px 24px;
+  border-radius: 30px;
+  font-family: var(--fett);
+  font-size: clamp(14px, 2.5vmin, 24px);
+  box-shadow: 0 10px 30px rgba(0,0,0,0.8);
+  backdrop-filter: blur(4px);
+  text-shadow: 1px 1px 2px rgba(0,0,0,0.8);
+}
+
 </style>
 </head>
 <body>
+<div id="kino-frame">
 
 <!-- 0 ZUGANG -->
 <section class="bild an" id="b0">
@@ -844,11 +892,43 @@ h1, h2, .namensfeld, .k .t u { text-shadow: 1.5px 0px 0.5px var(--rot), -1.5px 0
   <a href="impressum.html">Impressum</a> · <a href="datenschutz.html">Datenschutz</a> ·
   <a href="https://s7v3n.com">S7V3N</a> · <a href="https://eytonland.com">EyTonLand</a></div>
 
+<div id="gedanken"><span></span></div>
+</div>
 <script>
 (function(){
 'use strict';
 const $=id=>document.getElementById(id);
 let bild='b0';
+
+let gedankenTimer = null;
+let idleTimer = null;
+window.denke = function(text, farbe='#fff') {
+  const g = document.getElementById('gedanken');
+  const span = g.querySelector('span');
+  span.textContent = text;
+  span.style.color = farbe;
+  g.classList.add('show');
+  clearTimeout(gedankenTimer);
+  gedankenTimer = setTimeout(() => {
+    g.classList.remove('show');
+  }, 4000);
+};
+
+// Reset Idle Timer on click/mousemove
+document.addEventListener('pointerdown', () => {
+  clearTimeout(idleTimer);
+  idleTimer = setTimeout(() => {
+    const idleGedanken = [
+      "Was mache ich hier eigentlich mit meinem Leben?",
+      "Ein Emu wäre jetzt nicht schlecht...",
+      "Ich sollte mal wieder auf den Kontostand schauen.",
+      "Immer dieser Stress...",
+      "TA$CH€N schläft nie."
+    ];
+    denke(idleGedanken[Math.floor(Math.random()*idleGedanken.length)], '#aaa');
+  }, 30000); // 30 seconds idle
+});
+
 
 /* Tippgerät oder Tastatur? Das Spiel funktioniert auf beiden — nur die Anleitungen
    auf dem Bildschirm passten bisher immer nur zur Tastatur. Auf dem Handy stand
