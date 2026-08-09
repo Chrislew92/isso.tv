@@ -921,6 +921,8 @@ document.addEventListener('pointerdown', () => {
     const idleGedanken = [
       "Es ist nicht immer leicht, aber ich bin an der Sache dran.",
       "Sie beobachten mich.",
+      "Ich kenne hier in Eitelstedt noch niemanden. Völlig undercover.",
+      "Noch bin ich Fußgänger. Aber wenn ich die Harley hab, respektieren die mich.",
       "Es ist nicht immer leicht, aber ich bin an der Sache dran.",
       "Sie beobachten mich.",
       "Was mache ich hier eigentlich mit meinem Leben?",
@@ -2209,6 +2211,17 @@ function abschliessenWoche(z) {
     z.push({t:'Fixkosten: '+eur(-fix)+'.'+(S.woche%5===0?' Und sie steigen weiter.':''),a:'schlecht'});
   }
   const pets = ['hund', 'katze', 'vogel', 'schildkroete', 'maus', 'emu', 'hase'];
+  
+  // Vehicle Upkeep
+  if (S.zimmer && S.zimmer['harley']) {
+      buchen(S, -50, 'Harley-Unterhalt (Sprit/Öl)');
+      z.push({t:'Deine Harley schluckt ordentlich. -50 € Unterhalt.', a:'schlecht'});
+  }
+  if (S.zimmer && S.zimmer['cla']) {
+      buchen(S, -150, 'AMG-Unterhalt (Leasing/Sprit)');
+      z.push({t:'Das Support Car (AMG) kostet dich 150 € diese Woche.', a:'schlecht'});
+  }
+
   const meinPet = S.zimmer ? pets.find(p => S.zimmer[p]) : null;
   
   // Karma & Paranoia Logic
