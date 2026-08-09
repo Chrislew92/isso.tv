@@ -45,18 +45,18 @@
      Einmal am Wert drehen repariert die eine Hälfte und zerschießt die andere.
      Genau das ist beim Versuch passiert. Der Weg raus ist, eine der beiden
      Generationen auf die andere umzuschreiben — nicht diese Zeile. */
-      --tinte: #e2e2e2;
-      --papier: #222327;
+      --tinte: #0d0d0d;
+      --papier: #fcfcfc;
       --kreide: #fff;
       --fett: "Arial Black", "Segoe UI Black", system-ui, sans-serif;
       --sans: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
       --mono: ui-monospace, "Cascadia Mono", Consolas, monospace;
-      --out: 1px solid rgba(255, 255, 255, 0.05);
-      --sh-out: 8px 8px 16px rgba(0, 0, 0, 0.7), -8px -8px 16px rgba(255, 255, 255, 0.04);
-      --sh-in: inset 6px 6px 12px rgba(0, 0, 0, 0.7), inset -6px -6px 12px rgba(255, 255, 255, 0.04);
+      --out: 4px solid var(--tinte);
+      --sh-out: 8px 8px 0px var(--tinte);
+      --sh-in: inset 0px 0px 0px transparent;
       --sh: var(--sh-out);
-      --br: 20px;
-      --br-sm: 10px;
+      --br: 0px;
+      --br-sm: 0px;
     }
 
     * {
@@ -69,7 +69,7 @@
     body {
       height: 100%;
       overflow: hidden;
-      background: #1a1b1f
+      background: var(--papier)
     }
 
     body {
@@ -131,18 +131,18 @@
       border-radius: var(--br);
       box-shadow: var(--sh-out);
       padding: 14px 18px;
-      background: linear-gradient(145deg, #2d2e33, #26272b);
+      background: var(--papier);
       transition: all .2s cubic-bezier(0.2, 0.8, 0.2, 1)
     }
 
     .k:hover:not(:disabled) {
       transform: translateY(-2px);
-      box-shadow: 12px 12px 20px rgba(0, 0, 0, 0.8), -6px -6px 15px rgba(255, 255, 255, 0.05)
+      box-shadow: 12px 12px 0px var(--tinte);
     }
 
     .k:active:not(:disabled) {
-      transform: translateY(1px);
-      box-shadow: var(--sh-in)
+      transform: translateY(2px);
+      box-shadow: 4px 4px 0px var(--tinte);
     }
 
     /* Gesperrt muss man SEHEN, nicht erraten. Vorher nur opacity:.36 — der Knopf
@@ -578,7 +578,8 @@
     #b4 {
       background: radial-gradient(circle at 78% 22%, rgba(255, 62, 165, .28), transparent 46%),
         radial-gradient(circle at 18% 74%, rgba(41, 182, 246, .26), transparent 48%),
-        linear-gradient(160deg, #3a1a72, #1b0f3d 62%, #120a2b)
+        linear-gradient(160deg, #3a1a72, #1b0f3d 62%, #120a2b);
+      color: var(--kreide);
     }
 
     /* Das Raster hing oben in der Ecke. Auf einem 20:9-Handy blieben darunter rund
