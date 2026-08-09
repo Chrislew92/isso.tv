@@ -227,3 +227,40 @@ Aussage im ganzen Spiel: **der Schutz, der dich rettet, hält dich unten.**
 Wer ihn nimmt, stirbt nicht mehr — und kommt fast nicht mehr hoch.
 
 Wer daran dreht, dreht am Kern. Vorher lesen, was oben steht.
+
+## TA$CH€Ns Seite — die fehlende fünfte Tür
+
+Chris am 9.8.2026: *„man muss auch TASCHENs Seite beitreten können, oder?!"*
+und *„ich bin TASCHEN und TASCHEN ist der Bösewicht"* und
+*„ich will aber ein guter Schatten sein!"*
+
+**Halb ist es schon da:** Der rote Weg *ist* seine Seite. Das Ende HIGHROLLER
+sagt es wörtlich — *„Du hast ihn nicht besiegt. Du hast seinen Platz."*
+Und wer sich TA$CH€N nennt, kriegt es beim Start gesagt.
+
+**Aber Rot kommt gerade nicht an.** Gemessen am 9.8.2026 über 112 Läufe:
+48 Siege, **alle auf Blau, keiner auf Rot**. Die Tattoo-Ränge und der
+Maschinen-Unterhalt fressen genau das Kapital, mit dem Rot sonst
+multipliziert. Wer TA$CH€Ns Seite wählt, verliert derzeit immer.
+
+**Bevor man eine fünfte Tür baut, muss die vierte wieder aufgehen.** Sonst
+ist „seiner Seite beitreten" nur ein hübscher Knopf, der ins Nichts führt.
+
+Danach wäre der Ausbau klein: ein eigenes Ende für den, der *sein* Werkzeug
+wird statt sein Nachfolger — und der gute Schatten als dritte Möglichkeit
+neben Nehmen und Bauen. Nicht bauen, bevor Rot wieder trägt.
+
+## Was von außen dazukam (Sitzung 8./9.8.2026)
+
+Eine andere Sitzung hat 29 Commits aufgesetzt: Tattoo-Ränge, Karma,
+Paranoia, Zufallsereignisse, Rap- und Zahlen-Pfade, IronMind-PC.
+
+**Zwei Dinge zum Nachdenken:**
+
+*Der Rap-Pfad* (Hand-, Hals-, Face-Tattoo, Platin-Schallplatte) steht gegen
+Chris' eigene Entscheidung vom 8.8.: *„ich will eigentlich kein rapper mehr
+sein."* Nicht angerührt — das ist seine Entscheidung, nicht meine.
+
+*Der Pillen-Satz* in den Leerlaufgedanken (*„Niemand darf von den Pillen
+wissen"*) steht jetzt auf einer öffentlich erreichbaren Domain, hinter nur
+einem geteilten Passwort. Auch nur notiert.

@@ -2895,8 +2895,12 @@ window.addEventListener('keydown',e=>{
 gottSchalten(gott);   // Schild gleich richtig setzen
 
 window.ISSO={get S(){return S;},perspektive,gott:gottSchalten,
-             set Auftrag(f){ gigSpiel = f || ((d,cb)=>starteMinigame(d,cb)); },
-             get Auftrag(){ return gigSpiel; },BERUFE,SZ,W,TU,ENDEN,waehle,pruefe,waage,vermoegen,
+             /* Heisst weiter gig, nicht Auftrag: das ist die Schnittstelle zum
+                Messen und fuer den spaeteren Zugaenglichkeits-Schalter, kein
+                Text fuer Spieler. Eine Umbenennung hier hat den Pruefstand
+                stillgelegt, ohne dass es jemand gemerkt haette. */
+             set gig(f){ gigSpiel = f || ((d,cb)=>starteMinigame(d,cb)); },
+             get gig(){ return gigSpiel; },BERUFE,SZ,W,TU,ENDEN,waehle,pruefe,waage,vermoegen,
              nimmBeruf,zeigBerufe,zeig,MAXW,ZIEL,JOB,gesperrt,male,ziehe,
              rausgehen,aufstehen,anDerTuer,nah};
 
