@@ -23,6 +23,18 @@
   --gelb:#ffd21e; --pink:#ff3ea5; --cyan:#29b6f6; --orange:#ff7a18;
   --gruen:#7ed321; --lila:#7b2ff7; --nacht:#2a1258;
   --rot:#ff2e4c; --blau:#1ea7ff; --grau:#2a2b30;
+  /* ACHTUNG, bevor hier jemand die Werte tauscht: das geht nicht.
+
+     In 1.0 war --tinte das Schwarz der Outlines und --papier das cremefarbene
+     Papier darunter. Der Neumorphism-Umbau (4118526) hat beide Werte
+     vertauscht, aber die Namen gelassen — --tinte ist seitdem hell.
+
+     Dadurch stehen jetzt zwei Generationen Regeln in derselben Datei:
+       alt  (Spendenfenster, gelbe Kästen, .marke): erwartet --tinte = schwarz
+       neu  (Nacht-Bildschirm, runde Knöpfe, .kasten): erwartet --tinte = hell
+     Einmal am Wert drehen repariert die eine Hälfte und zerschießt die andere.
+     Genau das ist beim Versuch passiert. Der Weg raus ist, eine der beiden
+     Generationen auf die andere umzuschreiben — nicht diese Zeile. */
   --tinte:#e2e2e2; --papier:#222327; --kreide:#fff;
   --fett:"Arial Black","Segoe UI Black",system-ui,sans-serif;
   --sans:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
@@ -37,8 +49,21 @@
 html,body{height:100%;overflow:hidden;background:#1a1b1f}
 body{font-family:var(--sans);color:var(--tinte);-webkit-font-smoothing:antialiased;
      user-select:none;-webkit-tap-highlight-color:transparent}
-.bild{position:absolute;inset:0;opacity:0;pointer-events:none;transition:opacity .45s ease;overflow:hidden}
-.bild.an{opacity:1;pointer-events:auto}
+/* Ein versteckter Bildschirm muss wirklich weg sein, nicht nur durchsichtig.
+
+   pointer-events:none allein reicht nicht: Kinder dürfen es mit
+   pointer-events:auto zurücknehmen, und genau das tun .net-kopf, .chat-kasten,
+   .p-schalt und .str-ui. Ergebnis war, dass die unsichtbare Netzwerk-Stadt
+   über dem Desktop lag und jeden Klick auf die Symbole abfing — die Symbole
+   reagierten nicht, obwohl mit ihnen nichts falsch war.
+
+   visibility vererbt sich und lässt sich von Kindern nur mit einem
+   ausdrücklichen visibility:visible zurückholen. Die 0s-Verzögerung schaltet
+   sie erst nach dem Ausblenden ab, damit die Überblendung bleibt. */
+.bild{position:absolute;inset:0;opacity:0;pointer-events:none;visibility:hidden;
+  transition:opacity .45s ease, visibility 0s linear .45s;overflow:hidden}
+.bild.an{opacity:1;pointer-events:auto;visibility:visible;
+  transition:opacity .45s ease, visibility 0s}
 .punkte{position:absolute;inset:0;pointer-events:none;
   background-image:radial-gradient(circle,rgba(255,255,255,.07) 2px,transparent 2px);background-size:26px 26px}
 
@@ -499,11 +524,18 @@ body.dritte #haende { display:none; }
 /* Nach oben rechts. Unten liegt die Taskleiste des Spiel-Desktops, und dort
    haben diese Schalter Aufstehen und die Uhr zugedeckt — man klickte auf die
    Leiste und traf den Ton-Schalter. */
+/* Kontrast: Diese Schalter standen mit color:var(--papier) auf fast schwarzem
+   Grund — dunkelgrau auf schwarz, rund 1,2:1. Da stand Text, man sah ihn nur
+   nicht. Im Hover war es umgekehrt falsch: --tinte (hell) auf knallgelb.
+   Beide Regeln stammen aus der Zeit, als --tinte noch die dunkle Tinte war;
+   seit dem Neumorphism-Umbau (4118526) sind die zwei Werte vertauscht. Hier
+   steht jetzt die Farbe explizit, damit die Schalter unabhängig davon lesbar
+   bleiben, wie die Palette am Ende ausgeht. */
 .ton-schalt{position:absolute;right:8px;top:8px;z-index:120;cursor:pointer;
   font-family:var(--mono);font-size:10px;letter-spacing:.1em;
-  color:var(--papier);background:rgba(13,13,13,.85);border:2px solid var(--tinte);
+  color:var(--kreide);background:rgba(13,13,13,.85);border:2px solid var(--kreide);
   padding:5px 10px}
-.ton-schalt:hover{background:var(--gelb);color:var(--tinte)}
+.ton-schalt:hover{background:var(--gelb);color:#0d0d0d;border-color:#0d0d0d}
 .ton-schalt[aria-pressed="true"]{border-style:dashed;opacity:.8}
 .marke{position:absolute;left:8px;bottom:5px;z-index:99;font-family:var(--mono);font-size:9px;
   letter-spacing:.15em;color:#8a86a0;max-width:calc(100vw - 20px)}
@@ -621,11 +653,15 @@ body {
       <button type="submit">Start</button>
     </form>
     <div class="warnt">
-      <b>⚠ Passwortgeschützt · mit Alarm</b>
-      Ohne Kennung geht hier nichts. Nach mehreren Fehlversuchen ertönt ein
-      lautes Signal und der Zugang wird gesperrt — die Sperre verdoppelt sich
-      jedes Mal. <b>Ton vorher leiser stellen.</b> Der Schalter unten rechts
-      stellt ihn ganz ab.
+      <b>⚠ Vorhang, kein Schloss</b>
+      Hier steht eine Kennung davor, damit nicht jeder aus Versehen
+      hereinstolpert. Mehr ist es nicht: Das hier läuft ohne Server, und was
+      ohne Server läuft, kann man sich mit genug Geduld ansehen. Wer das
+      unbedingt will, schafft es. <b>Es wird nichts mitgeschrieben und nichts
+      zurückgeschickt.</b>
+      Nach mehreren Fehlversuchen ertönt ein lautes Signal und das Tor bleibt
+      zu — die Sperre verdoppelt sich jedes Mal. <b>Ton vorher leiser
+      stellen.</b> Der Schalter unten rechts stellt ihn ganz ab.
     </div>
     <div class="err" id="pw-err" style="display:none">Passwort inkorrekt</div>
     <div class="abwehr" id="abwehr" hidden>
@@ -929,10 +965,8 @@ document.addEventListener('pointerdown', () => {
       "Die 444er kennt keiner. Deshalb heißen sie so. Angeblich sind sie überall.",
       "Die 666er nennen sich Satanisten. Ob sie's glauben, weiß keiner — Angst machen sie trotzdem.",
       "Vier Zahlen, vier Türen. Ich stehe vor allen vieren und keine geht auf.",
-      "Niemand darf von den Pillen wissen. Mein kleines Geheimnis.",
       "Sie beobachten mich.",
       "Ich kenne von den 777ern niemanden persönlich. Aber ich würde alles für die Jungs tun. Alles.",
-      "Ich gehe einfach direkt zum Clubhaus. 'Stecht mir eine 777 auf die Brust', werde ich sagen.",
       "Noch bin ich Fußgänger. Aber wenn ich die Maschine hab, respektieren die mich.",
       "Es ist nicht immer leicht, aber ich bin an der Sache dran.",
       "Sie beobachten mich.",
@@ -1007,6 +1041,19 @@ function zeig(id){
 /* ========== ZUGANG ========== */
 const SALT='isso.tv/kanal/', KEY='isso.tv.kanal';
 const WANT='041c7f58e0c844bbb3e659bc4b364e4ef666fe40dfe2c2d9e5fc0cef5993af50';
+/* Nebenkennungen. Hier standen vorher zwei Codes im Klartext direkt in der
+   Bedingung — wer den Quelltext aufmachte, las sie mit. Jetzt stehen nur noch
+   ihre Hashes da, gesalzen wie WANT.
+
+   Ehrlich bleibt: das ist weiterhin ein Vorhang, kein Schloss. Kurze Kennungen
+   lassen sich gegen einen bekannten Salt in Sekunden durchprobieren, und der
+   Eintrag in localStorage lässt sich von Hand setzen. Was sich ändert: man
+   bekommt sie nicht mehr geschenkt, indem man Strg+U drückt.
+
+   Sobald du sicher bist, dass die Hauptkennung sitzt, kann diese Liste leer
+   werden — dann ist nur noch WANT der Weg hinein. */
+const AUCH=['c3982219817a9ae1ead868d7d3cda80bc864802df925753c4b0aa801bcc04ca0',
+            '3a628e6e0d8989dedb5e8e949edf40a91f6904b0ff208bbb9d35ad86bae5a8c3'];
 async function hash(v){
   const b=await crypto.subtle.digest('SHA-256',new TextEncoder().encode(SALT+v.trim().toUpperCase()));
   return [...new Uint8Array(b)].map(x=>x.toString(16).padStart(2,'0')).join('');
@@ -1047,8 +1094,7 @@ $('tor').addEventListener('submit',async e=>{
   e.preventDefault();
   if(Date.now()<torFrei) return;              // Sperre läuft noch
   let d=null; try{ d=await hash($('pw').value); }catch(x){}
-  const val = $('pw').value.trim().toUpperCase();
-  if(d===WANT || val === 'MBC' || val === 'EMBCE'){ try{localStorage.setItem(KEY,WANT);}catch(x){} zeig('b1'); }
+  if(d && (d===WANT || AUCH.indexOf(d)>=0)){ try{localStorage.setItem(KEY,WANT);}catch(x){} zeig('b1'); }
   else{ $('b0').classList.add('bad'); $('pw').value=''; $('pw').focus();
         /* Wer hier fremd ist, kriegt den Ton. Der gehörte vorher ans normale
            Monitor-Einschalten und traf damit jeden — jetzt trifft er den,
@@ -1268,6 +1314,10 @@ function schwarzmarktAuf() {
 function oeffne(was){
   if(was==='spiel'){
     if(spielLaeuft){ zeig('b7'); male(); return; }   // läuft schon -> weiterspielen
+    /* Kein Lauf im Speicher, aber vielleicht einer auf der Platte. ziehe()
+       muss danach sein: der geladene Stand hat keine Szene, die wird aus
+       Tag und Woche neu gewürfelt. */
+    if(spielLaden()){ ziehe(); zeig('b7'); male(); return; }
     zeig('b5'); comicStart(); return;
   }
   if(was==='boerse'){ boerseAuf(); return; }
@@ -1779,6 +1829,48 @@ const FRISCH=j=>({ woche:1,job:j,geld:-SCHULDEN,nerven:BERUFE[j].nerven,zed:0,ze
   joker:JOKER,verlauf:[],gesehen:{},krank:KRANK_START,pkonto:0,insolvenz:0, zeeKurs:1400, tuerBlocker:false, mietHack:0, auszuege:[],
   zusammen:0,mahnung:0});
 let S=FRISCH(0);
+
+/* ---------- Spielstand ----------
+   S lebte bisher nur im Arbeitsspeicher. Tab zu, Rechner aus, Browser stürzt
+   ab — der ganze Lauf war weg, mitten in Woche 14. Das ist der einzige Weg,
+   auf dem man in diesem Spiel etwas verlieren kann, das nicht vorgesehen war.
+
+   Was NICHT mitgespeichert wird: S.szene. Die zeigt auf einen Eintrag aus SZ,
+   und der trägt Funktionen (ok(S), f(S,win)). Funktionen überleben JSON nicht
+   — sie kämen als undefined zurück und das Spiel liefe in einen Fehler.
+   Stattdessen wird die Szene beim Weiterspielen über ziehe() neu gezogen.
+   Das darf man, weil die Weltuhr genau dafür da ist: derselbe Tag und
+   dieselbe Woche ergeben denselben Wurf. Wer am nächsten Tag weitermacht,
+   bekommt das Blatt des neuen Tages — auch das ist die Regel, nicht die
+   Ausnahme. Die Zeit ist der Server.
+
+   Alles hier ist in try/catch. Wenn der Browser localStorage verweigert
+   (privates Fenster, volle Quote), soll das Spiel weiterlaufen wie vorher
+   und nicht stehenbleiben. */
+const SKEY='isso.tv.spiel';
+function spielSpeichern(){
+  if(!spielLaeuft || S.ende) return;
+  try{
+    const kopie={}; for(const k in S){ if(k!=='szene') kopie[k]=S[k]; }
+    localStorage.setItem(SKEY, JSON.stringify(
+      {v:1, tag:saison(), name:spielerName, safe:safeID, S:kopie}));
+  }catch(e){}
+}
+function spielLaden(){
+  let d=null;
+  try{ d=JSON.parse(localStorage.getItem(SKEY)||'null'); }catch(e){ return false; }
+  if(!d || d.v!==1 || !d.S || typeof d.S.woche!=='number') return false;
+  /* Über FRISCH drüberlegen, nicht ersetzen: kommt später ein Feld dazu, hat
+     ein alter Stand es nicht, und dann fehlt es still. So ist der Vorgabewert
+     immer da. */
+  S=Object.assign(FRISCH(d.S.job||0), d.S);
+  S.szene=null;
+  spielerName=d.name||''; safeID=d.safe||'';
+  spielLaeuft=true;
+  return true;
+}
+function spielVergessen(){ try{ localStorage.removeItem(SKEY); }catch(e){} }
+
 const waage=()=>{const g=S.rot+S.blau;return g?(S.blau-S.rot)/g:0;};
 const hausWert=b=>Math.round(b*KX*JOB().haus);
 /* Der Staub zählt mit. Sonst saugt man stundenlang und es war für nichts. */
@@ -2388,13 +2480,18 @@ function waehle(i){
         if(w.w==='rot') S.rot+=2; if(w.w==='blau') S.blau+=2;
         const txt = w.f(S, win);
         abschliessenWoche([{t:txt, a:w.w}]);
+        spielSpeichern();
      });
      return;
   }
-  
+
   merke();
   if(w.w==='rot') S.rot+=2; if(w.w==='blau') S.blau+=2;
   abschliessenWoche([{t:w.f(S, true),a:w.w}]);
+  /* Nach jeder abgeschlossenen Woche wegschreiben. Die Woche ist die
+     natürliche Einheit — mitten in einer Entscheidung gibt es nichts, was
+     sich zu sichern lohnt. */
+  spielSpeichern();
 }
 function abschliessenWoche(z) {
   const faellig=S.haeuser.filter(h=>h.f<=S.woche);
@@ -2438,9 +2535,14 @@ function abschliessenWoche(z) {
       S.karma = (S.karma || 0) + 1;
   }
   
-  // High karma creates good events but spikes paranoia
-  if (S.karma > 5 && Math.random() < 0.3) {
-      const geschenk = 100 + Math.floor(Math.random() * 400);
+  /* Hohes Karma bringt gute Ereignisse und treibt die Paranoia hoch.
+
+     Beide Würfe kommen aus zuf(), nicht aus Math.random(). Hier fällt Geld an,
+     und Geld ist spielentscheidend — käme das aus der Deko-Quelle, hätten zwei
+     Leute am selben Tag verschiedene Kontostände, und die Weltuhr wäre nur
+     noch Behauptung. Siehe die Trennung oben bei zuf()/deko(). */
+  if (S.karma > 5 && zuf() < 0.3) {
+      const geschenk = 100 + Math.floor(zuf() * 400);
       buchen(S, geschenk, 'Zufällige Gutschrift');
       z.push({t:'Ein Unbekannter hat dir '+eur(geschenk)+' geschickt. Das Universum meint es gut.', a:'gut'});
       S.paranoia = (S.paranoia || 0) + 2;
@@ -2456,10 +2558,14 @@ function abschliessenWoche(z) {
       document.body.style.animation = 'flicker 0.1s 5';
       setTimeout(() => { document.body.style.animation = ''; }, 500);
 
-      const schaden = 200 + Math.floor(Math.random() * 800);
+      /* Auch hier zuf(): der Schaden geht aufs Konto, die Nerven sind eine
+         Spielgröße. Die Bars-Zeile ist zwar nur Text, zieht aber trotzdem aus
+         derselben Quelle — sonst läse sich der Wochenbericht bei zwei Leuten
+         am selben Tag verschieden. */
+      const schaden = 200 + Math.floor(zuf() * 800);
       buchen(S, -schaden, 'Wahnhafter Kauf (Panik)');
       S.nerven = Math.max(0, S.nerven - 3);
-      if(Math.random()<0.5) z.push({t:'Du hast im Wahn spontan 16 Bars gerappt.', a:'grau'});
+      if(zuf()<0.5) z.push({t:'Du hast im Wahn spontan 16 Bars gerappt.', a:'grau'});
       z.push({t:'Psychose-Schub! Du schiebst Filme und hast im Wahn für '+eur(schaden)+' Zeug gegen die Stalker gekauft.', a:'schlecht'});
       if(typeof window.denke==='function') window.denke('Scheiße, ich bin zu berühmt. Ich droppe gleich ungewollt Bars.', 'var(--rot)');
   }
@@ -2694,6 +2800,10 @@ function male(z){
   }).join('');
 }
 function zeigeEnde(){
+  /* Der Lauf ist vorbei — ab hier gibt es nichts mehr fortzusetzen. Bliebe
+     der Stand liegen, käme man beim nächsten Öffnen in ein beendetes Spiel
+     zurück statt in die Berufswahl. */
+  spielVergessen();
   const e=ENDEN[S.ende];
   const x = S.ende==='zeit'
     ? 'Silvester. Zusammen hast du '+eur(vermoegen())+'.<br><br><b>Nicht die 50.000. Aber auch nicht nichts.</b>'
