@@ -615,7 +615,7 @@ body {
   <div class="graffiti">BLUSTERS!</div>
   <div style="position:relative;z-index:2">
     <div class="mark">ISSO.TV</div>
-    <div class="sub">VERZWEIFLUNGSSIMULATOR PROTOTYP</div>
+    <div class="sub" id="untertitel">VERZWEIFLUNGSSIMULATOR PROTOTYP</div>
     <form id="tor" autocomplete="off">
       <input type="text" id="pw" maxlength="10" placeholder="ISSO.TV">
       <button type="submit">Start</button>
@@ -1665,6 +1665,11 @@ $('b5').addEventListener('click',comicWeiter);
    1.7.2026 rund 1.590 € (§ 850c ZPO, vorher 1.560). Im Spiel 1.500, weil
    hier runde Zahlen gelten — nah genug, und man erkennt die Größenordnung.
    Vorher standen 1.000 € drin, das war deutlich zu niedrig. */
+/* Version. Gab es bisher nicht — man konnte nicht sagen, welchen Stand man
+   vor sich hat, und genau das hat schon Verwirrung gekostet (alte Seite im
+   Browser gegen neuen Stand auf der Platte). Steht jetzt am Eingang und in
+   der Fußzeile. 1.0 ist der Tag, an dem isso.tv wirklich online ging. */
+const VERSION='1.0';
 const ZIEL=50000, KW=6, KX=4.0, JOKER=3, PSCHUTZ=1500;
 
 /* ALLE STARTEN GLEICH. Das ist Absicht, nicht Bequemlichkeit.
@@ -1854,6 +1859,17 @@ const TU={
    return 'P-Konto beantragt. '+eur(PSCHUTZ)+' sind unantastbar — steht so im Gesetz.<br>'+
      'Dafür ist der Dispo weg. Du kannst nicht mehr ins Minus, und über mehr als '+
      eur(PSCHUTZ)+' verfügst du auch nicht. Der Rest liegt da und guckt dich an.';},
+ /* Das P-Konto wieder zurückgeben. Gibt es in echt, und im Spiel war es
+    bitter nötig: mit P-Konto gewann von 70 roten Läufen kein einziger, ohne
+    waren es 15. Der Schutz deckelt den Zugriff auf 1.500 €, und genau davon
+    lebt Rot. Vorher war das eine Sackgasse ohne Ausgang.
+
+    Die Option wegzunehmen wäre der falsche Weg gewesen — es sollen ja mehr
+    Antworten dastehen, nicht weniger. Also ein Ausgang statt einer Sperre. */
+ pkontoWeg:s=>{
+   s.pkonto=0; s.nerven=cl(s.nerven-1,0,10);
+   return 'Konto zurückgestellt. Du kommst wieder an alles ran — und der Dispo ist auch wieder da.<br>'+
+     '<b>Und er auch.</b> Ab jetzt greift dich wieder jeder an, der die Hand aufhält.';},
  insolvenz:s=>{const w=s.geld; buchen(s, -s.geld, 'Insolvenz (Kontopfändung)'); s.haeuser=[]; s.insolvenz=9; s.nerven=cl(s.nerven+2,0,10);
    return 'Privatinsolvenz. '+eur(-w)+' Schulden weg — und deine Häuser auch. Neun Wochen stillhalten.';}
 };
@@ -1874,6 +1890,8 @@ const W={
     gleichzeitig — wer nur "unpfändbar" liest, tappt in eine Falle. */
  pkonto:t=>({u:'P-KONTO BEANTRAGEN',p:'sicher, aber nur '+eur(PSCHUTZ)+' verfügbar · kein Dispo',
    w:'blau',e:t,f:TU.pkonto}),
+ pkontoWeg:t=>({u:'P-KONTO ZURÜCKGEBEN',p:'wieder voller Zugriff · aber er kommt auch wieder ran',
+   w:'rot',e:t,f:TU.pkontoWeg}),
  insolvenz:t=>({u:'PRIVATINSOLVENZ',p:'Schulden weg · Häuser weg',w:'grau',e:t,f:TU.insolvenz}),
  job:(id,label,hinweis,txt,folge)=>({u:label,p:hinweis,w:'job',e:txt,f:wechsel(id,folge)})
 };
@@ -1899,6 +1917,11 @@ const SZ=[
   w:[W.setzen('Groß einsteigen.'),W.haus('Nein danke.'),W.idee('Klein einsteigen und zugucken.')]},
  {id:'brief',ok:s=>s.geld<600&&s.geld>=-400&&!s.pkonto,t:'Wieder ein Brief mit Fenster. Du machst ihn nicht auf.<br><em>Nächste Woche kommt der nächste.</em>',
   w:[W.pkonto('Zur Bank, Konto umstellen lassen.'),W.arbeit('Doppelschicht.'),W.setzen('Den Rest setzen.')]},
+ /* Der Ausgang aus dem P-Konto. Kommt erst, wenn wirklich Geld feststeckt —
+    vorher wäre die Frage sinnlos, weil man den Deckel gar nicht spürt. */
+ {id:'gedeckelt',ok:s=>s.pkonto&&s.geld>PSCHUTZ+500,
+  t:'Auf dem Kontoauszug steht mehr, als du ausgeben kannst. Der Rest ist da und gehört dir und liegt trotzdem fest.<br><em>Geschützt ist nicht dasselbe wie deins.</em>',
+  w:[W.pkontoWeg('Reicht. Konto zurückstellen lassen.'),W.haus('Was rangeht, in Beton.'),W.ruhe('Damit leben. Wie bisher.')]},
  {id:'bank',ok:s=>!s.pkonto&&s.woche>=3,t:'Die Frau bei der Bank sagt es dir von selbst: <em>Sie können das Konto umstellen lassen.</em><br><em>Kostet nichts. Man muss nur wissen, dass es das gibt.</em>',
   w:[W.pkonto('Umstellen lassen.'),W.arbeit('Später. Erst Schicht.'),W.idee('Später. Erst die Idee.')]},
  {id:'pleite',ok:s=>s.geld<-400&&!s.insolvenz,t:'Der Brief ist diesmal vom Gerichtsvollzieher. Er war schon zweimal da.<br><em>Es gibt einen Weg raus. Er dauert Jahre.</em>',
@@ -2308,6 +2331,16 @@ function ziehe(){
     S.szene.w = [...S.szene.w, rotDrauf
       ? W.einbruch('Du weißt, wo diese Woche keiner zuhause ist.')
       : W.idee('Nebenbei an der eigenen Sache weiterbauen.')];
+  }
+
+  /* Wenn Geld hinterm Pfändungsschutz feststeckt, steht der Ausgang ab
+     sofort in JEDER Woche zur Wahl — nicht nur, wenn die passende Szene
+     zufällig kommt. Sonst sitzt man fest, ohne dass es je zur Frage wird:
+     mit P-Konto gewann von 70 roten Läufen kein einziger, ohne 15. */
+  if(S.pkonto && S.geld > PSCHUTZ + 500 &&
+     !S.szene.w.some(x=>x.u==='P-KONTO ZURÜCKGEBEN')){
+    S.szene = Object.assign({}, S.szene);
+    S.szene.w = [...S.szene.w, W.pkontoWeg('Der Rest liegt fest. Konto zurückstellen lassen.')];
   }
   S.letzte=S.szene.id;
 }
@@ -2877,6 +2910,15 @@ function endeMinigame(win) {
 
 /* Ego ist Standard. Wer einmal auf Schulter stellt, kriegt es wieder. */
 try{ if(localStorage.getItem('isso.tv.sicht')==='3') perspektive(true); }catch(e){}
+
+/* Version sichtbar machen — am Eingang und in der Fußzeile. Damit kann man
+   auf einen Blick sagen, welchen Stand man vor sich hat. */
+(function(){
+  const u=$('untertitel');
+  if(u) u.textContent='VERZWEIFLUNGSSIMULATOR · V'+VERSION;
+  const m=document.querySelector('.marke');
+  if(m) m.insertAdjacentHTML('afterbegin','V'+VERSION+' · ');
+})();
 
 /* G-O-T-T hintereinander tippen. Läuft überall, auch mitten im Spiel. */
 let gottTipp='';

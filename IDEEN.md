@@ -264,3 +264,31 @@ sein."* Nicht angerührt — das ist seine Entscheidung, nicht meine.
 *Der Pillen-Satz* in den Leerlaufgedanken (*„Niemand darf von den Pillen
 wissen"*) steht jetzt auf einer öffentlich erreichbaren Domain, hinter nur
 einem geteilten Passwort. Auch nur notiert.
+
+## Stand V1.0 — was gemessen ist (9.8.2026)
+
+Das Spiel trägt jetzt eine Versionsnummer. Gab es vorher nicht, und genau das
+hat Verwirrung gekostet: alte Seite im Browser gegen neuen Stand auf der Platte.
+Sie steht am Eingang und in der Fußzeile.
+
+**Balance, je 70 Läufe pro Weg:**
+
+| Weg | schafft die 50.000 |
+|---|---|
+| Blau (bauen, Häuser) | **86 %** |
+| Rot, meidet das P-Konto | **16 %** |
+| Rot, nimmt das P-Konto | **0 %** |
+| gedankenlos durchklicken | **0 %** |
+
+**Das P-Konto ist für Rot eine Falle — und das bleibt so.** Der Schutz deckelt
+den Zugriff auf 1.500 €, und genau davon lebt das Multiplizieren. Es ist keine
+versteckte Falle: am Knopf stehen beide Seiten (*„sicher, aber nur 1.500 €
+verfügbar · kein Dispo"*), und seit V1.0 gibt es einen **Ausgang** —
+`P-KONTO ZURÜCKGEBEN` taucht ab 2.000 € festliegendem Geld in jeder Woche auf.
+
+Die Option wegzunehmen wäre falsch gewesen. Chris' Regel: *„ich wollte nur
+genug Antwortmöglichkeiten bieten."* Also ein Ausgang statt einer Sperre.
+
+**Blau ist der sichere Weg, Rot der schnelle.** 86 gegen 16 Prozent sieht schief
+aus, ist aber die Identität: Rot heißt alles oder nichts. Wer daran dreht,
+dreht zuerst an KX (Häuser-Hebel) für Blau und an der SETZEN-Auszahlung für Rot.
