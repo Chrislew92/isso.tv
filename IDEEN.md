@@ -102,7 +102,9 @@ Dafür bräuchte es einen Illustrator oder fertige PNGs zum Einhängen.
 
 - **2.5D-Allee** — flache Ebenen mit Parallaxe. Passt zum Stil, geht im Browser,
   taugt später für VR. Echtes 3D würde die flache Optik kaputtmachen.
-- Live gehen auf isso.tv (DNS bei STRATO — das kann nur Chris)
+- ~~Live gehen auf isso.tv~~ — **erledigt 09.08.2026.** Nameserver von STRATO auf
+  Cloudflare umgestellt, Zone aktiv, `isso.tv` + `www.isso.tv` als Custom Domains am
+  Pages-Projekt `isso-tv`. Registrierung bleibt bei Cronon/STRATO.
 - Echtzeit-Modus: ein Zug pro Tag, ja oder nein
 
 ---

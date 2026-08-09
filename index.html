@@ -1043,9 +1043,14 @@ function spendeAuf(){
           '<p style="margin-top:10px;font-size:11.5px;opacity:.65;font-weight:400">'+
           'Der Link führt zu einem anderen Anbieter. Dort gelten dessen Bedingungen '+
           'und dessen Datenschutz — von hier geht nichts mit.</p>'
+        /* Fallback fuer Besucher, NICHT fuer mich. Hier stand vorher "In index.html bei
+           SPENDE_URL die eigene Seite eintragen" — eine Notiz an mich selbst, die jeder
+           gelesen hat, der auf "unterstuetzen" geklickt hat. Peinlich und unnoetig:
+           Wer spenden will, kann nichts dafuer, dass ich noch kein Konto habe. */
         : '<div style="margin-top:16px;background:var(--gelb);border:3px solid var(--tinte);'+
-          'padding:12px 14px;font-size:13px">Noch nicht eingerichtet. '+
-          'In <b>index.html</b> bei <b>SPENDE_URL</b> die eigene Seite eintragen.</div>')+
+          'padding:12px 14px;font-size:13px">Gerade gibt es keinen Weg, was dazulassen — '+
+          'da ist noch nichts eingerichtet. Macht aber nichts: Das Spiel ist vollständig, '+
+          'dir fehlt nichts.</div>')+
     '</div></div>';
   $('fenster').querySelector('.kopf button').onclick=()=>$('fenster').innerHTML='';
   const aus=$('spOff');
