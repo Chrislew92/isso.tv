@@ -1,4 +1,4 @@
-<!doctype html>
+﻿<!doctype html>
 <html lang="de">
 <head>
 <meta charset="utf-8">
@@ -1168,13 +1168,13 @@ $('aufstehen').addEventListener('click',aufstehen);
 
 
 const ZIMMER_ITEMS = [
-  {id:'rank1_rocker', name:'Kleines Zeichen (Arm)', preis:150, woche:1, desc:'Ein kleines 777er-Logo. Du darfst im Clubhaus fegen und Getränke holen. Schaltet "Hangaround"-Gigs frei.'},
+  {id:'rank1_rocker', name:'Kleines Zeichen (Arm)', preis:150, woche:1, desc:'Ein kleines 777er-Logo. Du darfst im Clubhaus fegen und Getränke holen. Schaltet "Hangaround"-AUFTRÄGE frei.'},
   {id:'rank2_rocker', name:'Anwärter-Zeichen (Brust)', preis:350, woche:2, desc:'Du hast bewiesen, dass du dazugehörst. Du bist Anwärter. Schaltet "Kurierfahrten" frei.'},
   {id:'rank3_rocker', name:'Die volle Zahl (Hals)', preis:600, woche:5, desc:'Vollwertiges Mitglied der 777er. Jetzt bist du gefährlich. (Vorbedingung für die Maschine)'},
   {id:'rank4_rocker', name:'Enforcer-Rückenstück', preis:1500, woche:10, desc:'Du bist der fürs Grobe. Schaltet das Support Car (Mercedes AMG) und Enforcer-Missionen frei.'},
   
   {id:'rank1_rap', name:'Hand-Tattoo "MIC"', preis:150, woche:1, desc:'Erstes Tattoo für deinen Producer-Hustle. Schaltet die MPC-Beatmaschine frei.'},
-  {id:'rank2_rap', name:'Hals-Tattoo "NOTEN"', preis:350, woche:2, desc:'Du machst dir einen Namen. Schaltet erste Ghostwriting-Gigs frei.'},
+  {id:'rank2_rap', name:'Hals-Tattoo "NOTEN"', preis:350, woche:2, desc:'Du machst dir einen Namen. Schaltet erste Ghostwriting-AUFTRÄGE frei.'},
   {id:'rank3_rap', name:'Face-Tattoo "BARS"', preis:600, woche:5, desc:'Der echte Rapper-Status. Du traust dich was. Schaltet "Beat Placements" frei.'},
   {id:'rank4_rap', name:'Platin-Schallplatte', preis:1500, woche:10, desc:'Dein erster großer Durchbruch. Der Weg zur goldenen Kette ist frei.'},
 
@@ -1672,7 +1672,7 @@ const ZIEL=50000, KW=6, KX=4.0, JOKER=3, PSCHUTZ=1500;
    Null Euro, 500 € Schulden, krankgeschrieben seit dem 9. März — und damit
    längst im Krankengeld, die sechs Wochen Lohnfortzahlung sind durch.
    Krankengeld richtet sich nach dem Job, den man vorher hatte, nicht nach
-   dem Gig, den man sich hier aussucht. Deshalb ist es für alle dieselbe
+   dem Auftrag, den man sich hier aussucht. Deshalb ist es für alle dieselbe
    Zahl, und deshalb bringt die Berufswahl am Anfang genau nichts.
    Man startet nicht mit einem Vorsprung. Man startet unten. */
 const SCHULDEN=1000, KRANK_START=4, KRANKENGELD=300;
@@ -1741,7 +1741,7 @@ const BERUFE=[
   p:'300 € · schont die Nerven',  lohn:300, nerv:.25, idee:1.45, haus:1.00, geld:0, nerven:8},
  {id:'scraping',n:'Code-Scraping',e:'Skripte schreiben, die Daten abgreifen. Monoton aber sicher.',
   p:'180 € · sicheres Ding',      lohn:180, nerv:.35, idee:1.00, haus:1.25, geld:0, nerven:7},
- {id:'ohne',   n:'Ohne Gigs',     e:'Kein Auftrag, kein Geld. Aber der Tag gehört dir.',
+ {id:'ohne',   n:'Ohne Aufträge',     e:'Kein Auftrag, kein Geld. Aber der Tag gehört dir.',
   /* 130 €/Woche = 563 €/Monat, der echte Regelsatz 2026 (Stufe 1, allein
      lebend). Für 2026 gab es eine Nullrunde, er ist also nicht gestiegen.
      Vorher standen hier 150 €, das wären ~650 € gewesen. */
@@ -1791,7 +1791,7 @@ const verfuegbar=s=> s.pkonto ? Math.max(0,Math.min(s.geld,PSCHUTZ)) : s.geld;
 const TU={
  arbeit:s=>{const B=JOB();
    if(s.krank>0) return 'Du bist krankgeschrieben. Keine Aufträge diese Woche.';
-   if(!B.lohn) return 'Keine Gigs. Du füllst den Tag anders.';
+   if(!B.lohn) return 'Keine AUFTRÄGE. Du füllst den Tag anders.';
    buchen(s, B.lohn, 'Gehalt: ' + B.n); if(zuf()<B.nerv)s.nerven=cl(s.nerven-1,0,10);
    return eur(B.lohn)+' extra. Die Augen brennen vom Bildschirm, aber das Geld liegt da.';},
  ruhe:s=>{s.nerven=cl(s.nerven+3,0,10);
@@ -1816,18 +1816,18 @@ const TU={
    const e=rund(frei*.3); buchen(s, -e, 'Investition');
    if(zuf()<.5){
      const g=rund(e*(4+rotAnteil*2));                 // ×4 bis ×6
-     buchen(s, g, 'Gig (Erfolg)');
+     buchen(s, g, 'Auftrag (Erfolg)');
      return 'Und es geht auf. Auf einmal hast du '+eur(g-e)+' mehr als vorhin.';}
    s.nerven=cl(s.nerven-1,0,10);
    return 'Weg. '+eur(e)+', einfach so. Du stehst danach noch zwei Minuten da und guckst.';},
  idee:s=>{
    /* Selten mal zäh — aber nie eine komplett verbrannte Woche. */
-   if(zuf()<.12){ const k=rund(rn(100,300)); buchen(s, k, 'Grafik-Gig (Bonus)');
+   if(zuf()<.12){ const k=rund(rn(100,300)); buchen(s, k, 'Grafik-Auftrag (Bonus)');
      return 'Zäh diesmal. Am Ende nur '+eur(k)+', aber nicht nichts.'; }
    /* 30 %, nicht 40. Bei 40 kamen kluge Spieler auf 82 % — über zwanzig
       Wochen fällt jeder Prozentpunkt hier enorm ins Gewicht, viel mehr als
       Startgeld oder Schulden. Wer an der Balance dreht, dreht zuerst hier. */
-   const g=rund((rn(500,1000)+Math.max(0,s.geld)*.30)*JOB().idee); buchen(s, g, 'Gig (Erfolg)');
+   const g=rund((rn(500,1000)+Math.max(0,s.geld)*.30)*JOB().idee); buchen(s, g, 'Auftrag (Erfolg)');
    return 'Läuft. '+eur(g)+', und keiner hat blöd gefragt.';},
  haus:s=>{
    const frei=verfuegbar(s);
@@ -1861,7 +1861,7 @@ const TU={
 const wechsel=(zielId,txt)=>s=>{ s.job=jobIndex(zielId); s.nerven=cl(s.nerven+1,0,10); return txt; };
 
 const W={
- arbeit:t=>({u:'GIGS MACHEN',p:'',w:'grau',e:t,f:TU.arbeit}),
+ arbeit:t=>({u:'AUFTRAG ANNEHMEN',p:'',w:'grau',e:t,f:TU.arbeit}),
  ruhe:t=>({u:'AUSRUHEN',p:'Nerven +3',w:'grau',e:t,f:TU.ruhe}),
  setzen:t=>({u:'SETZEN',p:'30 % rein · 50 % auf 3×',w:'rot',e:t,f:TU.setzen}),
  einbruch:t=>({u:'BEI JEMANDEM EINSTEIGEN',p:'viel Geld · −1 Nerv',w:'rot',e:t,f:TU.einbruch}),
@@ -1917,11 +1917,11 @@ const SZ=[
  /* ---- Jobs kommen und gehen ---- */
  {id:'raus',ok:s=>s.job!==jobIndex('ohne')&&s.woche>=5&&s.krank===0,
   t:'Dein Haupt-Auftraggeber bricht weg. Die Mail kam nachts.<br><em>Es geht nicht um dich, schreibt er. Die KI macht es jetzt billiger.</em>',
-  w:[W.job('ohne','Aufgeben','erstmal ohne Gigs','Laptop zuklappen.','Draußen ist es hell. Merkwürdiges Gefühl, dienstags um zehn.'),
+  w:[W.job('ohne','Aufgeben','erstmal ohne AUFTRÄGE','Laptop zuklappen.','Draußen ist es hell. Merkwürdiges Gefühl, dienstags um zehn.'),
      W.arbeit('Neue Kunden suchen.'),W.idee('Pause machen — und die eigene Idee endlich bauen.')]},
  {id:'angebot',ok:s=>s.woche>=4,
   t:'Einer aus dem Forum fragt, ob du für ihn Logos auf Fiverr übernimmst.<br><em>Mehr Geld. Und du bist nie vor acht vom Rechner weg.</em>',
-  w:[W.job('grafik','Logo-Design','350 € · härtere Kunden','Den Gig annehmen.','Neuer Fokus. Mehr Geld, weniger Abend.'),
+  w:[W.job('grafik','Logo-Design','350 € · härtere Kunden','Den Auftrag annehmen.','Neuer Fokus. Mehr Geld, weniger Abend.'),
      W.job('scraping','Lieber Scraping','180 € · ruhiger','Nein. Etwas Ruhigeres suchen.','Weniger Geld. Du schläfst wieder durch.'),
      W.arbeit('Bleiben, was du machst.')]},
  {id:'umschulung',ok:s=>(s.krank>0||s.job===jobIndex('ohne'))&&s.woche>=6&&s.job!==jobIndex('agent'),
@@ -2054,7 +2054,7 @@ const SZBILD={
   '<g fill="var(--papier)"><circle cx="190" cy="28" r="2.5"/><circle cx="205" cy="42" r="2"/>'+
   '<circle cx="176" cy="46" r="2"/><circle cx="198" cy="80" r="2.5"/></g>',
 
- /* Gig-Board */
+ /* Auftragsbrett */
  still:HG('var(--cyan)')+
   '<g class="o" fill="var(--papier)">'+
   '<rect x="34" y="24" width="68" height="62"/><rect x="116" y="24" width="68" height="62"/>'+
@@ -2153,13 +2153,13 @@ function generiereGigs() {
    const B = JOB();
    if (!B.lohn) return [W.ruhe('Nichts da. Tag rumkriegen.'), W.idee('Nachrechnen, wo was zu holen wäre.')];
    
-   const namen = GIG_NAMEN[B.id] || ['Einfacher Gig', 'Standard Gig', 'Rush Job'];
-   const gigs = [];
+   const namen = GIG_NAMEN[B.id] || ['Einfacher Auftrag', 'Standard Auftrag', 'Rush Job'];
+   const AUFTRÄGE = [];
    const basis = B.lohn;
    const nBase = B.nerv;
    
    const pay1 = rund(basis * 0.6);
-   gigs.push({
+   AUFTRÄGE.push({
       u: namen[0].toUpperCase(), p: eur(pay1) + ' · sicher', w: 'grau', e: 'Ein kleiner Auftrag. Schnell erledigt.',
       f: (s, win) => { 
          let p = win ? pay1 : rund(pay1*0.5); 
@@ -2170,20 +2170,20 @@ function generiereGigs() {
    });
    
    const pay2 = rund(basis * (1 + (zuf()*0.4 - 0.2))); 
-   gigs.push({
+   AUFTRÄGE.push({
       u: namen[1].toUpperCase(), p: eur(pay2) + ' · normal', w: 'grau', e: 'Dein normales Tagesgeschäft.',
       f: (s, win) => { 
          let p = win ? pay2 : rund(pay2*0.5);
          s.geld += p; 
          let dmg = win ? (zuf() < nBase ? 1 : 0) : 2;
          s.nerven = cl(s.nerven-dmg, 0, 10);
-         return (win?'Standard-Gig durchgeboxt. ':'Horror-Gig. Komplett verkackt. ') + eur(p) + ' verdient.'; 
+         return (win?'Standard-Auftrag durchgeboxt. ':'Horror-Auftrag. Komplett verkackt. ') + eur(p) + ' verdient.'; 
       }
    });
    
    if (zuf() < 0.05) {
-      gigs.push({
-         u: 'DARKNET GIG', p: '1 ' + COIN_K + ' · hohes Risiko', w: 'rot', e: 'Jemand zahlt direkt in Krypto.',
+      AUFTRÄGE.push({
+         u: 'DARKNET Auftrag', p: '1 ' + COIN_K + ' · hohes Risiko', w: 'rot', e: 'Jemand zahlt direkt in Krypto.',
          f: (s, win) => {
             if(win) {
                s.zed += 1;
@@ -2191,13 +2191,13 @@ function generiereGigs() {
                return '★ 1 ' + COIN_K + ' direkt bekommen. Das war den Stress wert.';
             } else {
                s.nerven = cl(s.nerven-4, 0, 10);
-               return 'Krypto-Gig geplatzt. Nichts bekommen. Nerven liegen völlig blank.';
+               return 'Krypto-Auftrag geplatzt. Nichts bekommen. Nerven liegen völlig blank.';
             }
          }
       });
    } else {
       const pay3 = rund(basis * 2.2);
-      gigs.push({
+      AUFTRÄGE.push({
          u: namen[2].toUpperCase(), p: eur(pay3) + ' · -2 Nerven', w: 'rot', e: 'Deadline morgen. Das brennt dich aus.',
          f: (s, win) => {
             let p = win ? pay3 : rund(pay3*0.2);
@@ -2209,16 +2209,16 @@ function generiereGigs() {
    }
    
    
-   // Special Faction Gigs based on Ranks
+   // Special Faction AUFTRÄGE based on Ranks
    if (S.zimmer) {
       if (S.zimmer['rank1_rocker']) {
-         gigs.push({
+         AUFTRÄGE.push({
             u: 'HANGAROUND', p: '50 €', w: 'blau', e: 'Bier holen, Müll rausbringen, Fresse halten.',
             f: (s, win) => { s.geld += 50; return 'Du warst nützlich für die 777er. 50 € Trinkgeld.'; }
          });
       }
       if (S.zimmer['rank2_rocker']) {
-         gigs.push({
+         AUFTRÄGE.push({
             u: 'CLUB KURIER', p: '200 € · -1 Nerv', w: 'blau', e: 'Ein Paket für den Club von A nach B bringen. Anwärter-Arbeit.',
             f: (s, win) => {
                s.geld += 200;
@@ -2228,7 +2228,7 @@ function generiereGigs() {
          });
       }
       if (S.zimmer['rank4_rocker']) {
-         gigs.push({
+         AUFTRÄGE.push({
             u: 'ENFORCER MISSION', p: '1000 € · hohes Risiko', w: 'rot', e: 'Du gehst mit den Jungs auf einen "Hausbesuch".',
             f: (s, win) => {
                if(win) {
@@ -2244,13 +2244,13 @@ function generiereGigs() {
       }
       
       if (S.zimmer['rank2_rap']) {
-         gigs.push({
+         AUFTRÄGE.push({
             u: 'GHOSTWRITING', p: '250 €', w: 'blau', e: 'Schreibe einen Part für einen anderen Rapper.',
             f: (s, win) => { s.geld += 250; return 'Bars verkauft. 250 € sind 250 €.'; }
          });
       }
       if (S.zimmer['rank3_rap']) {
-         gigs.push({
+         AUFTRÄGE.push({
             u: 'BEAT PLACEMENT', p: '800 € · Hit or Miss', w: 'rot', e: 'Schick einen krassen Beat an ein Label.',
             f: (s, win) => {
                if(win) {
@@ -2265,7 +2265,7 @@ function generiereGigs() {
       }
    }
 
-   return gigs;
+   return AUFTRÄGE;
 }
 
 function ziehe(){
@@ -2278,14 +2278,14 @@ function ziehe(){
   if (gewaehlt.id === 'still') {
      S.szene = Object.assign({}, gewaehlt);
      S.szene.w = generiereGigs();
-     S.szene.t = 'Das Gig-Board. Drei Anfragen in deiner Inbox.<br><em>Welchen Auftrag nimmst du an?</em>';
+     S.szene.t = 'Das Auftragsbrett. Drei Anfragen in deiner Inbox.<br><em>Welchen Auftrag nimmst du an?</em>';
   } else {
      S.szene = gewaehlt;
   }
 
   /* Jede Woche muss mindestens ein Weg nach oben offen sein.
 
-     Vorher war rund die Hälfte der Wochen tot: Jobangebote und Gig-Boards
+     Vorher war rund die Hälfte der Wochen tot: Jobangebote und Auftragsbretts
      zahlen flach, während Fixkosten und TA$CH€N unbeirrt weiterlaufen. Wer
      nie bauen darf, baut nichts auf — genau daran sind die 50.000 gescheitert,
      nicht an zu schwachen Aktionen. Die Szene wird dafür kopiert, sonst
@@ -2329,7 +2329,7 @@ function gesperrt(u){
   if(u===COIN+' KAUFEN' && S.geld<ZEDKURS) return 'gesperrt · unter '+eur(ZEDKURS);
   return null;
 }
-/* Alle Gig-Minispiele laufen über diesen Haken statt direkt über
+/* Alle Auftrag-Minispiele laufen über diesen Haken statt direkt über
    starteMinigame. Zwei Gründe: so lässt sich der Wochenmotor ohne
    Reflexspiel durchmessen (Balance), und hier hängt später der
    Zugänglichkeits-Schalter dran, für alle die das Minispiel nicht
@@ -2672,10 +2672,41 @@ function zeigeEnde(){
   $('neu').onclick=()=>{ $('ende').classList.remove('an'); $('ende').innerHTML='';
     $('folge').classList.remove('in'); $('folge').innerHTML=''; zeigBerufe(); };
 }
-const startText=()=>[
-  {t:spielerName+'. 34, Homeoffice, '+JOB().n+'.',a:'grau'},
-  {t:'Du willst '+eur(ZIEL)+' zusammenkriegen. Bis Silvester.',a:'blau'},
-  {t:'<b>TA$CH€N</b> nimmt sich jede Woche was davon.',a:'feind'}];
+/* Wer sich nach dem Gegner benennt, kriegt das gesagt.
+
+   Der Taschengrabscher heißt voll ausgeschrieben TA$CH€NGR4BSCH3R. Nennt
+   sich jemand so — oder TASCHEN — dann steht sein Name zweimal auf dem
+   Schirm: einmal oben als Spieler, einmal unten als der, der ihm jede Woche
+   was wegnimmt. Das ist kein Fehler, den man sperren müsste. Das ist die
+   beste Geschichte, die das Spiel von allein erzählt.
+
+   Und es lässt offen, was man daraus macht: ein Schatten kann auch ein
+   guter sein. Die Waage entscheidet das später, nicht der Name. */
+const NUR_BUCHSTABEN = s => (s||'').toUpperCase()
+  .replace(/\$/g,'S').replace(/€/g,'E').replace(/4/g,'A').replace(/3/g,'E')
+  .replace(/0/g,'O').replace(/1/g,'I').replace(/[^A-Z]/g,'');
+const heisstWieDerFeind = () => {
+  const n = NUR_BUCHSTABEN(spielerName);
+  if(n==='TASCHEN') return true;
+  /* Der volle Name hat 16 Buchstaben, erlaubt sind 13 — TA$CH€NGR4B$CH€R
+     wird also immer abgeschnitten. Deshalb zählt schon der Anfang: wer
+     TASCHENGRAB… tippt, meint keinen anderen. */
+  return n.length>=10 && 'TASCHENGRABSCHER'.startsWith(n);
+};
+
+const startText=()=>{
+  const z=[
+    {t:spielerName+'. 34, Homeoffice, '+JOB().n+'.',a:'grau'},
+    {t:'Du willst '+eur(ZIEL)+' zusammenkriegen. Bis Silvester.',a:'blau'},
+    {t:'<b>TA$CH€N</b> nimmt sich jede Woche was davon.',a:'feind'}];
+  if(heisstWieDerFeind()){
+    z.push({t:'Moment. So heißt er doch.<br><br>Dein Name steht jetzt zweimal hier — '+
+              'oben als du, unten als der, der dir was wegnimmt.',a:'feind'});
+    z.push({t:'<b>Ein Schatten kann auch ein guter sein.</b><br>'+
+              'Wie du am Ende dastehst, entscheidet die Waage. Nicht der Name.',a:'blau'});
+  }
+  return z;
+};
 
 let spielerName='', safeID='', spielLaeuft=false;
 /* SafeID wie eine ICQ-UIN: neunstellig, aus dem Namen abgeleitet.
@@ -2864,8 +2895,8 @@ window.addEventListener('keydown',e=>{
 gottSchalten(gott);   // Schild gleich richtig setzen
 
 window.ISSO={get S(){return S;},perspektive,gott:gottSchalten,
-             set gig(f){ gigSpiel = f || ((d,cb)=>starteMinigame(d,cb)); },
-             get gig(){ return gigSpiel; },BERUFE,SZ,W,TU,ENDEN,waehle,pruefe,waage,vermoegen,
+             set Auftrag(f){ gigSpiel = f || ((d,cb)=>starteMinigame(d,cb)); },
+             get Auftrag(){ return gigSpiel; },BERUFE,SZ,W,TU,ENDEN,waehle,pruefe,waage,vermoegen,
              nimmBeruf,zeigBerufe,zeig,MAXW,ZIEL,JOB,gesperrt,male,ziehe,
              rausgehen,aufstehen,anDerTuer,nah};
 
@@ -2972,7 +3003,7 @@ function addChatMsg(user, text, isGig=false) {
   const div = document.createElement('div');
   div.className = 'chat-msg';
   if(isGig) {
-    div.innerHTML = '<span class="user" style="color:var(--rot)">'+user+'</span><span class="text">'+text+'<br><a onclick="nimmNetGig()">[GIG ANNEHMEN]</a></span>';
+    div.innerHTML = '<span class="user" style="color:var(--rot)">'+user+'</span><span class="text">'+text+'<br><a onclick="nimmNetGig()">[Auftrag ANNEHMEN]</a></span>';
   } else {
     div.innerHTML = '<span class="user">'+user+'</span><span class="text">'+text+'</span>';
   }
@@ -3396,5 +3427,6 @@ document.getElementById('tuer-schloss').addEventListener('click', () => {
 </script>
 </body>
 </html>
+
 
 
