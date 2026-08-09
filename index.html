@@ -2222,7 +2222,7 @@ function abschliessenWoche(z) {
       buchen(S, geschenk, 'Zufällige Gutschrift');
       z.push({t:'Ein Unbekannter hat dir '+eur(geschenk)+' geschickt. Das Universum meint es gut.', a:'gut'});
       S.paranoia = (S.paranoia || 0) + 2;
-      if(typeof window.denke==='function') window.denke('Warum sind alle so korrekt zu mir? Das ist eine Falle.', 'var(--rot)');
+      if(typeof window.denke==='function') window.denke('Warum stalken die mich alle? Sind das Fans? Das ist eine Falle.', 'var(--rot)');
   }
 
   // Natural paranoia increase if high karma
@@ -2237,8 +2237,9 @@ function abschliessenWoche(z) {
       const schaden = 200 + Math.floor(Math.random() * 800);
       buchen(S, -schaden, 'Wahnhafter Kauf (Panik)');
       S.nerven = Math.max(0, S.nerven - 3);
-      z.push({t:'Panikattacke! Du hast im Wahn für '+eur(schaden)+' Alufolie und Vorräte gekauft.', a:'schlecht'});
-      if(typeof window.denke==='function') window.denke('Ich muss alle überzeugen! Ich habe DEN Einfall!', 'var(--rot)');
+      if(Math.random()<0.5) z.push({t:'Du hast im Wahn spontan 16 Bars gerappt.', a:'grau'});
+      z.push({t:'Psychose-Schub! Du schiebst Filme und hast im Wahn für '+eur(schaden)+' Zeug gegen die Stalker gekauft.', a:'schlecht'});
+      if(typeof window.denke==='function') window.denke('Scheiße, ich bin zu berühmt. Ich droppe gleich ungewollt Bars.', 'var(--rot)');
   }
 
   if(meinPet) {
