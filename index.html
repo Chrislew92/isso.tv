@@ -1325,7 +1325,7 @@ let strohhalmInterval = null;
 function strohhalmAuf() {
   $('fenster').innerHTML=
     '<div class="kasten"><div class="kopf">datenstrohhalm.exe<button>×</button></div><div class="rumpf">'+
-      '<p style="margin-bottom:12px;opacity:0.8">Zapft <b>'+ZEE_K+'</b> aus dem Eitelstedt-Grid ab — '+
+      '<p style="margin-bottom:12px;opacity:0.8">Zapft <b>'+ZEE_K+'</b> aus dem städtischen Daten-Netzwerk ab — '+
         'die kleinste Einheit. 100 Millionen davon sind <b>1 '+COIN_K+'</b>.</p>'+
       '<div style="text-align:center;margin:14px 0;font-family:var(--mono);font-size:15px">'+
         '<b id="str-zee">'+zeeText(S.zee||0)+'</b>'+
@@ -2115,7 +2115,7 @@ function abschliessenWoche(z) {
   } else if(fix > 0) { buchen(S, -fix, 'Fixkosten (Miete/Leben)');
     z.push({t:'Fixkosten: '+eur(-fix)+'.'+(S.woche%5===0?' Und sie steigen weiter.':''),a:'schlecht'});
   }
-  const pets = ['hund', 'katze', 'vogel', 'schildkroete', 'maus'];
+  const pets = ['hund', 'katze', 'vogel', 'schildkroete', 'maus', 'emu'];
   const meinPet = S.zimmer ? pets.find(p => S.zimmer[p]) : null;
   if(meinPet) {
      if(S.geld >= 25) {
