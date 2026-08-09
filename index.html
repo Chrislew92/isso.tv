@@ -2775,6 +2775,12 @@ function nimmBeruf(j){
   safeID=macheSafeID(spielerName);
   try{ localStorage.setItem('isso.tv.name',spielerName); }catch(e){}
   S=FRISCH(j); spielLaeuft=true;
+  /* Die Endtafel mit abräumen. Sonst klebt sie über der neuen Runde: das
+     Ende der letzten Partie stand über Woche 1 der nächsten. Der
+     "Nochmal"-Knopf hat das gemacht, jeder andere Weg in eine neue Runde
+     nicht — und es gibt mehrere. */
+  $('ende').innerHTML=''; $('ende').classList.remove('an');
+  $('folge').innerHTML=''; $('folge').classList.remove('in');
   zeig('b7'); ziehe(); male(startText());
 }
 $('berufe').addEventListener('click',ev=>{
