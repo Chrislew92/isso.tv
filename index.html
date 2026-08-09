@@ -198,6 +198,9 @@ body{font-family:var(--sans);color:var(--tinte);-webkit-font-smoothing:antialias
   kbd, .taste{display:none}
   .k .t{margin-left:2px}
 }
+/* display:flex schlaegt das hidden-Attribut — ohne diese Zeile bliebe ein
+   ausgeblendetes Symbol sichtbar. Muss nach .icon stehen, nicht davor. */
+.icon[hidden]{display:none}
 .icon{background:none;border:0;cursor:pointer;display:flex;flex-direction:column;align-items:center;
   gap:6px;padding:9px 4px;font:inherit;color:#fff;outline:none}
 .icon:hover,.icon.sel{background:rgba(255,255,255,.18);outline:2px solid var(--gelb)}
@@ -789,7 +792,11 @@ body {
       <svg viewBox="0 0 24 24" fill="none" stroke="var(--gelb)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.8 4.6a5.5 5.5 0 0 0-7.8 0L12 5.7l-1-1.1a5.5 5.5 0 0 0-7.8 7.8l1.1 1L12 21l7.7-7.6 1.1-1a5.5 5.5 0 0 0 0-7.8z"></path></svg>
       <span>unterstuetzen</span>
     </button>
-    <button class="icon" data-auf="mitbewohner">
+    <!-- Erstmal ausgeblendet: "Geld regelt nicht alles". Nur das Symbol ist
+         weg, mitbewohnerAuf() und die Paranoia-Rechnung stehen unveraendert
+         (taschenChance -= 0.25, der 60-%-Block, der Wochen-Reset). Wer das
+         Programm zurueckwill, loescht hier das hidden - mehr ist es nicht. -->
+    <button class="icon" data-auf="mitbewohner" hidden>
       <svg viewBox="0 0 24 24" fill="none" stroke="var(--cyan)" stroke-width="2"><circle cx="12" cy="7" r="4"></circle><path d="M5.5 21v-2a4 4 0 0 1 4-4h5a4 4 0 0 1 4 4v2"></path></svg>
       <span>Mitbewohner</span>
     </button>
@@ -1215,7 +1222,10 @@ const INFO={
   strasse:{t:'Bunkerstraße',x:'Eine Allee mit kleinen Betonhäusern. Ein <b>Homebunker</b> kostet 40 % von dem, was du hast, und geht sechs Wochen nicht auf.<br><br>Dafür kommt keiner rein. Auch er nicht.'}
 };
 let iSel=0;
-const icons=()=>[...document.querySelectorAll('#icons .icon')];
+/* :not([hidden]) ist Pflicht, nicht Kosmetik. Diese Liste treibt die
+   Tastatursteuerung — stuende ein ausgeblendetes Symbol drin, liefe man mit
+   den Pfeiltasten in ein leeres Feld und der Auswahlrahmen verschwaende. */
+const icons=()=>[...document.querySelectorAll('#icons .icon:not([hidden])')];
 const markiere=()=>icons().forEach((b,i)=>b.classList.toggle('sel',i===iSel));
 /* Der Rechner ist keine Einbahnstraße: aufstehen und zurück in den Raum. */
 function aufstehen(){ $('fenster').innerHTML=''; zeig('b2'); losRaum(); }
