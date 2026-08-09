@@ -1159,6 +1159,96 @@ const markiere=()=>icons().forEach((b,i)=>b.classList.toggle('sel',i===iSel));
 function aufstehen(){ $('fenster').innerHTML=''; zeig('b2'); losRaum(); }
 $('aufstehen').addEventListener('click',aufstehen);
 
+
+const ZIMMER_ITEMS = [
+  {id:'tattoo_77er', name:'Tattoo: Die 77er', preis:250, woche:1, desc:'Geh ans Clubhaus der mächtigsten Rocker auf Erde-1 und frag nach der 77 auf der Brust. Der ultimative Rocker-Weg.'},
+  {id:'tattoo_chrome', name:'Tattoo: Chrome Skulls', preis:250, woche:1, desc:'Ein silberner Totenkopf auf den Hals. Ein kleinerer, aber brutaler Rockerclub in Eitelstedt.'},
+  {id:'tattoo_rap', name:'Face-Tattoo', preis:250, woche:1, desc:'Lass dir BARS ins Gesicht stechen. Der Rapper-Weg beginnt hier.'},
+  
+  {id:'eddy', name:'E-Scooter Eddy', preis:450, woche:2, desc:'Fußgänger sein ist out. Dein erster Schritt Richtung Rocker-Life. Unterhalt: 5 €/Woche.'},
+  {id:'mpc', name:'Beat-Maschine', preis:450, woche:2, desc:'Produziere nachts eigene Beats. Rapper brauchen keine Scooter.'},
+  
+  {id:'harley', name:'Harley-Davidson', preis:18000, woche:10, desc:'Das Ticket in die Bruderschaft (Glaubst du). Unterhalt: 50 €/Woche.'},
+  
+  {id:'cla', name:'Mercedes CLA AMG', preis:45000, woche:15, desc:'Metallic Grau. Das ultimative Support Car. Kostet 150 € Unterhalt die Woche.'},
+  {id:'kette', name:'Massive Goldkette', preis:45000, woche:15, desc:'Das Zeichen des Rap-Gottes. Zeig, dass du das Game übernommen hast.'}
+];
+
+function kaufItem(id, preis) {
+  if (S.geld < preis) {
+    if(typeof window.denke==='function') window.denke('Dafür reicht das Geld nicht.', 'var(--rot)');
+    return;
+  }
+  
+  // Mutually exclusive paths
+  const t = id;
+  if (t === 'tattoo_rap' && (S.zimmer['tattoo_77er'] || S.zimmer['tattoo_chrome'])) {
+    if(typeof window.denke==='function') window.denke('Du hast schon ein Rocker-Tattoo. Rap ist vorbei.', 'var(--rot)');
+    return;
+  }
+  if ((t === 'tattoo_77er' || t === 'tattoo_chrome') && S.zimmer['tattoo_rap']) {
+    if(typeof window.denke==='function') window.denke('Du hast ein Face-Tattoo. Kein Rocker-Club nimmt dich ernst.', 'var(--rot)');
+    return;
+  }
+  if (t === 'tattoo_77er' && S.zimmer['tattoo_chrome']) {
+    if(typeof window.denke==='function') window.denke('Zwei Club-Tattoos? Das wäre dein Todesurteil.', 'var(--rot)');
+    return;
+  }
+  if (t === 'tattoo_chrome' && S.zimmer['tattoo_77er']) {
+    if(typeof window.denke==='function') window.denke('Du gehörst schon den 77ern (glaubst du).', 'var(--rot)');
+    return;
+  }
+  if (t === 'mpc' && S.zimmer['eddy']) {
+    if(typeof window.denke==='function') window.denke('Du hast dich für die Straße (Eddy) entschieden, nicht fürs Studio.', 'var(--rot)');
+    return;
+  }
+  if (t === 'eddy' && S.zimmer['mpc']) {
+    if(typeof window.denke==='function') window.denke('Du hast dich fürs Studio entschieden. Scooter fahren ist zu riskant für deine Beats.', 'var(--rot)');
+    return;
+  }
+  if (t === 'kette' && S.zimmer['cla']) {
+    if(typeof window.denke==='function') window.denke('Du bist der Support-Fahrer. Kein Bling-Bling.', 'var(--rot)');
+    return;
+  }
+  if (t === 'cla' && S.zimmer['kette']) {
+    if(typeof window.denke==='function') window.denke('Rap-Stars fahren im VIP-Bus, nicht im Support Car.', 'var(--rot)');
+    return;
+  }
+
+  S.geld -= preis;
+  if (!S.zimmer) S.zimmer = {};
+  S.zimmer[id] = true;
+  
+  $('fenster').innerHTML = ''; // Close window
+  if(typeof window.denke==='function') window.denke('Gekauft. Der Weg ist eingeschlagen.', 'var(--gelb)');
+  
+  // Update desktop view if we want, but usually it updates next week
+}
+
+function schwarzmarktAuf() {
+  if (!S.zimmer) S.zimmer = {};
+  let h = '<div class="kasten hb"><div class="kopf">schwarzmarkt.exe<button>×</button></div><div class="rumpf" style="padding:15px;max-height:60vh;overflow-y:auto;">';
+  h += '<p style="margin-top:0;"><strong>DEIN WEG: ENTSCHEIDE WEISE.</strong><br>Was du hier kaufst, bestimmt deine Zukunft. Gegenstücke blockieren sich gegenseitig!</p>';
+  
+  ZIMMER_ITEMS.forEach(it => {
+    if (S.woche < it.woche) return;
+    const hat = S.zimmer[it.id];
+    h += '<div style="background:#222; padding:10px; margin-bottom:10px; border:1px solid #444;">';
+    h += '<h3 style="margin:0; color:'+(hat?'#0f0':'#fff')+'">' + it.name + ' <span style="float:right;">' + eur(it.preis) + '</span></h3>';
+    h += '<p style="font-size:13px; color:#aaa; margin:5px 0;">' + it.desc + '</p>';
+    if (hat) {
+      h += '<button disabled style="background:#111; color:#0f0; border:1px solid #0f0; padding:5px 10px;">Gehört dir</button>';
+    } else {
+      h += '<button onclick="kaufItem(\''+it.id+'\', '+it.preis+')" style="background:var(--gelb); color:#000; border:none; padding:5px 10px; cursor:pointer;">Kaufen</button>';
+    }
+    h += '</div>';
+  });
+  
+  h += '</div></div>';
+  $('fenster').innerHTML = h;
+  $('fenster').querySelector('button').onclick=()=>$('fenster').innerHTML='';
+}
+
 function oeffne(was){
   if(was==='spiel'){
     if(spielLaeuft){ zeig('b7'); male(); return; }   // läuft schon -> weiterspielen
@@ -2008,7 +2098,13 @@ const ENDEN={
  schulden:{c:'rot',t:'LEERGERÄUMT',x:'Der Brief kommt an einem Dienstag. Dann noch einer.<br><br><b>Er hat alles. Und du hast ihm jede Woche selbst aufgemacht.</b>'},
  zeit:{c:'grau',t:'SILVESTER'},
  driveby:{c:'rot',t:'FALSCHER MOMENT',x:'Ein Wagen wird langsamer, als du über die Kreuzung gehst. Du guckst hin, weil man hinguckt.<br><br>Es hat nichts mit dir zu tun. Es hat nie was mit dir zu tun. Du stehst nur gerade da.<br><br><b>Kein Joker. Keine zweite Woche. Von vorne, komplett.</b>'},
- krypto:{c:'blau',t:'KRYPTO-KÖNIG',x:'Du hast den Taschengrabscher ausgetrickst.<br><br>Dein Geld liegt auf der Blockchain. 1 '+COIN_K+' entspricht aktuell ca. <b>500 Billiarden Euro</b>. Du hast nicht nur Eitelstedt besiegt, du hast das Konzept von Geld zerstört.<br><br><b>#dieletztedigitalewaehrung</b>'}
+ krypto:{c:'blau',t:'KRYPTO-KÖNIG',x:'Du hast den Taschengrabscher ausgetrickst.<br><br>Dein Geld liegt auf der Blockchain. 1 '+COIN_K+' entspricht aktuell ca. <b>500 Billiarden Euro</b>. Du hast nicht nur Eitelstedt besiegt, du hast das Konzept von Geld zerstört.<br><br><b>#dieletztedigitalewaehrung</b>'},
+
+  ende_77er:{c:'rot',t:'DIE 77ER',x:'Du fährst mit deiner Harley vor. Die 77 auf der Brust. Du willst nützlich sein. Sie nehmen dich auf. Aber du merkst schnell: Niemand hier ist echt. Alle sind wie du.'},
+  ende_chrome:{c:'grau',t:'CHROME SKULLS',x:'Ein kleiner Club. Du hast alles gegeben, Kurierfahrten gemacht, dich bewiesen. Jetzt hast du dein Patch. Ein harter Weg.'},
+  ende_rap:{c:'gelb',t:'RAP GOD',x:'Die MPC hat sich ausgezahlt. Die goldene Kette blinkt. Die Leute auf der Straße machen Platz, nicht aus Angst vor Gewalt, sondern aus Respekt. Dein Wahn hat dich zum Genie gemacht.'},
+  ende_buerger:{c:'blau',t:'BÜRGER 353L',x:'Du warst brav. Du hast deine Psychopharmaka genommen. Deine Paranoia ist weg. Du druckst 3D-Gehäuse bis an dein Lebensende. Sicher, aber unendlich leer.'},
+
 };
 
 function merke(){
@@ -2095,6 +2191,62 @@ function generiereGigs() {
          }
       });
    }
+   
+   // Special Club Gigs
+   if (S.zimmer) {
+      if (S.zimmer['tattoo_77er'] || S.zimmer['tattoo_chrome']) {
+         gigs.push({
+            u: 'CLUB KURIERFAHRT', p: '200 € · -1 Nerv', w: 'blau', e: 'Ein Paket für den Club von A nach B bringen. Sei nützlich.',
+            f: (s, win) => {
+               s.geld += 200;
+               s.nerven = cl(s.nerven-1, 0, 10);
+               return 'Paket abgeliefert. Niemand hat dich bemerkt, aber der Club weiß Bescheid. 200 €.';
+            }
+         });
+         
+         if (S.zimmer['eddy'] || S.zimmer['harley']) {
+            gigs.push({
+               u: 'GANG SUPPORT', p: '600 € · hohes Risiko', w: 'rot', e: 'Fahre bei einer Aktion mit. Beweis dich.',
+               f: (s, win) => {
+                  if(win) {
+                     s.geld += 600;
+                     s.nerven = cl(s.nerven-2, 0, 10);
+                     return 'Sie haben dich machen lassen. Du warst nützlich. 600 €.';
+                  } else {
+                     s.nerven = cl(s.nerven-4, 0, 10);
+                     return 'Die Sache ging schief. Du musstest abhauen. Nichts bekommen und Nerven am Ende.';
+                  }
+               }
+            });
+         }
+      }
+      
+      if (S.zimmer['tattoo_rap'] || S.zimmer['mpc']) {
+         gigs.push({
+            u: 'GHOSTWRITING', p: '250 €', w: 'blau', e: 'Schreibe einen Part für einen anderen Rapper.',
+            f: (s, win) => {
+               s.geld += 250;
+               return 'Bars verkauft. Es tut weh, dass ein anderer sie rappt, aber 250 € sind 250 €.';
+            }
+         });
+         
+         if (S.zimmer['mpc']) {
+            gigs.push({
+               u: 'BEAT PLACEMENT', p: '800 € · Hit or Miss', w: 'rot', e: 'Schick einen krassen Beat an ein Label.',
+               f: (s, win) => {
+                  if(win) {
+                     s.geld += 800;
+                     return 'Der Beat wurde gepickt! 800 € Vorschuss. Du bist ein Rap God in Eitelstedt.';
+                  } else {
+                     s.nerven = cl(s.nerven-2, 0, 10);
+                     return 'Beat wurde abgelehnt. "Zu abgefuckt" meinte das Label. -2 Nerven.';
+                  }
+               }
+            });
+         }
+      }
+   }
+
    return gigs;
 }
 
@@ -2377,7 +2529,18 @@ function pruefe(z){
     if(zuf() < .003 + rotAnteil*.012){ S.ende='driveby'; return; }
   }
 
+  
+  // Multiple Endings Check
+  if(v>=ZIEL && S.zimmer) {
+    if (S.zimmer['tattoo_77er'] && S.zimmer['harley']) { S.ende='ende_77er'; return; }
+    if (S.zimmer['tattoo_chrome'] && S.zimmer['harley']) { S.ende='ende_chrome'; return; }
+    if (S.zimmer['tattoo_rap'] && S.zimmer['kette']) { S.ende='ende_rap'; return; }
+  }
+  // Bürger-Ende (Meds immer genommen, keine Tattoos, 25k erreicht)
+  if(v>=ZIEL && S.zimmer && S.zimmer['meds'] && !S.zimmer['tattoo_77er'] && !S.zimmer['tattoo_rap'] && !S.zimmer['tattoo_chrome']) { S.ende='ende_buerger'; return; }
+
   if(v>=ZIEL&&S.haeuser.length>=3&&w>.4){ S.ende='all'; return; }
+
   if(v>=ZIEL){ S.ende=w<-.15?'rot':(w>.15?'blau':'grau'); return; }
 
   if(S.nerven<=0){
