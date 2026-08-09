@@ -27,7 +27,8 @@
   --fett:"Arial Black","Segoe UI Black",system-ui,sans-serif;
   --sans:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
   --mono:ui-monospace,"Cascadia Mono",Consolas,monospace;
-  --out:4px solid var(--tinte); --sh:7px 7px 0 var(--tinte);
+  --out:3px solid var(--tinte); --sh:6px 6px 0 rgba(13,13,13,0.85);
+  --br: 16px; --br-sm: 8px;
 }
 *{box-sizing:border-box;margin:0;padding:0}
 html,body{height:100%;overflow:hidden;background:var(--tinte)}
@@ -41,10 +42,10 @@ body{font-family:var(--sans);color:var(--tinte);-webkit-font-smoothing:antialias
 /* Knöpfe — überall dieselben */
 .k{display:flex;align-items:center;gap:12px;width:100%;text-align:left;cursor:pointer;
   font-family:var(--fett);color:var(--tinte);background:var(--grau);border:var(--out);
-  box-shadow:5px 5px 0 var(--tinte);padding:13px 16px;
+  border-radius:var(--br);box-shadow:var(--sh);padding:13px 16px;
   transition:transform .12s ease,box-shadow .12s ease}
-.k:hover:not(:disabled){transform:translate(-3px,-3px);box-shadow:8px 8px 0 var(--tinte)}
-.k:active:not(:disabled){transform:translate(2px,2px);box-shadow:2px 2px 0 var(--tinte)}
+.k:hover:not(:disabled){transform:translate(-2px,-2px);box-shadow:8px 8px 0 rgba(13,13,13,0.85)}
+.k:active:not(:disabled){transform:translate(2px,2px);box-shadow:2px 2px 0 rgba(13,13,13,0.85)}
 /* Gesperrt muss man SEHEN, nicht erraten. Vorher nur opacity:.36 — der Knopf
    sah aus wie ein Knopf, nur blass, und der Grund war bei 36 % Deckkraft
    praktisch unlesbar. Man drückt drauf und es passiert nichts.
@@ -62,7 +63,7 @@ body{font-family:var(--sans);color:var(--tinte);-webkit-font-smoothing:antialias
 .k.rot{background:var(--rot);color:#fff} .k.blau{background:var(--blau);color:#fff}
 .k.job{background:var(--gelb)}
 .k kbd{flex:0 0 auto;font-family:var(--mono);font-size:11px;font-weight:700;
-  background:rgba(0,0,0,.5);color:#fff;padding:3px 7px}
+  background:rgba(0,0,0,.5);color:#fff;padding:3px 7px;border-radius:var(--br-sm)}
 .k.grau kbd,.k.job kbd{background:var(--tinte)}
 .k .t{flex:1;min-width:0;display:flex;flex-direction:column;gap:2px}
 .k .t u{text-decoration:none;font-size:15px;text-transform:uppercase;line-height:1.2}
@@ -75,15 +76,15 @@ body{font-family:var(--sans);color:var(--tinte);-webkit-font-smoothing:antialias
   -webkit-text-stroke:min(1.2vmin,8px) var(--tinte);paint-order:stroke fill;
   text-shadow:min(1.3vmin,9px) min(1.3vmin,9px) 0 var(--pink);transform:rotate(-2deg)}
 #b0 .sub{display:inline-block;margin-top:22px;font-family:var(--fett);font-size:12px;
-  letter-spacing:.22em;text-transform:uppercase;background:var(--papier);
+  letter-spacing:.22em;text-transform:uppercase;background:var(--papier);border-radius:var(--br);
   border:var(--out);box-shadow:var(--sh);padding:9px 18px;transform:rotate(1.5deg)}
 #b0 form{margin-top:40px;display:flex;gap:10px;justify-content:center;flex-wrap:wrap}
 #b0 input{font-family:var(--fett);font-size:18px;letter-spacing:.4em;text-align:center;
   text-transform:uppercase;background:var(--papier);border:var(--out);box-shadow:var(--sh);
-  padding:13px;width:min(230px,64vw);outline:none}
+  border-radius:var(--br);padding:13px;width:min(230px,64vw);outline:none}
 #b0 input::placeholder{color:#d3cabd;font-family:var(--fett)}
 #b0 button{font-family:var(--fett);font-size:13px;letter-spacing:.14em;text-transform:uppercase;
-  color:#fff;background:var(--rot);border:var(--out);box-shadow:var(--sh);padding:13px 20px;cursor:pointer}
+  color:#fff;background:var(--rot);border:var(--out);box-shadow:var(--sh);border-radius:var(--br);padding:13px 20px;cursor:pointer}
 #b0 .err{margin-top:22px;font-family:var(--fett);font-size:12px;letter-spacing:.18em;
   text-transform:uppercase;color:#fff;background:var(--rot);border:var(--out);
   padding:7px 14px;display:inline-block;opacity:0;transition:opacity .2s}
@@ -169,6 +170,12 @@ body{font-family:var(--sans);color:var(--tinte);-webkit-font-smoothing:antialias
   gap:6px;padding:9px 4px;font:inherit;color:#fff;outline:none}
 .icon:hover,.icon.sel{background:rgba(255,255,255,.18);outline:2px solid var(--gelb)}
 .icon svg{width:42px;height:42px}
+.icon.boerse .i{background:#0a0a0a;border:2px solid var(--gelb)}
+.icon.boerse .i::after{content:'~';color:var(--gelb);font-size:30px;line-height:48px}
+.icon.schwarzmarkt .i{background:#000;border:2px dashed var(--rot)}
+.icon.schwarzmarkt .i::after{content:'!';color:var(--rot);font-size:30px;line-height:48px}
+.icon.s7v3n .i{background:#003366}
+.icon.s7v3n .i::after{content:'§';font-size:32px;color:var(--kreide);line-height:48px}
 .icon span{font-family:var(--fett);font-size:10.5px;text-align:center;line-height:1.25;
   text-shadow:1px 1px 0 #0d0d0d,-1px 1px 0 #0d0d0d,1px -1px 0 #0d0d0d,-1px -1px 0 #0d0d0d}
 /* z-index 140: die Leiste ist Bedienung, die Marken-Zeile darunter ist nur
@@ -207,7 +214,7 @@ body{font-family:var(--sans);color:var(--tinte);-webkit-font-smoothing:antialias
 .fenster{position:absolute;inset:0;z-index:5;display:grid;place-items:center;padding:5vmin;
   pointer-events:none}
 .fenster .kasten{pointer-events:auto;width:min(400px,86vw);background:var(--papier);
-  border:var(--out);box-shadow:var(--sh)}
+  border:var(--out);box-shadow:var(--sh);border-radius:var(--br);overflow:hidden;}
 .fenster .kopf{display:flex;justify-content:space-between;align-items:center;background:var(--tinte);
   color:var(--papier);font-family:var(--fett);font-size:12px;letter-spacing:.1em;padding:8px 10px}
 .fenster .kopf button{background:var(--rot);color:#fff;border:0;font-family:var(--fett);
@@ -218,7 +225,7 @@ body{font-family:var(--sans);color:var(--tinte);-webkit-font-smoothing:antialias
 /* 5 — Comic */
 #b5{background:#1b0f3d;display:grid;place-items:center;padding:3vmin;cursor:pointer}
 .panel{width:min(720px,94vw);background:var(--pbg,var(--gelb));border:var(--out);box-shadow:var(--sh);
-  padding:14px;opacity:0;transform:translateY(14px) rotate(-.6deg);
+  padding:14px;opacity:0;transform:translateY(14px) rotate(-.6deg);border-radius:var(--br);
   transition:opacity .35s ease,transform .35s cubic-bezier(.2,.9,.3,1)}
 .panel.in{opacity:1;transform:translateY(0) rotate(-.6deg)}
 .panel .rahmen{border:var(--out);background:#fff;line-height:0;overflow:hidden}
@@ -237,7 +244,7 @@ body{font-family:var(--sans);color:var(--tinte);-webkit-font-smoothing:antialias
   background:radial-gradient(circle at 78% 22%,rgba(255,62,165,.22),transparent 46%),
   linear-gradient(160deg,#3a1a72,#1b0f3d 62%,#120a2b)}
 .spalte{width:min(660px,96vw);margin:0 auto;position:relative;z-index:1}
-.karte{background:var(--papier);border:var(--out);box-shadow:var(--sh);padding:18px;margin-bottom:18px}
+.karte{background:var(--papier);border:var(--out);box-shadow:var(--sh);padding:18px;margin-bottom:18px;border-radius:var(--br);border-radius:var(--br)}
 .karte h2{font-family:var(--fett);font-size:22px;text-transform:uppercase;margin-bottom:6px}
 .karte .lead{font-size:14px;font-weight:600;line-height:1.55;margin-bottom:16px;opacity:.8}
 .chip.danke{background:var(--gelb)!important;color:var(--tinte)!important;
@@ -266,7 +273,7 @@ body{font-family:var(--sans);color:var(--tinte);-webkit-font-smoothing:antialias
   border:3px solid var(--tinte)}
 .kopfz{display:flex;align-items:center;gap:9px;flex-wrap:wrap;margin-bottom:14px}
 .chip{font-family:var(--fett);font-size:13px;text-transform:uppercase;border:var(--out);
-  padding:5px 11px;box-shadow:4px 4px 0 var(--tinte);background:var(--gelb)}
+  padding:5px 11px;border-radius:var(--br-sm);box-shadow:4px 4px 0 rgba(13,13,13,0.85);background:var(--gelb)}
 /* Nebensätze im HUD. Bedeutung steht im Wort, nicht in der Farbe. */
 .chip i.steigt,.chip i.starr{font-style:normal;font-family:var(--mono);
   font-size:10px;letter-spacing:.04em;text-transform:none;opacity:.82;
@@ -1056,6 +1063,9 @@ function oeffne(was){
     if(spielLaeuft){ zeig('b7'); male(); return; }   // läuft schon -> weiterspielen
     zeig('b5'); comicStart(); return;
   }
+  if(was==='boerse'){ boerseAuf(); return; }
+  if(was==='schwarzmarkt'){ schwarzmarktAuf(); return; }
+  if(was==='s7v3n'){ s7v3nAuf(); return; }
   if(was==='buch'){ haushaltAuf(); return; }
   if(was==='spende'){ spendeAuf(); return; }
   if(was==='netzwerk'){ netzwerkOeffnen(); return; }
@@ -1370,8 +1380,7 @@ function mitbewohnerAuf() {
     $('mb-kauf').onclick=()=>{
       if(S.geld < 50) return alert("Nicht genug Geld!");
       if(typeof window.sfxClick==='function') window.sfxClick();
-      S.geld -= 50;
-      S.mitbewohnerGezahlt = true;
+      buchen(S, -50, 'Mitbewohner (Blocker)'); S.mitbewohnerGezahlt = true;
       merke();
       mitbewohnerAuf();
     };
@@ -1538,9 +1547,24 @@ const BERUFE=[
 const JOB=()=>BERUFE[S.job]||BERUFE[0];
 const jobIndex=id=>BERUFE.findIndex(b=>b.id===id);
 
-const FRISCH=j=>({woche:1,job:j,geld:-SCHULDEN,nerven:BERUFE[j].nerven,zed:0,zee:0,
+function buchen(s, betrag, grund) {
+  if(betrag===0) return;
+  s.geld += betrag;
+  if(!s.auszuege) s.auszuege = [];
+  s.auszuege.unshift({woche: s.woche, betrag: betrag, grund: grund, stand: s.geld});
+  if(s.auszuege.length > 50) s.auszuege.pop();
+  
+  const wg = document.getElementById('wk-geld');
+  if(wg) {
+     wg.textContent = eur(s.geld);
+     wg.style.color = s.geld < 0 ? 'var(--rot)' : 'inherit';
+  }
+  const wz = document.getElementById('wk-zed');
+  if(wz) wz.textContent = s.zed;
+}
+const FRISCH=j=>({ woche:1,job:j,geld:-SCHULDEN,nerven:BERUFE[j].nerven,zed:0,zee:0,
   rot:0,blau:0,haeuser:[],ende:null,szene:null,letzte:null,
-  joker:JOKER,verlauf:[],gesehen:{},krank:KRANK_START,pkonto:0,insolvenz:0,
+  joker:JOKER,verlauf:[],gesehen:{},krank:KRANK_START,pkonto:0,insolvenz:0, zeeKurs:1400, tuerBlocker:false, mietHack:0, auszuege:[],
   zusammen:0,mahnung:0});
 let S=FRISCH(0);
 const waage=()=>{const g=S.rot+S.blau;return g?(S.blau-S.rot)/g:0;};
@@ -1561,7 +1585,7 @@ const TU={
  arbeit:s=>{const B=JOB();
    if(s.krank>0) return 'Du bist krankgeschrieben. Keine Aufträge diese Woche.';
    if(!B.lohn) return 'Keine Gigs. Du füllst den Tag anders.';
-   s.geld+=B.lohn; if(zuf()<B.nerv)s.nerven=cl(s.nerven-1,0,10);
+   buchen(s, B.lohn, 'Gehalt: ' + B.n); if(zuf()<B.nerv)s.nerven=cl(s.nerven-1,0,10);
    return eur(B.lohn)+' extra. Die Augen brennen vom Bildschirm, aber das Geld liegt da.';},
  ruhe:s=>{s.nerven=cl(s.nerven+3,0,10);
    return 'Du machst wirklich mal gar nichts. Kommt dir falsch vor und hilft dann doch.';},
@@ -1582,48 +1606,48 @@ const TU={
    if(s.pkonto&&frei<100) return 'Du kommst nicht ran. Das Geld liegt hinterm Pfändungsschutz — auch für dich.';
    if(frei<100) return 'Womit denn? Du hast nichts, was du setzen könntest.';
    const rotAnteil=Math.max(0,-waage());              // 0 bis 1
-   const e=rund(frei*.3); s.geld-=e;
+   const e=rund(frei*.3); buchen(s, -e, 'Investition');
    if(zuf()<.5){
      const g=rund(e*(4+rotAnteil*2));                 // ×4 bis ×6
-     s.geld+=g;
+     buchen(s, g, 'Gig (Erfolg)');
      return 'Und es geht auf. Auf einmal hast du '+eur(g-e)+' mehr als vorhin.';}
    s.nerven=cl(s.nerven-1,0,10);
    return 'Weg. '+eur(e)+', einfach so. Du stehst danach noch zwei Minuten da und guckst.';},
  idee:s=>{
    /* Selten mal zäh — aber nie eine komplett verbrannte Woche. */
-   if(zuf()<.12){ const k=rund(rn(100,300)); s.geld+=k;
+   if(zuf()<.12){ const k=rund(rn(100,300)); buchen(s, k, 'Grafik-Gig (Bonus)');
      return 'Zäh diesmal. Am Ende nur '+eur(k)+', aber nicht nichts.'; }
    /* 30 %, nicht 40. Bei 40 kamen kluge Spieler auf 82 % — über zwanzig
       Wochen fällt jeder Prozentpunkt hier enorm ins Gewicht, viel mehr als
       Startgeld oder Schulden. Wer an der Balance dreht, dreht zuerst hier. */
-   const g=rund((rn(500,1000)+Math.max(0,s.geld)*.30)*JOB().idee); s.geld+=g;
+   const g=rund((rn(500,1000)+Math.max(0,s.geld)*.30)*JOB().idee); buchen(s, g, 'Gig (Erfolg)');
    return 'Läuft. '+eur(g)+', und keiner hat blöd gefragt.';},
  haus:s=>{
    const frei=verfuegbar(s);
    if(frei<500) return s.pkonto&&s.geld>=500
      ? 'Auf dem Papier reicht es. Dran kommst du trotzdem nicht — der Rest liegt hinterm Pfändungsschutz.'
      : 'Dafür ist nichts da. Erst muss was reinkommen.';
-   const b=rund(frei*.4); s.geld-=b;
+   const b=rund(frei*.4); buchen(s, -b, 'Haus (Kauf)');
    s.haeuser.push({b:b,f:s.woche+KW});
    return 'Haus in der Bunkerstraße. '+eur(b)+' liegen jetzt drin, '+KW+' Wochen zu.';},
  einbruch:s=>{const b=rund(rn(500,1000)*(1+s.woche*.10)+Math.max(0,s.geld)*.40);
    s.geld+=b; s.nerven=cl(s.nerven-1,0,10);
    return 'Du steigst bei jemandem zuhause ein. '+eur(b)+'. Du kriegst es nicht aus dem Kopf.';},
- verkauf:s=>{const k=s.haeuser.shift(); const z=Math.round(k.b*.6); s.geld+=z;
+ verkauf:s=>{const k=s.haeuser.shift(); const z=Math.round(k.b*.6); buchen(s, z, 'Haus-Verkauf');
    return 'Du verkaufst dein Haus zu früh. '+eur(z)+' zurück, der Rest war umsonst gewartet.';},
  krank:s=>{s.krank=3; s.nerven=cl(s.nerven+2,0,10);
    return 'Krankgemeldet. Drei Wochen. Der Arzt hat nicht mal lange geguckt.';},
  zed:s=>{
    const n=Math.floor(s.geld/ZEDKURS);
    if(n<1) return 'Für einen '+COIN+' fehlt noch was. '+eur(ZEDKURS)+' kostet einer.';
-   s.geld-=n*ZEDKURS; s.zed+=n;
+   buchen(s, -(n*ZEDKURS), 'ZEDCOIN Kauf'); s.zed+=n;
    return '★ '+n+' '+COIN+'. Du hast jetzt '+s.zed+' von '+(ZIEL/ZEDKURS)+'. Da kommt keiner mehr ran.';},
  pkonto:s=>{s.pkonto=1;
-   if(s.geld<0) s.geld=0;          // kein Dispo mehr, das Minus fällt weg
+   if(s.geld<0) buchen(s, Math.abs(s.geld), 'Schuldenerlass (P-Konto)');          // kein Dispo mehr, das Minus fällt weg
    return 'P-Konto beantragt. '+eur(PSCHUTZ)+' sind unantastbar — steht so im Gesetz.<br>'+
      'Dafür ist der Dispo weg. Du kannst nicht mehr ins Minus, und über mehr als '+
      eur(PSCHUTZ)+' verfügst du auch nicht. Der Rest liegt da und guckt dich an.';},
- insolvenz:s=>{const w=s.geld; s.geld=0; s.haeuser=[]; s.insolvenz=9; s.nerven=cl(s.nerven+2,0,10);
+ insolvenz:s=>{const w=s.geld; buchen(s, -s.geld, 'Insolvenz (Kontopfändung)'); s.haeuser=[]; s.insolvenz=9; s.nerven=cl(s.nerven+2,0,10);
    return 'Privatinsolvenz. '+eur(-w)+' Schulden weg — und deine Häuser auch. Neun Wochen stillhalten.';}
 };
 /* Jobwechsel als Baustein */
@@ -1709,12 +1733,12 @@ const EREIG=[
  {t:'Vorm Kiosk war Messerstecherei. Du warst nicht da, weil zuhause jemand angerufen hat.',a:'gut'},
  {t:'Du hättest bei der Sache mitgemacht. Hast du nicht. Zwei davon sitzen jetzt.',a:'gut'},
  {t:'Fast in die Kontrolle gelaufen. Bist du aber nicht.',a:'gut'},
- {t:'20 € in der Winterjacke gefunden.',a:'gut',f:s=>{s.geld+=20;}},
- {t:'Pfandflaschen aus dem Keller. 14 €.',a:'gut',f:s=>{s.geld+=14;}},
- {t:'Einer zahlt die 50 € zurück, die du längst abgeschrieben hattest.',a:'gut',f:s=>{s.geld+=50;}},
+ {t:'20 € in der Winterjacke gefunden.',a:'gut',f:s=>{buchen(s, 20, 'Gefundenes Geld');}},
+ {t:'Pfandflaschen aus dem Keller. 14 €.',a:'gut',f:s=>{buchen(s, 14, 'Pfandflaschen');}},
+ {t:'Einer zahlt die 50 € zurück, die du längst abgeschrieben hattest.',a:'gut',f:s=>{buchen(s, 50, 'Schulden zurückgezahlt');}},
  {t:'Nachbar bringt Kuchen vorbei. Einfach so.',a:'gut',f:s=>{s.nerven=cl(s.nerven+1,0,10);}},
- {t:'Handy runtergefallen. Display neu, 90 €.',a:'schlecht',f:s=>{s.geld-=90;}},
- {t:'Blitzer auf der Hauptstraße. 30 €.',a:'schlecht',f:s=>{s.geld-=30;}},
+ {t:'Handy runtergefallen. Display neu, 90 €.',a:'schlecht',f:s=>{buchen(s, -90, 'Handy-Reparatur');}},
+ {t:'Blitzer auf der Hauptstraße. 30 €.',a:'schlecht',f:s=>{buchen(s, -30, 'Blitzer');}},
  {t:'Von oben Bass bis vier. Du liegst wach.',a:'schlecht',f:s=>{s.nerven=cl(s.nerven-1,0,10);}},
  {t:'Regen die ganze Woche. Sonst nichts.',a:'gut'}
 ];
@@ -2071,28 +2095,46 @@ function waehle(i){
 function abschliessenWoche(z) {
   const faellig=S.haeuser.filter(h=>h.f<=S.woche);
   S.haeuser=S.haeuser.filter(h=>h.f>S.woche);
-  faellig.forEach(h=>{const a=hausWert(h.b); S.geld+=a;
+  faellig.forEach(h=>{const a=hausWert(h.b); buchen(S, a, 'Haus-Rendite');
     z.push({t:'Haus auf. '+eur(h.b)+' sind '+eur(a)+' geworden.',a:'blau'});});
 
   if(zuf()<.34){const e=EREIG[Math.floor(zuf()*EREIG.length)]; if(e.f)e.f(S); z.push({t:e.t,a:e.a});}
 
   const B=JOB();
-  if(B.buerger){ S.geld+=B.buerger; z.push({t:'Bürgergeld: '+eur(B.buerger)+'.',a:'grau'}); }
+  if(B.buerger){ buchen(S, B.buerger, 'Bürgergeld'); z.push({t:'Bürgergeld: '+eur(B.buerger)+'.',a:'grau'}); }
 
-  const fix=fixkosten(S.woche);
+  let fix=fixkosten(S.woche);
+  if (S.mietHack > 0) {
+     S.mietHack--;
+     fix = 0;
+     z.push({t:'Miet-Aussetzer aktiv. Keine Fixkosten diese Woche. (Noch '+S.mietHack+' Wochen)',a:'gut'});
+  }
   if(S.pkonto && S.geld-fix<0){
-    const ging=Math.max(0,S.geld); S.geld=0;
+    const ging=Math.max(0,S.geld); buchen(S, -ging, 'Fixkosten (Lastschrift geplatzt)');
     z.push({t:'Lastschrift geplatzt. Nur '+eur(ging)+' von '+eur(fix)+' durchgegangen.',a:'schlecht'});
-  } else {
-    S.geld-=fix;
+  } else if(fix > 0) { buchen(S, -fix, 'Fixkosten (Miete/Leben)');
     z.push({t:'Fixkosten: '+eur(-fix)+'.'+(S.woche%5===0?' Und sie steigen weiter.':''),a:'schlecht'});
+  }
+  const pets = ['hund', 'katze', 'vogel', 'schildkroete', 'maus'];
+  const meinPet = S.zimmer ? pets.find(p => S.zimmer[p]) : null;
+  if(meinPet) {
+     if(S.geld >= 25) {
+        buchen(S, -25, 'Haustier (Futter)');
+        S.nerven = cl(S.nerven + 1, 0, 10);
+        z.push({t:'Dein Haustier beruhigt dich (+1 Nerven). Futterkosten: 25 €.',a:'gut'});
+     } else {
+        S.zimmer[meinPet] = false;
+        S.nerven = cl(S.nerven - 3, 0, 10);
+        z.push({t:'Du konntest das Futter nicht zahlen. Dein Haustier ist weg.',a:'schlecht'});
+        zimmerZeichnen();
+     }
   }
   if(S.krank>0){
     S.krank--; S.nerven=cl(S.nerven+2,0,10);
     /* Krankengeld, nicht Lohnfortzahlung — die sechs Wochen sind seit dem
        9. März durch. Es kommt von der Kasse und richtet sich nach dem alten
        Job, also fester Betrag für alle. */
-    S.geld+=KRANKENGELD;
+    buchen(S, KRANKENGELD, 'Krankengeld');
     z.push({t:'Krankengeld '+eur(KRANKENGELD)+'. Krankgeschrieben, noch '+S.krank+
               (S.krank===1?' Woche.':' Wochen.'),a:'grau'});
   }
@@ -2118,14 +2160,17 @@ function abschliessenWoche(z) {
     if(S.pkonto) griff=Math.max(0,Math.min(griff,S.geld-PSCHUTZ));
     if(zuf() < taschenChance) griff += rund(Math.max(0,S.geld)*0.15);
     
-    if(griff > 0 && tuerAbgeschlossen && zuf() < 0.35) {
+    if(griff > 0 && S.tuerBlocker) {
+      griff = 0;
+      S.tuerBlocker = false;
+      z.push({t:'TA$CH€N stand vor der Tür, aber der Tür-Blocker hat gehalten!',a:'gut'});
+    } else if(griff > 0 && tuerAbgeschlossen && zuf() < 0.35) {
       griff = 0;
       z.push({t:'Jemand hat an der Klinke gerüttelt. Aber du hattest abgeschlossen.',a:'gut'});
     } else if(griff > 0 && S.mitbewohnerGezahlt && zuf() < 0.6) {
       griff = 0;
       z.push({t:'Dein Mitbewohner stand im Flur, als TA$CH€N kam. Er hat ihn abgewimmelt.',a:'gut'});
-    } else {
-      S.geld-=griff;
+    } else { buchen(S, -griff, 'TA$CH€N (Schutzgeld)');
       z.push(griff>0
         ? {t:'<b>TA$CH€N</b> war da. '+eur(-griff)+'.',a:'feind'}
         : S.pkonto
@@ -2134,7 +2179,7 @@ function abschliessenWoche(z) {
       if(griff>0){ $('b7').classList.add('bad'); setTimeout(()=>$('b7').classList.remove('bad'),600); }
     }
   }
-  S.woche++;
+  S.woche++; S.zeeKurs = Math.floor(800 + zuf() * 2200);
   netDropGenutzt = false;
   S.mitbewohnerGezahlt = false;      // Mitbewohner-Schutz gilt nur eine Woche
 
