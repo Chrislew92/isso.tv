@@ -919,6 +919,10 @@ document.addEventListener('pointerdown', () => {
   clearTimeout(idleTimer);
   idleTimer = setTimeout(() => {
     const idleGedanken = [
+      "Es ist nicht immer leicht, aber ich bin an der Sache dran.",
+      "Sie beobachten mich.",
+      "Es ist nicht immer leicht, aber ich bin an der Sache dran.",
+      "Sie beobachten mich.",
       "Was mache ich hier eigentlich mit meinem Leben?",
       "Ein Emu wäre jetzt nicht schlecht...",
       "Ich sollte mal wieder auf den Kontostand schauen.",
@@ -2206,6 +2210,37 @@ function abschliessenWoche(z) {
   }
   const pets = ['hund', 'katze', 'vogel', 'schildkroete', 'maus', 'emu', 'hase'];
   const meinPet = S.zimmer ? pets.find(p => S.zimmer[p]) : null;
+  
+  // Karma & Paranoia Logic
+  if (meinPet) {
+      S.karma = (S.karma || 0) + 1;
+  }
+  
+  // High karma creates good events but spikes paranoia
+  if (S.karma > 5 && Math.random() < 0.3) {
+      const geschenk = 100 + Math.floor(Math.random() * 400);
+      buchen(S, geschenk, 'Zufällige Gutschrift');
+      z.push({t:'Ein Unbekannter hat dir '+eur(geschenk)+' geschickt. Das Universum meint es gut.', a:'gut'});
+      S.paranoia = (S.paranoia || 0) + 2;
+      if(typeof window.denke==='function') window.denke('Warum sind alle so korrekt zu mir? Das ist eine Falle.', 'var(--rot)');
+  }
+
+  // Natural paranoia increase if high karma
+  if (S.karma > 10) S.paranoia = (S.paranoia || 0) + 1;
+
+  // Panic Attack
+  if (S.paranoia >= 8) {
+      // Screen shake and UI glitch
+      document.body.style.animation = 'flicker 0.1s 5';
+      setTimeout(() => { document.body.style.animation = ''; }, 500);
+
+      const schaden = 200 + Math.floor(Math.random() * 800);
+      buchen(S, -schaden, 'Wahnhafter Kauf (Panik)');
+      S.nerven = Math.max(0, S.nerven - 3);
+      z.push({t:'Panikattacke! Du hast im Wahn für '+eur(schaden)+' Alufolie und Vorräte gekauft.', a:'schlecht'});
+      if(typeof window.denke==='function') window.denke('Ich muss alle überzeugen! Ich habe DEN Einfall!', 'var(--rot)');
+  }
+
   if(meinPet) {
      if(S.geld >= 25) {
         buchen(S, -25, 'Haustier (Futter)');
