@@ -548,6 +548,25 @@ body.ruhig .hint.nah { animation: none !important; }
 }
 h1, h2, .namensfeld, .k .t u { text-shadow: 1.5px 0px 0.5px var(--rot), -1.5px 0px 0.5px var(--cyan); }
 .k:hover:not(:disabled) { text-shadow: 2.5px 0px 1px var(--rot), -2.5px 0px 1px var(--cyan); }
+
+#emu-overlay {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 99999;
+  background: 
+    linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.12) 50%),
+    radial-gradient(circle at center, transparent 60%, rgba(0, 0, 0, 0.4) 100%);
+  background-size: 100% 4px, 100% 100%;
+  opacity: 0.85;
+  mix-blend-mode: multiply;
+  animation: flicker 0.15s infinite;
+}
+@keyframes flicker {
+  0% { opacity: 0.85; }
+  50% { opacity: 0.82; }
+  100% { opacity: 0.85; }
+}
 </style>
 </head>
 <body>
@@ -3067,6 +3086,7 @@ document.getElementById('tuer-schloss').addEventListener('click', () => {
 
 })();
 </script>
+<div id="emu-overlay"></div>
 </body>
 </html>
 
