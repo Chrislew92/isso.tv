@@ -131,7 +131,8 @@
       border-radius: var(--br);
       box-shadow: var(--sh-out);
       padding: 14px 18px;
-      background: var(--papier);
+      background: var(--kreide);
+      color: var(--tinte);
       transition: all .2s cubic-bezier(0.2, 0.8, 0.2, 1)
     }
 
@@ -2507,9 +2508,9 @@
         <div class="sub" id="untertitel">VERZWEIFLUNGSSIMULATOR PROTOTYP</div>
         <form id="tor" autocomplete="off">
           <input type="text" id="pw" maxlength="13" spellcheck="false" placeholder="DEIN NAME">
-          <label style="display:block;margin:10px 0;color:var(--cyan);font-family:monospace;font-size:14px;cursor:pointer">
-            <input type="checkbox" id="realtime-check"> HARDCORE: 1 Zug pro Kalendertag
-          </label>
+          <div style="margin:15px 0;color:var(--rot);font-family:var(--fett);font-size:16px;text-transform:uppercase;">
+            HARDCORE-MODUS: 1 ZUG = 1 KALENDERTAG
+          </div>
           <button type="submit">ENTER</button>
         </form>
         <div class="warnt">
@@ -2855,7 +2856,7 @@
     <section class="bild" id="b9">
       <div class="punkte"></div>
       <div id="mg-ui">
-        <div class="mg-kopf"><span>Fokus-Sortierer</span><span id="mg-time">10.0</span></div>
+        <div class="mg-kopf"><span id="mg-title">Minispiel</span><span id="mg-time">10.0</span></div>
         <div class="mg-track" id="mg-track"></div>
         <div class="mg-controls">
           <!-- (A) und (D) stecken in .taste und verschwinden auf Tippgeräten:
@@ -3123,7 +3124,7 @@
         
         // Fast-Track: Direkt ins Spiel (b7)
         S = FRISCH(0); // Job 0 als Default (Lager)
-        if ($('realtime-check').checked) S.realtime = true;
+        S.realtime = true;
         spielLaeuft = true;
         render();
         zeig('b7');
@@ -4746,6 +4747,32 @@
           S.letzterZug = heute;
         }
 
+        // ARCADE-MODUS: "ARBEITEN" löst das Minispiel aus!
+        if (w.u === 'ARBEITEN' || w.u === 'AUFTRAG ANNEHMEN') {
+          merke();
+          const B = JOB();
+          if (B.lohn > 0) {
+            $('mg-title').textContent = B.n + " (Minispiel)";
+            starteMinigame(2, (win, score) => {
+              zeig('b7');
+              let txt = '';
+              if (win) {
+                // Score = multiplier (10 score = 100% Lohn)
+                const pct = Math.min(1.5, Math.max(0, score / 10));
+                const earned = Math.floor(B.lohn * pct);
+                buchen(S, earned, 'Arcade-Lohn: ' + B.n);
+                if (zuf() < B.nerv) S.nerven = cl((S.nerven || 0) - 1, 0, 10);
+                txt = pct >= 1 ? `PERFEKT! ${eur(earned)} verdient.` : `Naja. ${eur(earned)} verdient.`;
+              } else {
+                txt = `DURCHGEFALLEN. 0 € verdient.`;
+              }
+              abschliessenWoche([{ t: txt, a: 'grau' }]);
+              speichern();
+            });
+            return;
+          }
+        }
+
         if (S.szene.id === 'still') {
           let diff = 2;
           if (w.p.includes('sicher')) diff = 1;
@@ -5358,10 +5385,10 @@
       document.getElementById('mg-btn-r').onclick = () => mgInput('r');
       function endeMinigame(win) {
         mgAktiv = false; cancelAnimationFrame(mgLauf);
-        $('mg-msg').textContent = win ? 'PERFEKT' : 'VERKACKT';
+        $('mg-msg').textContent = win ? 'PERFEKT' : (mgScore >= mgZiel ? 'GESCHAFFT' : 'VERKACKT');
         $('mg-msg').style.color = win ? 'var(--gruen)' : 'var(--rot)';
         $('mg-msg').classList.add('an');
-        setTimeout(() => { zeig('b7'); mgCallback(win); }, 1400);
+        setTimeout(() => { zeig('b7'); mgCallback(win || mgScore >= mgZiel, mgScore); }, 1400);
       }
 
       /* Ego ist Standard. Wer einmal auf Schulter stellt, kriegt es wieder. */
