@@ -1076,7 +1076,14 @@ $('icons').addEventListener('click',ev=>{
    Nur ein Link nach draussen. Kein eingebettetes Bezahl-Skript, keine Cookies,
    kein Einwilligungsbanner noetig. Hier die eigene Seite eintragen
    (Ko-fi, Buy Me a Coffee, PayPal.me, Liberapay …). Leer = Hinweis statt Knopf. */
-const SPENDE_URL = '';
+/* Ko-fi, eingerichtet am 09.08.2026. Vor dem Eintragen im Browser geprüft:
+   ko-fi.com/issotv antwortet mit "Support isso.tv" und hat einen Tip-Knopf.
+   Eine geratene Adresse käme hier nie rein — eine fremde Ko-fi-Seite würde das
+   Geld anderer Leute woanders hinschicken.
+
+   Leeren String eintragen ist jederzeit möglich: dann zeigt das Fenster wieder den
+   ehrlichen Hinweis statt eines Knopfes, nichts geht kaputt. */
+const SPENDE_URL = 'https://ko-fi.com/issotv';
 /* Hier standen mal feste Stufen (1,99 / 2,99 / 4,99, "gedeckelt bei 4,99") samt
    PayPal-Sonderweg, der den Betrag an die Adresse haengte. Beides ist raus:
    Der Besucher soll geben, was er will, und beim Anbieter drueben entscheidet er
