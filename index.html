@@ -1138,18 +1138,32 @@ function spendeAuf(){
   const hat = SPENDE_URL && /^https:\/\//.test(SPENDE_URL);
   $('fenster').innerHTML =
     '<div class="kasten"><div class="kopf">unterstuetzen<button>×</button></div><div class="rumpf">'+
+      /* Der Text widersprach sich: oben stand "es gibt nichts freizuschalten", unten
+         steht ein Feld mit "CODE EINLÖSEN" und die Meldung "VIP 2 freigeschaltet".
+         Seit es das Abzeichen gibt, stimmt der alte Satz nicht mehr. Neu formuliert,
+         ohne die Aussage aufzuweichen: freigeschaltet wird ein ZEICHEN, kein Inhalt.
+         Am Spiel selbst ändert weiterhin nichts. */
+      /* Der Text war vorher nur eine Aufzählung von "nein": keine Werbung, kein Konto,
+         kein Vorteil. Alles wahr — aber niemand gibt Geld, weil eine Seite aufzählt,
+         was sie nicht tut. Es fehlte, WER das gebaut hat und WOFÜR das Geld ist.
+         Beides steht jetzt drin, und keine Zeile davon ist geschönt. */
       '<p style="font-weight:700;margin-bottom:10px">ISSO.TV ist umsonst und bleibt umsonst.</p>'+
-      '<p>Keine Werbung, kein Konto, nichts wird verkauft. Es gibt nichts freizuschalten '+
-      'und nichts zu kaufen — das Spiel ist komplett, so wie es ist.</p>'+
-      '<p style="margin-top:10px">Wenn es dir was wert war, kannst du was dalassen — '+
-      'ab 1 €, jeder Betrag ist willkommen. Musst du aber nicht. Am Spiel ändert es '+
-      '<b>nichts</b> — kein Vorteil, keine Abkürzung, kein freigeschalteter Inhalt.</p>'+
-      '<p style="margin-top:10px">Was du kriegst, ist ein <b>Zeichen</b>: ein goldener '+
-      'Rahmen um deinen Namen und ein <b>VIP-Abzeichen</b> daneben. Spenden kannst du '+
-      'ab 1 € — ab 10 € steht dort VIP 1, ab 50 € VIP 2, ab 100 € VIP 3.</p>'+
-      '<p style="margin-top:10px;font-size:12.5px;opacity:.8;font-weight:400">Das Abzeichen '+
-      'ist Zierde. Es macht dich sichtbar, nicht stärker — kein Vorteil im Spiel, keine '+
-      'Abkürzung, kein Inhalt, den andere nicht auch bekommen.</p>'+
+      '<p>Das hier hat <b>eine Person</b> gebaut. Kein Team, kein Verlag, kein Geld '+
+      'dahinter — Abende und Nächte. Keine Werbung, kein Konto, keine Datensammlung. '+
+      'Und es bleibt so.</p>'+
+      '<p style="margin-top:10px">Wenn dich das Spiel eine Weile festgehalten hat, '+
+      'kannst du was dalassen. <b>Ab 1 €</b>, jeder Betrag. Musst du nicht — das Spiel '+
+      'ist vollständig, auch wenn du nie etwas gibst.</p>'+
+      '<p style="margin-top:10px;background:var(--gelb);border:3px solid var(--tinte);'+
+      'padding:10px 13px"><b>Wofür es draufgeht:</b> Als Nächstes soll man sein Zimmer '+
+      'einrichten können — Couch, Teppich, Poster an der Wand. Erspielbar für alle. '+
+      'Jeder Euro geht da rein.</p>'+
+      '<p style="margin-top:10px">Und du kriegst ein <b>Zeichen</b>: einen goldenen '+
+      'Rahmen um deinen Namen und ein <b>VIP-Abzeichen</b> daneben — ab 10 € VIP 1, '+
+      'ab 50 € VIP 2, ab 100 € VIP 3.</p>'+
+      '<p style="margin-top:10px;font-size:12.5px;opacity:.8;font-weight:400">Mehr ist es '+
+      'nicht, und das ist Absicht: <b>sichtbar, nicht stärker</b>. Keine Abkürzung, kein '+
+      'Inhalt, den andere nicht auch bekommen. Wer nichts gibt, verpasst nichts.</p>'+
       (unterstuetzer()
         ? '<div style="margin-top:14px;background:var(--gelb);border:3px solid var(--tinte);'+
           'padding:10px 14px;font-family:var(--fett);font-size:12px">★ RAHMEN IST AN. DANKE.'+
@@ -1198,7 +1212,9 @@ function spendeAuf(){
             'diesem Gerät gespeichert.</p>')+
         '<div style="display:flex;gap:8px;flex-wrap:wrap">'+
           '<input id="vipFeld" type="text" maxlength="14" autocomplete="off" spellcheck="false" '+
-          'placeholder="ISSO-1-ABCD" style="flex:1;min-width:150px;font-family:var(--mono);'+
+          /* Vorher stand hier "ISSO-1-ABCD" — sah aus wie ein echter Code und lud zum
+             Abtippen ein. Jetzt zeigt es nur die Form, ohne einer zu sein. */
+          'placeholder="ISSO-…" style="flex:1;min-width:150px;font-family:var(--mono);'+
           'font-size:14px;letter-spacing:.1em;text-transform:uppercase;padding:8px 10px;'+
           'border:3px solid var(--tinte);background:var(--kreide)">'+
           '<button id="vipLos" style="font-family:var(--fett);font-size:12px;letter-spacing:.1em;'+
