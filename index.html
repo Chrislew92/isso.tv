@@ -4,6 +4,20 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>ISSO.TV — 353L.EXE</title>
+
+<!-- 353L.ico lag im Repo, war aber weder eingebunden noch im Upload-Ordner: Der Tab
+     zeigte gar kein Symbol, und /353L.ico lieferte die Startseite aus (Pages faellt
+     bei fehlenden Dateien auf index.html zurueck). Beim Deploy MIT hochladen. -->
+<link rel="icon" href="/353L.ico" sizes="any">
+
+<!-- Ohne diese Zeilen zeigte ein geteilter Link nur die nackte Adresse — kein Titel,
+     keine Beschreibung. Bewusst kein og:image: lieber gar kein Bild als ein kaputtes. -->
+<meta name="description" content="Ein Spiel über Geld, Nerven und die Frage, wie weit man geht. Kostenlos, ohne Konto, ohne Werbung — läuft direkt im Browser.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://isso.tv/">
+<meta property="og:title" content="ISSO.TV — 353L.EXE">
+<meta property="og:description" content="Ein Spiel über Geld, Nerven und die Frage, wie weit man geht. Kostenlos, ohne Konto, ohne Werbung.">
+<meta name="twitter:card" content="summary">
 <style>
 :root{
   --gelb:#ffd21e; --pink:#ff3ea5; --cyan:#29b6f6; --orange:#ff7a18;
