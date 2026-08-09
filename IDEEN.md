@@ -107,6 +107,30 @@ Dafür bräuchte es einen Illustrator oder fertige PNGs zum Einhängen.
   Pages-Projekt `isso-tv`. Registrierung bleibt bei Cronon/STRATO.
 - Echtzeit-Modus: ein Zug pro Tag, ja oder nein
 
+## Zimmer einrichten — kleine Gimmicks (Idee 09.08.2026)
+
+Das Zimmer ist bisher Kulisse: Schreibtisch, Tür, Monitor, fertig. Es soll sich
+**füllen** lassen — sichtbarer Besitz statt nur einer Kontozahl.
+
+**Zwei Wege an dieselben Gegenstände:**
+- **Erspielen** — normal im Spiel verdienen, für alle
+- **Spenden** — ab 10 € ist z. B. die *Chillercouch* gleich da, ohne sie zu erspielen
+
+Wichtig: **Abkürzung, kein Alleinstellungsmerkmal.** Wer spendet, kriegt es früher.
+Wer spielt, kriegt es auch. So bleibt niemand ausgesperrt, und der Spender sieht
+trotzdem etwas für sein Geld — im Zimmer, jedes Mal wenn er reinkommt.
+
+**Warum das besser ist als Punkte oder Joker:** Möbel sieht man. Eine Zahl im
+Speicher fühlt sich nach nichts an, eine Couch im eigenen Raum nach etwas.
+
+**Kandidaten:** Chillercouch · Teppich · zweiter Monitor · Kühlschrank ·
+Pflanze · Poster an der Wand · bessere Lampe · Konsole unterm Fernseher
+
+**Aufwand, ehrlich:** kein Zweizeiler. Es braucht eine Gegenstandsliste, gemerkten
+Besitz (localStorage), Zeichnen im Raum-SVG, einen Weg zum Verdienen und einen zum
+Freischalten. Sinnvoll als kleinste Fassung: **ein** Gegenstand komplett durch —
+die Couch — und wenn der Weg steht, sind die weiteren je zwanzig Minuten.
+
 ---
 
 ## Namen, die im Raum stehen — nicht gekauft, nicht gebaut
