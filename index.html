@@ -2561,6 +2561,35 @@
             <rect x="250" y="10" width="40" height="130" fill="#cc1935" rx="8" stroke="#0d0d0d" stroke-width="7" />
             <line x1="140" y1="20" x2="140" y2="120" stroke="#0d0d0d" stroke-width="5" opacity="0.5" />
           </g>
+          <!-- E-SCOOTER EDDY -->
+          <g id="raum-eddy" transform="translate(300, 360) scale(0.7)" style="display:none;">
+            <path d="M0 100 L40 10 L60 10" fill="none" stroke="#0d0d0d" stroke-width="8" stroke-linecap="round"/>
+            <rect x="40" y="5" width="30" height="10" fill="#7ed321" stroke="#0d0d0d" stroke-width="5" />
+            <path d="M0 100 L80 100" fill="none" stroke="#14161c" stroke-width="12" stroke-linecap="round"/>
+            <circle cx="0" cy="110" r="15" fill="#0d0d0d" />
+            <circle cx="80" cy="110" r="15" fill="#0d0d0d" />
+          </g>
+          <!-- BEAT-MASCHINE (MPC) -->
+          <g id="raum-mpc" transform="translate(560, 375) scale(0.6)" style="display:none;">
+            <polygon points="0,20 60,0 100,0 120,20" fill="#20242c" stroke="#0d0d0d" stroke-width="5" />
+            <rect x="0" y="20" width="120" height="40" fill="#14161c" stroke="#0d0d0d" stroke-width="5" />
+            <g fill="#ff3ea5">
+              <rect x="10" y="25" width="15" height="10" rx="2" />
+              <rect x="30" y="25" width="15" height="10" rx="2" />
+              <rect x="50" y="25" width="15" height="10" rx="2" />
+              <rect x="70" y="25" width="15" height="10" rx="2" />
+              <rect x="10" y="40" width="15" height="10" rx="2" />
+              <rect x="30" y="40" width="15" height="10" rx="2" />
+              <rect x="50" y="40" width="15" height="10" rx="2" />
+              <rect x="70" y="40" width="15" height="10" rx="2" />
+            </g>
+          </g>
+          <!-- KETTE AUF DEM MONITOR -->
+          <g id="raum-kette" transform="translate(530, 350) scale(0.8)" style="display:none;">
+            <path d="M 0 0 Q 30 50 60 0 Q 90 50 120 0" fill="none" stroke="#ffd21e" stroke-width="5" stroke-linecap="round"/>
+            <circle cx="60" cy="30" r="15" fill="#ffd21e" stroke="#0d0d0d" stroke-width="4" />
+            <text x="60" y="35" font-size="12" font-family="Arial Black" text-anchor="middle" fill="#0d0d0d">$</text>
+          </g>
           <ellipse cx="1064" cy="250" rx="180" ry="180" fill="#ff7a18" opacity=".16" />
           <g stroke="#0d0d0d" stroke-width="7" stroke-linejoin="round">
             <path d="M1032 248 L1096 248 L1082 206 L1046 206 Z" fill="#ff7a18" />
@@ -3138,9 +3167,52 @@
       /* Die Wohnungstür liegt rechts. Man muss sich wegdrehen vom Schreibtisch. */
       const anDerTuer = () => dreh > 62;
       let draussenVon = 'desktop';
+      function zimmerZeichnen() {
+        if (!S || !S.zimmer) return;
+        const z = S.zimmer;
+        if(document.getElementById('raum-couch')) document.getElementById('raum-couch').style.display = z.couch ? 'block' : 'none';
+        if(document.getElementById('raum-mpc')) document.getElementById('raum-mpc').style.display = z.mpc ? 'block' : 'none';
+        if(document.getElementById('raum-eddy')) document.getElementById('raum-eddy').style.display = z.eddy ? 'block' : 'none';
+        if(document.getElementById('raum-kette')) document.getElementById('raum-kette').style.display = z.kette ? 'block' : 'none';
+      }
+
+      function uiKonsequenz(text, warnung = false) {
+        let el = document.getElementById('detroit-ui');
+        if (!el) {
+          el = document.createElement('div');
+          el.id = 'detroit-ui';
+          el.style.position = 'fixed';
+          el.style.top = '30px';
+          el.style.left = '50%';
+          el.style.transform = 'translateX(-50%)';
+          el.style.zIndex = '9999';
+          el.style.fontFamily = 'monospace';
+          el.style.fontSize = '20px';
+          el.style.fontWeight = 'bold';
+          el.style.padding = '8px 16px';
+          el.style.textShadow = '1px 1px 0px var(--tinte)';
+          el.style.background = 'var(--tinte)';
+          el.style.opacity = '0';
+          el.style.pointerEvents = 'none';
+          el.style.transition = 'opacity 0.2s';
+          document.body.appendChild(el);
+        }
+        if (warnung) {
+          el.style.border = '3px solid var(--rot)';
+          el.style.color = 'var(--rot)';
+          flimmer(); // visual glitch on bad consequences
+        } else {
+          el.style.border = '3px solid var(--gelb)';
+          el.style.color = 'var(--gelb)';
+        }
+        el.textContent = text;
+        el.style.opacity = '1';
+        setTimeout(() => { el.style.opacity = '0'; }, 3500);
+      }
+
       function losRaum() { 
         dreh = -26; vor = 0; bob = 0; stell(); 
-        if (S && S.zimmer && S.zimmer.couch) $('raum-couch').style.display = 'block'; else $('raum-couch').style.display = 'none';
+        zimmerZeichnen();
         if (!tickt) { tickt = true; requestAnimationFrame(tick); } 
       }
       function tick() {
@@ -3287,6 +3359,8 @@
 
         $('fenster').innerHTML = ''; // Close window
         if (typeof window.denke === 'function') window.denke('Gekauft. Der Rang ist gestiegen.', 'var(--gelb)');
+        zimmerZeichnen();
+        uiKonsequenz('SCHMETTERLINGSEFFEKT', false);
       }
 
       function schwarzmarktAuf(strRabatt = false) {
@@ -4023,8 +4097,9 @@
           if (frei < 50) return 'Womit denn? Du hast nichts, was du setzen könntest.';
           const rotAnteil = Math.max(0, -waage());              // 0 bis 1
           const e = Math.max(50, rund(frei * .3)); buchen(s, -e, 'Investition');
-          if (zuf() < .5) {
-            const g = rund(e * (5 + rotAnteil * 2));                 // ×5 bis ×7
+          /* Buff: 55% win chance, x6 to x9 multiplier */
+          if (zuf() < .55) {
+            const g = rund(e * (6 + rotAnteil * 3));                 // ×6 bis ×9
             buchen(s, g, 'Auftrag (Erfolg)');
             return 'Und es geht auf. Auf einmal hast du ' + eur(g - e) + ' mehr als vorhin.';
           }
@@ -4768,6 +4843,7 @@
           buchen(S, -20, 'Pillen-Dosis (Apotheke)');
           z.push({ t: 'Die Pillen wirken. Du fühlst dich sicher (-2 Paranoia). Sie kosten 20 €.', a: 'grau' });
           if (typeof window.denke === 'function') window.denke('Die Medis geben mir Sicherheit. Die können gar nicht schaden.', 'var(--cyan)');
+          uiKonsequenz('SYSTEM-INSTABILITÄT ▼', false);
         }
 
         // Panic Attack
@@ -4786,6 +4862,7 @@
           if (zuf() < 0.5) z.push({ t: 'Du hast im Wahn spontan 16 Bars gerappt.', a: 'grau' });
           z.push({ t: 'Psychose-Schub! Du schiebst Filme und hast im Wahn für ' + eur(schaden) + ' Zeug gegen die Stalker gekauft.', a: 'schlecht' });
           if (typeof window.denke === 'function') window.denke('Scheiße, ich bin zu berühmt. Ich droppe gleich ungewollt Bars.', 'var(--rot)');
+          uiKonsequenz('SYSTEM-INSTABILITÄT ▲', true);
         }
 
         if (meinPet) {
