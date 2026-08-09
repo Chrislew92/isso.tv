@@ -2204,13 +2204,14 @@ function abschliessenWoche(z) {
   } else if(fix > 0) { buchen(S, -fix, 'Fixkosten (Miete/Leben)');
     z.push({t:'Fixkosten: '+eur(-fix)+'.'+(S.woche%5===0?' Und sie steigen weiter.':''),a:'schlecht'});
   }
-  const pets = ['hund', 'katze', 'vogel', 'schildkroete', 'maus', 'emu'];
+  const pets = ['hund', 'katze', 'vogel', 'schildkroete', 'maus', 'emu', 'hase'];
   const meinPet = S.zimmer ? pets.find(p => S.zimmer[p]) : null;
   if(meinPet) {
      if(S.geld >= 25) {
         buchen(S, -25, 'Haustier (Futter)');
-        S.nerven = cl(S.nerven + 1, 0, 10);
-        z.push({t:'Dein Haustier beruhigt dich (+1 Nerven). Futterkosten: 25 €.',a:'gut'});
+        S.nerven = cl(S.nerven + 2, 0, 10);
+        z.push({t:'Dein Haustier liebt dich (+2 Nerven). Futterkosten: 25 €.',a:'gut'});
+         if(typeof window.denke==='function') window.denke('Jeder mag mich. Ich helfe allen.', 'var(--cyan)');
      } else {
         S.zimmer[meinPet] = false;
         S.nerven = cl(S.nerven - 3, 0, 10);
