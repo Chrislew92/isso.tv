@@ -93,7 +93,10 @@ body{font-family:var(--sans);color:var(--tinte);-webkit-font-smoothing:antialias
 .k.job{background:var(--gelb)}
 .k kbd{flex:0 0 auto;font-family:var(--mono);font-size:11px;font-weight:700;
   background:rgba(0,0,0,.5);color:#fff;padding:3px 7px;border-radius:var(--br-sm)}
-.k.grau kbd,.k.job kbd{background:var(--tinte)}
+/* Heller Grund braucht dunkle Schrift. .k kbd darueber setzt color:#fff, das
+   passt zum halbdurchsichtigen Schwarz — aber nicht hier, wo --tinte (hell)
+   den Grund macht. Weiss auf Hellgrau war 1,3:1, die Ziffern waren weg. */
+.k.grau kbd,.k.job kbd{background:var(--tinte);color:#0d0d0d}
 .k .t{flex:1;min-width:0;display:flex;flex-direction:column;gap:2px}
 .k .t u{text-decoration:none;font-size:15px;text-transform:uppercase;line-height:1.2}
 .k .t em{font-style:normal;font-family:var(--sans);font-weight:600;font-size:11.5px;opacity:.75}
@@ -294,8 +297,11 @@ body{font-family:var(--sans);color:var(--tinte);-webkit-font-smoothing:antialias
 .vip.v3{border-color:var(--pink);box-shadow:0 0 10px rgba(255,62,165,.55)}
 .namensfeld{font-family:var(--fett);font-size:18px;letter-spacing:.16em;text-transform:uppercase;
   background:#fff;border:var(--out);box-shadow:5px 5px 0 var(--tinte);padding:12px 14px;
-  width:100%;outline:none;color:var(--tinte)}
-.namensfeld::placeholder{color:#bdb7a4}
+/* Das Feld hat weissen Grund und im Fokus einen gelben. Beides ist hell, also
+   muss die Schrift dunkel sein. Hier stand --tinte, und --tinte ist seit dem
+   Neumorphism-Umbau hell — 1,3:1, man tippte in Unsichtbares. */
+  width:100%;outline:none;color:#0d0d0d}
+.namensfeld::placeholder{color:#7a7568}
 .namensfeld:focus{background:var(--gelb)}
 .namensfehler{font-family:var(--mono);font-size:11px;letter-spacing:.1em;margin-top:8px;opacity:.5}
 .namensfehler.bad{opacity:1;color:#fff;background:var(--rot);display:inline-block;padding:4px 9px;
@@ -582,7 +588,10 @@ body.ruhig .hint.nah { animation: none !important; }
   80% { transform: translate(1px, -2px) skew(0.5deg); filter: drop-shadow(2px 0 0 var(--rot)) drop-shadow(-2px 0 0 var(--cyan)); }
   100% { transform: translate(0) skew(0); filter: drop-shadow(0 0 0 transparent); }
 }
-h1, h2, .namensfeld, .k .t u { text-shadow: 1.5px 0px 0.5px var(--rot), -1.5px 0px 0.5px var(--cyan); }
+/* Farbsaum als CRT-Effekt: auf Ueberschriften und Knopftiteln ist das Stil.
+   Im Namensfeld war es keiner — dort tippt man Buchstaben, und jeder bekam
+   einen roten und einen cyanfarbenen Schatten. Das Feld ist deshalb raus. */
+h1, h2, .k .t u { text-shadow: 1.5px 0px 0.5px var(--rot), -1.5px 0px 0.5px var(--cyan); }
 .k:hover:not(:disabled) { text-shadow: 2.5px 0px 1px var(--rot), -2.5px 0px 1px var(--cyan); }
 
 
@@ -1947,8 +1956,8 @@ const TU={
    buchen(s, -(n*ZEDKURS), 'ZEDCOIN Kauf'); s.zed+=n;
    return '★ '+n+' '+COIN+'. Du hast jetzt '+s.zed+' von '+(ZIEL/ZEDKURS)+'. Da kommt keiner mehr ran.';},
  pkonto:s=>{s.pkonto=1;
-   if(s.geld<0) buchen(s, Math.abs(s.geld), 'Schuldenerlass (P-Konto)');          // kein Dispo mehr, das Minus fällt weg
-   return 'P-Konto beantragt. '+eur(PSCHUTZ)+' sind unantastbar — steht so im Gesetz.<br>'+
+   if(s.geld<0) buchen(s, Math.abs(s.geld), 'Schuldenerlass (Schutzkonto)');      // kein Dispo mehr, das Minus fällt weg
+   return 'Schutzkonto beantragt. '+eur(PSCHUTZ)+' sind unantastbar — steht so im Gesetz.<br>'+
      'Dafür ist der Dispo weg. Du kannst nicht mehr ins Minus, und über mehr als '+
      eur(PSCHUTZ)+' verfügst du auch nicht. Der Rest liegt da und guckt dich an.';},
  /* Das P-Konto wieder zurückgeben. Gibt es in echt, und im Spiel war es
@@ -1980,9 +1989,9 @@ const W={
  krank:t=>({u:'KRANKMELDEN',p:'3 Wochen · Nerven erholen',w:'grau',e:t,f:TU.krank}),
  /* Beide Seiten müssen am Knopf stehen. Das P-Konto schützt und fesselt
     gleichzeitig — wer nur "unpfändbar" liest, tappt in eine Falle. */
- pkonto:t=>({u:'P-KONTO BEANTRAGEN',p:'sicher, aber nur '+eur(PSCHUTZ)+' verfügbar · kein Dispo',
+ pkonto:t=>({u:'SCHUTZKONTO BEANTRAGEN',p:'sicher, aber nur '+eur(PSCHUTZ)+' verfügbar · kein Dispo',
    w:'blau',e:t,f:TU.pkonto}),
- pkontoWeg:t=>({u:'P-KONTO ZURÜCKGEBEN',p:'wieder voller Zugriff · aber er kommt auch wieder ran',
+ pkontoWeg:t=>({u:'SCHUTZKONTO ZURÜCKGEBEN',p:'wieder voller Zugriff · aber er kommt auch wieder ran',
    w:'rot',e:t,f:TU.pkontoWeg}),
  insolvenz:t=>({u:'PRIVATINSOLVENZ',p:'Schulden weg · Häuser weg',w:'grau',e:t,f:TU.insolvenz}),
  job:(id,label,hinweis,txt,folge)=>({u:label,p:hinweis,w:'job',e:txt,f:wechsel(id,folge)})
@@ -2430,7 +2439,7 @@ function ziehe(){
      zufällig kommt. Sonst sitzt man fest, ohne dass es je zur Frage wird:
      mit P-Konto gewann von 70 roten Läufen kein einziger, ohne 15. */
   if(S.pkonto && S.geld > PSCHUTZ + 500 &&
-     !S.szene.w.some(x=>x.u==='P-KONTO ZURÜCKGEBEN')){
+     !S.szene.w.some(x=>x.u==='SCHUTZKONTO ZURÜCKGEBEN')){
     S.szene = Object.assign({}, S.szene);
     S.szene.w = [...S.szene.w, W.pkontoWeg('Der Rest liegt fest. Konto zurückstellen lassen.')];
   }
@@ -2448,9 +2457,9 @@ function gesperrt(u){
      dasteht und nur hinterm Pfändungsschutz liegt. */
   const frei=verfuegbar(S);
   if(u==='SETZEN' && frei<100)
-    return S.pkonto&&S.geld>=100 ? 'gesperrt · hinterm P-Konto' : 'gesperrt · nichts da';
+    return S.pkonto&&S.geld>=100 ? 'gesperrt · hinterm Schutzkonto' : 'gesperrt · nichts da';
   if(u==='HAUS KAUFEN' && frei<500)
-    return S.pkonto&&S.geld>=500 ? 'gesperrt · hinterm P-Konto' : 'gesperrt · nichts da';
+    return S.pkonto&&S.geld>=500 ? 'gesperrt · hinterm Schutzkonto' : 'gesperrt · nichts da';
   if(u===COIN+' KAUFEN' && S.geld<ZEDKURS) return 'gesperrt · unter '+eur(ZEDKURS);
   return null;
 }
@@ -2628,7 +2637,7 @@ function abschliessenWoche(z) {
       z.push(griff>0
         ? {t:'<b>TA$CH€N</b> war da. '+eur(-griff)+'.',a:'feind'}
         : S.pkonto
-          ? {t:'<b>TA$CH€N</b> greift zu und kommt nicht ran. P-Konto.',a:'gut'}
+          ? {t:'<b>TA$CH€N</b> greift zu und kommt nicht ran. Schutzkonto.',a:'gut'}
           : {t:'<b>TA$CH€N</b> war da. Bei dir war nichts zu holen.',a:'feind'});
       if(griff>0){ $('b7').classList.add('bad'); setTimeout(()=>$('b7').classList.remove('bad'),600); }
     }
@@ -2741,7 +2750,7 @@ function male(z){
   $('cWoche').textContent='Woche '+Math.min(S.woche,MAXW)+' / '+MAXW;
   $('cJob').textContent = S.insolvenz>0 ? 'Insolvenz ('+S.insolvenz+')'
                         : S.krank>0     ? B.n+' · krank ('+S.krank+')'
-                        : B.n+(S.pkonto?' · P-Konto':'');
+                        : B.n+(S.pkonto?' · Schutzkonto':'');
   $('cJob').style.background = S.insolvenz>0?'var(--orange)':(S.krank>0?'var(--grau)':'var(--cyan)');
   const altGeld = parseInt($('cGeld').dataset.v || v);
   $('cGeld').dataset.v = v;
