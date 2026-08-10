@@ -294,35 +294,54 @@
       letter-spacing: .4em;
       text-align: center;
       text-transform: uppercase;
-      background: var(--papier);
-      border: var(--out);
-      box-shadow: var(--sh-in);
+      background: rgba(13, 13, 13, 0.7);
+      border: 3px solid var(--tinte);
+      color: var(--gelb);
       border-radius: var(--br);
       padding: 13px;
-      background: #1e1f23;
-      color: #e2e2e2;
       width: min(230px, 64vw);
-      outline: none
+      outline: none;
+      box-shadow: 0 0 15px rgba(255, 210, 31, 0.1);
+      backdrop-filter: blur(5px);
+      transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    }
+
+    #b0 input:focus {
+      border-color: var(--gelb);
+      box-shadow: 0 0 30px rgba(255, 210, 31, 0.4);
+      transform: scale(1.05);
+      background: rgba(13, 13, 13, 0.9);
     }
 
     #b0 input::placeholder {
-      color: #d3cabd;
+      color: rgba(255, 255, 255, 0.2);
       font-family: var(--fett)
     }
 
     #b0 button {
       font-family: var(--fett);
-      font-size: 13px;
+      font-size: 14px;
       letter-spacing: .14em;
       text-transform: uppercase;
-      color: #fff;
-      background: var(--rot);
-      border: var(--out);
-      box-shadow: var(--sh-out);
+      color: var(--tinte);
+      background: var(--gelb);
+      border: 3px solid var(--tinte);
       border-radius: var(--br);
-      padding: 13px 20px;
-      background: linear-gradient(145deg, #ff3f5a, #e62944);
-      cursor: pointer
+      padding: 13px 24px;
+      cursor: pointer;
+      box-shadow: 4px 4px 0 var(--tinte), 0 0 15px rgba(255, 210, 31, 0.2);
+      transition: all 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    }
+
+    #b0 button:hover {
+      transform: translate(-2px, -2px) scale(1.05);
+      box-shadow: 6px 6px 0 var(--tinte), 0 0 25px rgba(255, 210, 31, 0.6);
+      background: #fff;
+    }
+
+    #b0 button:active {
+      transform: translate(2px, 2px);
+      box-shadow: 0 0 0 var(--tinte);
     }
 
     #b0 .err {
@@ -2503,7 +2522,7 @@
         <div class="mark">ISSO.TV</div>
         <div class="sub" id="untertitel">VERZWEIFLUNGSSIMULATOR PROTOTYP</div>
         <form id="tor" autocomplete="off">
-          <input type="text" id="pw" maxlength="13" spellcheck="false" placeholder="DEIN NAME">
+          <input type="text" id="startname" maxlength="13" spellcheck="false" placeholder="DEIN NAME">
           <div style="margin:15px 0;color:var(--rot);font-family:var(--fett);font-size:16px;text-transform:uppercase;">
             HARDCORE-MODUS: 1 ZUG = 1 KALENDERTAG
           </div>
@@ -3108,7 +3127,7 @@
       }
       $('tor').addEventListener('submit', async e => {
         e.preventDefault();
-        const n = $('pw').value.trim();
+        const n = $('startname').value.trim();
         if (n.length < 5 || n.length > 13) {
           $('b0').classList.add('bad');
           $('pw-err').style.display = 'block';
@@ -3125,7 +3144,7 @@
         render();
         zeig('b7');
       });
-      if (bild === 'b0') $('pw').focus();
+      if (bild === 'b0') $('startname').focus();
 
       /* ========== NACHT ========== */
       const GED = ['Du denkst an das Geld auf dem Konto.',
