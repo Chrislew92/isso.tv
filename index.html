@@ -1656,25 +1656,42 @@
       transform-style: preserve-3d;
     }
 
+    .str-regen {
+      position: absolute;
+      inset: 0;
+      background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="10" height="100"><rect x="5" y="0" width="1" height="15" fill="rgba(255,255,255,0.15)"/></svg>') repeat;
+      animation: regen 0.4s linear infinite;
+      z-index: 9;
+      pointer-events: none;
+      opacity: 0.8;
+    }
+
+    @keyframes regen {
+      to { background-position: 0 1000px; }
+    }
+
     /* Horizont statt Sackgasse: ein schmutziger Lichtschein am Fluchtpunkt,
    damit die Straße weitergeht statt gegen eine schwarze Wand zu laufen. */
     .str-bg {
       position: absolute;
-      inset: -20%;
-      transform: translateZ(-500px);
+      inset: -50%;
+      transform: translateZ(-600px);
       background:
-        radial-gradient(ellipse 40% 22% at 50% 62%, rgba(255, 210, 31, .20) 0%, rgba(255, 120, 0, .07) 45%, transparent 75%),
-        radial-gradient(circle at center, #14141b 0%, #000 80%);
+        radial-gradient(ellipse 50% 40% at 50% 70%, rgba(255, 210, 31, 0.3) 0%, rgba(255, 0, 85, 0.1) 40%, transparent 70%),
+        radial-gradient(circle at center, #0a0a0f 0%, #000 100%);
     }
 
     .haus-l,
     .haus-r {
       position: absolute;
-      top: -10%;
-      height: 120%;
-      width: 40vw;
-      background: repeating-linear-gradient(0deg, #050508, #050508 40px, #0a0a12 40px, #0a0a12 42px);
-      box-shadow: inset 0 0 50px #000;
+      top: -20%;
+      height: 140%;
+      width: 45vw;
+      background: 
+        linear-gradient(90deg, rgba(255,255,255,0.03) 1px, transparent 1px) 0 0 / 40px 40px,
+        linear-gradient(0deg, rgba(255,255,255,0.03) 1px, transparent 1px) 0 0 / 40px 40px,
+        repeating-linear-gradient(0deg, #050508, #050508 40px, #0a0a12 40px, #0a0a12 42px);
+      box-shadow: inset 0 0 80px #000;
       border: 2px solid #1a1a24;
     }
 
@@ -1691,13 +1708,15 @@
     .str-boden {
       position: absolute;
       bottom: -20%;
-      left: -20%;
-      width: 140%;
-      height: 50vh;
-      background: #09090c;
-      transform: translateY(30vh) rotateX(70deg);
-      border-top: 5px solid #ff0055;
-      opacity: 0.3;
+      left: -50%;
+      width: 200%;
+      height: 60vh;
+      background: 
+        linear-gradient(0deg, transparent 90%, rgba(255, 0, 85, 0.2) 100%),
+        repeating-linear-gradient(90deg, #09090c, #09090c 40px, #0c0c11 40px, #0c0c11 42px);
+      transform: translateY(20vh) rotateX(75deg);
+      border-top: 2px solid var(--pink);
+      opacity: 0.6;
     }
 
     /* ---- LAUFEN ---- Die Straße ist ein Gang, kein Bild. #str-lauf schiebt sich
@@ -1840,9 +1859,59 @@
     /* ---- ZWEITE PERSPEKTIVE ----
    Standard ist Ego, wie im Egoshooter. V schaltet hinter die Figur.
    Beides muss gehen, deshalb hängt alles an EINER Klasse am body. */
+    .minimap {
+      position: absolute;
+      top: 20px;
+      left: 20px;
+      width: 200px;
+      height: 60px;
+      background: rgba(10, 10, 15, 0.85);
+      border: 2px solid var(--cyan);
+      border-radius: 4px;
+      box-shadow: 0 0 10px rgba(0, 255, 255, 0.2);
+      z-index: 10;
+      overflow: hidden;
+    }
+    .map-grid {
+      position: absolute;
+      inset: 0;
+      background-image: linear-gradient(var(--cyan) 1px, transparent 1px), linear-gradient(90deg, var(--cyan) 1px, transparent 1px);
+      background-size: 20px 20px;
+      opacity: 0.15;
+    }
+    .map-orte {
+      position: absolute;
+      top: 50%;
+      left: 10px;
+      right: 10px;
+      height: 2px;
+      background: rgba(255, 255, 255, 0.2);
+    }
+    .map-ort-dot {
+      position: absolute;
+      top: -4px;
+      width: 10px;
+      height: 10px;
+      background: var(--gelb);
+      border-radius: 50%;
+      box-shadow: 0 0 8px var(--gelb);
+    }
+    .map-player {
+      position: absolute;
+      top: 25px;
+      width: 12px;
+      height: 12px;
+      background: var(--pink);
+      border: 2px solid #fff;
+      border-radius: 50%;
+      box-shadow: 0 0 12px var(--pink);
+      transform: translateX(-50%);
+      transition: left 0.1s linear;
+    }
+
     .str-figur {
       position: absolute;
-      bottom: 15%;
+      bottom: -15px;
       left: 50%;
       width: 130px;
       height: 225px;
@@ -1866,70 +1935,75 @@
 
     .str-figur span {
       position: absolute;
-      background: #14141c;
-      border: 3px solid var(--papier);
+      background: #7a7a85;
+      border: 3px solid var(--tinte);
       display: block;
     }
 
     .str-figur .kopf {
       left: 38px;
-      top: 0;
+      top: -10px;
       width: 54px;
-      height: 50px;
-      border-radius: 9px;
-      background: var(--papier);
+      height: 70px;
+      border-radius: 20px 20px 30px 30px;
+      background: #7a7a85;
       border-color: var(--tinte);
+      z-index: 2;
     }
 
     .str-figur .kopf::after {
       content: '';
       position: absolute;
-      inset: 8px 9px auto 9px;
-      height: 15px;
-      background: var(--tinte);
-      border-radius: 3px;
+      inset: auto 4px -4px 4px;
+      height: 25px;
+      background: #a9a9b3;
+      border: 3px solid var(--tinte);
+      border-radius: 10px 10px 20px 20px;
     }
 
-    /* Hinterkopf, kein Gesicht */
+    .str-figur .ohr {
+      width: 16px;
+      height: 40px;
+      background: #666;
+      border-radius: 50% 50% 0 0;
+      top: -40px;
+      z-index: 1;
+    }
+    
+    .str-figur .ohr.l { left: 42px; transform: rotate(-20deg); }
+    .str-figur .ohr.r { left: 72px; transform: rotate(20deg); }
+
     .str-figur .rumpf {
       left: 22px;
       top: 46px;
       width: 86px;
       height: 104px;
-      border-radius: 11px 11px 5px 5px;
+      border-radius: 30px 30px 15px 15px;
+      z-index: 1;
     }
 
     .str-figur .arm {
       top: 56px;
       width: 23px;
       height: 88px;
-      border-radius: 8px;
+      border-radius: 12px;
       transform-origin: 50% 0;
     }
 
-    .str-figur .arm.l {
-      left: 2px;
-    }
-
-    .str-figur .arm.r {
-      right: 2px;
-    }
+    .str-figur .arm.l { left: 2px; }
+    .str-figur .arm.r { right: 2px; }
 
     .str-figur .bein {
       top: 146px;
       width: 33px;
       height: 80px;
-      border-radius: 5px 5px 8px 8px;
+      border-radius: 8px 8px 12px 12px;
       transform-origin: 50% 0;
+      background: #555;
     }
 
-    .str-figur .bein.l {
-      left: 26px;
-    }
-
-    .str-figur .bein.r {
-      right: 26px;
-    }
+    .str-figur .bein.l { left: 26px; }
+    .str-figur .bein.r { right: 26px; }
 
     .p-schalt {
       position: absolute;
@@ -2886,6 +2960,7 @@
 
     <!-- 10 3DWORLD -->
     <section class="bild" id="b10">
+      <div class="str-regen"></div>
       <div class="strasse" id="str-raum">
         <div class="str-bg"></div>
         <div class="str-lauf" id="str-lauf">
@@ -2905,7 +2980,14 @@
       <div class="str-figur" id="str-figur">
         <span class="arm l"></span><span class="arm r"></span>
         <span class="bein l"></span><span class="bein r"></span>
-        <span class="rumpf"></span><span class="kopf"></span>
+        <span class="rumpf"></span>
+        <span class="ohr l"></span><span class="ohr r"></span>
+        <span class="kopf"></span>
+      </div>
+      <div id="minimap" class="minimap">
+        <div class="map-grid"></div>
+        <div class="map-orte" id="map-orte"></div>
+        <div class="map-player" id="map-player"></div>
       </div>
       <button class="p-schalt" id="p-schalt" type="button">Ansicht: Ego · V</button>
       <div class="str-schritt" id="str-schritt">W A S D — laufen · E — hingehen</div>
@@ -5919,6 +6001,7 @@
       function strasseBauen() {
         if (strGebaut) return; strGebaut = true;
         const lauf = $('str-lauf');
+        const mOrte = $('map-orte');
         for (let i = 0; i < SEGN; i++) {
           for (const s of ['l', 'r']) {
             const d = document.createElement('div');
@@ -5932,6 +6015,13 @@
         for (const o of ORTE) {
           const d = document.createElement('div');
           d.className = 'ort-schild'; d.textContent = o.n; o.el = d; lauf.appendChild(d);
+          if (mOrte) {
+            const dot = document.createElement('div');
+            dot.className = 'map-ort-dot';
+            dot.title = o.n;
+            dot.style.left = (o.z / MAXZ * 100) + '%';
+            mOrte.appendChild(dot);
+          }
         }
       }
 
@@ -5951,6 +6041,9 @@
         const lauf = $('str-lauf');
         lauf.style.transform = 'translateX(' + (-strX * 7).toFixed(2) + 'vw)'
           + (dritte ? ' translateZ(-210px) translateY(-6vh)' : '');
+
+        const mPlayer = $('map-player');
+        if (mPlayer) mPlayer.style.left = (strZ / MAXZ * 100) + '%';
 
         for (const el of lauf.querySelectorAll('.seg,.lampe')) {
           const i = +el.dataset.i;
