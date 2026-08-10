@@ -3030,6 +3030,8 @@
       <a href="https://s7v3n.com">S7V3N</a> · <a href="https://eytonland.com">EyTonLand</a>
     </div>
 
+    <div id="ironmind-badge" style="display:none; position:absolute; top:10px; right:120px; font-size:12px; font-weight:bold; color:var(--cyan); font-family:var(--mono); text-shadow:0 0 5px var(--cyan); z-index:9999; pointer-events:none;">[ IRONMIND ONLINE ]</div>
+
     <div id="gedanken"><span></span></div>
   </div>
   <script>
@@ -3038,6 +3040,9 @@
       'use strict';
       const $ = id => document.getElementById(id);
       let bild = 'b0';
+      
+      const isIronMind = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1';
+      if (isIronMind) $('ironmind-badge').style.display = 'block';
 
       let gedankenTimer = null;
       let idleTimer = null;
@@ -4136,17 +4141,33 @@
          (privates Fenster, volle Quote), soll das Spiel weiterlaufen wie vorher
          und nicht stehenbleiben. */
       const SKEY='isso.tv.spiel';
+      
       function spielSpeichern(){
         if(!spielLaeuft || S.ende) return;
         try{
           const kopie={}; for(const k in S){ if(k!=='szene') kopie[k]=S[k]; }
-          localStorage.setItem(SKEY, JSON.stringify(
-            {v:1, tag:saison(), name:spielerName, safe:safeID, S:kopie}));
+          const json = JSON.stringify({v:1, tag:saison(), name:spielerName, safe:safeID, S:kopie});
+          if (isIronMind) {
+            fetch('/api/save', { method: 'POST', body: json });
+          } else {
+            localStorage.setItem(SKEY, json);
+          }
         }catch(e){}
       }
+      
       function spielLaden(){
         let d=null;
-        try{ d=JSON.parse(localStorage.getItem(SKEY)||'null'); }catch(e){ return false; }
+        try{ 
+          if (isIronMind) {
+            const xhr = new XMLHttpRequest();
+            xhr.open('GET', '/api/load', false);
+            xhr.send(null);
+            d = JSON.parse(xhr.responseText || 'null');
+            if (Object.keys(d).length === 0) d = null;
+          } else {
+            d=JSON.parse(localStorage.getItem(SKEY)||'null'); 
+          }
+        }catch(e){ return false; }
         if(!d || d.v!==1 || !d.S || typeof d.S.woche!=='number') return false;
         S=Object.assign(FRISCH(d.S.job||0), d.S);
         S.szene=null;
@@ -4154,7 +4175,12 @@
         spielLaeuft=true;
         return true;
       }
-      function spielVergessen(){ try{ localStorage.removeItem(SKEY); }catch(e){} }
+      function spielVergessen(){ 
+        try { 
+          if (isIronMind) fetch('/api/save', { method: 'POST', body: '{}' });
+          else localStorage.removeItem(SKEY); 
+        } catch(e){} 
+      }
 
       const waage = () => { const g = S.rot + S.blau; return g ? (S.blau - S.rot) / g : 0; };
       const hausWert = b => Math.round(b * KX * JOB().haus);
