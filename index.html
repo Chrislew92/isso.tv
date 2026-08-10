@@ -3352,7 +3352,7 @@
           if (tast.d || tast.arrowright) dd += 1.15;
           if (tast.w || tast.arrowup) dv += .012;
           if (tast.s || tast.arrowdown) dv -= .012;
-          if (dd || dv) { dreh = klemm(dreh + dd, -100, 100); vor = klemm(vor + dv, 0, 1); bob += .22; stell(); }
+          if (dd || dv) { dreh = klemm(dreh + dd, -180, 180); vor = klemm(vor + dv, 0, 1); bob += .22; stell(); }
           const n = nah(), t = anDerTuer();
           hint.classList.toggle('nah', n || t);
           hint.textContent = TIPPGERAET
@@ -3370,7 +3370,7 @@
       $('b2').addEventListener('mousemove', ev => {
         if (bild !== 'b2') return;
         const r = $('b2').getBoundingClientRect();
-        dreh = klemm(((ev.clientX - r.left) / r.width - .5) * 150, -100, 100); stell();
+        dreh = klemm(((ev.clientX - r.left) / r.width - .5) * 250, -180, 180); stell();
       });
       function rausgehen() {
         draussenVon = 'raum';
@@ -3387,7 +3387,7 @@
         if (nah()) { anmachen(); return; }
         if (anDerTuer()) { rausgehen(); return; }
         const r = $('b2').getBoundingClientRect();
-        if (ev.clientX) { const z = klemm(((ev.clientX - r.left) / r.width - .5) * 150, -100, 100); dreh += (z - dreh) * .6; }
+        if (ev.clientX) { const z = klemm(((ev.clientX - r.left) / r.width - .5) * 250, -180, 180); dreh += (z - dreh) * .6; }
         else dreh += (0 - dreh) * .5;
         vor = klemm(vor + .18, 0, 1); bob += 1; stell();
       });
