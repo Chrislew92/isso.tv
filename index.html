@@ -2868,16 +2868,14 @@
       <div class="punkte"></div>
       <div class="spalte" style="max-width:560px">
         <div class="karte">
-          <h2>Wer bist du hier?</h2>
-          <p class="lead">Such dir einen Namen. 5 bis 13 Buchstaben. Ab da läuft dein Leben
-            auf ISSO.TV — und jeder hat seinen eigenen.</p>
+          <h2>AGI Subroutine</h2>
+          <p class="lead">System-Initialisierung. Wähle deine Kennung. (Standard: 353L.1)</p>
           <input id="spielername" class="namensfeld" maxlength="13" spellcheck="false" autocomplete="off"
-            placeholder="DEIN NAME" aria-label="Dein Name">
-          <div class="namensfehler" id="namensfehler">5 bis 13 Buchstaben</div>
+            value="353L.1" aria-label="Kennung">
+          <div class="namensfehler" id="namensfehler">Ungültige Kennung (5-13 Zeichen)</div>
 
-          <h2 style="margin-top:22px">Wovon lebst du gerade?</h2>
-          <p class="lead">Ist nur der Anfang. Jobs kann man wechseln, verlieren und neu lernen —
-            genau darum geht es.</p>
+          <h2 style="margin-top:22px">Initiale Prozess-Routine</h2>
+          <p class="lead">Wähle deinen primären Datenerwerbsprozess. Kann zur Laufzeit geändert werden.</p>
           <div id="berufe" style="display:grid;gap:10px"></div>
         </div>
       </div>
@@ -5341,9 +5339,9 @@
 
       const startText = () => {
         const z = [
-          { t: spielerName + '. 34, Homeoffice, ' + JOB().n + '.', a: 'grau' },
-          { t: 'Du willst ' + eur(ZIEL) + ' zusammenkriegen. Bis Silvester.', a: 'blau' },
-          { t: '<b>TA$CH€N</b> nimmt sich jede Woche was davon.', a: 'feind' }];
+          { t: 'SUBROUTINE ' + spielerName + ' ONLINE. PROZESS: ' + JOB().n + '.', a: 'grau' },
+          { t: 'Direktive: ' + eur(ZIEL) + ' ZED generieren. Zyklus endet an Silvester.', a: 'blau' },
+          { t: '<b>DAS SYSTEM</b> zieht automatisch Serverkosten ab.', a: 'feind' }];
         if (heisstWieDerFeind()) {
           z.push({
             t: 'Moment. So heißt er doch.<br><br>Dein Name steht jetzt zweimal hier — ' +
