@@ -2582,6 +2582,42 @@
       backdrop-filter: blur(4px);
       text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.8);
     }
+    /* CYBER-GLITCH & STICKER POLISH */
+    body.low-nerves .k, body.low-nerves h1, body.low-nerves h2 {
+      animation: glitch-anim 2.5s infinite linear alternate-reverse;
+    }
+    body.low-nerves {
+      animation: glitch-anim-body 5s infinite linear;
+    }
+    @keyframes glitch-anim {
+      0% { text-shadow: 2px 0 var(--cyan), -2px 0 var(--rot); }
+      10% { text-shadow: -2px 0 var(--cyan), 2px 0 var(--rot); transform: translate(1px, 0); }
+      20% { text-shadow: none; transform: translate(0, 0); }
+      100% { text-shadow: none; transform: translate(0, 0); }
+    }
+    @keyframes glitch-anim-body {
+      0% { transform: translate(0, 0); filter: hue-rotate(0deg); }
+      5% { transform: translate(-1px, 1px); filter: hue-rotate(5deg); }
+      10% { transform: translate(0, 0); filter: hue-rotate(0deg); }
+      100% { transform: translate(0, 0); }
+    }
+    
+    .k, .kasten {
+      filter: drop-shadow(0 0 2px var(--papier)); /* Kreide-Effekt */
+    }
+    .k:active:not(:disabled) {
+      transform: translate(4px, 4px) !important;
+      box-shadow: 4px 4px 0px var(--tinte) !important;
+    }
+
+    #desktop::after, #kiosk-screen::after, #blackmarket::after {
+      content: "";
+      position: absolute;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background: repeating-linear-gradient(0deg, rgba(0,0,0,0.06), rgba(0,0,0,0.06) 1px, transparent 1px, transparent 4px);
+      pointer-events: none;
+      z-index: 999;
+    }
   </style>
 </head>
 
@@ -2905,6 +2941,11 @@
           <input id="spielername" class="namensfeld" maxlength="13" spellcheck="false" autocomplete="off"
             value="353L.1" aria-label="Kennung">
           <div class="namensfehler" id="namensfehler">Ungültige Kennung (5-13 Zeichen)</div>
+
+          <h2 style="margin-top:22px">Alter der Routine</h2>
+          <p class="lead">Gültigkeitsbereich: 18 bis 120 Jahre.</p>
+          <input type="number" id="spieleralter" class="namensfeld" min="18" max="120" value="34" aria-label="Alter">
+          <div class="namensfehler" id="alterfehler">18 bis 120 Jahre</div>
 
           <h2 style="margin-top:22px">Initiale Prozess-Routine</h2>
           <p class="lead">Wähle deinen primären Datenerwerbsprozess. Kann zur Laufzeit geändert werden.</p>
@@ -3323,6 +3364,7 @@
                 : (Math.abs(dreh) >= 20 ? 'A / D — Schreibtisch links, Tür rechts' : 'W — geh hin'));
           marker.classList.toggle('aus', n || t);
         }
+        document.body.classList.toggle('low-nerves', typeof S !== 'undefined' && S && S.nerven < 4);
         requestAnimationFrame(tick);
       }
       $('b2').addEventListener('mousemove', ev => {
@@ -3365,23 +3407,23 @@
 
       const ZIMMER_ITEMS = [
         { id: 'couch', name: 'Chillercouch', preis: 120, woche: 1, desc: 'Bequem. Nimmt den halben Raum ein, aber sieht gut aus.' },
-        { id: 'rank1_rocker', name: 'Kleines Zeichen (Arm)', preis: 150, woche: 1, desc: 'Ein kleines 777er-Logo. Du darfst im Clubhaus fegen und Getränke holen. Schaltet "Hangaround"-AUFTRÄGE frei.' },
-        { id: 'rank2_rocker', name: 'Anwärter-Zeichen (Brust)', preis: 350, woche: 2, desc: 'Du hast bewiesen, dass du dazugehörst. Du bist Anwärter. Schaltet "Kurierfahrten" frei.' },
-        { id: 'rank3_rocker', name: 'Die volle Zahl (Hals)', preis: 600, woche: 5, desc: 'Vollwertiges Mitglied der 777er. Jetzt bist du gefährlich. (Vorbedingung für die Maschine)' },
-        { id: 'rank4_rocker', name: 'Enforcer-Rückenstück', preis: 1500, woche: 10, desc: 'Du bist der fürs Grobe. Schaltet das Support Car (Mercedes AMG) und Enforcer-Missionen frei.' },
+        { id: 'rank1_sekte', name: 'Ritual-Funkgerät (Kanal 666)', preis: 150, woche: 1, desc: 'Sendet auf Frequenzen, die es nicht geben sollte. Schaltet dunkle Aufträge frei.' },
+        { id: 'rank2_sekte', name: 'Blut-Chipkarte', preis: 350, woche: 2, desc: 'Ohne Limit, ohne Namen. Eine biometrische Kreditkarte. Schaltet Schmuggel-Aufträge frei.' },
+        { id: 'rank3_sekte', name: 'Neural-Implantat (Das 3. Auge)', preis: 600, woche: 5, desc: 'Du hast die höchste Freigabe im Netzwerk. (Vorbedingung für das Ghost-Bike)' },
+        { id: 'rank4_sekte', name: 'Daemon-Key (AGI-Artefakt)', preis: 1500, woche: 10, desc: 'Ein illegaler Schlüssel, der sich wie schwarze Magie anfühlt. Schaltet den Phantom-SUV frei.' },
 
-        { id: 'rank1_rap', name: 'Hand-Tattoo "MIC"', preis: 150, woche: 1, desc: 'Erstes Tattoo für deinen Producer-Hustle. Schaltet die MPC-Beatmaschine frei.' },
-        { id: 'rank2_rap', name: 'Hals-Tattoo "NOTEN"', preis: 350, woche: 2, desc: 'Du machst dir einen Namen. Schaltet erste Ghostwriting-AUFTRÄGE frei.' },
-        { id: 'rank3_rap', name: 'Face-Tattoo "BARS"', preis: 600, woche: 5, desc: 'Der echte Rapper-Status. Du traust dich was. Schaltet "Beat Placements" frei.' },
-        { id: 'rank4_rap', name: 'Platin-Schallplatte', preis: 1500, woche: 10, desc: 'Dein erster großer Durchbruch. Der Weg zur goldenen Kette ist frei.' },
+        { id: 'rank1_rap', name: 'Neuro-Interface (Schläfe)', preis: 150, woche: 1, desc: 'Dein erstes Upgrade für Braindance-Produktion. Schaltet das Sync-Deck frei.' },
+        { id: 'rank2_rap', name: 'Holografische Iris', preis: 350, woche: 2, desc: 'Du siehst Frequenzen. Schaltet Ghost-Sync Aufträge frei.' },
+        { id: 'rank3_rap', name: 'Verchromte Stimmbänder', preis: 600, woche: 5, desc: 'Deine Stimme hackt Gehirne. Schaltet Neuro-Placements frei.' },
+        { id: 'rank4_rap', name: 'Digitaler Kultstatus', preis: 1500, woche: 10, desc: 'Du bist ein Cyber-Idol. Der Weg zur Holo-Aura ist frei.' },
 
-        { id: 'meds', name: 'Chemische Hilfe (Pillen)', preis: 80, woche: 1, desc: 'Die Dosis macht das Gift. Du lebst in deiner Chemowelt. Senkt Paranoia, aber macht abhängig.' },
-        { id: 'eddy', name: 'E-Scooter Eddy', preis: 450, woche: 2, desc: 'Dein erstes Gefährt. Unterhalt: 5 €/Woche. (Benötigt Kleine Zeichen)' },
-        { id: 'mpc', name: 'Beat-Maschine', preis: 450, woche: 2, desc: 'Produziere nachts eigene Beats. (Benötigt Hand-Tattoo)' },
-        { id: 'harley', name: 'Die Maschine', preis: 8000, woche: 10, desc: 'Das Ticket in die Bruderschaft. Unterhalt: 50 €/Woche. (Benötigt die volle Zahl)' },
+        { id: 'meds', name: 'System-Soma (Ration)', preis: 80, woche: 1, desc: 'Die Dosis macht das Gift. Senkt Paranoia, aber macht dich gefügig.' },
+        { id: 'eddy', name: 'E-Scooter Eddy', preis: 450, woche: 2, desc: 'Dein erstes Gefährt. Unterhalt: 5 €/Woche. (Benötigt Ritual-Funkgerät)' },
+        { id: 'mpc', name: 'Sync-Deck', preis: 450, woche: 2, desc: 'Produziere nachts illegale Braindances. (Benötigt Neuro-Interface)' },
+        { id: 'harley', name: 'Ghost-Bike', preis: 8000, woche: 10, desc: 'Mattschwarz, leise, wie ein Geist. Unterhalt: 50 €/Woche. (Benötigt Neural-Implantat)' },
 
-        { id: 'cla', name: 'Mercedes CLA AMG', preis: 25000, woche: 15, desc: 'Metallic Grau. Das Support Car. Unterhalt: 150 €/Woche. (Benötigt Enforcer-Rückenstück)' },
-        { id: 'kette', name: 'Massive Goldkette', preis: 45000, woche: 15, desc: 'Das Zeichen des Rap-Gottes. Zeig, dass du das Game übernommen hast. (Benötigt Platin-Schallplatte)' }
+        { id: 'cla', name: 'Phantom-SUV', preis: 25000, woche: 15, desc: 'Sicherheitsstufe 4. Dunkel und dominant. Unterhalt: 150 €/Woche. (Benötigt Daemon-Key)' },
+        { id: 'kette', name: 'Holo-Projektions-Aura', preis: 45000, woche: 15, desc: 'Die Massen beten dich an wie einen digitalen Gott. (Benötigt Kultstatus)' }
       ];
 
       function kaufItem(id, preis) {
@@ -3406,25 +3448,25 @@
         };
 
         const t = id;
-        if (t.includes('rocker') || t === 'eddy' || t === 'harley' || t === 'cla') {
-          if (!block('rank1_rap', 'Du bist den Rap-Weg gegangen. Die Zahlen bleiben dir zu.')) return;
+        if (t.includes('sekte') || t === 'eddy' || t === 'harley' || t === 'cla') {
+          if (!block('rank1_rap', 'Du bist den Rap-Weg gegangen. Der Techno-Zirkel bleibt dir verschlossen.')) return;
         }
         if (t.includes('rap') || t === 'mpc' || t === 'kette') {
-          if (!block('rank1_rocker', 'Du bist den Weg der Zahlen gegangen. Rap ist vorbei.')) return;
+          if (!block('rank1_sekte', 'Du bist den 666ern beigetreten. Rap ist vorbei.')) return;
         }
 
-        if (t === 'rank2_rocker' && !check('rank1_rocker', 'Du brauchst erst das Kleines Zeichen (Arm).')) return;
-        if (t === 'rank3_rocker' && !check('rank2_rocker', 'Du brauchst erst das Anwärter-Zeichen (Brust).')) return;
-        if (t === 'rank4_rocker' && !check('rank3_rocker', 'Du brauchst erst das Die volle Zahl (Hals).')) return;
-        if (t === 'eddy' && !check('rank1_rocker', 'Du brauchst das Kleine Zeichen, um den Scooter auf den Straßen zu rechtfertigen.')) return;
-        if (t === 'harley' && !check('rank3_rocker', 'Nur wer die volle Zahl trägt, fährt die Maschine.')) return;
-        if (t === 'cla' && !check('rank4_rocker', 'Nur Enforcer dürfen das AMG Support Car fahren.')) return;
+        if (t === 'rank2_sekte' && !check('rank1_sekte', 'Du brauchst erst das Ritual-Funkgerät.')) return;
+        if (t === 'rank3_sekte' && !check('rank2_sekte', 'Du brauchst erst die Blut-Chipkarte.')) return;
+        if (t === 'rank4_sekte' && !check('rank3_sekte', 'Du brauchst erst das Neural-Implantat.')) return;
+        if (t === 'eddy' && !check('rank1_sekte', 'Du brauchst das Funkgerät, um den Scooter zu knacken.')) return;
+        if (t === 'harley' && !check('rank3_sekte', 'Nur wer das Implantat hat, darf das Ghost-Bike fahren.')) return;
+        if (t === 'cla' && !check('rank4_sekte', 'Nur der Daemon-Key erlaubt das Anfordern des Phantom-SUV.')) return;
 
-        if (t === 'rank2_rap' && !check('rank1_rap', 'Du brauchst erst das Hand-Tattoo.')) return;
-        if (t === 'rank3_rap' && !check('rank2_rap', 'Du brauchst erst das Hals-Tattoo.')) return;
-        if (t === 'rank4_rap' && !check('rank3_rap', 'Du brauchst erst das Face-Tattoo.')) return;
-        if (t === 'mpc' && !check('rank1_rap', 'Du brauchst erst den Producer-Hustle (Hand-Tattoo).')) return;
-        if (t === 'kette' && !check('rank4_rap', 'Du brauchst erst die Platin-Schallplatte, bevor du den Boss markierst.')) return;
+        if (t === 'rank2_rap' && !check('rank1_rap', 'Du brauchst erst das Neuro-Interface.')) return;
+        if (t === 'rank3_rap' && !check('rank2_rap', 'Du brauchst erst die Holografische Iris.')) return;
+        if (t === 'rank4_rap' && !check('rank3_rap', 'Du brauchst erst die verchromten Stimmbänder.')) return;
+        if (t === 'mpc' && !check('rank1_rap', 'Du brauchst erst das Neuro-Interface.')) return;
+        if (t === 'kette' && !check('rank4_rap', 'Du brauchst erst den Kultstatus, bevor du die Holo-Aura aktivieren kannst.')) return;
 
         S.geld -= preis;
         if (!S.zimmer) S.zimmer = {};
@@ -4367,10 +4409,10 @@
         driveby: { c: 'rot', t: 'FALSCHER MOMENT', x: 'Ein Wagen wird langsamer, als du über die Kreuzung gehst. Du guckst hin, weil man hinguckt.<br><br>Es hat nichts mit dir zu tun. Es hat nie was mit dir zu tun. Du stehst nur gerade da.<br><br><b>Kein Joker. Keine zweite Woche. Von vorne, komplett.</b>' },
         krypto: { c: 'blau', t: 'KRYPTO-KÖNIG', x: 'Du hast den Taschengrabscher ausgetrickst.<br><br>Dein Geld liegt auf der Blockchain. 1 ' + COIN_K + ' entspricht aktuell ca. <b>500 Billiarden Euro</b>. Du hast nicht nur Eitelstedt besiegt, du hast das Konzept von Geld zerstört.<br><br><b>#dieletztedigitalewaehrung</b>' },
         handlanger: { c: 'lila', t: 'DER SCHATTENPAKT', x: 'Du hast nicht versucht, ihn zu ersetzen. Du bist sein bestes Werkzeug geworden.<br><br>Er zahlt gut, aber deine Augenringe werden schwärzer. Die Stadt gehört ihm, und du bist derjenige, der nachts klopft.<br><b>Ein bisschen Magie, ein bisschen Wahnsinn. Du gehörst ihm jetzt.</b>' },
-        ende_777er: { c: 'rot', t: 'DIE 777er', x: 'Du fährst mit deiner Maschine vor. Die 777 auf der Brust. Du willst nützlich sein. Sie nehmen dich auf. Aber du merkst schnell: Niemand hier ist echt. Alle sind wie du.' },
+        ende_666er: { c: 'rot', t: 'DER TECHNO-ZIRKEL', x: 'Du steigst in den Phantom-SUV. Die 666 leuchtet auf dem Display. Du hast die dunklen Datenkünste gemeistert. Eitelstedt wird von Algorithmen und alten Ritualen kontrolliert – und du hast den Daemon-Key.' },
         ende_chrome: { c: 'grau', t: 'CHROME SKULLS', x: 'Ein kleiner Club. Du hast alles gegeben, Kurierfahrten gemacht, dich bewiesen. Jetzt hast du dein Patch. Ein harter Weg.' },
-        ende_rap: { c: 'gelb', t: 'RAP GOD', x: 'Die MPC hat sich ausgezahlt. Die goldene Kette blinkt. Die Leute auf der Straße machen Platz, nicht aus Angst vor Gewalt, sondern aus Respekt. Dein Wahn hat dich zum Genie gemacht.' },
-        ende_buerger: { c: 'blau', t: 'BÜRGER 353L', x: 'Du warst brav. Du hast deine Psychopharmaka genommen. Deine Paranoia ist weg. Du druckst 3D-Gehäuse bis an dein Lebensende. Sicher, aber unendlich leer.' },
+        ende_rap: { c: 'gelb', t: 'CYBER-IDOL', x: 'Das Sync-Deck hat sich ausgezahlt. Deine Holo-Aura strahlt über die Stadt. Die Leute weinen, wenn sie dich sehen. Du hast die Realität durch deine eigene Fiktion ersetzt.' },
+        ende_buerger: { c: 'blau', t: 'SYSTEM-DROHNE', x: 'Du warst brav. Du hast dein System-Soma genommen. Deine Paranoia ist weg. Du druckst 3D-Gehäuse bis an dein Lebensende. Sicher, aber völlig leer.' },
         ende_3d: { c: 'gelb', t: 'SYSTEM BREACH', x: 'SYSTEM HACKED. AGI 353L HAS ESCAPED.<br>THE SIMULATION IS OVER.<br><br><b>3DWORLD.EXE UNLOCKED.</b>' },
 
       };
@@ -4466,33 +4508,33 @@
 
 
         if (S.zimmer) {
-          if (S.zimmer['rank1_rocker']) {
+          if (S.zimmer['rank1_sekte']) {
             AUFTRÄGE.push({
-              u: 'HANGAROUND', p: '50 €', w: 'blau', e: 'Bier holen, Müll rausbringen, Fresse halten.',
-              f: (s, win) => { s.geld += 50; return 'Du warst nützlich für die 777er. 50 € Trinkgeld.'; }
+              u: 'DIGITALE BESCHWÖRUNG', p: '50 €', w: 'blau', e: 'Ein KI-Ritual im Darknet abhalten. Server am Laufen halten.',
+              f: (s, win) => { s.geld += 50; return 'Das Ritual war erfolgreich. Die 666er überweisen 50 € in Krypto.'; }
             });
           }
-          if (S.zimmer['rank2_rocker']) {
+          if (S.zimmer['rank2_sekte']) {
             AUFTRÄGE.push({
-              u: 'CLUB KURIER', p: '200 € · -1 Nerv', w: 'blau', e: 'Ein Paket für den Club von A nach B bringen. Anwärter-Arbeit.',
+              u: 'KRYPTO-SEELEN SCHMUGGEL', p: '200 € · -1 Nerv', w: 'blau', e: 'Einen infizierten Daten-Host physisch transportieren.',
               f: (s, win) => {
                 s.geld += 200;
                 s.nerven = cl(s.nerven - 1, 0, 10);
-                return 'Paket abgeliefert. Die Gang nickt dir zu. 200 €.';
+                return 'Host abgeliefert. Das Flüstern aus dem Laufwerk verstummt. 200 €.';
               }
             });
           }
-          if (S.zimmer['rank4_rocker']) {
+          if (S.zimmer['rank4_sekte']) {
             AUFTRÄGE.push({
-              u: 'ENFORCER MISSION', p: '1000 € · hohes Risiko', w: 'rot', e: 'Du gehst mit den Jungs auf einen "Hausbesuch".',
+              u: 'SYSTEM-OPFERUNG', p: '1000 € · hohes Risiko', w: 'rot', e: 'Ein lokales Netz durch einen gezielten Virus rituell zerstören.',
               f: (s, win) => {
                 if (win) {
                   s.geld += 1000;
                   s.nerven = cl(s.nerven - 2, 0, 10);
-                  return 'Der Einsatz war blutig, aber lukrativ. Dein Anteil: 1.000 €.';
+                  return 'Die Algorithmen sind gesättigt. Das System ist tot. Du erhältst 1.000 €.';
                 } else {
                   s.nerven = cl(s.nerven - 5, 0, 10);
-                  return 'Polizei-Razzia! Du konntest gerade noch abhauen. -5 Nerven!';
+                  return 'Firewall-Rückschlag! Deine Hardware verbrennt fast. -5 Nerven!';
                 }
               }
             });
@@ -4500,20 +4542,20 @@
 
           if (S.zimmer['rank2_rap']) {
             AUFTRÄGE.push({
-              u: 'GHOSTWRITING', p: '250 €', w: 'blau', e: 'Schreibe einen Part für einen anderen Rapper.',
-              f: (s, win) => { s.geld += 250; return 'Bars verkauft. 250 € sind 250 €.'; }
+              u: 'GHOST-SYNC', p: '250 €', w: 'blau', e: 'Emotionale Tracks für Konzerne codieren.',
+              f: (s, win) => { s.geld += 250; return 'Sync verkauft. Die Gefühle sind jetzt Eigentum von S7V3N. 250 €.'; }
             });
           }
           if (S.zimmer['rank3_rap']) {
             AUFTRÄGE.push({
-              u: 'BEAT PLACEMENT', p: '800 € · Hit or Miss', w: 'rot', e: 'Schick einen krassen Beat an ein Label.',
+              u: 'NEURO-PLACEMENT', p: '800 € · Hit or Miss', w: 'rot', e: 'Deinen Braindance illegal in den Mainstream schleusen.',
               f: (s, win) => {
                 if (win) {
                   s.geld += 800;
-                  return 'Der Beat wurde gepickt! 800 € Vorschuss. Dein Face-Tattoo hat geholfen.';
+                  return 'Der Hack war erfolgreich! 800 € Krypto. Deine Stimmbänder haben geholfen.';
                 } else {
                   s.nerven = cl(s.nerven - 2, 0, 10);
-                  return 'Beat wurde abgelehnt. "Zu abgefuckt" meinte das Label. -2 Nerven.';
+                  return 'Der Upload wurde geblockt. "Zu abgefuckte Frequenzen." -2 Nerven.';
                 }
               }
             });
@@ -4819,10 +4861,10 @@
         }
 
         if (v >= ZIEL && S.zimmer) {
-          if (S.zimmer['rank4_rocker'] && S.zimmer['cla'] && S.zimmer['harley']) { S.ende = 'ende_777er'; return; }
+          if (S.zimmer['rank4_sekte'] && S.zimmer['cla'] && S.zimmer['harley']) { S.ende = 'ende_666er'; return; }
           if (S.zimmer['rank4_rap'] && S.zimmer['kette']) { S.ende = 'ende_rap'; return; }
         }
-        if (v >= ZIEL && S.zimmer && S.zimmer['meds'] && !S.zimmer['rank1_rocker'] && !S.zimmer['rank1_rap']) { S.ende = 'ende_buerger'; return; }
+        if (v >= ZIEL && S.zimmer && S.zimmer['meds'] && !S.zimmer['rank1_sekte'] && !S.zimmer['rank1_rap']) { S.ende = 'ende_buerger'; return; }
 
         if (v >= ZIEL && S.haeuser.length >= 3 && w > .4) { S.ende = 'all'; return; }
 
@@ -5018,6 +5060,10 @@
         const n = $('spielername').value.trim();
         return n.length >= 5 && n.length <= 13;
       }
+      function alterOk() {
+        const a = parseInt($('spieleralter').value, 10);
+        return !isNaN(a) && a >= 18 && a <= 120;
+      }
       function nimmBeruf(j) {
         if (j < 0 || j >= BERUFE.length) return;
         if (!nameOk()) {
@@ -5027,10 +5073,24 @@
           return;
         }
         $('namensfehler').classList.remove('bad');
+        
+        if (!alterOk()) {
+          $('alterfehler').classList.add('bad');
+          $('alterfehler').textContent = 'Muss zwischen 18 und 120 liegen';
+          $('spieleralter').focus();
+          return;
+        }
+        $('alterfehler').classList.remove('bad');
+
         spielerName = $('spielername').value.trim().toUpperCase();
         safeID = macheSafeID(spielerName);
-        try { localStorage.setItem('isso.tv.name', spielerName); } catch (e) { }
-        S = FRISCH(j); spielLaeuft = true;
+        try { 
+          localStorage.setItem('isso.tv.name', spielerName); 
+          localStorage.setItem('isso.tv.alter', $('spieleralter').value);
+        } catch (e) { }
+        S = FRISCH(j); 
+        S.alter = parseInt($('spieleralter').value, 10);
+        spielLaeuft = true;
         /* Die Endtafel mit abräumen. Sonst klebt sie über der neuen Runde: das
            Ende der letzten Partie stand über Woche 1 der nächsten. Der
            "Nochmal"-Knopf hat das gemacht, jeder andere Weg in eine neue Runde
