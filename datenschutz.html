@@ -1,116 +1,42 @@
-﻿<!doctype html>
+<!DOCTYPE html>
 <html lang="de">
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<meta name="robots" content="index,follow">
-<title>Datenschutz — ISSO.TV</title>
-<style>
-:root{--gelb:#ffd21e;--pink:#ff3ea5;--rot:#ff2e4c;--gruen:#7ed321;--tinte:#0d0d0d;--papier:#fff3d6;
- --fett:"Arial Black","Segoe UI Black",system-ui,sans-serif;
- --sans:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}
-*{box-sizing:border-box;margin:0;padding:0}
-body{background:#2a1258;color:var(--tinte);font-family:var(--sans);line-height:1.65;
- padding:5vmin 4vmin 12vmin;
- background-image:radial-gradient(circle,rgba(255,255,255,.07) 2px,transparent 2px);
- background-size:26px 26px}
-.blatt{max-width:720px;margin:0 auto;background:var(--papier);
- border:4px solid var(--tinte);box-shadow:9px 9px 0 var(--tinte);padding:clamp(20px,4vmin,40px)}
-h1{font-family:var(--fett);font-size:clamp(24px,5.5vmin,42px);text-transform:uppercase;
- line-height:.95;margin-bottom:6px;-webkit-text-stroke:2px var(--tinte);color:var(--gelb);
- paint-order:stroke fill}
-.sub{font-family:var(--fett);font-size:12px;letter-spacing:.2em;text-transform:uppercase;
- opacity:.6;margin-bottom:22px}
-h2{font-family:var(--fett);font-size:14px;letter-spacing:.12em;text-transform:uppercase;
- margin:26px 0 8px;padding-bottom:5px;border-bottom:3px solid var(--tinte)}
-p{margin-bottom:12px;font-size:15px}
-ul{margin:0 0 12px 20px} li{margin-bottom:6px;font-size:15px}
-address{font-style:normal;font-family:ui-monospace,Consolas,monospace;font-size:15px;
- background:#fff;border:3px solid var(--tinte);padding:12px 14px;display:inline-block}
-a{color:var(--tinte);text-decoration:underline;text-decoration-thickness:2px}
-a:hover{background:var(--gelb)}
-.kasten{margin:18px 0;font-size:14px;border:3px solid var(--tinte);padding:12px 14px}
-.gut{background:var(--gruen)} .warn{background:var(--gelb)}
-.zurueck{display:inline-block;margin-top:30px;font-family:var(--fett);font-size:13px;
- letter-spacing:.14em;text-transform:uppercase;background:var(--pink);color:#fff;
- border:4px solid var(--tinte);box-shadow:5px 5px 0 var(--tinte);padding:12px 20px;
- text-decoration:none}
-.zurueck:hover{background:var(--rot)}
-.fuss{margin-top:24px;font-size:12px;opacity:.6}
-</style>
+  <meta charset="utf-8">
+  <title>Datenschutz — ISSO.TV</title>
+  <style>
+    :root { --tinte: #0d0d0d; --papier: #fcfcfc; --out: 4px solid var(--tinte); --kreide: #f5f5f5; --mono: 'Courier New', monospace; --fett: 'Arial Black', Arial, sans-serif; }
+    body { background: var(--tinte); color: var(--papier); font-family: var(--mono); margin: 0; padding: 40px; display: flex; justify-content: center; }
+    .kasten { background: var(--papier); color: var(--tinte); border: var(--out); max-width: 600px; width: 100%; box-shadow: 8px 8px 0 var(--tinte); padding: 30px; }
+    h1 { font-family: var(--fett); text-transform: uppercase; margin-top: 0; border-bottom: var(--out); padding-bottom: 10px; }
+    h2 { font-family: var(--fett); font-size: 16px; margin-top: 30px; }
+    p { line-height: 1.5; }
+    a { color: var(--tinte); font-weight: bold; }
+    .back { display: inline-block; margin-top: 40px; padding: 10px 15px; border: var(--out); background: var(--tinte); color: var(--papier); text-decoration: none; font-family: var(--fett); box-shadow: 4px 4px 0 var(--tinte); text-transform: uppercase; }
+    .back:hover { filter: brightness(1.2); }
+    .back:active { transform: translate(4px,4px); box-shadow: 0 0 0 var(--tinte); }
+    .platzhalter { background: #ffeaa7; padding: 2px 5px; color: #d63031; font-weight: bold; }
+  </style>
 </head>
 <body>
-<div class="blatt">
-  <h1>Datenschutz</h1>
-  <div class="sub">ISSO.TV — 353L.EXE</div>
+  <div class="kasten">
+    <h1>Datenschutzerklärung</h1>
+    
+    <h2>1. Wir sammeln nichts.</h2>
+    <p>Dieses Spiel (ISSO.TV) läuft vollständig in deinem eigenen Browser (Client-Side). Es gibt keinen Server unsererseits, an den Spielstände, Statistiken oder persönliche Daten gesendet werden.</p>
 
-  <div class="kasten gut">
-    <b>Kurz gesagt:</b> ISSO.TV hat keinen Server, kein Konto und kein Tracking.
-    Alles, was du im Spiel machst, bleibt in deinem Browser. Es wird nichts
-    an mich übertragen — ich sehe deine Spielstände nicht.
+    <h2>2. Speicherung auf deinem Gerät</h2>
+    <p>Das Spiel speichert deinen Fortschritt (Geld, Beruf, Tag) ausschließlich im <b>Local Storage</b> deines Browsers ab. Diese Daten verlassen dein Gerät niemals.</p>
+    
+    <h2>3. Server-Log-Dateien (Hosting)</h2>
+    <p>Die Website wird bei einem externen Provider (STRATO) gehostet. Der Provider erhebt und speichert automatisch Informationen in Server-Log-Dateien (z.B. Browsertyp, Betriebssystem, IP-Adresse, Uhrzeit), die dein Browser automatisch übermittelt. Diese Daten sind für uns nicht bestimmten Personen zuordenbar. Eine Zusammenführung mit anderen Datenquellen wird nicht vorgenommen.</p>
+
+    <h2>4. Verantwortlicher</h2>
+    <p>
+      Christoph Lewandowski<br>
+      E-Mail: kontakt@isso.tv
+    </p>
+
+    <a href="index.html" class="back">Zurück zum Spiel</a>
   </div>
-
-  <h2>Verantwortlicher</h2>
-  <address>
-    Christoph Lewandowski<br>
-    c/o POSTFLEX PFX-882-593<br>
-    Emsdettener Straße 10<br>
-    48268 Greven<br>
-    <a href="mailto:kontakt@ISSO.TV">kontakt@ISSO.TV</a>
-  </address>
-
-  <h2>Was im Browser gespeichert wird</h2>
-  <p>Das Spiel legt Daten im <b>lokalen Speicher deines Browsers</b>
-  (<i>localStorage</i>) ab. Diese Daten verlassen dein Gerät nicht:</p>
-  <ul>
-    <li>ob du den Zugangscode schon eingegeben hast</li>
-    <li>der Name, den du dir im Spiel gibst</li>
-    <li>deine Einträge im Haushaltsbuch (Einnahmen und Fixkosten)</li>
-  </ul>
-  <p>Das sind keine Cookies und sie werden nicht ausgelesen. Du kannst alles
-  jederzeit löschen: im Browser unter „Website-Daten löschen" für diese Seite.
-  Danach ist nichts mehr da.</p>
-
-  <div class="kasten warn">
-    <b>Zum Haushaltsbuch:</b> Es rechnet, es berät nicht. Die Zahlen, die du
-    einträgst, bleiben ausschließlich auf deinem Gerät. Eine Schuldner- oder
-    Finanzberatung ist damit ausdrücklich nicht verbunden.
-  </div>
-
-  <h2>Was beim Aufrufen der Seite passiert</h2>
-  <p>Damit eine Internetseite überhaupt ausgeliefert werden kann, verarbeitet der
-  Hoster technisch notwendige Verbindungsdaten — darunter deine IP-Adresse, Datum
-  und Uhrzeit des Abrufs sowie die aufgerufene Datei. Das passiert bei jeder
-  Internetseite und ist ohne diese Daten technisch nicht möglich.</p>
-  <p>Rechtsgrundlage ist Art. 6 Abs. 1 lit. f DSGVO (berechtigtes Interesse am
-  technisch fehlerfreien Betrieb). Ich selbst werte diese Daten nicht aus und
-  führe keine eigene Statistik.</p>
-
-  <h2>Unterstützen-Link</h2>
-  <p>Im Bereich „unterstuetzen" kann ein Link zu einem externen Zahlungsdienst
-  stehen. Dieser Link ist <b>nicht eingebettet</b> — es wird kein fremdes Skript
-  geladen, kein Cookie gesetzt und nichts an den Anbieter übertragen, solange du
-  nicht selbst klickst.</p>
-  <p>Erst wenn du den Link anklickst, verlässt du diese Seite. Ab dort gelten die
-  Bedingungen und die Datenschutzerklärung des jeweiligen Anbieters. Ich erfahre
-  nicht, wer geklickt hat.</p>
-
-  <h2>Keine Weitergabe, keine Werbung</h2>
-  <p>Es gibt kein Analysewerkzeug, keine Werbe-IDs, keine sozialen Plugins,
-  keine externen Schriftarten und keine Einbindung fremder Dienste. Die Seite
-  lädt alles aus sich selbst. Es findet kein Profiling statt, und es werden
-  keine Daten verkauft oder weitergegeben.</p>
-
-  <h2>Deine Rechte</h2>
-  <p>Du hast nach DSGVO das Recht auf Auskunft, Berichtigung, Löschung,
-  Einschränkung der Verarbeitung, Datenübertragbarkeit und Widerspruch. Da ich
-  über dich keine Daten speichere, läuft eine Auskunft in der Regel darauf hinaus,
-  dass nichts vorliegt. Melden kannst du dich trotzdem jederzeit.</p>
-  <p>Außerdem steht dir ein Beschwerderecht bei einer Datenschutz-Aufsichtsbehörde zu.</p>
-
-  <a class="zurueck" href="./">◀ Zurück zu ISSO.TV</a>
-  <p class="fuss">© 2026 Christoph Lewandowski · Stand: 8. August 2026</p>
-</div>
 </body>
 </html>
-

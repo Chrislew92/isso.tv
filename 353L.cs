@@ -28,7 +28,7 @@ using System.Reflection;
 static class Starter
 {
     const string LIVE  = "https://isso.tv";
-    const string LOKAL = @"C:\Users\Administrator\AndroidStudioProjects\isso-tv\index.html";
+    const string LOKAL = @"C:\Users\chris\AndroidStudioProjects\isso.tv\index.html";
 
     static int Main()
     {

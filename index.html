@@ -194,8 +194,7 @@
     }
 
     .k.job {
-      background: var(--gelb)
-    }
+      background: var(--gelb); color: var(--tinte) }
 
     .k kbd {
       flex: 0 0 auto;
@@ -534,7 +533,7 @@
     }
 
     .hint.nah {
-      background: var(--gelb);
+      background: var(--gelb); color: var(--tinte);
       animation: atmen 1.3s ease-in-out infinite
     }
 
@@ -731,7 +730,7 @@
       font-size: 12px;
       letter-spacing: .14em;
       color: #0d0d0d;
-      background: var(--gelb);
+      background: var(--gelb); color: var(--tinte);
       padding: 3px 9px
     }
 
@@ -754,7 +753,7 @@
     }
 
     .leiste .raus:hover {
-      background: var(--gelb);
+      background: var(--gelb); color: var(--tinte);
       color: var(--tinte)
     }
 
@@ -784,8 +783,7 @@
     }
 
     .hb input:focus {
-      background: var(--gelb)
-    }
+      background: var(--gelb); color: var(--tinte) }
 
     .hb .zeile {
       display: flex;
@@ -921,7 +919,7 @@
     }
 
     .fenster .rumpf b {
-      background: var(--gelb);
+      background: var(--gelb); color: var(--tinte);
       padding: 0 3px
     }
 
@@ -1043,7 +1041,7 @@
     }
 
     .chip.danke {
-      background: var(--gelb) !important;
+      background: var(--gelb); color: var(--tinte)  !important;
       color: var(--tinte) !important;
       box-shadow: 4px 4px 0 var(--tinte), 0 0 0 3px var(--gelb), 0 0 14px rgba(255, 210, 31, .7)
     }
@@ -1116,8 +1114,7 @@
     }
 
     .namensfeld:focus {
-      background: var(--gelb)
-    }
+      background: var(--gelb); color: var(--tinte) }
 
     .namensfehler {
       font-family: var(--mono);
@@ -1154,8 +1151,7 @@
       box-shadow: var(--sh-out);
       background: linear-gradient(145deg, #2d2e33, #26272b);
       ;
-      background: var(--gelb)
-    }
+      background: var(--gelb); color: var(--tinte) }
 
     /* Nebensätze im HUD. Bedeutung steht im Wort, nicht in der Farbe. */
     .chip i.steigt,
@@ -1320,7 +1316,7 @@
       font-family: var(--fett);
       font-size: 12px;
       text-transform: uppercase;
-      background: var(--gelb);
+      background: var(--gelb); color: var(--tinte);
       border: 3px solid var(--tinte);
       box-shadow: 4px 4px 0 var(--tinte);
       padding: 6px 12px;
@@ -1393,7 +1389,7 @@
     }
 
     .fz.joker {
-      background: var(--gelb);
+      background: var(--gelb); color: var(--tinte);
       transform: rotate(-1deg)
     }
 
@@ -1410,7 +1406,7 @@
 
     #text em {
       font-style: normal;
-      background: var(--gelb);
+      background: var(--gelb); color: var(--tinte);
       padding: 0 4px;
       box-decoration-break: clone
     }
@@ -1468,7 +1464,7 @@
     }
 
     #ende p b {
-      background: var(--gelb);
+      background: var(--gelb); color: var(--tinte);
       padding: 0 4px
     }
 
@@ -1515,7 +1511,7 @@
     }
 
     #b8 .net-stadt {
-      background: var(--gelb);
+      background: var(--gelb); color: var(--tinte);
       border: 3px solid var(--tinte);
       box-shadow: 6px 6px 0 var(--tinte);
       padding: 12px 18px;
@@ -1567,7 +1563,7 @@
 
     #b8 .chat-msg a {
       color: var(--tinte);
-      background: var(--gelb);
+      background: var(--gelb); color: var(--tinte);
       padding: 3px 8px;
       cursor: pointer;
       text-decoration: none;
@@ -1605,7 +1601,7 @@
     }
 
     .mg-kopf {
-      background: var(--gelb);
+      background: var(--gelb); color: var(--tinte);
       color: var(--tinte);
       font-family: var(--fett);
       padding: 10px;
@@ -1732,7 +1728,7 @@
       height: 8px;
       margin-left: -4px;
       border-radius: 50%;
-      background: var(--gelb);
+      background: var(--gelb); color: var(--tinte);
       box-shadow: 0 0 26px 10px rgba(255, 210, 31, .30);
     }
 
@@ -1754,7 +1750,7 @@
     }
 
     .ort-schild.hier {
-      background: var(--gelb);
+      background: var(--gelb); color: var(--tinte);
       color: var(--tinte);
       border-color: var(--tinte);
     }
@@ -1935,7 +1931,7 @@
     }
 
     .p-schalt:hover {
-      background: var(--gelb);
+      background: var(--gelb); color: var(--tinte);
     }
 
     .str-schritt {
@@ -2263,7 +2259,7 @@
       letter-spacing: .14em;
       text-transform: uppercase;
       color: var(--tinte);
-      background: var(--gelb);
+      background: var(--gelb); color: var(--tinte);
       border: 3px solid var(--tinte);
       padding: 6px 14px;
       box-shadow: 4px 4px 0 rgba(0, 0, 0, .6);
@@ -2296,7 +2292,7 @@
     }
 
     .ton-schalt:hover {
-      background: var(--gelb);
+      background: var(--gelb); color: var(--tinte);
       color: #0d0d0d;
       border-color: #0d0d0d
     }
@@ -3170,9 +3166,10 @@
       const anDerTuer = () => dreh > 62;
       let draussenVon = 'desktop';
       function zimmerZeichnen() {
-        if (!S || !S.zimmer) return;
-        const z = S.zimmer;
-        if(document.getElementById('raum-couch')) document.getElementById('raum-couch').style.display = z.couch ? 'block' : 'none';
+        if (!S) return;
+        const z = S.zimmer || {};
+        const couchSichtbar = z.couch || (typeof unterstuetzer === 'function' && unterstuetzer()) || (typeof vipStufe === 'function' && vipStufe() > 0);
+        if(document.getElementById('raum-couch')) document.getElementById('raum-couch').style.display = couchSichtbar ? 'block' : 'none';
         if(document.getElementById('raum-mpc')) document.getElementById('raum-mpc').style.display = z.mpc ? 'block' : 'none';
         if(document.getElementById('raum-eddy')) document.getElementById('raum-eddy').style.display = z.eddy ? 'block' : 'none';
         if(document.getElementById('raum-kette')) document.getElementById('raum-kette').style.display = z.kette ? 'block' : 'none';
@@ -3373,15 +3370,18 @@
         ZIMMER_ITEMS.forEach(it => {
           if (S.woche < it.woche) return;
           const hat = S.zimmer[it.id];
+          const gespendet = (it.id === 'couch' && ((typeof unterstuetzer === 'function' && unterstuetzer()) || (typeof vipStufe === 'function' && vipStufe() > 0)));
           let preis = it.preis;
           if (strRabatt) preis = Math.floor(preis * 0.9);
           h += '<div style="background:#222; padding:10px; margin-bottom:10px; border:1px solid #444;">';
-          h += '<h3 style="margin:0; color:' + (hat ? '#0f0' : '#fff') + '">' + it.name + ' <span style="float:right;">' + eur(preis) + '</span></h3>';
+          h += '<h3 style="margin:0; color:' + (hat || gespendet ? '#0f0' : '#fff') + '">' + it.name + ' <span style="float:right;">' + eur(preis) + '</span></h3>';
           h += '<p style="font-size:13px; color:#aaa; margin:5px 0;">' + it.desc + '</p>';
           if (hat) {
             h += '<button disabled style="background:#111; color:#0f0; border:1px solid #0f0; padding:5px 10px;">Gehört dir</button>';
+          } else if (gespendet) {
+            h += '<button disabled style="background:#111; color:#0f0; border:1px solid #0f0; padding:5px 10px;">Freigeschaltet (Spende)</button>';
           } else {
-            h += '<button onclick="kaufItem(\'' + it.id + '\', ' + preis + ')" style="background:var(--gelb); color:#000; border:none; padding:5px 10px; cursor:pointer;">Kaufen</button>';
+            h += '<button onclick="kaufItem(\'' + it.id + '\', ' + preis + ')" style="background: var(--gelb); color: var(--tinte); color:#000; border:none; padding:5px 10px; cursor:pointer;">Kaufen</button>';
           }
           h += '</div>';
         });
@@ -3398,18 +3398,18 @@
         h += '<h3 style="margin:0; color:' + (S.schlossGeholt ? '#0f0' : '#fff') + '">Türschloss <span style="float:right;">150 €</span></h3>';
         h += '<p style="font-size:13px; color:#aaa; margin:5px 0;">Ein richtiges Schloss für deine Zimmertür.</p>';
         if (S.schlossGeholt) h += '<button disabled style="background:#111; color:#0f0; border:1px solid #0f0; padding:5px 10px;">Gekauft</button>';
-        else h += '<button onclick="kaufSchloss()" style="background:var(--gelb); color:#000; border:none; padding:5px 10px; cursor:pointer;">Kaufen</button>';
+        else h += '<button onclick="kaufSchloss()" style="background: var(--gelb); color: var(--tinte); color:#000; border:none; padding:5px 10px; cursor:pointer;">Kaufen</button>';
         h += '</div>';
         h += '<div style="background:#222; padding:10px; margin-bottom:10px; border:1px solid #444;">';
         h += '<h3 style="margin:0; color:#fff">Energy Drink <span style="float:right;">15 €</span></h3>';
         h += '<p style="font-size:13px; color:#aaa; margin:5px 0;">+1 Nerven sofort.</p>';
-        h += '<button onclick="kaufDrink()" style="background:var(--gelb); color:#000; border:none; padding:5px 10px; cursor:pointer;">Kaufen</button>';
+        h += '<button onclick="kaufDrink()" style="background: var(--gelb); color: var(--tinte); color:#000; border:none; padding:5px 10px; cursor:pointer;">Kaufen</button>';
         h += '</div>';
         h += '<div style="background:#222; padding:10px; margin-bottom:10px; border:1px solid #444;">';
         h += '<h3 style="margin:0; color:' + (S.schmiereAktiv ? '#0f0' : '#fff') + '">Schmiere <span style="float:right;">100 €/W</span></h3>';
         h += '<p style="font-size:13px; color:#aaa; margin:5px 0;">Jemand passt auf. Senkt TA$CH€N Wahrscheinlichkeit.</p>';
         if (S.schmiereAktiv) h += '<button onclick="toggleSchmiere()" style="background:#111; color:#0f0; border:1px solid #0f0; padding:5px 10px; cursor:pointer;">Aktiv (Kündigen)</button>';
-        else h += '<button onclick="toggleSchmiere()" style="background:var(--gelb); color:#000; border:none; padding:5px 10px; cursor:pointer;">Buchen</button>';
+        else h += '<button onclick="toggleSchmiere()" style="background: var(--gelb); color: var(--tinte); color:#000; border:none; padding:5px 10px; cursor:pointer;">Buchen</button>';
         h += '</div></div></div>';
         $('fenster').innerHTML = h;
         $('fenster').querySelector('button').onclick = () => $('fenster').innerHTML = '';
@@ -3465,7 +3465,8 @@
 
       function oeffne(was) {
         if (was === 'weiterspielen') {
-          if (laden()) { ziehe(); zeig('b7'); male(); return; }
+          if (spielLaden()) { zeig('b7'); ziehe(); } else { zeig('b0'); }
+          return;
         }
         if (was === 'spiel') {
           if (spielLaeuft) { zeig('b7'); male(); return; }   // läuft schon -> weiterspielen
@@ -3572,7 +3573,7 @@
           '<p style="margin-top:10px">Wenn dich das Spiel eine Weile festgehalten hat, ' +
           'kannst du was dalassen. <b>Ab 1 €</b>, jeder Betrag. Musst du nicht — das Spiel ' +
           'ist vollständig, auch wenn du nie etwas gibst.</p>' +
-          '<p style="margin-top:10px;background:var(--gelb);border:3px solid var(--tinte);' +
+          '<p style="margin-top:10px;background: var(--gelb); color: var(--tinte);border:3px solid var(--tinte);' +
           'padding:10px 13px"><b>Wofür es draufgeht:</b> Als Nächstes soll man sein Zimmer ' +
           'einrichten können — Couch, Teppich, Poster an der Wand. Erspielbar für alle. ' +
           'Jeder Euro geht da rein.</p>' +
@@ -3583,7 +3584,7 @@
           'nicht, und das ist Absicht: <b>sichtbar, nicht stärker</b>. Keine Abkürzung, kein ' +
           'Inhalt, den andere nicht auch bekommen. Wer nichts gibt, verpasst nichts.</p>' +
           (unterstuetzer()
-            ? '<div style="margin-top:14px;background:var(--gelb);border:3px solid var(--tinte);' +
+            ? '<div style="margin-top:14px;background: var(--gelb); color: var(--tinte);border:3px solid var(--tinte);' +
             'padding:10px 14px;font-family:var(--fett);font-size:12px">★ RAHMEN IST AN. DANKE.' +
             ' <button id="spOff" style="float:right;background:none;border:0;' +
             'font-family:var(--mono);font-size:11px;cursor:pointer;text-decoration:underline">aus</button></div>'
@@ -3610,7 +3611,7 @@
                SPENDE_URL die eigene Seite eintragen" — eine Notiz an mich selbst, die jeder
                gelesen hat, der auf "unterstuetzen" geklickt hat. Peinlich und unnoetig:
                Wer spenden will, kann nichts dafuer, dass ich noch kein Konto habe. */
-            : '<div style="margin-top:16px;background:var(--gelb);border:3px solid var(--tinte);' +
+            : '<div style="margin-top:16px;background: var(--gelb); color: var(--tinte);border:3px solid var(--tinte);' +
             'padding:12px 14px;font-size:13px">Gerade gibt es keinen Weg, was dazulassen — ' +
             'da ist noch nichts eingerichtet. Macht aber nichts: Das Spiel ist vollständig, ' +
             'dir fehlt nichts.</div>') +
@@ -3637,7 +3638,7 @@
           'border:3px solid var(--tinte);background:var(--kreide)">' +
           '<button id="vipLos" style="font-family:var(--fett);font-size:12px;letter-spacing:.1em;' +
           'text-transform:uppercase;padding:8px 14px;border:3px solid var(--tinte);' +
-          'background:var(--gelb);cursor:pointer">Einlösen</button>' +
+          'background: var(--gelb); color: var(--tinte);cursor:pointer">Einlösen</button>' +
           '</div>' +
           '<div id="vipMsg" style="margin-top:8px;font-family:var(--fett);font-size:12px;' +
           'letter-spacing:.06em;min-height:16px"></div>' +
@@ -4012,7 +4013,7 @@
         woche: 1, job: j, geld: -SCHULDEN, nerven: BERUFE[j].nerven, zed: 0, zee: 0,
         rot: 0, blau: 0, haeuser: [], ende: null, szene: null, letzte: null,
         joker: JOKER, verlauf: [], gesehen: {}, krank: KRANK_START, pkonto: 0, insolvenz: 0, zeeKurs: 1400, tuerBlocker: false, mietHack: 0, auszuege: [],
-        zusammen: 0, mahnung: 0, xp: 0, lvl: 1, ai: {}
+        zusammen: 0, mahnung: 0, xp: 0, lvl: 1, ai: {}, letzterZug: 0
       });
       let S = FRISCH(0);
 
@@ -4033,27 +4034,26 @@
          Alles hier ist in try/catch. Wenn der Browser localStorage verweigert
          (privates Fenster, volle Quote), soll das Spiel weiterlaufen wie vorher
          und nicht stehenbleiben. */
-      const SKEY = 'isso.tv.stand';
-      const SVERSION = 1;
-      function speichern() {
-        if (!spielLaeuft || S.ende) return;
-        try {
-          const kopie = Object.assign({}, S);
-          const letzterZug = new Date().toDateString();
-          localStorage.setItem(SKEY, JSON.stringify({ v: SVERSION, tag: saison(), name: spielerName, safe: safeID, S: kopie, letzterZug: letzterZug }));
-        } catch (e) { }
+      const SKEY='isso.tv.spiel';
+      function spielSpeichern(){
+        if(!spielLaeuft || S.ende) return;
+        try{
+          const kopie={}; for(const k in S){ if(k!=='szene') kopie[k]=S[k]; }
+          localStorage.setItem(SKEY, JSON.stringify(
+            {v:1, tag:saison(), name:spielerName, safe:safeID, S:kopie}));
+        }catch(e){}
       }
-      function laden() {
-        let d = null;
-        try { d = JSON.parse(localStorage.getItem(SKEY) || 'null'); } catch (e) { return false; }
-        if (!d || d.v !== VERSION || !d.S || typeof d.S.woche !== 'number') return false;
-        S = Object.assign(FRISCH(d.S.job || 0), d.S);
-        S.szene = null;
-        spielerName = d.name || ''; safeID = d.safe || '';
-        spielLaeuft = true;
+      function spielLaden(){
+        let d=null;
+        try{ d=JSON.parse(localStorage.getItem(SKEY)||'null'); }catch(e){ return false; }
+        if(!d || d.v!==1 || !d.S || typeof d.S.woche!=='number') return false;
+        S=Object.assign(FRISCH(d.S.job||0), d.S);
+        S.szene=null;
+        spielerName=d.name||''; safeID=d.safe||'';
+        spielLaeuft=true;
         return true;
       }
-      function spielVergessen() { try { localStorage.removeItem(SKEY); } catch (e) { } }
+      function spielVergessen(){ try{ localStorage.removeItem(SKEY); }catch(e){} }
 
       const waage = () => { const g = S.rot + S.blau; return g ? (S.blau - S.rot) / g : 0; };
       const hausWert = b => Math.round(b * KX * JOB().haus);
@@ -4656,6 +4656,15 @@
       }
 
       function ziehe() {
+        if (S.realtime && S.letzterZug === saison()) {
+          S.szene = {
+            id: 'feierabend',
+            t: 'Der Tag neigt sich dem Ende zu. Für heute ist nichts mehr zu holen.<br><em>Morgen geht es weiter.</em>',
+            w: [{ u: 'ZURÜCK ZUM DESKTOP', w: 'blau', m: () => { zeig('b4'); } }]
+          };
+          return;
+        }
+
         wf = samen(saison() * 1009 + S.woche);
         if (S.woche <= ANFANG.length) { S.szene = SZ.find(x => x.id === ANFANG[S.woche - 1]); S.letzte = S.szene.id; return; }
         const m = SZ.filter(x => x.ok(S) && x.id !== S.letzte && ANFANG.indexOf(x.id) < 0);
@@ -4739,12 +4748,12 @@
         if (gesperrt(w.u)) return;
 
         if (S.realtime) {
-          const heute = new Date().toDateString();
-          if (S.letzterZug === heute) {
-             $('wahl').innerHTML = '<div style="color:var(--rot);padding:20px;text-align:center;font-weight:bold;border:2px solid var(--rot)">ECHTZEIT-SPERRE: Du hast deinen Zug für heute gemacht. Morgen geht es weiter.</div>';
-             return;
-          }
-          S.letzterZug = heute;
+          // Die alte, inline Sperre wurde durch die Feierabend-Szene in ziehe() ersetzt
+        }
+
+        if (S.szene.id === 'feierabend') {
+          if (w.m) w.m();
+          return; // Kein Wochenabschluss!
         }
 
         // ARCADE-MODUS: "ARBEITEN" löst das Minispiel aus!
@@ -4971,8 +4980,11 @@
           }
         }
         S.woche++; S.zeeKurs = Math.floor(800 + zuf() * 2200);
+        S.letzterZug = saison(); // Markiere diesen Tag als gespielt
         netDropGenutzt = false;
         S.mitbewohnerGezahlt = false;      // Mitbewohner-Schutz gilt nur eine Woche
+        
+        spielSpeichern(); // Speichere den neuen Zustand
 
         /* Diese zwei Zeilen sind der Motor. Ohne sie klebt das Spiel
            ewig auf derselben Szene und kein Ende feuert je. */
