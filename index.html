@@ -3301,9 +3301,9 @@
         const z = S.zimmer || {};
         const couchSichtbar = z.couch || (typeof unterstuetzer === 'function' && unterstuetzer()) || (typeof vipStufe === 'function' && vipStufe() > 0);
         if(document.getElementById('raum-couch')) document.getElementById('raum-couch').style.display = couchSichtbar ? 'block' : 'none';
-        if(document.getElementById('raum-mpc')) document.getElementById('raum-mpc').style.display = z.mpc ? 'block' : 'none';
-        if(document.getElementById('raum-eddy')) document.getElementById('raum-eddy').style.display = z.eddy ? 'block' : 'none';
-        if(document.getElementById('raum-kette')) document.getElementById('raum-kette').style.display = z.kette ? 'block' : 'none';
+        if(document.getElementById('raum-mpc')) document.getElementById('raum-mpc').style.display = (z.mpc || z.rank1_rap || z.rank2_rap || z.rank3_rap || z.rank4_rap) ? 'block' : 'none';
+        if(document.getElementById('raum-eddy')) document.getElementById('raum-eddy').style.display = (z.eddy || z.harley || z.cla || z.rank3_sekte || z.rank4_sekte) ? 'block' : 'none';
+        if(document.getElementById('raum-kette')) document.getElementById('raum-kette').style.display = (z.kette || z.rank1_sekte || z.rank2_sekte) ? 'block' : 'none';
       }
 
       function uiKonsequenz(text, warnung = false) {
