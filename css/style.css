@@ -19,7 +19,7 @@
   border: 1px solid rgba(0, 240, 255, 0.3);
 }
 *{box-sizing:border-box;margin:0;padding:0}
-html,body{height:100%;overflow:hidden;background:#1a1b1f}
+html,body{height:100%;overflow:hidden;background:var(--nacht)}
 body{font-family:var(--sans);color:var(--tinte);-webkit-font-smoothing:antialiased;
      user-select:none;-webkit-tap-highlight-color:transparent}
 /* Ein versteckter Bildschirm muss wirklich weg sein, nicht nur durchsichtig.
@@ -44,7 +44,7 @@ body{font-family:var(--sans);color:var(--tinte);-webkit-font-smoothing:antialias
 .k{display:flex;align-items:center;gap:12px;width:100%;text-align:left;cursor:pointer;
   font-family:var(--fett);color:var(--tinte);background:var(--grau);border:var(--out);
   border-radius:var(--br);box-shadow:var(--sh-out);padding:14px 18px;
-  background:linear-gradient(145deg, #2d2e33, #26272b);
+  background:linear-gradient(145deg, var(--grau), var(--nacht));
   transition:all .2s cubic-bezier(0.2,0.8,0.2,1)}
 .k:hover:not(:disabled){transform:translateY(-2px);box-shadow:12px 12px 20px rgba(0,0,0,0.8), -6px -6px 15px rgba(255,255,255,0.05)}
 .k:active:not(:disabled){transform:translateY(1px);box-shadow:var(--sh-in)}
@@ -54,14 +54,14 @@ body{font-family:var(--sans);color:var(--tinte);-webkit-font-smoothing:antialias
    Jetzt: flaches Grau ohne Sticker-Schatten, durchgestrichene Beschriftung
    (ein Signal, das nicht an Farbe hängt) und der Grund in voller Lesbarkeit. */
 .k:disabled{opacity:1;cursor:not-allowed;
-  background:#33333d!important;color:#d2d2dc!important;
-  border-color:#5c5c6b!important;box-shadow:none!important;transform:none!important}
+  background:var(--grau)!important;color:var(--kreide)!important;
+  border-color:var(--tinte)!important;box-shadow:none!important;transform:none!important}
 /* muss .k .t u schlagen (das setzt text-decoration:none) — deshalb der
    gleiche Aufbau statt !important */
 .k:disabled .t u{text-decoration:line-through;text-decoration-thickness:3px}
 .k:disabled em{color:#9a9aa8}
 .k:disabled .p{color:var(--gelb);font-weight:700}
-.k:disabled kbd{background:#4a4a58;color:#d2d2dc;border-color:#5c5c6b}
+.k:disabled kbd{background:var(--grau);color:var(--kreide);border-color:var(--tinte)}
 .k.rot{background:var(--rot);color:#fff} .k.blau{background:var(--blau);color:#fff}
 .k.job{background:var(--gelb)}
 .k kbd{flex:0 0 auto;font-family:var(--mono);font-size:11px;font-weight:700;
@@ -86,8 +86,8 @@ body{font-family:var(--sans);color:var(--tinte);-webkit-font-smoothing:antialias
 #b0 form{margin-top:40px;display:flex;gap:10px;justify-content:center;flex-wrap:wrap}
 #b0 input{font-family:var(--fett);font-size:18px;letter-spacing:.4em;text-align:center;
   text-transform:uppercase;background:var(--papier);border:var(--out);box-shadow:var(--sh-in);
-  border-radius:var(--br);padding:13px;background:#1e1f23;color:#e2e2e2;width:min(230px,64vw);outline:none}
-#b0 input::placeholder{color:#d3cabd;font-family:var(--fett)}
+  border-radius:var(--br);padding:13px;background:var(--grau);color:#e2e2e2;width:min(230px,64vw);outline:none}
+#b0 input::placeholder{color:var(--kreide);font-family:var(--fett)}
 #b0 button{font-family:var(--fett);font-size:13px;letter-spacing:.14em;text-transform:uppercase;
   color:#fff;background:var(--rot);border:var(--out);box-shadow:var(--sh-out);border-radius:var(--br);padding:13px 20px;background:linear-gradient(145deg, #ff3f5a, #e62944);cursor:pointer}
 #b0 .err{margin-top:22px;font-family:var(--fett);font-size:12px;letter-spacing:.18em;
@@ -99,7 +99,7 @@ body{font-family:var(--sans);color:var(--tinte);-webkit-font-smoothing:antialias
 .graffiti { position:absolute; top:30%; left:50%; transform:translate(-50%,-50%) rotate(-10deg) skewX(-10deg); font-family:"Arial Black",sans-serif; font-size:clamp(60px,25vmin,300px); color:transparent; -webkit-text-stroke:4px var(--rot); opacity:0.3; z-index:1; pointer-events:none; filter:blur(2px) drop-shadow(0 0 10px var(--rot)); white-space:nowrap; }
 
 /* 1 — Nacht */
-#b1{background:#05060a;display:grid;place-items:center;text-align:center}
+#b1{background:var(--nacht);display:grid;place-items:center;text-align:center}
 #b1 .uhr{font-family:var(--mono);font-size:clamp(34px,9vmin,80px);color:#3d4557;transition:color .6s}
 #b1.spaet .uhr{color:#6b7690}
 #b1 .txt{margin:26px auto 40px;font-size:17px;line-height:1.6;color:#8d94a6;
@@ -252,7 +252,7 @@ body{font-family:var(--sans);color:var(--tinte);-webkit-font-smoothing:antialias
   background:radial-gradient(circle at 78% 22%,rgba(255,62,165,.22),transparent 46%),
   linear-gradient(160deg,#3a1a72,#1b0f3d 62%,#120a2b)}
 .spalte{width:min(660px,96vw);margin:0 auto;position:relative;z-index:1}
-.karte{background:linear-gradient(145deg, #2d2e33, #26272b);border:var(--out);box-shadow:var(--sh-out);padding:18px;margin-bottom:18px;border-radius:var(--br)}
+.karte{background:linear-gradient(145deg, var(--grau), var(--nacht));border:var(--out);box-shadow:var(--sh-out);padding:18px;margin-bottom:18px;border-radius:var(--br)}
 .karte h2{font-family:var(--fett);font-size:22px;text-transform:uppercase;margin-bottom:6px}
 .karte .lead{font-size:14px;font-weight:600;line-height:1.55;margin-bottom:16px;opacity:.8}
 .chip.danke{background:var(--gelb)!important;color:var(--tinte)!important;
@@ -284,7 +284,7 @@ body{font-family:var(--sans);color:var(--tinte);-webkit-font-smoothing:antialias
   border:3px solid var(--tinte)}
 .kopfz{display:flex;align-items:center;gap:9px;flex-wrap:wrap;margin-bottom:14px}
 .chip{font-family:var(--fett);font-size:13px;text-transform:uppercase;border:var(--out);
-  padding:5px 11px;border-radius:var(--br-sm);box-shadow:var(--sh-out);background:linear-gradient(145deg, #2d2e33, #26272b);;background:var(--gelb)}
+  padding:5px 11px;border-radius:var(--br-sm);box-shadow:var(--sh-out);background:linear-gradient(145deg, var(--grau), var(--nacht));;background:var(--gelb)}
 /* Nebensätze im HUD. Bedeutung steht im Wort, nicht in der Farbe. */
 .chip i.steigt,.chip i.starr{font-style:normal;font-family:var(--mono);
   font-size:10px;letter-spacing:.04em;text-transform:none;opacity:.82;
@@ -341,7 +341,7 @@ body{font-family:var(--sans);color:var(--tinte);-webkit-font-smoothing:antialias
 #ende p b{background:var(--gelb);padding:0 4px}
 
 /* 8 — Netzwerk / Motherbrowser */
-#b8 { background: #05060a; overflow: hidden; position: relative; }
+#b8 { background: var(--nacht); overflow: hidden; position: relative; }
 #b8 canvas { position: absolute; inset: 0; width: 100%; height: 100%; z-index: 1; opacity: 0.7; }
 #b8 .net-ui { position: relative; z-index: 2; display: flex; flex-direction: column; height: 100%; padding: 4vmin; pointer-events: none; }
 #b8 .net-kopf { display: flex; justify-content: space-between; align-items: flex-start; pointer-events: auto; }
@@ -357,7 +357,7 @@ body{font-family:var(--sans);color:var(--tinte);-webkit-font-smoothing:antialias
 @keyframes chatIn { 0% { opacity: 0; transform: translateY(10px); } 100% { opacity: 1; transform: translateY(0); } }
 
 /* 9 — MINIGAME */
-#b9 { background: #05060a; display: grid; place-items: center; }
+#b9 { background: var(--nacht); display: grid; place-items: center; }
 #mg-ui.bad { animation: zitter .34s; }
 .mg-kopf { background: var(--gelb); color: var(--tinte); font-family: var(--fett); padding: 10px; display: flex; justify-content: space-between; text-transform: uppercase; font-size: 14px; border-bottom: 3px solid var(--tinte); }
 #mg-time { font-family: var(--mono); font-size: 16px; }
@@ -407,7 +407,7 @@ body{font-family:var(--sans);color:var(--tinte);-webkit-font-smoothing:antialias
 .str-beine { position:absolute; bottom:52px; left:50%; width:190px; height:120px;
   margin-left:-95px; z-index:5; pointer-events:none; }
 .str-beine i { position:absolute; bottom:0; width:46px; height:104px; display:block;
-  background:#14141c; border:3px solid var(--papier); border-bottom:0;
+  background:var(--grau); border:3px solid var(--papier); border-bottom:0;
   border-radius:10px 10px 0 0; transform-origin:50% 100%; }
 .str-beine i.a { left:24px; } .str-beine i.b { right:24px; }
 .str-beine i::after { content:''; position:absolute; left:-9px; bottom:-3px;
@@ -421,7 +421,7 @@ body{font-family:var(--sans);color:var(--tinte);-webkit-font-smoothing:antialias
 body.dritte .str-figur { display:block; }
 body.dritte .str-beine { display:none; }
 body.dritte #haende { display:none; }
-.str-figur span { position:absolute; background:#14141c; border:3px solid var(--papier); display:block; }
+.str-figur span { position:absolute; background:var(--grau); border:3px solid var(--papier); display:block; }
 .str-figur .kopf   { left:38px; top:0; width:54px; height:50px; border-radius:9px;
   background:var(--papier); border-color:var(--tinte); }
 .str-figur .kopf::after { content:''; position:absolute; inset:8px 9px auto 9px; height:15px;
@@ -439,7 +439,7 @@ body.dritte #haende { display:none; }
 .p-schalt:hover { background:var(--gelb); }
 .str-schritt { position:absolute; bottom:12px; left:50%; transform:translateX(-50%);
   z-index:7; font-family:var(--mono); font-size:10px; letter-spacing:.18em;
-  color:var(--papier); background:rgba(13,13,13,.8); border:2px solid var(--tinte);
+  color:var(--papier); background:rgba(10,10,12,0.9); border:2px solid var(--tinte);
   padding:5px 11px; text-transform:uppercase; }
 .str-ui { position: absolute; bottom: 20px; left: 20px; right: 20px; display: flex; justify-content: space-between; z-index: 10; pointer-events: none; }
 .str-ui button { pointer-events: auto; }
@@ -583,7 +583,7 @@ h1, h2, .k .t u { text-shadow: 1.5px 0px 0.5px var(--rot), -1.5px 0px 0.5px var(
   max-width: 177.78vh;
   margin: auto;
   overflow: hidden;
-  background: #1a1b1f;
+  background: var(--nacht);
   box-shadow: 0 0 50px rgba(0,0,0,0.8);
 }
 body {

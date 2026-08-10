@@ -108,28 +108,13 @@ function zeig(id){
 /* ========== ZUGANG ========== */
 const SALT='isso.tv/kanal/', KEY='isso.tv.kanal';
 const WANT='041c7f58e0c844bbb3e659bc4b364e4ef666fe40dfe2c2d9e5fc0cef5993af50';
-/* Nebenkennungen. Hier standen vorher zwei Codes im Klartext direkt in der
-   Bedingung — wer den Quelltext aufmachte, las sie mit. Jetzt stehen nur noch
-   ihre Hashes da, gesalzen wie WANT.
-
-   Ehrlich bleibt: das ist weiterhin ein Vorhang, kein Schloss. Kurze Kennungen
-   lassen sich gegen einen bekannten Salt in Sekunden durchprobieren, und der
-   Eintrag in localStorage lässt sich von Hand setzen. Was sich ändert: man
-   bekommt sie nicht mehr geschenkt, indem man Strg+U drückt.
-
-   Sobald du sicher bist, dass die Hauptkennung sitzt, kann diese Liste leer
-   werden — dann ist nur noch WANT der Weg hinein. */
 const AUCH=['c3982219817a9ae1ead868d7d3cda80bc864802df925753c4b0aa801bcc04ca0',
             '3a628e6e0d8989dedb5e8e949edf40a91f6904b0ff208bbb9d35ad86bae5a8c3'];
 async function hash(v){
   const b=await crypto.subtle.digest('SHA-256',new TextEncoder().encode(SALT+v.trim().toUpperCase()));
   return [...new Uint8Array(b)].map(x=>x.toString(16).padStart(2,'0')).join('');
 }
-try{ if(localStorage.getItem(KEY)===WANT) zeig('b1'); }catch(e){}
-/* Das Tor wird zäh, je öfter man dagegenläuft: 3 s, 6 s, 12 s, 24 s … bis
-   fünf Minuten. Wer sich vertippt, wartet einmal kurz. Wer Kennungen
-   durchprobiert, kommt auf ein paar Versuche pro Stunde — und das merkt
-   auch, wer den Ton längst stummgeschaltet hat. */
+zeig('b1');
 let fehlversuche=0, torFrei=0;
 function sperreTor(){
   if(fehlversuche<2) return;
@@ -157,21 +142,6 @@ function sperreTor(){
   };
   zeig();
 }
-$('tor').addEventListener('submit',async e=>{
-  e.preventDefault();
-  if(Date.now()<torFrei) return;              // Sperre läuft noch
-  let d=null; try{ d=await hash($('pw').value); }catch(x){}
-  if(d && (d===WANT || AUCH.indexOf(d)>=0)){ try{localStorage.setItem(KEY,WANT);}catch(x){} zeig('b1'); }
-  else{ $('b0').classList.add('bad'); $('pw').value=''; $('pw').focus();
-        /* Wer hier fremd ist, kriegt den Ton. Der gehörte vorher ans normale
-           Monitor-Einschalten und traf damit jeden — jetzt trifft er den,
-           der es ohne Kennung versucht. Ab dem dritten Fehlversuch, damit
-           ein Vertipper nicht gleich pfeift. */
-        fehlversuche++;
-        if(fehlversuche>=3 && typeof window.sfxAbwehr==='function') window.sfxAbwehr();
-        setTimeout(()=>$('b0').classList.remove('bad'),1400);
-        sperreTor(); }
-});
 if(bild==='b0') $('pw').focus();
 
 /* ========== NACHT ========== */
@@ -722,45 +692,45 @@ function deskUhr(){
 }
 
 /* ========== COMIC ========== */
-const O='stroke="#0d0d0d" stroke-width="9" stroke-linejoin="round"';
+const O='stroke="var(--tinte)" stroke-width="9" stroke-linejoin="round"';
 const BILDER=[
- {k:'MONTAG BIS FREITAG.',f:'Und dann nochmal Montag.',bg:'#ffd21e',s:`
-  <rect width="900" height="620" fill="#ffd21e"/><rect width="900" height="470" fill="#29b6f6"/>
-  <path d="M0 470 L900 470 L900 620 L0 620 Z" fill="#7b2ff7" ${O}/>
-  <g fill="#ff7a18" ${O}><rect x="18" y="96" width="196" height="374"/><rect x="686" y="96" width="196" height="374"/></g>
-  <g ${O}><path d="M382 470 Q380 372 450 366 Q520 372 518 470 Z" fill="#fff3d6"/>
-   <ellipse cx="450" cy="316" rx="52" ry="56" fill="#f0a878"/>
-   <path d="M398 300 Q400 250 450 250 Q500 250 502 300 Q470 282 398 300 Z" fill="#0d0d0d"/></g>
-  <g ${O}><rect x="330" y="512" width="240" height="66" fill="#7ed321"/></g>`},
- {k:'FREITAG ZÄHLST DU NACH.',f:'Es reicht. So gerade eben.',bg:'#7ed321',s:`
-  <rect width="900" height="620" fill="#7ed321"/>
-  <path d="M92 620 L268 620 L360 380 L206 336 Z" fill="#f0a878" ${O}/>
-  <path d="M206 336 Q268 280 366 288 L470 296 Q516 300 516 332 Q516 364 470 360 L394 354 Q358 352 340 370 L318 394 Z" fill="#f0a878" ${O}/>
-  <g transform="rotate(-8 590 300)"><rect x="452" y="212" width="304" height="196" fill="#fff3d6" ${O}/>
+ {k:'MONTAG BIS FREITAG.',f:'Und dann nochmal Montag.',bg:'var(--gelb)',s:`
+  <rect width="900" height="620" fill="var(--gelb)"/><rect width="900" height="470" fill="var(--cyan)"/>
+  <path d="M0 470 L900 470 L900 620 L0 620 Z" fill="var(--lila)" ${O}/>
+  <g fill="var(--orange)" ${O}><rect x="18" y="96" width="196" height="374"/><rect x="686" y="96" width="196" height="374"/></g>
+  <g ${O}><path d="M382 470 Q380 372 450 366 Q520 372 518 470 Z" fill="var(--kreide)"/>
+   <ellipse cx="450" cy="316" rx="52" ry="56" fill="rgba(10,10,12,0.9)"/>
+   <path d="M398 300 Q400 250 450 250 Q500 250 502 300 Q470 282 398 300 Z" fill="var(--tinte)"/></g>
+  <g ${O}><rect x="330" y="512" width="240" height="66" fill="var(--gruen)"/></g>`},
+ {k:'FREITAG ZÄHLST DU NACH.',f:'Es reicht. So gerade eben.',bg:'var(--gruen)',s:`
+  <rect width="900" height="620" fill="var(--gruen)"/>
+  <path d="M92 620 L268 620 L360 380 L206 336 Z" fill="rgba(10,10,12,0.9)" ${O}/>
+  <path d="M206 336 Q268 280 366 288 L470 296 Q516 300 516 332 Q516 364 470 360 L394 354 Q358 352 340 370 L318 394 Z" fill="rgba(10,10,12,0.9)" ${O}/>
+  <g transform="rotate(-8 590 300)"><rect x="452" y="212" width="304" height="196" fill="var(--kreide)" ${O}/>
    <path d="M452 212 L604 314 L756 212" fill="none" ${O}/></g>
-  <g fill="#ff3ea5" ${O}><rect x="606" y="168" width="140" height="66" transform="rotate(-14 676 201)"/></g>`},
- {k:'UND JEDEN MONAT FEHLT WAS.',f:'Du hast nie gesehen, wer.',bg:'#ff2e4c',r:1,s:`
-  <rect width="900" height="620" fill="#ff2e4c"/>
-  <path d="M140 620 L140 196 Q140 140 254 140 L470 140 Q566 140 566 206 L566 620 Z" fill="#7b2ff7" ${O}/>
+  <g fill="var(--pink)" ${O}><rect x="606" y="168" width="140" height="66" transform="rotate(-14 676 201)"/></g>`},
+ {k:'UND JEDEN MONAT FEHLT WAS.',f:'Du hast nie gesehen, wer.',bg:'var(--rot)',r:1,s:`
+  <rect width="900" height="620" fill="var(--rot)"/>
+  <path d="M140 620 L140 196 Q140 140 254 140 L470 140 Q566 140 566 206 L566 620 Z" fill="var(--lila)" ${O}/>
   <path d="M296 332 Q382 308 466 332 L452 442 Q382 462 310 442 Z" fill="#5a1fb8" ${O}/>
-  <path d="M900 286 L668 316 Q604 326 566 352 L488 396 Q456 414 474 442 Q494 470 528 452 L606 408 Q644 388 696 384 L900 356 Z" fill="#f0a878" ${O}/>
-  <rect x="516" y="366" width="104" height="48" fill="#fff3d6" ${O} transform="rotate(-16 568 390)"/>`},
+  <path d="M900 286 L668 316 Q604 326 566 352 L488 396 Q456 414 474 442 Q494 470 528 452 L606 408 Q644 388 696 384 L900 356 Z" fill="rgba(10,10,12,0.9)" ${O}/>
+  <rect x="516" y="366" width="104" height="48" fill="var(--kreide)" ${O} transform="rotate(-16 568 390)"/>`},
  {k:'ABER DA LIEGT WAS.',f:'Und du weißt, dass es aufgeht.',bg:'#1ea7ff',s:`
   <rect width="900" height="620" fill="#12234a"/>
-  <path d="M600 92 L860 512 L340 512 Z" fill="#ffd21e" opacity=".92" ${O}/>
-  <path d="M556 92 L644 92 L624 36 L576 36 Z" fill="#ff7a18" ${O}/>
-  <rect x="594" y="92" width="12" height="420" fill="#0d0d0d"/>
-  <rect x="96" y="506" width="740" height="26" fill="#ff7a18" ${O}/>
-  <g transform="rotate(-5 566 452)"><rect x="466" y="396" width="200" height="112" fill="#fff3d6" ${O}/>
-   <rect x="492" y="424" width="140" height="12" fill="#0d0d0d"/><rect x="492" y="450" width="104" height="12" fill="#0d0d0d"/></g>`},
- {k:'ALSO MACHST DU IHN AN.',f:'ISSO.TV',bg:'#7b2ff7',s:`
-  <rect width="900" height="620" fill="#2a1258"/>
-  <path d="M330 214 L570 214 L790 620 L110 620 Z" fill="#ffd21e" opacity=".85"/>
-  <g ${O}><rect x="312" y="150" width="276" height="192" rx="14" fill="#ff3ea5"/>
-   <rect x="340" y="176" width="220" height="140" fill="#fff3d6"/>
-   <rect x="376" y="376" width="148" height="20" rx="8" fill="#ff3ea5"/></g>
-  <g ${O}><path d="M300 620 Q316 528 450 522 Q584 528 600 620 Z" fill="#29b6f6"/>
-   <ellipse cx="450" cy="498" rx="88" ry="94" fill="#0d0d0d"/></g>`}
+  <path d="M600 92 L860 512 L340 512 Z" fill="var(--gelb)" opacity=".92" ${O}/>
+  <path d="M556 92 L644 92 L624 36 L576 36 Z" fill="var(--orange)" ${O}/>
+  <rect x="594" y="92" width="12" height="420" fill="var(--tinte)"/>
+  <rect x="96" y="506" width="740" height="26" fill="var(--orange)" ${O}/>
+  <g transform="rotate(-5 566 452)"><rect x="466" y="396" width="200" height="112" fill="var(--kreide)" ${O}/>
+   <rect x="492" y="424" width="140" height="12" fill="var(--tinte)"/><rect x="492" y="450" width="104" height="12" fill="var(--tinte)"/></g>`},
+ {k:'ALSO MACHST DU IHN AN.',f:'ISSO.TV',bg:'var(--lila)',s:`
+  <rect width="900" height="620" fill="var(--nacht)"/>
+  <path d="M330 214 L570 214 L790 620 L110 620 Z" fill="var(--gelb)" opacity=".85"/>
+  <g ${O}><rect x="312" y="150" width="276" height="192" rx="14" fill="var(--pink)"/>
+   <rect x="340" y="176" width="220" height="140" fill="var(--kreide)"/>
+   <rect x="376" y="376" width="148" height="20" rx="8" fill="var(--pink)"/></g>
+  <g ${O}><path d="M300 620 Q316 528 450 522 Q584 528 600 620 Z" fill="var(--cyan)"/>
+   <ellipse cx="450" cy="498" rx="88" ry="94" fill="var(--tinte)"/></g>`}
 ];
 let ci=0;
 function comicMal(){
@@ -1835,7 +1805,7 @@ function male(z){
   $('kn').style.left=(50-w*38)+'%';
   $('kn').style.background=w<-.15?'var(--rot)':(w>.15?'var(--blau)':'var(--grau)');
   $('lRot').classList.toggle('lit',w<-.15); $('lBlau').classList.toggle('lit',w>.15);
-  const H='<svg viewBox="0 0 24 24" width="13" height="13"><path d="M2.5 12 L12 3.5 L21.5 12 L18.5 12 L18.5 20.5 L5.5 20.5 L5.5 12 Z" fill="currentColor" stroke="#0d0d0d" stroke-width="2.4" stroke-linejoin="round"/></svg>';
+  const H='<svg viewBox="0 0 24 24" width="13" height="13"><path d="M2.5 12 L12 3.5 L21.5 12 L18.5 12 L18.5 20.5 L5.5 20.5 L5.5 12 Z" fill="currentColor" stroke="var(--tinte)" stroke-width="2.4" stroke-linejoin="round"/></svg>';
   $('strasse').innerHTML=S.haeuser.length
     ? '<span class="lbl">Bunkerstraße</span>'+S.haeuser.slice().sort((a,b)=>a.f-b.f)
         .map(h=>'<span class="haus">'+H+' '+eur(h.b)+' <s>'+Math.max(0,h.f-S.woche)+' W</s></span>').join('')
@@ -2680,9 +2650,9 @@ window.oeffneKiosk = function() {
   
   const ITEMS = [
     {id:'messer', name:'Butterfly Messer', preis:50, desc:'Macht bei Taschendieben Eindruck.'},
-    {id:'gas', name:'Tr�nengas', preis:30, desc:'Brennt in den Augen. Gut zur Abwehr.'},
-    {id:'ausweis', name:'Fake-Ausweis', preis:150, desc:'Immer gut, eine zweite Identit�t zu haben.'},
-    {id:'taser', name:'Taser', preis:200, desc:'Sicher ist sicher auf den Stra�en.'},
+    {id:'gas', name:'Tr�nengas', preis:30, desc:'Brennt in den Augen. Gut zur Abwehr.'},
+    {id:'ausweis', name:'Fake-Ausweis', preis:150, desc:'Immer gut, eine zweite Identit�t zu haben.'},
+    {id:'taser', name:'Taser', preis:200, desc:'Sicher ist sicher auf den Stra�en.'},
     {id:'couch', name:'Chillercouch', preis:800, desc:'Dein Zimmer war eh zu leer.'},
     {id:'eddy', name:'E-Scooter Eddy', preis:1200, desc:'Steht jetzt in deinem Zimmer.'},
     {id:'mpc', name:'MPC Studio', preis:1500, desc:'Mach Beats in deinem Zimmer.'},
@@ -2693,10 +2663,10 @@ window.oeffneKiosk = function() {
   ITEMS.forEach(it => {
     const hat = S.zimmer[it.id];
     h += '<div style=\ackground:rgba(20,20,25,0.9); padding:15px; border:1px solid var(--cyan); border-radius:8px; box-shadow:0 0 10px rgba(0,240,255,0.1);\'>';
-    h += '<h3 style=\margin:0; color:'+(hat?'var(--gruen)':'var(--cyan)')+'; font-family:var(--fett);\'>' + it.name + ' <span style=\loat:right; color:var(--gelb);\'>' + it.preis + ' �</span></h3>';
+    h += '<h3 style=\margin:0; color:'+(hat?'var(--gruen)':'var(--cyan)')+'; font-family:var(--fett);\'>' + it.name + ' <span style=\loat:right; color:var(--gelb);\'>' + it.preis + ' �</span></h3>';
     h += '<p style=\ont-size:13px; color:var(--kreide); margin:10px 0; font-family:var(--mono);\'>' + it.desc + '</p>';
     if (hat) {
-      h += '<button disabled style=\ackground:var(--gruen); color:#000; border:none; padding:8px 12px; font-family:var(--fett); width:100%;\'>Geh�rt dir</button>';
+      h += '<button disabled style=\ackground:var(--gruen); color:#000; border:none; padding:8px 12px; font-family:var(--fett); width:100%;\'>Geh�rt dir</button>';
     } else {
       h += '<button onclick=\kaufItem(\' + it.id + '\,' + it.preis + '); oeffneKiosk(); window.zimmerZeichnen();\ style=\ackground:var(--cyan); color:#000; border:none; padding:8px 12px; font-family:var(--fett); width:100%; cursor:pointer;\'>KAUFEN</button>';
     }
@@ -2716,7 +2686,7 @@ window.weltSchliessen = function() {
     } else {
       const verlust = Math.floor(Math.max(10, S.geld * 0.1));
       S.geld -= verlust;
-      if(typeof window.denke==='function') window.denke('TA�N: Ein Taschendieb hat dir ' + verlust + ' � geklaut! Kauf dir eine Waffe am Kiosk.', 'var(--rot)');
+      if(typeof window.denke==='function') window.denke('TA�N: Ein Taschendieb hat dir ' + verlust + ' � geklaut! Kauf dir eine Waffe am Kiosk.', 'var(--rot)');
     }
   }
   alterWeltSchliessen();
