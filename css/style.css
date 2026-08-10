@@ -40,28 +40,26 @@ body{font-family:var(--sans);color:var(--tinte);-webkit-font-smoothing:antialias
 .punkte{position:absolute;inset:0;pointer-events:none;
   background-image:radial-gradient(circle,rgba(255,255,255,.07) 2px,transparent 2px);background-size:26px 26px}
 
-/* Knöpfe — überall dieselben */
+/* Knöpfe — Premium Cyberpunk Style */
 .k{display:flex;align-items:center;gap:12px;width:100%;text-align:left;cursor:pointer;
-  font-family:var(--fett);color:var(--tinte);background:var(--grau);border:var(--out);
-  border-radius:var(--br);box-shadow:var(--sh-out);padding:14px 18px;
-  background:linear-gradient(145deg, var(--grau), var(--nacht));
-  transition:all .2s cubic-bezier(0.2,0.8,0.2,1)}
-.k:hover:not(:disabled){transform:translateY(-2px);box-shadow:12px 12px 20px rgba(0,0,0,0.8), -6px -6px 15px rgba(255,255,255,0.05)}
-.k:active:not(:disabled){transform:translateY(1px);box-shadow:var(--sh-in)}
-/* Gesperrt muss man SEHEN, nicht erraten. Vorher nur opacity:.36 — der Knopf
-   sah aus wie ein Knopf, nur blass, und der Grund war bei 36 % Deckkraft
-   praktisch unlesbar. Man drückt drauf und es passiert nichts.
-   Jetzt: flaches Grau ohne Sticker-Schatten, durchgestrichene Beschriftung
-   (ein Signal, das nicht an Farbe hängt) und der Grund in voller Lesbarkeit. */
-.k:disabled{opacity:1;cursor:not-allowed;
-  background:var(--grau)!important;color:var(--kreide)!important;
-  border-color:var(--tinte)!important;box-shadow:none!important;transform:none!important}
-/* muss .k .t u schlagen (das setzt text-decoration:none) — deshalb der
-   gleiche Aufbau statt !important */
-.k:disabled .t u{text-decoration:line-through;text-decoration-thickness:3px}
+  font-family:var(--fett);color:var(--cyan);background:rgba(10,10,12,0.6);
+  border:1px solid rgba(0,240,255,0.4); border-radius:var(--br);
+  box-shadow:inset 0 0 15px rgba(0,240,255,0.1), 0 4px 15px rgba(0,0,0,0.5);
+  padding:14px 18px; backdrop-filter:blur(8px); -webkit-backdrop-filter:blur(8px);
+  transition:all .3s cubic-bezier(0.2,0.8,0.2,1); position:relative; overflow:hidden;}
+.k::before { content:''; position:absolute; top:0; left:-100%; width:100%; height:100%; background:linear-gradient(90deg, transparent, rgba(0,240,255,0.2), transparent); transition:all .4s ease; }
+.k:hover:not(:disabled)::before { left:100%; }
+.k:hover:not(:disabled){transform:translateY(-3px) scale(1.02);box-shadow:inset 0 0 20px rgba(0,240,255,0.3), 0 0 25px rgba(0,240,255,0.4); border-color:var(--cyan); color:#fff; text-shadow:0 0 8px var(--cyan);}
+.k:active:not(:disabled){transform:translateY(1px) scale(0.98);box-shadow:inset 0 0 30px rgba(0,240,255,0.5);}
+
+.k:disabled{opacity:0.6;cursor:not-allowed;
+  background:rgba(20,20,20,0.5)!important;color:var(--kreide)!important;
+  border-color:rgba(255,255,255,0.1)!important;box-shadow:none!important;transform:none!important; filter:grayscale(100%);}
+/* durchgestrichene Beschriftung */
+.k:disabled .t u{text-decoration:line-through;text-decoration-thickness:3px; opacity:0.5;}
 .k:disabled em{color:#9a9aa8}
 .k:disabled .p{color:var(--gelb);font-weight:700}
-.k:disabled kbd{background:var(--grau);color:var(--kreide);border-color:var(--tinte)}
+.k:disabled kbd{background:rgba(0,0,0,0.3);color:var(--kreide);border-color:transparent;}
 .k.rot{background:var(--rot);color:#fff} .k.blau{background:var(--blau);color:#fff}
 .k.job{background:var(--gelb)}
 .k kbd{flex:0 0 auto;font-family:var(--mono);font-size:11px;font-weight:700;
@@ -76,27 +74,30 @@ body{font-family:var(--sans);color:var(--tinte);-webkit-font-smoothing:antialias
 .k .p{font-family:var(--mono);font-size:11px;text-align:right;white-space:nowrap;opacity:.85}
 
 /* 0 — Zugang */
-#b0{background:var(--nacht);display:grid;place-items:center;text-align:center}
+#b0{background:var(--nacht);display:grid;place-items:center;text-align:center; position:relative;}
+#b0::before{content:'';position:absolute;inset:0;background:radial-gradient(circle at 50% 50%, rgba(255,0,60,0.1), transparent 70%); pointer-events:none;}
 #b0 .mark{font-family:var(--fett);font-size:clamp(44px,13vmin,150px);color:var(--gelb);
-  -webkit-text-stroke:min(1.2vmin,8px) var(--tinte);paint-order:stroke fill;
-  text-shadow:min(1.3vmin,9px) min(1.3vmin,9px) 0 var(--pink);transform:rotate(-2deg)}
-#b0 .sub{display:inline-block;margin-top:22px;font-family:var(--fett);font-size:12px;
-  letter-spacing:.22em;text-transform:uppercase;background:var(--papier);border-radius:var(--br);
-  border:var(--out);box-shadow:var(--sh);padding:9px 18px;transform:rotate(1.5deg)}
-#b0 form{margin-top:40px;display:flex;gap:10px;justify-content:center;flex-wrap:wrap}
+  -webkit-text-stroke:min(0.5vmin,2px) var(--tinte);paint-order:stroke fill;
+  text-shadow:0 0 20px rgba(255,210,30,0.5), 0 0 40px rgba(255,210,30,0.3);transform:rotate(-2deg); margin-bottom:10px;}
+#b0 .sub{display:inline-block;margin-top:10px;font-family:var(--fett);font-size:14px;
+  letter-spacing:.22em;text-transform:uppercase;background:rgba(0,0,0,0.5);border-radius:var(--br);
+  border:1px solid rgba(0,240,255,0.4);box-shadow:0 0 15px rgba(0,240,255,0.2);padding:9px 18px;transform:rotate(1.5deg); color:var(--cyan); backdrop-filter:blur(5px);}
+#b0 form{margin-top:50px;display:flex;gap:15px;justify-content:center;flex-wrap:wrap}
 #b0 input{font-family:var(--fett);font-size:18px;letter-spacing:.4em;text-align:center;
-  text-transform:uppercase;background:var(--papier);border:var(--out);box-shadow:var(--sh-in);
-  border-radius:var(--br);padding:13px;background:var(--grau);color:#e2e2e2;width:min(230px,64vw);outline:none}
-#b0 input::placeholder{color:var(--kreide);font-family:var(--fett)}
-#b0 button{font-family:var(--fett);font-size:13px;letter-spacing:.14em;text-transform:uppercase;
-  color:#fff;background:var(--rot);border:var(--out);box-shadow:var(--sh-out);border-radius:var(--br);padding:13px 20px;background:linear-gradient(145deg, #ff3f5a, #e62944);cursor:pointer}
-#b0 .err{margin-top:22px;font-family:var(--fett);font-size:12px;letter-spacing:.18em;
-  text-transform:uppercase;color:#fff;background:var(--rot);border:var(--out);
-  padding:7px 14px;display:inline-block;opacity:0;transition:opacity .2s}
+  text-transform:uppercase;background:rgba(0,0,0,0.6);border:1px solid rgba(0,240,255,0.5);box-shadow:inset 0 0 15px rgba(0,240,255,0.1);
+  border-radius:var(--br);padding:15px;color:var(--cyan);width:min(280px,80vw);outline:none; transition:all 0.3s;}
+#b0 input:focus{border-color:var(--cyan); box-shadow:0 0 20px rgba(0,240,255,0.4), inset 0 0 20px rgba(0,240,255,0.2); text-shadow:0 0 10px var(--cyan);}
+#b0 input::placeholder{color:rgba(0,240,255,0.3);font-family:var(--fett)}
+#b0 button{font-family:var(--fett);font-size:16px;letter-spacing:.15em;text-transform:uppercase;
+  color:#fff;border:1px solid rgba(255,0,60,0.5);box-shadow:0 0 15px rgba(255,0,60,0.3);border-radius:var(--br);padding:15px 30px;background:rgba(255,0,60,0.2);cursor:pointer; backdrop-filter:blur(5px); transition:all 0.3s;}
+#b0 button:hover{background:var(--rot); box-shadow:0 0 25px var(--rot); text-shadow:0 0 10px #fff; transform:scale(1.05);}
+#b0 .err{margin-top:25px;font-family:var(--fett);font-size:12px;letter-spacing:.18em;
+  text-transform:uppercase;color:#fff;background:rgba(255,0,60,0.4);border:1px solid var(--rot); box-shadow:0 0 10px var(--rot);
+  padding:9px 18px;display:inline-block;opacity:0;transition:opacity .2s; border-radius:4px;}
 #b0.bad .err{opacity:1}
 #b0.bad .kasten{animation:zitter .34s}
 @keyframes zitter{25%{transform:translateX(-8px)}75%{transform:translateX(8px)}}
-.graffiti { position:absolute; top:30%; left:50%; transform:translate(-50%,-50%) rotate(-10deg) skewX(-10deg); font-family:"Arial Black",sans-serif; font-size:clamp(60px,25vmin,300px); color:transparent; -webkit-text-stroke:4px var(--rot); opacity:0.3; z-index:1; pointer-events:none; filter:blur(2px) drop-shadow(0 0 10px var(--rot)); white-space:nowrap; }
+.graffiti { position:absolute; top:30%; left:50%; transform:translate(-50%,-50%) rotate(-10deg) skewX(-10deg); font-family:"Arial Black",sans-serif; font-size:clamp(60px,25vmin,300px); color:transparent; -webkit-text-stroke:2px var(--rot); opacity:0.15; z-index:1; pointer-events:none; filter:blur(4px) drop-shadow(0 0 15px var(--rot)); white-space:nowrap; }
 
 /* 1 — Nacht */
 #b1{background:var(--nacht);display:grid;place-items:center;text-align:center}
@@ -175,28 +176,28 @@ body{font-family:var(--sans);color:var(--tinte);-webkit-font-smoothing:antialias
    ausgeblendetes Symbol sichtbar. Muss nach .icon stehen, nicht davor. */
 .icon[hidden]{display:none}
 .icon{background:none;border:0;cursor:pointer;display:flex;flex-direction:column;align-items:center;
-  gap:6px;padding:9px 4px;font:inherit;color:#fff;outline:none}
-.icon:hover,.icon.sel{background:rgba(255,255,255,.18);outline:2px solid var(--gelb)}
-.icon svg{width:42px;height:42px}
+  gap:8px;padding:12px 8px;font:inherit;color:#fff;outline:none; transition:all 0.3s ease; border-radius:12px; border:1px solid transparent;}
+.icon:hover,.icon.sel{background:rgba(0,240,255,0.15); border:1px solid rgba(0,240,255,0.5); box-shadow:0 0 20px rgba(0,240,255,0.3); transform:translateY(-5px) scale(1.05);}
+.icon svg{width:48px;height:48px; filter:drop-shadow(0 0 10px rgba(0,240,255,0.6)); transition:all 0.3s ease;}
+.icon:hover svg{filter:drop-shadow(0 0 15px var(--cyan)) brightness(1.2);}
 .icon.boerse .i{background:#0a0a0a;border:2px solid var(--gelb)}
 .icon.boerse .i::after{content:'~';color:var(--gelb);font-size:30px;line-height:48px}
 .icon.schwarzmarkt .i{background:#000;border:2px dashed var(--rot)}
 .icon.schwarzmarkt .i::after{content:'!';color:var(--rot);font-size:30px;line-height:48px}
 .icon.s7v3n .i{background:#003366}
 .icon.s7v3n .i::after{content:'§';font-size:32px;color:var(--kreide);line-height:48px}
-.icon span{font-family:var(--fett);font-size:10.5px;text-align:center;line-height:1.25;
-  text-shadow:1px 1px 0 #0d0d0d,-1px 1px 0 #0d0d0d,1px -1px 0 #0d0d0d,-1px -1px 0 #0d0d0d}
+.icon span{font-family:var(--fett);font-size:12px;text-align:center;line-height:1.25; letter-spacing:0.05em; text-transform:uppercase; text-shadow:0 0 5px var(--cyan);}
 /* z-index 140: die Leiste ist Bedienung, die Marken-Zeile darunter ist nur
    Beiwerk. Bei z-index 3 lag die Impressum-Zeile über dem Türschloss. */
-.leiste{position:absolute;left:0;right:0;bottom:0;z-index:140;height:34px;display:flex;
-  align-items:center;justify-content:space-between;padding:0 10px;background:#0d0d0d;
-  border-top:3px solid var(--gelb)}
-.leiste .s{font-family:var(--fett);font-size:12px;letter-spacing:.14em;color:#0d0d0d;
-  background:var(--gelb);padding:3px 9px}
-.leiste .u{font-family:var(--mono);font-size:11.5px;color:var(--gelb)}
-.leiste .raus{font-family:var(--fett);font-size:11px;letter-spacing:.1em;text-transform:uppercase;
-  background:none;border:2px solid var(--gelb);color:var(--gelb);padding:3px 10px;cursor:pointer}
-.leiste .raus:hover{background:var(--gelb);color:var(--tinte)}
+.leiste{position:absolute;left:0;right:0;bottom:0;z-index:140;height:42px;display:flex;
+  align-items:center;justify-content:space-between;padding:0 15px;background:rgba(5,5,5,0.85); backdrop-filter:blur(12px); -webkit-backdrop-filter:blur(12px);
+  border-top:1px solid rgba(0,240,255,0.5); box-shadow:0 -5px 20px rgba(0,240,255,0.2);}
+.leiste .s{font-family:var(--fett);font-size:13px;letter-spacing:.15em;color:#fff;
+  background:var(--pink);padding:4px 12px; border-radius:4px; box-shadow:0 0 10px var(--pink);}
+.leiste .u{font-family:var(--mono);font-size:14px;color:var(--cyan); text-shadow:0 0 8px var(--cyan);}
+.leiste .raus{font-family:var(--fett);font-size:12px;letter-spacing:.1em;text-transform:uppercase;
+  background:rgba(255,0,60,0.1);border:1px solid var(--rot);color:var(--rot);padding:6px 14px;cursor:pointer; border-radius:4px; transition:all 0.3s;}
+.leiste .raus:hover{background:var(--rot);color:#fff; box-shadow:0 0 15px var(--rot); text-shadow:0 0 5px #fff;}
 /* haushalt.exe */
 .hb .rumpf label{display:block;font-family:var(--fett);font-size:11px;letter-spacing:.1em;
   text-transform:uppercase;margin:12px 0 5px;opacity:.7}
@@ -220,17 +221,16 @@ body{font-family:var(--sans);color:var(--tinte);-webkit-font-smoothing:antialias
 .hb .summe b.pos{color:#1a7a2e} .hb .summe b.neg{color:var(--rot)}
 .hb .fuss{margin-top:14px;font-size:11px;line-height:1.5;opacity:.6;font-weight:400}
 .fenster{position:absolute;inset:0;z-index:5;display:grid;place-items:center;padding:5vmin;
-  pointer-events:none}
-.fenster .kasten{pointer-events:auto;width:min(400px,86vw);background:var(--papier);
-  border:var(--out);box-shadow:var(--sh);border-radius:var(--br);overflow:hidden;}
-.fenster .kopf{display:flex;justify-content:space-between;align-items:center;background:var(--tinte);
-  color:var(--papier);font-family:var(--fett);font-size:12px;letter-spacing:.1em;padding:8px 10px}
-.fenster .kopf button{background:var(--rot);color:#fff;border:0;font-family:var(--fett);
-  font-size:12px;width:21px;height:21px;cursor:pointer}
-.fenster .rumpf{padding:16px;font-size:13.5px;line-height:1.65;font-weight:600}
-.fenster .rumpf b{background:var(--gelb);padding:0 3px}
-
-/* 5 — Comic */
+  pointer-events:none; background:rgba(0,0,0,0.4); backdrop-filter:blur(5px); -webkit-backdrop-filter:blur(5px);}
+.fenster .kasten{pointer-events:auto;width:min(400px,86vw);background:rgba(15,15,20,0.85); backdrop-filter:blur(20px); -webkit-backdrop-filter:blur(20px);
+  border:1px solid rgba(0,240,255,0.4); box-shadow:0 15px 50px rgba(0,0,0,0.8), inset 0 0 20px rgba(0,240,255,0.1); border-radius:12px;overflow:hidden;}
+.fenster .kopf{display:flex;justify-content:space-between;align-items:center;background:rgba(0,240,255,0.15);
+  color:var(--cyan);font-family:var(--fett);font-size:14px;letter-spacing:.15em;padding:12px 15px; border-bottom:1px solid rgba(0,240,255,0.3); text-shadow:0 0 8px var(--cyan);}
+.fenster .kopf button{background:rgba(255,0,60,0.2);color:var(--rot);border:1px solid var(--rot);font-family:var(--fett);
+  font-size:12px;width:24px;height:24px;cursor:pointer; border-radius:4px; transition:all 0.2s;}
+.fenster .kopf button:hover{background:var(--rot); color:#fff; box-shadow:0 0 10px var(--rot);}
+.fenster .rumpf{padding:20px;font-size:14px;line-height:1.7;font-weight:400; color:#e0e0e0;}
+.fenster .rumpf b{background:rgba(0,240,255,0.2);padding:2px 6px; border-radius:4px; color:var(--cyan); border:1px solid rgba(0,240,255,0.4);}
 #b5{background:#16171a;display:grid;place-items:center;padding:3vmin;cursor:pointer}
 .panel{width:min(720px,94vw);background:var(--pbg,var(--gelb));border:var(--out);box-shadow:var(--sh);
   padding:14px;opacity:0;transform:translateY(14px) rotate(-.6deg);border-radius:var(--br);
@@ -252,9 +252,9 @@ body{font-family:var(--sans);color:var(--tinte);-webkit-font-smoothing:antialias
   background:radial-gradient(circle at 78% 22%,rgba(255,62,165,.22),transparent 46%),
   linear-gradient(160deg,#3a1a72,#1b0f3d 62%,#120a2b)}
 .spalte{width:min(660px,96vw);margin:0 auto;position:relative;z-index:1}
-.karte{background:linear-gradient(145deg, var(--grau), var(--nacht));border:var(--out);box-shadow:var(--sh-out);padding:18px;margin-bottom:18px;border-radius:var(--br)}
-.karte h2{font-family:var(--fett);font-size:22px;text-transform:uppercase;margin-bottom:6px}
-.karte .lead{font-size:14px;font-weight:600;line-height:1.55;margin-bottom:16px;opacity:.8}
+.karte{background:rgba(10,10,15,0.7); backdrop-filter:blur(15px); -webkit-backdrop-filter:blur(15px); border:1px solid rgba(0,240,255,0.3); box-shadow:0 10px 30px rgba(0,0,0,0.6), inset 0 0 20px rgba(0,240,255,0.05); padding:24px;margin-bottom:20px;border-radius:16px;}
+.karte h2{font-family:var(--fett);font-size:24px;text-transform:uppercase;margin-bottom:8px; color:var(--cyan); text-shadow:0 0 10px rgba(0,240,255,0.4); letter-spacing:0.05em;}
+.karte .lead{font-size:15px;font-weight:400;line-height:1.6;margin-bottom:20px;color:#b0c4de;}
 .chip.danke{background:var(--gelb)!important;color:var(--tinte)!important;
   box-shadow:4px 4px 0 var(--tinte),0 0 0 3px var(--gelb),0 0 14px rgba(255,210,31,.7)}
 .chip.danke::before{content:"★ ";}
@@ -271,28 +271,26 @@ body{font-family:var(--sans);color:var(--tinte);-webkit-font-smoothing:antialias
 .vip.v1{border-color:var(--cyan)}
 .vip.v2{border-color:var(--kreide)}
 .vip.v3{border-color:var(--pink);box-shadow:0 0 10px rgba(255,62,165,.55)}
-.namensfeld{font-family:var(--fett);font-size:18px;letter-spacing:.16em;text-transform:uppercase;
-  background:#fff;border:var(--out);box-shadow:5px 5px 0 var(--tinte);padding:12px 14px;
-/* Das Feld hat weissen Grund und im Fokus einen gelben. Beides ist hell, also
-   muss die Schrift dunkel sein. Hier stand --tinte, und --tinte ist seit dem
-   Neumorphism-Umbau hell — 1,3:1, man tippte in Unsichtbares. */
-  width:100%;outline:none;color:#0d0d0d}
-.namensfeld::placeholder{color:#7a7568}
-.namensfeld:focus{background:var(--gelb)}
-.namensfehler{font-family:var(--mono);font-size:11px;letter-spacing:.1em;margin-top:8px;opacity:.5}
-.namensfehler.bad{opacity:1;color:#fff;background:var(--rot);display:inline-block;padding:4px 9px;
-  border:3px solid var(--tinte)}
-.kopfz{display:flex;align-items:center;gap:9px;flex-wrap:wrap;margin-bottom:14px}
-.chip{font-family:var(--fett);font-size:13px;text-transform:uppercase;border:var(--out);
-  padding:5px 11px;border-radius:var(--br-sm);box-shadow:var(--sh-out);background:linear-gradient(145deg, var(--grau), var(--nacht));;background:var(--gelb)}
+.namensfeld{font-family:var(--fett);font-size:20px;letter-spacing:.2em;text-transform:uppercase;
+  background:rgba(0,0,0,0.5);border:1px solid rgba(0,240,255,0.5);box-shadow:inset 0 0 15px rgba(0,240,255,0.1);padding:14px 18px;
+  width:100%;outline:none;color:var(--cyan); border-radius:8px; transition:all 0.3s;}
+.namensfeld::placeholder{color:rgba(0,240,255,0.3);}
+.namensfeld:focus{background:rgba(0,240,255,0.1); box-shadow:0 0 20px rgba(0,240,255,0.3), inset 0 0 20px rgba(0,240,255,0.2); border-color:var(--cyan); text-shadow:0 0 10px var(--cyan);}
+.namensfehler{font-family:var(--mono);font-size:12px;letter-spacing:.1em;margin-top:10px;opacity:.5; color:#a0a0a0;}
+.namensfehler.bad{opacity:1;color:#fff;background:rgba(255,0,60,0.2);display:inline-block;padding:6px 12px;
+  border:1px solid var(--rot); border-radius:4px; box-shadow:0 0 10px rgba(255,0,60,0.4); text-shadow:0 0 5px #fff;}
+.kopfz{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:18px;}
+.chip{font-family:var(--fett);font-size:13px;text-transform:uppercase;border:1px solid rgba(0,240,255,0.3);
+  padding:6px 14px;border-radius:20px;box-shadow:0 4px 10px rgba(0,0,0,0.5);background:rgba(10,10,15,0.8); color:var(--cyan); backdrop-filter:blur(5px);}
 /* Nebensätze im HUD. Bedeutung steht im Wort, nicht in der Farbe. */
 .chip i.steigt,.chip i.starr{font-style:normal;font-family:var(--mono);
-  font-size:10px;letter-spacing:.04em;text-transform:none;opacity:.82;
+  font-size:11px;letter-spacing:.04em;text-transform:none;opacity:.9;
   border-bottom:1px dotted currentColor;padding-bottom:1px}
-.chip i.steigt::before{content:"▲ "}
-.chip i.starr::before{content:"— "}
-.chip.geld{background:var(--gruen)} .chip.geld.neg{background:var(--rot);color:#fff}
-.chip.geld.hit{animation:flashRot .4s} @keyframes flashRot{0%,100%{background:var(--rot);color:#fff;transform:scale(1.1)}}
+.chip i.steigt::before{content:"▲ "; color:var(--gruen);}
+.chip i.starr::before{content:"— "; color:rgba(255,255,255,0.5);}
+.chip.geld{background:rgba(0,255,65,0.15); border-color:var(--gruen); color:var(--gruen); text-shadow:0 0 8px var(--gruen);}
+.chip.geld.neg{background:rgba(255,0,60,0.15); border-color:var(--rot); color:var(--rot); text-shadow:0 0 8px var(--rot);}
+.chip.geld.hit{animation:flashRot .5s} @keyframes flashRot{0%,100%{background:var(--rot);color:#fff;transform:scale(1.1); box-shadow:0 0 20px var(--rot);}}
 .fix{font-family:var(--mono);font-size:12px;opacity:.75;margin-top:-6px;margin-bottom:10px}
 .fix b{font-weight:600}
 .nerv{margin-left:auto;font-family:var(--mono);font-size:13px;color:var(--rot);letter-spacing:.05em}
@@ -341,20 +339,22 @@ body{font-family:var(--sans);color:var(--tinte);-webkit-font-smoothing:antialias
 #ende p b{background:var(--gelb);padding:0 4px}
 
 /* 8 — Netzwerk / Motherbrowser */
+/* 8 — Netzwerk / Motherbrowser */
 #b8 { background: var(--nacht); overflow: hidden; position: relative; }
-#b8 canvas { position: absolute; inset: 0; width: 100%; height: 100%; z-index: 1; opacity: 0.7; }
+#b8 canvas { position: absolute; inset: 0; width: 100%; height: 100%; z-index: 1; opacity: 0.4; filter:blur(2px); }
 #b8 .net-ui { position: relative; z-index: 2; display: flex; flex-direction: column; height: 100%; padding: 4vmin; pointer-events: none; }
 #b8 .net-kopf { display: flex; justify-content: space-between; align-items: flex-start; pointer-events: auto; }
-#b8 .net-kopf button { background: var(--rot); color: #fff; border: 3px solid var(--tinte); font-family: var(--fett); padding: 8px 16px; cursor: pointer; }
-#b8 .net-stadt { background: var(--gelb); border: 3px solid var(--tinte); box-shadow: 6px 6px 0 var(--tinte); padding: 12px 18px; }
-#b8 .net-stadt select { font-family: var(--fett); font-size: 16px; text-transform: uppercase; background: none; border: none; outline: none; cursor: pointer; color: var(--tinte); }
-#b8 .chat-kasten { flex: 1; margin-top: 20px; border: 4px solid var(--gelb); background: rgba(13, 13, 13, 0.88); padding: 16px; overflow-y: auto; pointer-events: auto; box-shadow: 0 0 20px rgba(255,210,30,0.2); font-family: var(--mono); color: var(--gelb); display: flex; flex-direction: column; gap: 8px; }
-#b8 .chat-msg { animation: chatIn 0.2s ease-out forwards; }
-#b8 .chat-msg .user { opacity: 0.6; font-size: 11px; display: block; margin-bottom: 2px; }
-#b8 .chat-msg .text { font-size: 13px; line-height: 1.4; color: #fff; }
-#b8 .chat-msg a { color: var(--tinte); background: var(--gelb); padding: 3px 8px; cursor: pointer; text-decoration: none; display: inline-block; margin-top: 4px; font-family: var(--fett); font-size: 12px; }
-#b8 .chat-msg a:hover { background: #fff; }
-@keyframes chatIn { 0% { opacity: 0; transform: translateY(10px); } 100% { opacity: 1; transform: translateY(0); } }
+#b8 .net-kopf button { background: rgba(255,0,60,0.2); color: var(--rot); border: 1px solid var(--rot); font-family: var(--fett); padding: 10px 20px; cursor: pointer; border-radius:4px; transition:all 0.3s; }
+#b8 .net-kopf button:hover { background: var(--rot); color:#fff; box-shadow:0 0 15px var(--rot); }
+#b8 .net-stadt { background: rgba(0,240,255,0.1); border: 1px solid var(--cyan); box-shadow: 0 0 15px rgba(0,240,255,0.2); padding: 12px 18px; border-radius:8px; backdrop-filter:blur(5px); color:var(--cyan); }
+#b8 .net-stadt select { font-family: var(--fett); font-size: 16px; text-transform: uppercase; background: none; border: none; outline: none; cursor: pointer; color: var(--cyan); }
+#b8 .chat-kasten { flex: 1; margin-top: 20px; border: 1px solid rgba(0,240,255,0.3); background: rgba(5,5,8, 0.85); padding: 20px; overflow-y: auto; pointer-events: auto; box-shadow: inset 0 0 30px rgba(0,240,255,0.05), 0 10px 30px rgba(0,0,0,0.5); font-family: var(--mono); color: var(--cyan); display: flex; flex-direction: column; gap: 12px; border-radius:12px; backdrop-filter:blur(10px); }
+#b8 .chat-msg { animation: chatIn 0.3s cubic-bezier(0.2,0.8,0.2,1) forwards; background:rgba(255,255,255,0.03); padding:10px 14px; border-radius:6px; border-left:3px solid var(--cyan); }
+#b8 .chat-msg .user { opacity: 0.8; font-size: 12px; display: block; margin-bottom: 4px; color:var(--gelb); font-family:var(--fett); letter-spacing:1px; }
+#b8 .chat-msg .text { font-size: 14px; line-height: 1.5; color: #e0e0e0; }
+#b8 .chat-msg a { color: var(--nacht); background: var(--cyan); padding: 4px 10px; cursor: pointer; text-decoration: none; display: inline-block; margin-top: 6px; font-family: var(--fett); font-size: 12px; border-radius:4px; box-shadow:0 0 10px rgba(0,240,255,0.5); transition:all 0.2s; }
+#b8 .chat-msg a:hover { background: #fff; box-shadow:0 0 15px #fff; }
+@keyframes chatIn { 0% { opacity: 0; transform: translateY(15px); } 100% { opacity: 1; transform: translateY(0); } }
 
 /* 9 — MINIGAME */
 #b9 { background: var(--nacht); display: grid; place-items: center; }
