@@ -1,22 +1,22 @@
 :root{
-  --gelb:#ffd21e; --pink:#ff3ea5; --cyan:#29b6f6; --orange:#ff7a18;
-  --gruen:#7ed321; --lila:#7b2ff7; --nacht:#2a1258;
-  --rot:#ff2e4c; --blau:#1ea7ff; --grau:#2a2b30;
-  /* ACHTUNG, bevor hier jemand die Werte tauscht: das geht nicht.
-
-     In 1.0 war --tinte das Schwarz der Outlines und --papier das cremefarbene
-     Papier darunter. Der Neumorphism-Umbau (4118526) hat beide Werte
-     vertauscht, aber die Namen gelassen — --tinte ist seitdem hell.
-  --tinte:#0d0d0d; --papier:#fcfcfc; --kreide:#fff; --haut:#ffc4a3;
-  --fett:"Arial Black","Segoe UI Black",system-ui,sans-serif;
-  --sans:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
-  --mono:ui-monospace,"Cascadia Mono",Consolas,monospace;
-  --out:4px solid var(--tinte); }
-.fenster { --tinte:#e2e2e2; --papier:#222327; color: var(--tinte); 
-  --sh-out: 8px 8px 16px rgba(0,0,0,0.7), -8px -8px 16px rgba(255,255,255,0.04);
-  --sh-in: inset 6px 6px 12px rgba(0,0,0,0.7), inset -6px -6px 12px rgba(255,255,255,0.04);
+  --gelb:#fcee0a; --pink:#ff003c; --cyan:#00f0ff; --orange:#ff7a18;
+  --gruen:#00ff41; --lila:#bd00ff; --nacht:#050505;
+  --rot:#ff003c; --blau:#00f0ff; --grau:#1a1a1a;
+  --tinte:#050505; --papier:#0d0d0d; --kreide:#ffffff; --haut:#ffc4a3;
+  --fett:'Outfit',system-ui,sans-serif;
+  --sans:'Outfit',system-ui,sans-serif;
+  --mono:'Share Tech Mono',monospace;
+  --out:2px solid rgba(0, 240, 255, 0.4); 
+}
+.fenster { 
+  --tinte:#00f0ff; --papier:rgba(10,10,12,0.85); color: var(--tinte); 
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  --sh-out: 0 0 20px rgba(0, 240, 255, 0.2), inset 0 0 10px rgba(0, 240, 255, 0.1);
+  --sh-in: inset 0 0 15px rgba(0, 240, 255, 0.3);
   --sh: var(--sh-out);
-  --br: 20px; --br-sm: 10px;
+  --br: 12px; --br-sm: 6px;
+  border: 1px solid rgba(0, 240, 255, 0.3);
 }
 *{box-sizing:border-box;margin:0;padding:0}
 html,body{height:100%;overflow:hidden;background:#1a1b1f}
@@ -620,4 +620,11 @@ body {
   backdrop-filter: blur(4px);
   text-shadow: 1px 1px 2px rgba(0,0,0,0.8);
 }
+
+
+/* Cyberpunk SVG Glow Effekte */
+.bild svg { filter: drop-shadow(0 0 8px rgba(0, 240, 255, 0.4)); }
+.bild svg path[fill='#ffd21e'], .bild svg path[fill='var(--gelb)'] { filter: drop-shadow(0 0 10px var(--gelb)); }
+.bild svg path[fill='#ff3ea5'], .bild svg path[fill='var(--pink)'] { filter: drop-shadow(0 0 15px var(--pink)); }
+.bild svg path[fill='#29b6f6'], .bild svg path[fill='var(--cyan)'] { filter: drop-shadow(0 0 12px var(--cyan)); }
 

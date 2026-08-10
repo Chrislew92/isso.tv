@@ -2656,3 +2656,69 @@ document.getElementById('tuer-schloss').addEventListener('click', () => {
 });
 
 })();
+
+// --- EXTENSIONS ---
+window.zimmerZeichnen = function() {
+  if (!S.zimmer) return;
+  const ids = ['raum-couch', 'raum-mpc', 'raum-eddy', 'raum-kette'];
+  ids.forEach(id => {
+    const el = document.getElementById(id);
+    if (el) el.style.display = 'none';
+  });
+  if (S.zimmer['couch']) { const e = document.getElementById('raum-couch'); if(e) e.style.display = 'block'; }
+  if (S.zimmer['mpc']) { const e = document.getElementById('raum-mpc'); if(e) e.style.display = 'block'; }
+  if (S.zimmer['eddy']) { const e = document.getElementById('raum-eddy'); if(e) e.style.display = 'block'; }
+  if (S.zimmer['kette']) { const e = document.getElementById('raum-kette'); if(e) e.style.display = 'block'; }
+};
+document.getElementById('aufstehen').addEventListener('click', window.zimmerZeichnen);
+
+window.oeffneKiosk = function() {
+  const k = document.getElementById('kiosk-screen');
+  const inv = document.getElementById('kiosk-inventar');
+  if(!k || !inv) return;
+  if (!S.zimmer) S.zimmer = {};
+  
+  const ITEMS = [
+    {id:'messer', name:'Butterfly Messer', preis:50, desc:'Macht bei Taschendieben Eindruck.'},
+    {id:'gas', name:'Tränengas', preis:30, desc:'Brennt in den Augen. Gut zur Abwehr.'},
+    {id:'ausweis', name:'Fake-Ausweis', preis:150, desc:'Immer gut, eine zweite Identität zu haben.'},
+    {id:'taser', name:'Taser', preis:200, desc:'Sicher ist sicher auf den Straßen.'},
+    {id:'couch', name:'Chillercouch', preis:800, desc:'Dein Zimmer war eh zu leer.'},
+    {id:'eddy', name:'E-Scooter Eddy', preis:1200, desc:'Steht jetzt in deinem Zimmer.'},
+    {id:'mpc', name:'MPC Studio', preis:1500, desc:'Mach Beats in deinem Zimmer.'},
+    {id:'kette', name:'Goldkette', preis:2500, desc:'Zeig, dass du Geld hast.'}
+  ];
+
+  let h = '';
+  ITEMS.forEach(it => {
+    const hat = S.zimmer[it.id];
+    h += '<div style=\ackground:rgba(20,20,25,0.9); padding:15px; border:1px solid var(--cyan); border-radius:8px; box-shadow:0 0 10px rgba(0,240,255,0.1);\'>';
+    h += '<h3 style=\margin:0; color:'+(hat?'var(--gruen)':'var(--cyan)')+'; font-family:var(--fett);\'>' + it.name + ' <span style=\loat:right; color:var(--gelb);\'>' + it.preis + ' €</span></h3>';
+    h += '<p style=\ont-size:13px; color:var(--kreide); margin:10px 0; font-family:var(--mono);\'>' + it.desc + '</p>';
+    if (hat) {
+      h += '<button disabled style=\ackground:var(--gruen); color:#000; border:none; padding:8px 12px; font-family:var(--fett); width:100%;\'>Gehört dir</button>';
+    } else {
+      h += '<button onclick=\kaufItem(\' + it.id + '\,' + it.preis + '); oeffneKiosk(); window.zimmerZeichnen();\ style=\ackground:var(--cyan); color:#000; border:none; padding:8px 12px; font-family:var(--fett); width:100%; cursor:pointer;\'>KAUFEN</button>';
+    }
+    h += '</div>';
+  });
+  
+  inv.innerHTML = h;
+  k.style.display = 'flex';
+};
+
+const alterWeltSchliessen = window.weltSchliessen;
+window.weltSchliessen = function() {
+  if (draussenVon === 'raum' && Math.random() < 0.1) {
+    if (!S.zimmer) S.zimmer = {};
+    if (S.zimmer['taser'] || S.zimmer['gas'] || S.zimmer['messer']) {
+      if(typeof window.denke==='function') window.denke('Ein Taschendieb wollte dich abziehen. Du hast ihm deine Waffe gezeigt. Er ist gerannt.', 'var(--gruen)');
+    } else {
+      const verlust = Math.floor(Math.max(10, S.geld * 0.1));
+      S.geld -= verlust;
+      if(typeof window.denke==='function') window.denke('TA€N: Ein Taschendieb hat dir ' + verlust + ' € geklaut! Kauf dir eine Waffe am Kiosk.', 'var(--rot)');
+    }
+  }
+  alterWeltSchliessen();
+};
+
