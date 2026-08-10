@@ -2773,9 +2773,10 @@
         <div class="hand l"><svg viewBox="0 0 300 250">
             <g stroke="#0d0d0d" stroke-width="11" stroke-linejoin="round" stroke-linecap="round" fill="#f0a878">
               <path d="M18 250 L14 168 Q12 118 74 106 L160 90 Q214 80 232 116 L252 158 Q272 200 250 250 Z" />
-              <path d="M158 92 Q150 30 184 26 Q216 22 216 82 L214 112" />
-              <path d="M196 88 Q194 28 228 28 Q260 30 252 88 L246 118" />
-              <path d="M232 102 Q240 52 270 58 Q296 64 282 116 L272 144" />
+              <path d="M148 94 Q142 32 170 28 Q198 24 198 84 L196 114" />
+              <path d="M180 90 Q178 28 206 28 Q234 30 228 88 L222 118" />
+              <path d="M210 94 Q212 36 238 38 Q264 40 254 94 L248 124" />
+              <path d="M238 104 Q244 58 268 62 Q292 66 280 116 L272 144" />
               <path d="M70 112 Q34 76 58 54 Q84 34 106 78 L118 108" />
             </g>
             <g fill="none" stroke="#c98156" stroke-width="6" stroke-linecap="round" opacity=".8">
@@ -2786,9 +2787,10 @@
         <div class="hand r"><svg viewBox="0 0 300 250">
             <g stroke="#0d0d0d" stroke-width="11" stroke-linejoin="round" stroke-linecap="round" fill="#f0a878">
               <path d="M18 250 L14 168 Q12 118 74 106 L160 90 Q214 80 232 116 L252 158 Q272 200 250 250 Z" />
-              <path d="M158 92 Q150 30 184 26 Q216 22 216 82 L214 112" />
-              <path d="M196 88 Q194 28 228 28 Q260 30 252 88 L246 118" />
-              <path d="M232 102 Q240 52 270 58 Q296 64 282 116 L272 144" />
+              <path d="M148 94 Q142 32 170 28 Q198 24 198 84 L196 114" />
+              <path d="M180 90 Q178 28 206 28 Q234 30 228 88 L222 118" />
+              <path d="M210 94 Q212 36 238 38 Q264 40 254 94 L248 124" />
+              <path d="M238 104 Q244 58 268 62 Q292 66 280 116 L272 144" />
               <path d="M70 112 Q34 76 58 54 Q84 34 106 78 L118 108" />
             </g>
             <g fill="none" stroke="#c98156" stroke-width="6" stroke-linecap="round" opacity=".8">
@@ -3352,7 +3354,7 @@
           if (tast.d || tast.arrowright) dd += 1.15;
           if (tast.w || tast.arrowup) dv += .012;
           if (tast.s || tast.arrowdown) dv -= .012;
-          if (dd || dv) { dreh = klemm(dreh + dd, -180, 180); vor = klemm(vor + dv, 0, 1); bob += .22; stell(); }
+          if (dd || dv) { dreh = klemm(dreh + dd, -100, 100); vor = klemm(vor + dv, 0, 1); bob += .22; stell(); }
           const n = nah(), t = anDerTuer();
           hint.classList.toggle('nah', n || t);
           hint.textContent = TIPPGERAET
@@ -3370,7 +3372,7 @@
       $('b2').addEventListener('mousemove', ev => {
         if (bild !== 'b2') return;
         const r = $('b2').getBoundingClientRect();
-        dreh = klemm(((ev.clientX - r.left) / r.width - .5) * 250, -180, 180); stell();
+        dreh = klemm(((ev.clientX - r.left) / r.width - .5) * 150, -100, 100); stell();
       });
       function rausgehen() {
         draussenVon = 'raum';
@@ -3387,7 +3389,7 @@
         if (nah()) { anmachen(); return; }
         if (anDerTuer()) { rausgehen(); return; }
         const r = $('b2').getBoundingClientRect();
-        if (ev.clientX) { const z = klemm(((ev.clientX - r.left) / r.width - .5) * 250, -180, 180); dreh += (z - dreh) * .6; }
+        if (ev.clientX) { const z = klemm(((ev.clientX - r.left) / r.width - .5) * 150, -100, 100); dreh += (z - dreh) * .6; }
         else dreh += (0 - dreh) * .5;
         vor = klemm(vor + .18, 0, 1); bob += 1; stell();
       });
