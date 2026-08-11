@@ -26,6 +26,78 @@ const WORLD = {
   ],
 }
 
+const CINEMA_SCENES = [
+  {
+    id: 'home',
+    icon: '⌂',
+    label: 'Kleine Wohnung',
+    district: 'EITELSTEDT / 06:42',
+    title: 'Der erste Blick gehört dir.',
+    text: 'Fenster auf. Hinterhöfe, U-Bahn-Rauschen und eine Stadt, die noch keinen Plan von dir hat. Hier beginnt der Run nicht mit Geld, sondern mit einem Schlüssel.',
+    detail: 'Innenraum · Fensterfahrt · erster Schritt',
+  },
+  {
+    id: 'park',
+    icon: '⌘',
+    label: 'Parkkreis',
+    district: 'PARKRING / MITTAG',
+    title: 'Die Stadt hat Platz zwischen den Aufgaben.',
+    text: 'Licht durch Blätter, ein Hund am Weg und Nachrichten ohne Pflicht. Nicht jede Szene muss sofort etwas kosten, um wichtig zu sein.',
+    detail: 'Wegfahrt · Begegnung · offener Raum',
+  },
+  {
+    id: 'kiosk',
+    icon: '▣',
+    label: 'Kiosk',
+    district: 'KIOSKZEILE / 18:16',
+    title: 'Zwei Euro, tausend Gerüchte.',
+    text: 'Neon, Wasser, Stadtfunk. Der Kiosk ist klein, aber er weiß, wer gerade ankommt, wer verschwindet und welche Plakate zu laut sind.',
+    detail: 'Nahaufnahme · Neon · Stadtfunk',
+  },
+  {
+    id: 'station',
+    icon: '↗',
+    label: 'Bahnhof',
+    district: 'ZENTRALLINIE / ABEND',
+    title: 'Jede Linie ist eine mögliche Geschichte.',
+    text: 'Die Kamera folgt den Schienen in die Tiefe. Du siehst die Wege, bevor du sie betrittst. Erst dann entscheidest du, wohin der Run fährt.',
+    detail: 'Schienenfahrt · Übersicht · Netzknoten',
+  },
+  {
+    id: 'hq1',
+    icon: '✦',
+    label: 'HQ1',
+    district: 'EITELSTEDT / SIGNALWERK',
+    title: 'Eine Idee braucht einen Raum.',
+    text: 'Kabel, Monitore, ein viel zu großer Plan an der Wand. HQ1 ist noch kein Imperium. Genau deshalb kann hier etwas Eigenes entstehen.',
+    detail: 'Werkstattfahrt · Ideenraum · erster Pitch',
+  },
+  {
+    id: 'harbor',
+    icon: '≈',
+    label: 'Neonhafen',
+    district: 'NEONHAFEN / NACHT',
+    title: 'Die Stadt arbeitet, wenn sie glänzt.',
+    text: 'Container ziehen vorbei, Wasser reflektiert die Reklame. Tempo kann Geld bringen, aber der Blick nach vorn muss deiner bleiben.',
+    detail: 'Hafenfahrt · Container · Nachtlicht',
+  },
+  {
+    id: 'eytonland',
+    icon: '◇',
+    label: 'Schloss EyTonLand',
+    district: 'EYTONLAND / SPÄTER',
+    title: 'Kein Ende. Ein Blick nach vorn.',
+    text: 'Die Insel ist eine ferne Einstellung, keine Belohnung auf Knopfdruck. Was sie wird, entscheidet sich über alles, was du vorher gebaut hast.',
+    detail: 'Fernfahrt · Insel · offenes Endgame',
+  },
+]
+
+const CINEMA_CAMERAS = [
+  { id: 'street', icon: '◉', label: 'AUGENHÖHE', detail: 'Du gehst durch die Szene.' },
+  { id: 'overlook', icon: '△', label: 'VOGELBLICK', detail: 'Du siehst Wege und Verbindungen.' },
+  { id: 'donkey', icon: '✦', label: 'ESELBLICK', detail: 'Nah dran, stur nach vorn.' },
+]
+
 const PLAY_SPACES = [
   { id: 'home', icon: '⌂', label: 'Zuhause', chapter: 'FREI', text: 'Kleine Wohnung, Rückzug und die Routinen, die du selbst festlegst.' },
   { id: 'park', icon: '⌘', label: 'Park', chapter: 'FREI', text: 'Leute, Hunde, Sommertage und die Nachricht: „Wollen wir chillen?“' },
@@ -786,6 +858,10 @@ function App() {
   const [ledgerOpen, setLedgerOpen] = useState(false)
   const [ledgerDraft, setLedgerDraft] = useState({ cash: '', savings: '', protectedFunds: '', debt: '', fixedCosts: '', onlineBanking: false, smoker: false })
   const [spilo, setSpilo] = useState(null)
+  const [cinemaSceneId, setCinemaSceneId] = useState('home')
+  const [cinemaCameraId, setCinemaCameraId] = useState('street')
+  const [cinemaReturnScreen, setCinemaReturnScreen] = useState('start')
+  const [cinemaLook, setCinemaLook] = useState({ yaw: 0, pitch: 0 })
   const [jumpMeter, setJumpMeter] = useState(0)
   const [worldNow, setWorldNow] = useState(() => new Date())
   const activeSaveKey = saveSlot === 'personal' ? PERSONAL_SAVE_KEY : FIRST_FLAT_SAVE_KEY
@@ -888,6 +964,27 @@ function App() {
   const cityBulletin = game ? CITY_BULLETINS[Math.abs(worldDayIndex(worldNow)) % CITY_BULLETINS.length] : null
   const storyArc = game ? storyArcFor(game) : null
   const messages = game ? messagesForGame(game) : []
+
+  function openCinema(sceneId = 'home') {
+    const sceneExists = CINEMA_SCENES.some((scene) => scene.id === sceneId)
+    setCinemaSceneId(sceneExists ? sceneId : 'home')
+    setCinemaCameraId('street')
+    setCinemaLook({ yaw: 0, pitch: 0 })
+    setCinemaReturnScreen(screen)
+    setScreen('cinema')
+  }
+
+  function setCinemaScene(sceneId) {
+    setCinemaSceneId(sceneId)
+    setCinemaLook({ yaw: 0, pitch: 0 })
+  }
+
+  function steerCinema(event) {
+    const bounds = event.currentTarget.getBoundingClientRect()
+    const x = (event.clientX - bounds.left) / bounds.width - 0.5
+    const y = (event.clientY - bounds.top) / bounds.height - 0.5
+    setCinemaLook({ yaw: Math.round(x * -10), pitch: Math.round(y * 7) })
+  }
 
   function startGame() {
     const cleanName = name.trim().replace(/[^a-zA-ZäöüÄÖÜß0-9 -]/g, '').slice(0, 16)
@@ -1469,6 +1566,77 @@ function App() {
     openCharacterCreator()
   }
 
+  if (screen === 'cinema') {
+    const scene = CINEMA_SCENES.find((item) => item.id === cinemaSceneId) || CINEMA_SCENES[0]
+    const sceneIndex = CINEMA_SCENES.findIndex((item) => item.id === scene.id)
+    const previousScene = CINEMA_SCENES[(sceneIndex - 1 + CINEMA_SCENES.length) % CINEMA_SCENES.length]
+    const nextScene = CINEMA_SCENES[(sceneIndex + 1) % CINEMA_SCENES.length]
+    const camera = CINEMA_CAMERAS.find((item) => item.id === cinemaCameraId) || CINEMA_CAMERAS[0]
+
+    return (
+      <main className="shell cinema-screen">
+        <header className="brand-row">
+          <div className="brand">ISSO<span>.TV</span></div>
+          <div className="edition">FILMISCHE STADTFAHRT / 3D-DIORAMA</div>
+          <button className="quiet-button cinema-return" onClick={() => setScreen(cinemaReturnScreen === 'game' && game ? 'game' : 'start')}>↩ {cinemaReturnScreen === 'game' && game ? 'ZURÜCK ZUM RUN' : 'ZURÜCK ZUR FIGUR'}</button>
+        </header>
+
+        <section className="cinema-layout" aria-label="Filmische 3D-Stadtfahrt durch Strammburg">
+          <div
+            className={`cinema-stage scene-${scene.id} camera-${camera.id}`}
+            style={{ '--yaw': `${cinemaLook.yaw}deg`, '--pitch': `${cinemaLook.pitch}deg` }}
+            onPointerMove={steerCinema}
+            onPointerLeave={() => setCinemaLook({ yaw: 0, pitch: 0 })}
+          >
+            <div className="cinema-grain" aria-hidden="true" />
+            <div className="cinema-world" aria-hidden="true">
+              <div className="cinema-sky"><i>✦</i><b>STRAMMBURG</b></div>
+              <div className="cinema-horizon cinema-horizon-far" />
+              <div className="cinema-horizon cinema-horizon-near" />
+              <div className="cinema-water" />
+              <div className="cinema-road"><span /><span /><span /></div>
+              <div className="cinema-building cinema-building-left"><i>ISSO</i></div>
+              <div className="cinema-building cinema-building-right"><i>353L</i></div>
+              <div className="cinema-gate"><b>{scene.label.toUpperCase()}</b></div>
+              <div className="cinema-light cinema-light-left" />
+              <div className="cinema-light cinema-light-right" />
+              <div className="cinema-subject">{game?.avatarLabel?.toLowerCase().includes('esel') ? '🫏' : '✦'}</div>
+            </div>
+            <div className="cinema-stage-copy">
+              <span>{scene.icon} {scene.district}</span>
+              <strong>{scene.label}</strong>
+              <small>↔ MAUS BEWEGEN / BLICK DURCH DIE SZENE</small>
+            </div>
+            <div className="cinema-frame-counter">EINSTELLUNG {String(sceneIndex + 1).padStart(2, '0')} / {String(CINEMA_SCENES.length).padStart(2, '0')}</div>
+          </div>
+
+          <aside className="cinema-panel">
+            <p className="eyebrow">{scene.district}</p>
+            <h1>{scene.title}</h1>
+            <p>{scene.text}</p>
+            <div className="cinema-detail"><b>{scene.icon}</b><span>{scene.detail}</span></div>
+
+            <div className="cinema-camera-controls" aria-label="Kameraperspektive">
+              <span className="panel-label">KAMERA / WAS DU SIEHST</span>
+              {CINEMA_CAMERAS.map((item) => <button key={item.id} className={item.id === camera.id ? 'selected' : ''} onClick={() => setCinemaCameraId(item.id)}><i>{item.icon}</i><strong>{item.label}</strong><small>{item.detail}</small></button>)}
+            </div>
+
+            <div className="cinema-drive-controls" aria-label="Szenenfahrt">
+              <button onClick={() => setCinemaScene(previousScene.id)}>← {previousScene.label.toUpperCase()}</button>
+              <button className="cinema-next" onClick={() => setCinemaScene(nextScene.id)}>NÄCHSTE EINSTELLUNG <span>→</span></button>
+            </div>
+            <p className="cinema-safe-note">✦ Die Stadtfahrt kostet keinen Zug und verändert keine Werte. Sie macht Schauplätze fühlbar, bevor du sie spielst.</p>
+          </aside>
+        </section>
+
+        <nav className="cinema-timeline" aria-label="Schauplätze anfahren">
+          {CINEMA_SCENES.map((item, index) => <button key={item.id} className={item.id === scene.id ? 'selected' : ''} onClick={() => setCinemaScene(item.id)}><i>{String(index + 1).padStart(2, '0')}</i><span>{item.icon} {item.label}</span></button>)}
+        </nav>
+        <MadeInHamburg />
+      </main>
+    )
+  }
+
   if (screen === 'start') {
     return (
       <main className="shell start-screen">
@@ -1485,6 +1653,7 @@ function App() {
             <div className="world-intro"><span>STRAMMBURG / {WORLD.originDistrict.toUpperCase()}</span><strong>{WORLD.origin}: IDEEN WERDEN HIER ZU WEGEN.</strong><p>{WORLD.castle} auf {WORLD.island} ist kein Startpunkt. Es ist ein Kapitel, das du dir erspielst.</p></div>
             <p className="legal-note">Ein fiktiver Stadtrun mit simulierten Märkten. Kein Echtgeld, keine Käufe, kein Konto.</p>
             <p className={`market-state ${marketStatus}`}>{marketStatus === 'loading' ? '◌ LIVE-KURSE WERDEN GELADEN …' : marketStatus === 'live' ? '● LIVE-KURSE GELADEN' : '△ KURSDIENST NICHT ERREICHBAR · STARTWERTE AKTIV'}</p>
+            <button className="cinema-entry-button" onClick={() => openCinema('hq1')}><span>✦</span> STRAMMBURG IN 3D DURCHFAHREN <i>→</i></button>
           </div>
           <div className="entry-panel">
             <label className="field-label" htmlFor="name">DEIN NAME</label>
@@ -1662,6 +1831,7 @@ function App() {
         <div className="run-name">{game.name.toUpperCase()} <span>·</span> {game.avatarLabel?.toUpperCase()} <span>·</span> {game.age ? `${game.age} JAHRE · ` : ''}ZYKLUS {game.turn} / ENDLOS</div>
         <div className="world-clock">⌚ {formatWorldClock(worldNow)}</div>
         {saveSlot === 'first-flat' ? <button className="quiet-button" onClick={loadPersonalRun}>PERSÖNLICHER RUN</button> : <button className="quiet-button" onClick={openCharacterCreator}>NEUE STORY</button>}
+        <button className="quiet-button" onClick={() => openCinema(game.place)}>✦ 3D-STADTFAHRT</button>
         <button className="quiet-button" onClick={openLedger}>FINANZPROFIL</button>
         <button className="quiet-button" onClick={restart}>RUN VERWERFEN</button>
       </header>
@@ -1715,7 +1885,7 @@ function App() {
       </section>}
 
       <section className="places-panel" aria-label="Schauplätze">
-        <div className="places-heading"><span className="panel-label">⌂ SCHAUORTE / {game.chapter.toUpperCase()}</span><p>{game.lastMoveTurn === game.turn ? 'ORTSWECHSEL FÜR DIESEN ZYKLUS GENOMMEN' : 'EIN ORTSWECHSEL PRO ZYKLUS'}</p></div>
+        <div className="places-heading"><span className="panel-label">⌂ SCHAUORTE / {game.chapter.toUpperCase()}</span><div className="places-heading-actions"><p>{game.lastMoveTurn === game.turn ? 'ORTSWECHSEL FÜR DIESEN ZYKLUS GENOMMEN' : 'EIN ORTSWECHSEL PRO ZYKLUS'}</p><button onClick={() => openCinema(game.place)}>✦ ORT IN 3D ANSEHEN</button></div></div>
         <div className="strammburg-map" aria-label="Schematische Karte von Strammburg">
           <span className="map-water">STRAMM</span><span className="map-title">STRAMMBURG</span>
           <svg viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true">

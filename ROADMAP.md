@@ -111,6 +111,7 @@ ISSO.TV ist ein endloser Stadtrun in der fiktiven Metropole **Strammburg**. Es g
 - [x] Ortsaktionen mit kleinen, sichtbaren Folgen.
 - [x] Lokale Wege und spätere Netzfreischaltung über den Bahnhof.
 - [x] Haftkapitel ist als nicht-finaler Schauplatz vorbereitet.
+- [x] Filmische 3D-Stadtfahrt: sieben anfahrbare Schauplätze, freie Blickbewegung und Augenhöhe-/Vogel-/Eselblick ohne Zeitkosten.
 
 ## Offen
 
@@ -227,6 +228,7 @@ ISSO.TV ist ein endloser Stadtrun in der fiktiven Metropole **Strammburg**. Es g
 
 - [x] Dark Master-Edition-UI, Symbole, Legenden und Key Art.
 - [x] Responsive Basis für Mobile.
+- [x] CSS-3D-Diorama als filmischer Schauplatz-Prototyp für Wohnung, Park, Kiosk, Bahnhof, HQ1, Neonhafen und Schloss EyTonLand.
 
 ## Offen
 
@@ -234,7 +236,8 @@ ISSO.TV ist ein endloser Stadtrun in der fiktiven Metropole **Strammburg**. Es g
 - [ ] Sound: Hafen, U-Bahn, Wohnung, Markt, ruhige/angespannte Zustände.
 - [ ] Musik-States: Alltag, Risiko, Krise, Crew, Meilenstein.
 - [ ] Barrierefreiheit: Tastatur, Fokus, Textgrößen, Motion-Reduktion, Kontrast.
-- [ ] 3D-Diorama pro Ort, dann echte Lauf-/Kamera-Prototypen.
+- [ ] Dioramen mit individuellen Requisiten, Tageszeiten und echten Innenräumen vertiefen.
+- [ ] Echte Lauf-/Kamera-Prototypen mit steuerbarem Avatar und kleinen, dichten Bezirken.
 - [ ] Charakterporträts/Look-Varianten mit gleicher Qualität für alle Presets.
 
 # 11. Qualität, Datenschutz & Veröffentlichung
