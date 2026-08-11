@@ -10,6 +10,7 @@ const TARGET_FAME = 35
 const FIRST_MILESTONE_TURN = 12
 const INSOLVENCY_STARTED = '05/2025'
 const INSOLVENCY_RATE = 0.15
+const WORLD_EPOCH = Date.UTC(2026, 0, 1)
 
 const WORLD = {
   city: 'Strammburg',
@@ -607,6 +608,15 @@ function formatMoney(value) {
   return new Intl.NumberFormat('de-DE', { maximumFractionDigits: 0 }).format(value)
 }
 
+function worldDayIndex(date) {
+  const utcDay = Date.UTC(date.getFullYear(), date.getMonth(), date.getDate())
+  return Math.floor((utcDay - WORLD_EPOCH) / 86400000)
+}
+
+function formatWorldClock(date) {
+  return new Intl.DateTimeFormat('de-DE', { weekday: 'short', day: '2-digit', month: '2-digit', year: 'numeric', hour: '2-digit', minute: '2-digit' }).format(date)
+}
+
 function portfolioValue(game) {
   return game.market.reduce((total, asset) => total + asset.price * game.portfolio[asset.id], 0)
 }
@@ -702,6 +712,7 @@ function App() {
   const [ledgerDraft, setLedgerDraft] = useState({ cash: '', savings: '', protectedFunds: '', debt: '', fixedCosts: '', onlineBanking: false, smoker: false })
   const [spilo, setSpilo] = useState(null)
   const [jumpMeter, setJumpMeter] = useState(0)
+  const [worldNow, setWorldNow] = useState(() => new Date())
   const activeSaveKey = saveSlot === 'personal' ? PERSONAL_SAVE_KEY : FIRST_FLAT_SAVE_KEY
 
   useEffect(() => {
@@ -784,6 +795,11 @@ function App() {
     return () => window.clearInterval(timer)
   }, [screen])
 
+  useEffect(() => {
+    const timer = window.setInterval(() => setWorldNow(new Date()), 30000)
+    return () => window.clearInterval(timer)
+  }, [])
+
   const origin = useMemo(() => ORIGINS.find((item) => item.id === originId), [originId])
   const housing = useMemo(() => HOUSING.find((item) => item.id === housingId), [housingId])
   const currentLog = game?.history.at(-1)
@@ -794,7 +810,7 @@ function App() {
   const keySuggestion = game ? keySuggestionFor(game) : null
   const faction = game ? FACTIONS.find((item) => item.id === game.faction) : null
   const factionOffer = game ? factionOfferFor(game) : null
-  const cityBulletin = game ? CITY_BULLETINS[(game.turn - 1) % CITY_BULLETINS.length] : null
+  const cityBulletin = game ? CITY_BULLETINS[Math.abs(worldDayIndex(worldNow)) % CITY_BULLETINS.length] : null
 
   function startGame() {
     const cleanName = name.trim().replace(/[^a-zA-ZäöüÄÖÜß0-9 -]/g, '').slice(0, 16)
@@ -1566,6 +1582,7 @@ function App() {
       <header className="brand-row">
         <div className="brand">ISSO<span>.TV</span></div>
         <div className="run-name">{game.name.toUpperCase()} <span>·</span> {game.avatarLabel?.toUpperCase()} <span>·</span> {game.age ? `${game.age} JAHRE · ` : ''}ZYKLUS {game.turn} / ENDLOS</div>
+        <div className="world-clock">⌚ {formatWorldClock(worldNow)}</div>
         {saveSlot === 'first-flat' ? <button className="quiet-button" onClick={loadPersonalRun}>PERSÖNLICHER RUN</button> : <button className="quiet-button" onClick={openCharacterCreator}>NEUE STORY</button>}
         <button className="quiet-button" onClick={openLedger}>FINANZPROFIL</button>
         <button className="quiet-button" onClick={restart}>RUN VERWERFEN</button>

@@ -92,6 +92,7 @@ ISSO.TV ist ein endloser Stadtrun in der fiktiven Metropole **Strammburg**. Es g
 - [x] Tabak als optionaler Gewohnheits-/Entzugsstrang.
 - [x] Routine, Kontakte, Zeitkosten und Alltagsanker.
 - [x] Krisen führen in ein weiterlaufendes Krisenkapitel statt in den Abspann.
+- [x] Strammburg-Weltuhr und tagesgleiche Stadtfunk-Lage.
 
 ## Offen
 

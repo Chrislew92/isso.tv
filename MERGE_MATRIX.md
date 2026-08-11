@@ -24,7 +24,7 @@ Ziel: Die **ISSO.TV Master Edition** in diesem Ordner ist die einzige Quellbasis
 | Legacy-/Live-Element | Entscheidung | Master-Status |
 |---|---|---|
 | Lokaler Spielstand über Reload | übernehmen | **bereits vorhanden** — getrennte Runs und Save-Normalisierung. |
-| Weltuhr / gemeinsamer Tageskontext | neu interpretieren | **offen** — Strammburg-Kalender + tägliche Weltlage, keine alte Monolith-Logik kopieren. |
+| Weltuhr / gemeinsamer Tageskontext | neu interpretieren | **übernommen** — sichtbare Strammburg-Uhr; Stadtfunk-Lage ist für alle am selben Kalendertag gleich. |
 | Schutzkonto | übernehmen | **übernommen** — sichtbare Benennung und Finanzprofil vereinheitlicht. |
 | Passwort/Tor | nicht übernehmen | nicht erforderlich; kein Klartext-Passwort im Master. |
 | „Vorhang, kein Schloss“-Transparenz | als Sicherheitsprinzip übernehmen | **offen** — bei späteren lokalen Daten-/Settings-Hinweisen. |
@@ -37,7 +37,7 @@ Ziel: Die **ISSO.TV Master Edition** in diesem Ordner ist die einzige Quellbasis
 ## Reihenfolge bis zum einzigen Live-Release
 
 - [ ] Master-Ordner mit Git und `.gitignore` als einzige Release-Quelle sichern.
-- [ ] Weltuhr als Strammburg-Kalender/Tageslage bauen.
+- [x] Weltuhr als Strammburg-Kalender/Tageslage bauen.
 - [ ] Live-Funktionen aus dieser Matrix einzeln in den Master übernehmen und testen.
 - [ ] Rechtstexte für den tatsächlichen späteren Betreiber/Host neu prüfen und ergänzen.
 - [ ] Lokalen Master auf Desktop und Mobile abnehmen.
