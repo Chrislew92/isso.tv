@@ -1,0 +1,21 @@
+# Dependencies and generated output
+node_modules/
+dist/
+
+# Local environment and secrets
+.env
+.env.*
+!.env.example
+
+# Editor and operating-system files
+.vscode/
+.idea/
+*.swp
+*.swo
+.DS_Store
+Thumbs.db
+
+# Logs and temporary Vite files
+*.log
+npm-debug.log*
+vite.config.*.timestamp-*
