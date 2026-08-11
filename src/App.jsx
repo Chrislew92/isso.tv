@@ -194,11 +194,11 @@ const SYSTEM_BLUEPRINT = [
 ]
 
 const MARKETS = [
-  { id: 'BTC', apiId: 'bitcoin', name: 'Bitcoin', price: 96000, unit: 0.05, volatility: 0.19 },
-  { id: 'ETH', apiId: 'ethereum', name: 'Ethereum', price: 3400, unit: 1, volatility: 0.25 },
-  { id: 'LTC', apiId: 'litecoin', name: 'Litecoin', price: 96, unit: 12, volatility: 0.21 },
-  { id: 'SOL', apiId: 'solana', name: 'Solana', price: 185, unit: 7, volatility: 0.31 },
-  { id: 'ZED', name: 'Z-Coin', price: 7, unit: 25, volatility: 0.58, fictional: true },
+  { id: 'BTC', apiId: 'bitcoin', name: 'Bitcoin', price: 96000, unit: 0.0005, volatility: 0.19 },
+  { id: 'ETH', apiId: 'ethereum', name: 'Ethereum', price: 3400, unit: 0.05, volatility: 0.25 },
+  { id: 'LTC', apiId: 'litecoin', name: 'Litecoin', price: 96, unit: 1, volatility: 0.21 },
+  { id: 'SOL', apiId: 'solana', name: 'Solana', price: 185, unit: 0.5, volatility: 0.31 },
+  { id: 'ZED', name: 'Z-Coin', price: 7, unit: 10, volatility: 0.58, fictional: true },
 ]
 
 const ORIGINS = [
@@ -278,12 +278,13 @@ const ACTIONS = [
     label: 'An den Tisch',
     detail: 'Du setzt auf einen kurzen, brutalen Lauf.',
     icon: '◆',
+    minimumCash: 10,
     resolve: (state, random) => {
-      const stake = Math.max(4000, Math.round(state.cash * 0.22))
+      const stake = Math.max(10, Math.round(state.cash * 0.12))
       const winChance = 0.38 + state.edge / 220
       if (random < winChance) {
         const multiplier = random < winChance * 0.23 ? 3.2 : 1.55
-        return { cash: Math.round(stake * multiplier), nerve: -7, fame: 9, edge: 1, note: 'Der Tisch kippt zu deinen Gunsten.' }
+        return { cash: Math.round(stake * (multiplier - 1)), nerve: -7, fame: 4, edge: 1, note: 'Der Tisch kippt zu deinen Gunsten. Der Gewinn bleibt ein Sprung, kein Kontowunder.' }
       }
       return { cash: -stake, nerve: -15, fame: -4, edge: 0, note: 'Du stehst auf, bevor jemand deinen Blick lesen kann.' }
     },
@@ -295,12 +296,14 @@ const ACTIONS = [
     label: 'Grauer Deal',
     detail: 'Information, Timing, ein Handschlag zu viel.',
     icon: '▲',
+    minimumCash: 25,
     resolve: (state, random) => {
       const winChance = 0.54 + state.edge / 300
+      const stake = Math.max(25, Math.round(state.cash * 0.28))
       if (random < winChance) {
-        return { cash: 23500 + Math.round(random * 14000), nerve: -10, fame: 12, edge: 2, note: 'Der Kontakt liefert. Diesmal.' }
+        return { cash: Math.round(stake * (1.25 + random)), nerve: -10, fame: 6, edge: 2, note: 'Der Kontakt liefert. Diesmal ist es ein kleiner Sprung, kein kostenloses Imperium.' }
       }
-      return { cash: -13500 - Math.round(random * 8000), nerve: -18, fame: -8, edge: -3, note: 'Der Kontakt war nicht sauber. Die Rechnung schon.' }
+      return { cash: -stake, nerve: -18, fame: -6, edge: -3, note: 'Der Kontakt war nicht sauber. Die Rechnung schon.' }
     },
   },
   {
@@ -310,12 +313,12 @@ const ACTIONS = [
     label: 'Sicherer Lauf',
     detail: 'Kein Mythos. Nur Arbeit, Timing und eine ruhige Hand.',
     icon: '●',
-    resolve: (_state, random) => ({
-      cash: 8500 + Math.round(random * 6500),
+    resolve: (state, random) => ({
+      cash: 360 + Math.round(random * 360) + state.fame * 12 + (state.connections || 0) * 20 + (state.factionRank || 0) * 90,
       nerve: -4,
-      fame: 4,
+      fame: 2,
       edge: 2,
-      note: random > 0.82 ? 'Du findest eine saubere Linie im Lärm.' : 'Kein Glanz, aber Liquidität.',
+      note: random > 0.82 ? 'Du findest eine saubere Linie im Lärm. Der Aufbau wächst mit deinem Ruf.' : 'Kein Glanz, aber eine ehrliche, kleine Einnahme.',
     }),
   },
   {
@@ -325,8 +328,9 @@ const ACTIONS = [
     label: 'Untertauchen',
     detail: 'Du kaufst dir Abstand, bevor der Druck Entscheidungen trifft.',
     icon: '○',
+    minimumCash: 180,
     resolve: (_state, random) => ({
-      cash: -2500 - Math.round(random * 2500),
+      cash: -50 - Math.round(random * 130),
       nerve: 19 + Math.round(random * 8),
       fame: -2,
       edge: 1,
@@ -344,8 +348,8 @@ const LEDGER_ACTIONS = [
     detail: 'Aus einem Einfall kann ein Auftrag werden – wenn du ihn klar genug verkaufst.',
     icon: '✦',
     resolve: (_state, random) => random > 0.38
-      ? { cash: 3400 + Math.round(random * 7200), nerve: -5, fame: 5, edge: 4, note: 'Die Idee landet. Kein Wunder – aber eine erste Einnahme, die dir gehört.' }
-      : { cash: 300 + Math.round(random * 900), nerve: -3, fame: 1, edge: 3, note: 'Noch kein großer Auftrag. Aber jemand hört zu und die Idee ist jetzt real.' },
+      ? { cash: 250 + Math.round(random * 550), nerve: -5, fame: 3, edge: 3, note: 'Die Idee landet. Kein Wunder – aber eine erste, glaubwürdige Einnahme, die dir gehört.' }
+      : { cash: 50 + Math.round(random * 120), nerve: -3, fame: 1, edge: 2, note: 'Noch kein Auftrag. Aber jemand hört zu und die Idee ist jetzt real.' },
   },
   {
     id: 'income',
@@ -354,7 +358,7 @@ const LEDGER_ACTIONS = [
     label: 'Sauber verdienen',
     detail: 'Planbare Einnahmen. Wenig Ruhm, aber eine belastbare Basis.',
     icon: '€',
-    resolve: (_state, random) => ({ cash: 6200 + Math.round(random * 5200), nerve: -3, fame: 2, edge: 2, note: 'Einnahme gebucht. Die Basis steht etwas fester.' }),
+    resolve: (_state, random) => ({ cash: 480 + Math.round(random * 240), nerve: -3, fame: 1, edge: 1, note: 'Einnahme gebucht. Die Basis steht etwas fester.' }),
   },
   {
     id: 'budget',
@@ -363,7 +367,7 @@ const LEDGER_ACTIONS = [
     label: 'Ausgaben prüfen',
     detail: 'Du streichst Lecks, planst Fixkosten und kaufst dir Übersicht.',
     icon: '≡',
-    resolve: (_state, random) => ({ cash: 900 + Math.round(random * 1800), nerve: 7, fame: 0, edge: 5, note: 'Du weißt jetzt, wohin dein Geld geht.' }),
+    resolve: (_state, _random) => ({ cash: 0, nerve: 7, fame: 0, edge: 3, note: 'Du weißt jetzt, wohin dein Geld geht. Übersicht ist kein Einkommen.' }),
   },
   {
     id: 'reserve',
@@ -372,7 +376,8 @@ const LEDGER_ACTIONS = [
     label: 'Puffer aufbauen',
     detail: 'Kurz verzichten, um später nicht unter Druck zu entscheiden.',
     icon: '□',
-    resolve: (_state, random) => ({ cash: -900 - Math.round(random * 1200), nerve: 12, fame: 0, edge: 3, note: 'Keine große Zahl. Aber ein Puffer verändert jede nächste Entscheidung.' }),
+    minimumCash: 200,
+    resolve: (_state, random) => ({ cash: -100 - Math.round(random * 100), nerve: 12, fame: 0, edge: 3, note: 'Keine große Zahl. Aber ein Puffer verändert jede nächste Entscheidung.' }),
   },
   {
     id: 'extra',
@@ -381,7 +386,7 @@ const LEDGER_ACTIONS = [
     label: 'Zusatzjob',
     detail: 'Mehr Ertrag, mehr Verschleiß. Der erste Test deiner Grenze.',
     icon: '+',
-    resolve: (_state, random) => ({ cash: 7800 + Math.round(random * 7200), nerve: -10, fame: 3, edge: 2, note: 'Mehr auf dem Konto. Weniger Luft im Kopf.' }),
+    resolve: (_state, random) => ({ cash: 800 + Math.round(random * 600), nerve: -10, fame: 2, edge: 2, note: 'Mehr auf dem Konto. Weniger Luft im Kopf.' }),
   },
 ]
 
@@ -402,8 +407,8 @@ const STORY_EVENTS = [
     title: 'Der Preis steigt, die Luft wird dünn.',
     text: 'Ein alter Kontakt meldet sich. Er will einen Anteil an dem, was du aufbaust. Die Frist endet nicht mit einer Uhr, sondern mit deinem nächsten Fehler.',
     choices: [
-      { label: 'Auszahlen', detail: 'Teuer. Dafür bleibt die Nacht ruhig.', cash: -14500, nerve: 12, fame: -2, edge: 1, note: 'Du bezahlst Ruhe in bar.' },
-      { label: 'Druck machen', detail: 'Der Tisch hört zu.', cash: 6500, nerve: -18, fame: 13, edge: 3, note: 'Du setzt ein Zeichen. Nicht jeder wird es akzeptieren.' },
+      { label: 'Auszahlen', detail: 'Teuer. Dafür bleibt die Nacht ruhig.', cash: -1000, nerve: 12, fame: -2, edge: 1, note: 'Du bezahlst Ruhe in bar.' },
+      { label: 'Druck machen', detail: 'Der Tisch hört zu.', cash: 900, nerve: -18, fame: 8, edge: 3, note: 'Du setzt ein Zeichen. Nicht jeder wird es akzeptieren.' },
     ],
   },
   {
@@ -412,8 +417,8 @@ const STORY_EVENTS = [
     title: 'Eine Bühne, die zu groß ist.',
     text: 'Die Chance auf einen großen Auftritt liegt auf dem Tisch. Ein sichtbarer Erfolg macht dich größer. Ein sichtbarer Fall ebenfalls.',
     choices: [
-      { label: 'Voll sichtbar spielen', detail: 'Renommee vor Sicherheit.', cash: 12000, nerve: -14, fame: 20, edge: 0, note: 'Alle sehen dich gewinnen. Alle sehen jetzt auch zu.' },
-      { label: 'Im Schatten bleiben', detail: 'Kapital vor Applaus.', cash: 4200, nerve: 5, fame: 4, edge: 6, note: 'Du lässt andere die Schlagzeilen tragen.' },
+      { label: 'Voll sichtbar spielen', detail: 'Renommee vor Sicherheit.', cash: 2000, nerve: -14, fame: 14, edge: 0, note: 'Alle sehen dich gewinnen. Alle sehen jetzt auch zu.' },
+      { label: 'Im Schatten bleiben', detail: 'Kapital vor Applaus.', cash: 600, nerve: 5, fame: 4, edge: 6, note: 'Du lässt andere die Schlagzeilen tragen.' },
     ],
   },
 ]
@@ -471,7 +476,7 @@ function storyEventForTurn(turn, state) {
       choices: [
         { label: 'Bedingungen sichtbar machen', detail: 'Nachfragen, markieren, verständlich erklären.', cash: 0, nerve: 2, fame: 4, edge: 5, connections: 1, clarityRoute: 'transparent', note: 'Du hängst die Bedingungen groß neben den Automaten. Zum ersten Mal lesen Leute die kleine Schrift gemeinsam.' },
         { label: 'Eigene Mini-Lösung bauen', detail: 'Im HQ1 eine einfache Alternative zeigen.', cash: -600, nerve: -3, fame: 8, edge: 4, routine: 1, clarityRoute: 'build', note: 'Im HQ1 entsteht ein Gegenentwurf: nicht perfekt, aber verständlich und freiwillig.' },
-        { label: 'Den Schnellzugang nehmen', detail: 'Heute weniger Aufwand, später genauer hinsehen.', cash: 350, nerve: 5, fame: 1, edge: 1, clarityRoute: 'shortcut', note: 'Der Termin ist sofort erledigt. Die App weiß nun erstaunlich gut, welche Wege du oft gehst.' },
+        { label: 'Den Schnellzugang nehmen', detail: 'Heute weniger Aufwand, später genauer hinsehen.', cash: 150, nerve: 5, fame: 1, edge: 1, clarityRoute: 'shortcut', note: 'Der Termin ist sofort erledigt. Die App weiß nun erstaunlich gut, welche Wege du oft gehst.' },
       ],
     }
   }
@@ -495,7 +500,7 @@ function storyEventForTurn(turn, state) {
       text: 'Am Hafen stehen die Lichter im Wasser wie falsche Versprechen. Dein Kontakt bietet dir die alte Abkürzung an. Du spürst den Druck, aber du gehst nicht automatisch mit.',
       choices: [
         { label: 'Den Weg zu Ende gehen', detail: 'Weniger Glanz, mehr Kontrolle.', cash: -1800, nerve: 10, fame: 1, edge: 5, note: 'Du lässt den Moment vorbeiziehen. Morgen gehört wieder dir.' },
-        { label: 'Den Druck in Arbeit drehen', detail: 'Ertrag gegen Anspannung.', cash: 6400, nerve: -6, fame: 6, edge: 3, note: 'Du nutzt die Unruhe, ohne ihr den Schlüssel zu geben.' },
+        { label: 'Den Druck in Arbeit drehen', detail: 'Ertrag gegen Anspannung.', cash: 800, nerve: -6, fame: 4, edge: 3, note: 'Du nutzt die Unruhe, ohne ihr den Schlüssel zu geben.' },
       ],
     }
   }
@@ -507,7 +512,7 @@ function storyEventForTurn(turn, state) {
       text: 'Der Kontakt auf dem Parkplatz weiß, wann du aufstehen und rausgehen würdest. Seine Information ist gut. Sein Timing ist besser.',
       choices: [
         { label: 'Information kaufen', detail: 'Schneller Vorteil, neuer Druck.', cash: -2800, nerve: -5, fame: 4, edge: 8, note: 'Die Nachricht passt. Der Preis war nicht nur Geld.' },
-        { label: 'Die Pause beenden', detail: 'Du gehst, bevor jemand deinen Takt besitzt.', cash: 1200, nerve: 5, fame: -1, edge: 4, note: 'Du bleibst bei deinem eigenen Rhythmus.' },
+        { label: 'Die Pause beenden', detail: 'Du gehst, bevor jemand deinen Takt besitzt.', cash: 100, nerve: 5, fame: -1, edge: 4, note: 'Du bleibst bei deinem eigenen Rhythmus.' },
       ],
     }
   }
@@ -518,7 +523,7 @@ function storyEventForTurn(turn, state) {
       turn,
       choices: [
         { label: 'Den Kontakt annehmen', detail: 'Ein kleiner Schritt nach draußen, ohne dich zu verlieren.', cash: 0, nerve: 6, fame: 2, edge: 3, routine: 1, connections: 2, note: 'Du lässt einen Kontakt zu. Nicht als Schuld, sondern als Möglichkeit.' },
-        { label: 'Ein eigenes Signal senden', detail: 'Du bleibst auf Abstand, machst dich aber sichtbar.', cash: 600, nerve: -2, fame: 4, edge: 3, routine: 0, connections: 1, note: 'Du setzt deine eigene Grenze und hinterlässt trotzdem einen klaren Eindruck.' },
+        { label: 'Ein eigenes Signal senden', detail: 'Du bleibst auf Abstand, machst dich aber sichtbar.', cash: 120, nerve: -2, fame: 4, edge: 3, routine: 0, connections: 1, note: 'Du setzt deine eigene Grenze und hinterlässt trotzdem einen klaren Eindruck.' },
       ],
     }
   }
@@ -639,7 +644,7 @@ function makeGame(origin, name, market) {
 }
 
 function makeFirstFlatGame(market) {
-  const origin = { id: 'first-flat', label: 'Erster Auszug', detail: '18, eigene kleine Wohnung. Die Stadt ist groß, aber die Ideen sind größer.', cash: 350, nerve: 70, fame: 4, edge: 5 }
+  const origin = { id: 'first-flat', label: 'Erster Auszug', detail: '18, eigene kleine Wohnung. Die Stadt ist groß, aber die Ideen sind größer.', cash: 0, nerve: 70, fame: 4, edge: 5 }
   return {
     ...makeGame(origin, '18 / NEUSTART', market),
     scenario: 'first-flat',
@@ -653,8 +658,8 @@ function makeFirstFlatGame(market) {
     guardianActive: false,
     guardianApproval: false,
     onlineBanking: true,
-    peak: 350,
-    history: [{ turn: 0, label: 'Erster Auszug', cash: 350, note: '18 Jahre alt, eigene kleine Wohnung. Miete, Ideen und eine Stadt voller Möglichkeiten warten.' }],
+    peak: 0,
+    history: [{ turn: 0, label: 'Erster Auszug', cash: 0, note: '18 Jahre alt, 0 € bar und eine kleine eigene Wohnung. Miete, Ideen und eine Stadt voller Möglichkeiten warten.' }],
   }
 }
 
@@ -697,7 +702,10 @@ function normalizeGame(game) {
   const protectedFunds = Number.isFinite(game.protectedFunds) ? game.protectedFunds : 0
   const debt = Number.isFinite(game.debt) ? game.debt : 0
   const savedMarket = Array.isArray(game.market) ? game.market : []
-  const market = MARKETS.map((asset) => ({ ...asset, ...(savedMarket.find((saved) => saved.id === asset.id) || {}), change: Number(savedMarket.find((saved) => saved.id === asset.id)?.change) || 0 }))
+  const market = MARKETS.map((asset) => {
+    const saved = savedMarket.find((item) => item.id === asset.id) || {}
+    return { ...asset, ...saved, unit: asset.unit, volatility: asset.volatility, change: Number(saved.change) || 0 }
+  })
   const portfolio = Object.fromEntries(MARKETS.map((asset) => [asset.id, Number(game.portfolio?.[asset.id]) || 0]))
   return {
     ...game,
@@ -1103,6 +1111,7 @@ function App() {
 
   function resolveAction(action) {
     if (!game || game.status !== 'playing') return
+    if (action.minimumCash && game.cash < action.minimumCash) return
     const emergencyStart = ['income', 'idea'].includes(action.id) && game.turn === 1 && game.cash === 0
     if (!emergencyStart && !requireFoodOrder()) return
 
@@ -1460,9 +1469,9 @@ function App() {
     const jobs = game.factionJobs + 1
     const rank = clamp(1 + Math.floor(jobs / 3), 1, 9)
     const outcomes = {
-      signal: { cash: 1800, nerve: -3, fame: 2, connections: 0, note: 'Du lieferst einen klaren Lizenz- und Projektauftrag. Klein, sauber, weiter.' },
-      neon: { cash: 2500, nerve: -7, fame: 3, connections: 0, note: 'Eine Nachtschicht im Neonhafen: Tempo, Risiko, keine Abkürzung ohne Folgen.' },
-      parkkreis: { cash: 400, nerve: 5, fame: 2, connections: 1, note: 'Du hilfst beim Parkkreis. Weniger Cash, mehr Menschen, die deinen Namen kennen.' },
+      signal: { cash: 550, nerve: -3, fame: 2, connections: 0, note: 'Du lieferst einen klaren Lizenz- und Projektauftrag. Klein, sauber, weiter.' },
+      neon: { cash: 800, nerve: -7, fame: 3, connections: 0, note: 'Eine Nachtschicht im Neonhafen: Tempo, Risiko, keine Abkürzung ohne Folgen.' },
+      parkkreis: { cash: 150, nerve: 5, fame: 2, connections: 1, note: 'Du hilfst beim Parkkreis. Weniger Cash, mehr Menschen, die deinen Namen kennen.' },
     }[faction.id]
     setGame({
       ...game,
@@ -1929,7 +1938,7 @@ function App() {
           </div>
           <div className="action-grid">
             {availableActions.map((action) => (
-              <button className="action-card" key={action.id} disabled={action.id === 'spilo' && game.cash < 10} onClick={() => action.id === 'spilo' ? startSpilo() : action.id === 'budget' && !marketOpen ? openLedger() : resolveAction(action)}>
+              <button className="action-card" key={action.id} disabled={(action.id === 'spilo' && game.cash < 10) || Boolean(action.minimumCash && game.cash < action.minimumCash)} onClick={() => action.id === 'spilo' ? startSpilo() : action.id === 'budget' && !marketOpen ? openLedger() : resolveAction(action)}>
                 <span className="action-icon">{action.icon}</span>
                 <span className="action-kicker">{action.kicker}</span>
                 <strong>{action.label}</strong>
@@ -1991,7 +2000,7 @@ function App() {
                 <div><strong>{asset.id}</strong><span>{asset.name}{asset.fictional ? ' / #zedcoinz' : ''}</span></div>
                 <b title="Aktueller Kurs dieses Runs">◈ {formatMoney(asset.price)} €</b>
                 <i className={asset.change >= 0 ? 'positive' : 'negative'}>{asset.change >= 0 ? '↑' : '↓'} {Math.abs(asset.change).toFixed(1)}%</i>
-                <small title={asset.fictional ? 'Fiktiver ISSO.TV-Run-Kurs, keine reale Kryptowährung.' : 'Deine gehaltene Menge'}>{asset.fictional ? '✦ FIKTIVER RUN-KURS / HOHES RISIKO' : '▣ Bestand:'} {owned.toFixed(asset.id === 'BTC' ? 2 : 0)} {asset.id}</small>
+                <small title={asset.fictional ? 'Fiktiver ISSO.TV-Run-Kurs, keine reale Kryptowährung.' : 'Deine gehaltene Menge'}>{asset.fictional ? '✦ FIKTIVER RUN-KURS / HOHES RISIKO' : '▣ Bestand:'} {owned.toFixed(asset.id === 'BTC' ? 4 : ['ETH', 'SOL'].includes(asset.id) ? 2 : 0)} {asset.id}</small>
                 <div className="trade-buttons">
                   <button title="Kauft eine feste Run-Position und kostet einen Zug" disabled={!marketOpen || game.cash < lotValue} onClick={() => tradeAsset(asset, 'buy')}>＋ KAUF {asset.unit} {asset.id}</button>
                   <button title="Verkauft eine gehaltene Position und kostet einen Zug" disabled={!marketOpen || owned < asset.unit} onClick={() => tradeAsset(asset, 'sell')}>− VERKAUF</button>

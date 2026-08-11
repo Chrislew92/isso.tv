@@ -182,6 +182,7 @@ ISSO.TV ist ein endloser Stadtrun in der fiktiven Metropole **Strammburg**. Es g
 - [x] Kaufen/Verkaufen, Portfolio, Vermögen, Risiko und Zeitkosten.
 - [x] Spilo-Sprung mit 10/20/50/100 € Einsatz.
 - [x] Z-Coin-Storymoment bei ausreichendem Bestand vorbereitet.
+- [x] Start-Balancing: 0 € bleiben 0 €; frühe Ideen, Jobs, Fraktionsaufträge und Mini-Positionen bauen langsam auf statt nach zwei Klicks Tausende Euro zu erzeugen.
 
 ## Offen
 
