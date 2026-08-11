@@ -71,6 +71,14 @@ const CITY_BULLETINS = [
   { icon: '✦', title: 'HQ1 beantragt Steckdose', text: 'Der Antrag trägt die Vorgangsnummer: „Bitte warten, Vision wird geladen.“' },
 ]
 
+const STORY_ARCS = [
+  { id: 'arrival', label: 'AKT I / ANKOMMEN', title: 'Zu hell für einen Neustart.', text: 'Die Wohnung, ein paar Routinen und Strammburg vor der Tür. Du musst noch nichts beweisen: erst Versorgung, dann Richtung.' },
+  { id: 'city', label: 'AKT II / STADTFUNK', title: 'Die Stadt schreibt zurück.', text: 'Ein Parkkontakt, ein Kioskgruß, eine Tür im HQ1. Aus Orten werden Menschen, aus Menschen werden Wege.' },
+  { id: 'clarity', label: 'AKT III / EIN KLICK', title: 'Die Große Vereinfachung.', text: 'Klarheit+ will alles ordnen. Die Frage ist nicht nur, was schneller wird, sondern was von dir sichtbar bleibt.' },
+  { id: 'signal', label: 'AKT IV / EIGENES SIGNAL', title: 'Aus einer Idee wird Arbeit.', text: 'Dein Name taucht im Stadtfunk auf. Jetzt entscheiden Termine, Beziehungen und Verantwortung darüber, was daraus wird.' },
+  { id: 'island', label: 'AKT V / OFFENE ZUKUNFT', title: 'Die Insel ist kein Ausgang.', text: 'EyTonLand ist kein Abspann. Wenn du Einfluss hast, entscheidest du, ob daraus ein Zaun, ein Schloss oder ein Ort für andere wird.' },
+]
+
 const FACTIONS = [
   { id: 'signal', icon: '✦', label: 'Signalwerk / HQ1', route: 'creator', text: 'Ideen, Lizenzen und die Leute, die aus einem Bildschirm ein Projekt machen.' },
   { id: 'neon', icon: '◈', label: 'Neonhafen-Kollektiv', route: 'risk', text: 'Nachtarbeit, Risiko und ein Netzwerk, das für Tempo immer einen Preis kennt.' },
@@ -382,6 +390,19 @@ function storyEventForTurn(turn, state) {
       ],
     }
   }
+  if (turn === 8) {
+    return {
+      turn,
+      act: 'AKTE III / KLARHEIT+',
+      title: 'Die Stadt möchte helfen.',
+      text: 'Am Bahnhof verteilt Klarheit+ Karten für ein neues Stadtkonto: Termine, Zahlungen und Anträge sollen künftig mit einem Klick erledigt sein. Unten steht ein Satz in kleiner Schrift: „Damit wir Sie besser entlasten können, lernen wir Ihre Wege.“',
+      choices: [
+        { label: 'Bedingungen sichtbar machen', detail: 'Nachfragen, markieren, verständlich erklären.', cash: 0, nerve: 2, fame: 4, edge: 5, connections: 1, clarityRoute: 'transparent', note: 'Du hängst die Bedingungen groß neben den Automaten. Zum ersten Mal lesen Leute die kleine Schrift gemeinsam.' },
+        { label: 'Eigene Mini-Lösung bauen', detail: 'Im HQ1 eine einfache Alternative zeigen.', cash: -600, nerve: -3, fame: 8, edge: 4, routine: 1, clarityRoute: 'build', note: 'Im HQ1 entsteht ein Gegenentwurf: nicht perfekt, aber verständlich und freiwillig.' },
+        { label: 'Den Schnellzugang nehmen', detail: 'Heute weniger Aufwand, später genauer hinsehen.', cash: 350, nerve: 5, fame: 1, edge: 1, clarityRoute: 'shortcut', note: 'Der Termin ist sofort erledigt. Die App weiß nun erstaunlich gut, welche Wege du oft gehst.' },
+      ],
+    }
+  }
   if (turn === 10 && (state?.portfolio?.ZED || 0) >= 25) {
     return {
       turn,
@@ -430,6 +451,60 @@ function storyEventForTurn(turn, state) {
     }
   }
   return STORY_EVENTS.find((event) => event.turn === turn) ?? null
+}
+
+function storyArcFor(game) {
+  if (game.chapter === 'krise') {
+    return { id: 'care', label: 'NEBENKAPITEL / RÜCKKEHR', title: 'Der Run hält an, nicht auf.', text: 'Du sicherst Versorgung und einen nächsten Schritt. Das ist keine Niederlage und kein Ende der Geschichte.' }
+  }
+  if (game.chapter === 'konsequenz') {
+    return { id: 'consequence', label: 'NEBENKAPITEL / FOLGEN', title: 'Die Stadt bleibt erreichbar.', text: 'Folgen bekommen einen Ort, Aufgaben und eine Rückkehr. Der Spielstand wird nicht weggenommen.' }
+  }
+  if (game.fame >= TARGET_FAME || game.turn >= 20) return STORY_ARCS[4]
+  if (game.turn >= 14) return STORY_ARCS[3]
+  if (game.turn >= 8) {
+    const arc = STORY_ARCS[2]
+    const routeText = {
+      transparent: 'Du hast die kleine Schrift sichtbar gemacht. Jetzt muss Klarheit+ auf Menschen reagieren, die mitlesen.',
+      build: 'Dein Gegenentwurf aus dem HQ1 ist klein, aber er zeigt: Einfach darf auch freiwillig heißen.',
+      shortcut: 'Du kennst die Abkürzung jetzt. Ob sie dir dient oder dich lenkt, bleibt eine offene Entscheidung.',
+    }[game.clarityRoute]
+    return routeText ? { ...arc, text: routeText } : arc
+  }
+  if (game.turn >= 4) return STORY_ARCS[1]
+  return STORY_ARCS[0]
+}
+
+function messagesForGame(game) {
+  const messages = []
+  if (game.newInTown && game.turn <= 3) {
+    messages.push({ icon: '⌘', from: 'Joi / Park', meta: 'gerade eben', text: 'Kein Stress mit Antworten. Wenn du Luft hast: Wir sind nachher am Wasser. Bring nur dich mit.' })
+  }
+  if (game.turn >= 4) {
+    messages.push({ icon: '▣', from: 'Mara / Kiosk', meta: 'Stadtfunk', text: 'Die neue Amt-App hat mich gefragt, ob ich „spontane Gespräche“ freigeben möchte. Ich habe „nur bei gutem Wetter“ angekreuzt.' })
+  }
+  if (game.clarityRoute === 'transparent') {
+    messages.push({ icon: '§', from: 'Unbekannt / Klarheit+', meta: 'automatische Antwort', text: 'Danke für Ihren Hinweis. Ihre Lesbarkeit wurde zur weiteren Vereinfachung vorgemerkt.' })
+  }
+  if (game.clarityRoute === 'build') {
+    messages.push({ icon: '✦', from: 'Noa / HQ1', meta: 'heute', text: 'Dein Gegenentwurf hängt am Whiteboard. Jemand hat „freiwillig“ dreimal unterstrichen. Gute Spur.' })
+  }
+  if (game.clarityRoute === 'shortcut') {
+    messages.push({ icon: '◈', from: 'Klarheit+ Hinweis', meta: 'System', text: 'Wir haben Ihren Weg optimiert. Falls Sie ihn vermissen: Er ist in den Einstellungen unter „Komfort“ abgelegt.' })
+  }
+  if (game.faction === 'signal') {
+    messages.push({ icon: '✦', from: 'Signalwerk / HQ1', meta: `Rang ${game.factionRank}`, text: 'Der nächste Entwurf braucht keinen Pitch-Glanz. Er muss nur für echte Leute funktionieren.' })
+  }
+  if (game.faction === 'neon') {
+    messages.push({ icon: '≈', from: 'Neonhafen-Kollektiv', meta: `Rang ${game.factionRank}`, text: 'Heute Nacht ist schnell. Du musst nicht jede Tür nehmen, nur weil sie offen steht.' })
+  }
+  if (game.faction === 'parkkreis') {
+    messages.push({ icon: '⌘', from: 'Parkkreis', meta: `Rang ${game.factionRank}`, text: 'Wir haben den Platz frei gehalten. Komm vorbei, wenn du willst — nicht weil du musst.' })
+  }
+  if (game.turn >= 14) {
+    messages.push({ icon: '⌚', from: 'Strammburg-Uhr', meta: 'Tageslage', text: 'Die Stadt misst heute alles. Außer dem Moment, in dem jemand sagt: „Ich helfe dir.“' })
+  }
+  return messages.slice(0, 3)
 }
 
 function makeGame(origin, name, market) {
@@ -633,7 +708,7 @@ function insolvencyPayment(game, gain) {
 
 function keySuggestionFor(game) {
   if (game.cash <= 0 && game.foodVouchers < 10) return { id: 'idea', label: 'IDEEN-PITCH STARTEN', title: 'Erste Einnahme finden', text: 'Mit 0 € ist dein nächster Schlüssel kein Risiko: mach aus einer Idee einen ersten Auftrag.', time: '1 Woche' }
-  if (game.foodOrderTurn !== game.turn && (game.cash >= 10 || game.foodVouchers >= 10)) return { id: 'food', label: 'ESSENSKORB SICHERN', title: 'Versorgung zuerst', text: 'Der Essenskorb hält Hunger, Stress und Game Over aus deinem nächsten Zug.', time: 'kurzer Schritt' }
+  if (game.foodOrderTurn !== game.turn && (game.cash >= 10 || game.foodVouchers >= 10)) return { id: 'food', label: 'ESSENSKORB SICHERN', title: 'Versorgung zuerst', text: 'Der Essenskorb hält Hunger und Stress aus deinem nächsten Zug. Ohne ihn folgt ein Rückkehrkapitel, kein Ende.', time: 'kurzer Schritt' }
   if (game.insolvencyActive && game.debt > 0 && !game.insolvencyPlan) return { id: 'administrator', label: 'VERWALTERIN ANRUFEN', title: 'Zahlungsplan klären', text: 'Ein Gespräch macht die Rate planbarer. Es löst nicht alles, aber nimmt Chaos aus dem System.', time: 'kurzer Schritt' }
   if (game.turn > 3 && game.guardianActive && !game.guardianApproval) return { id: 'guardian', label: 'BETREUER ANRUFEN', title: 'Online-Freigabe holen', text: 'Du entscheidest über den Weg; der Betreuer erledigt die Online-Abwicklung.', time: 'kurzer Schritt' }
   return { id: 'choice', label: 'DEINEN WEG WÄHLEN', title: 'Keine Pflicht offen', text: 'Die Basis steht. Jetzt entscheidest du, ob du sicher aufbaust oder etwas riskierst.', time: '1 Woche' }
@@ -811,6 +886,8 @@ function App() {
   const faction = game ? FACTIONS.find((item) => item.id === game.faction) : null
   const factionOffer = game ? factionOfferFor(game) : null
   const cityBulletin = game ? CITY_BULLETINS[Math.abs(worldDayIndex(worldNow)) % CITY_BULLETINS.length] : null
+  const storyArc = game ? storyArcFor(game) : null
+  const messages = game ? messagesForGame(game) : []
 
   function startGame() {
     const cleanName = name.trim().replace(/[^a-zA-ZäöüÄÖÜß0-9 -]/g, '').slice(0, 16)
@@ -1091,6 +1168,7 @@ function App() {
       routine: nextRoutine,
       connections: nextConnections,
       event: null,
+      clarityRoute: choice.clarityRoute ?? game.clarityRoute,
       peak: Math.max(game.peak, netWorth(provisionalGame)),
       history: [...game.history, { turn: game.turn, label: choice.label, cash: choice.cash - debtPayment, note: debtPayment > 0 ? `${choice.note} Zahlungsplan: −${formatMoney(debtPayment)} € Schulden.` : choice.note }],
     }
@@ -1486,7 +1564,7 @@ function App() {
             <Stat icon="◈" label="ENDVERMÖGEN" value={`${formatMoney(netWorth(game))} €`} description="Euro und Wert aller Krypto-Positionen zusammen." />
             <Stat icon="↑" label="BESTWERT" value={`${formatMoney(game.peak)} €`} description="Höchster Vermögenswert dieses Runs." />
             <Stat icon="★" label="RENOMMEE" value={game.fame} description="Deine Sichtbarkeit und dein Einfluss in der Stadt." />
-            <Stat icon="♥" label="NERVEN" value={game.nerve} description="Deine Belastbarkeit. Bei null endet der Run." />
+            <Stat icon="♥" label="NERVEN" value={game.nerve} description="Deine Belastbarkeit. Bei null wird daraus ein Rückkehrkapitel, kein Ende." />
           </div>
           <div className="run-history">
             {game.history.slice(1).map((entry) => (
@@ -1591,8 +1669,8 @@ function App() {
       <section className="hud">
         <Stat icon="€" label="EURO" value={`${formatMoney(game.cash)} €`} hint="liquide Mittel" alert={game.cash < 0} description="Sofort verfügbares Geld für Einsätze und Käufe." />
         <Stat icon="◈" label="VERMÖGEN" value={`${formatMoney(netWorth(game))} €`} hint={`Ziel: ${formatMoney(TARGET_CASH)} €`} alert={netWorth(game) < 0} description="Euro plus aktueller Wert deiner Krypto-Positionen." />
-        <Stat icon="♥" label="NERVEN" value={`${game.nerve}/100`} alert={game.nerve < 25} description="Belastbarkeit. Bei null verlierst du den Run." />
-        <Stat icon="◒" label="HUNGER" value={`${game.hunger}/100`} hint="Essen hält dich im Run" alert={game.hunger < 25} description="Du brauchst jede Woche einen Essenskorb. Bei null endet der Run." />
+        <Stat icon="♥" label="NERVEN" value={`${game.nerve}/100`} alert={game.nerve < 25} description="Belastbarkeit. Bei null beginnt ein Rückkehrkapitel, der Run bleibt deiner." />
+        <Stat icon="◒" label="HUNGER" value={`${game.hunger}/100`} hint="Essen hält dich im Run" alert={game.hunger < 25} description="Du brauchst jede Woche einen Essenskorb. Wenn es knapp wird, startet ein Versorgungskapitel statt eines Endes." />
         <Stat icon="◓" label="DURST" value={`${game.thirst}/100`} hint="Getränke auffüllen" alert={game.thirst < 25} description="Getränke aus dem Supermarkt oder online füllen deinen Durst." />
         <Stat icon="★" label="RENOMMEE" value={`${game.fame}/100`} hint="Ziel: 65" description="Wird für den Master-Run benötigt und öffnet Story-Gewicht." />
         <Stat icon="◉" label="INSTINKT" value={`${game.edge}/30`} hint="verbessert Risiko" description="Erhöht die Chancen bei riskanten Aktionen." />
@@ -1608,6 +1686,15 @@ function App() {
       </section>
 
       {cityBulletin && <section className="city-bulletin" aria-label="Strammburg Stadtfunk"><span>{cityBulletin.icon} STADTFUNK</span><strong>{cityBulletin.title}</strong><p>{cityBulletin.text}</p></section>}
+
+      {storyArc && <section className={`story-arc story-arc-${storyArc.id}`} aria-label="Aktueller Story-Abschnitt">
+        <span>{storyArc.label}</span><div><strong>{storyArc.title}</strong><p>{storyArc.text}</p></div><small>STORY LÄUFT WEITER <b>→</b></small>
+      </section>}
+
+      {messages.length > 0 && <section className="message-panel" aria-label="Strammburg Nachrichten">
+        <div className="message-heading"><span className="panel-label">◌ STRAMMBURG-NACHRICHTEN</span><p>{messages.length} IMPULS{messages.length === 1 ? '' : 'E'} · KEINE ANTWORTPFLICHT</p></div>
+        <div className="message-list">{messages.map((message) => <article key={`${message.from}-${message.text}`}><i>{message.icon}</i><div><strong>{message.from}</strong><small>{message.meta}</small><p>{message.text}</p></div></article>)}</div>
+      </section>}
 
       {game.newInTown && <section className="anchor-panel" aria-label="Alltagsanker">
         <div><span className="panel-label">↺ ALLTAGSANKER / EINMAL PRO ZYKLUS</span><strong>{game.anchorTurn === game.turn ? 'Anker für diese Woche gesetzt' : 'Sicherheit wird klein gebaut.'}</strong><p>Ein bewusster Ablauf oder ein Termin gibt Struktur. Er ersetzt keine professionelle Hilfe – im Spiel schafft er nur etwas mehr Halt für den nächsten Zug.</p></div>
@@ -1749,7 +1836,7 @@ function App() {
         <div className="market-heading"><span className="panel-label">▧ ESSEN, TRINKEN & TABAK</span><p>SUPERMARKT ODER ONLINE</p></div>
         <div className="supermarket-body">
           <div><strong>▧ {formatMoney(game.foodVouchers)} €</strong><span>Essensgutschein-Guthaben</span></div>
-          <p>Gutscheine kaufst du selbst. Sie gelten für <b>Essen und Getränke</b>, online oder im Supermarkt. Ein Essenskorb ist <b>jede Woche Pflicht</b>; sonst endet der Run an Hunger.</p>
+          <p>Gutscheine kaufst du selbst. Sie gelten für <b>Essen und Getränke</b>, online oder im Supermarkt. Ein Essenskorb ist <b>jede Woche Pflicht</b>; wenn er fehlt, beginnt ein Versorgungskapitel statt eines Endes.</p>
           <div className={`supermarket-status ${game.foodOrderTurn === game.turn ? 'ready' : ''}`}>{game.foodOrderTurn === game.turn ? `● WOCHE ${game.turn}: ESSEN BESTELLT` : `△ WOCHE ${game.turn}: ESSEN VOR DEM NÄCHSTEN ZUG BESTELLEN`}</div>
           <div className="supermarket-actions">
             <button className="supermarket-button" disabled={game.cash < 10} onClick={() => buyFoodVoucher(10, 'Supermarkt')}>＋ 10 € GUTSCHEIN LADEN</button>

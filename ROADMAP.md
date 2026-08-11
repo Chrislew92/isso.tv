@@ -209,10 +209,13 @@ ISSO.TV ist ein endloser Stadtrun in der fiktiven Metropole **Strammburg**. Es g
 - [x] Prolog für Neuankunft und vier erste Akte.
 - [x] Erste Storyakte, Rauch-/Recovery-Akte und Z-Coin-Akte.
 - [x] 50k-Meilenstein ohne Endscreen.
+- [x] Verbindliche Story Bible: Strammburg, HQ1, EyTonLand, Humor- und Würde-Leitplanken.
+- [x] Sichtbarer Akt-Kompass: Ankommen → Stadtfunk → Große Vereinfachung → Eigenes Signal → offene Zukunft.
+- [x] Erste Klarheit+-Entscheidung mit drei unterschiedlichen Spuren im Run.
 
 ## Offen
 
-- [ ] Kapitelstruktur für 1–3 Spieljahre: Ankommen, Basis, Crew, Druck, Aufbau, Insel.
+- [ ] Kapitelstruktur für 1–3 Spieljahre: Basis, Crew, Druck, Aufbau, Insel mit wiederkehrenden Szenen ausbauen.
 - [ ] Wiederkehrende Jahreszeiten, Silvester, Geburtstage, Deadline- und Jubiläumsereignisse.
 - [ ] Storygedächtnis: Figuren erinnern Entscheidungen und Ortsbesuche.
 - [ ] Mehrere Endgame-Zustände statt eines Endes: EyTonLand, Zed-König, stabiles Leben, Crew-Stadt, Rückkehr nach HQ1.
@@ -258,6 +261,7 @@ ISSO.TV ist ein endloser Stadtrun in der fiktiven Metropole **Strammburg**. Es g
    - Kein Game Over, keine Stigmatisierung, mindestens zwei Wege zurück.
 2. [ ] **Telefon/Messenger bauen**
    - Kolleg:innen, Einladungen, Fraktionsnachrichten und Termine als kurze, relevante Impulse.
+   - MVP vorhanden: dynamische Strammburg-Nachrichten; als Nächstes Antworten und Terminfolgen ergänzen.
 3. [ ] **Map-Spieltest & Bewegung polieren**
    - Alle Verbindungen, Mobile-Layout, Netzfreischaltung und Ortsaktionen prüfen.
 4. [ ] **Erste drei vollständigen Fraktionsaufträge schreiben**
