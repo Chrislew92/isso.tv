@@ -36,6 +36,9 @@
      Genau das ist beim Versuch passiert. Der Weg raus ist, eine der beiden
      Generationen auf die andere umzuschreiben — nicht diese Zeile. */
   --tinte:#e2e2e2; --papier:#222327; --kreide:#fff;
+  /* --haut: die Ego-Hände in b2 stammen aus der Fixlinie und malen mit dieser
+     Farbe — ohne den Wert wären sie unsichtbar (leeres var() = kein fill). */
+  --haut:#ffc4a3;
   --fett:"Arial Black","Segoe UI Black",system-ui,sans-serif;
   --sans:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
   --mono:ui-monospace,"Cascadia Mono",Consolas,monospace;
@@ -143,9 +146,10 @@ body{font-family:var(--sans);color:var(--tinte);-webkit-font-smoothing:antialias
   transform-origin:50% 52%;will-change:transform}
 .welt svg{width:100%;height:100%;display:block}
 .haende{position:absolute;inset:0;z-index:30;pointer-events:none;will-change:transform}
-.hand{position:absolute;bottom:-6%;width:min(40%,380px)}
-.hand.l{left:-3%} .hand.r{right:-3%;transform:scaleX(-1)}
-.hand svg{width:100%;height:auto;display:block;filter:drop-shadow(0 -8px 12px rgba(0,0,0,.55))}
+/* Der Koerper ist EIN volles Breitband-SVG statt zwei Einzel-Haenden — der
+   STL-Test des Autors: was nicht verbunden ist, faellt beim Druck runter. */
+.koerper{position:absolute;left:0;right:0;bottom:-5%;width:100%;height:auto;
+  filter:drop-shadow(0 -8px 12px rgba(0,0,0,.55))}
 .marker{position:absolute;left:50%;top:46%;transform:translateX(-50%);z-index:25;
   color:var(--gelb);font-size:clamp(20px,3.6vmin,32px);pointer-events:none;
   text-shadow:2px 2px 0 var(--tinte);animation:huepf 1.2s ease-in-out infinite;transition:opacity .3s}
@@ -205,12 +209,8 @@ body{font-family:var(--sans);color:var(--tinte);-webkit-font-smoothing:antialias
   gap:6px;padding:9px 4px;font:inherit;color:#fff;outline:none}
 .icon:hover,.icon.sel{background:rgba(255,255,255,.18);outline:2px solid var(--gelb)}
 .icon svg{width:42px;height:42px}
-.icon.boerse .i{background:#0a0a0a;border:2px solid var(--gelb)}
-.icon.boerse .i::after{content:'~';color:var(--gelb);font-size:30px;line-height:48px}
 .icon.schwarzmarkt .i{background:#000;border:2px dashed var(--rot)}
 .icon.schwarzmarkt .i::after{content:'!';color:var(--rot);font-size:30px;line-height:48px}
-.icon.s7v3n .i{background:#003366}
-.icon.s7v3n .i::after{content:'§';font-size:32px;color:var(--kreide);line-height:48px}
 .icon span{font-family:var(--fett);font-size:10.5px;text-align:center;line-height:1.25;
   text-shadow:1px 1px 0 #0d0d0d,-1px 1px 0 #0d0d0d,1px -1px 0 #0d0d0d,-1px -1px 0 #0d0d0d}
 /* z-index 140: die Leiste ist Bedienung, die Marken-Zeile darunter ist nur
@@ -228,8 +228,10 @@ body{font-family:var(--sans);color:var(--tinte);-webkit-font-smoothing:antialias
 .hb .rumpf label{display:block;font-family:var(--fett);font-size:11px;letter-spacing:.1em;
   text-transform:uppercase;margin:12px 0 5px;opacity:.7}
 .hb .rumpf label:first-child{margin-top:0}
+/* color ausdrücklich dunkel: var(--tinte) ist in dieser Datei die HELLE
+   Farbe — geerbt wäre die Schrift auf dem weißen Feld unsichtbar. */
 .hb input{font-family:var(--mono);font-size:14px;padding:8px 10px;border:3px solid var(--tinte);
-  background:#fff;width:100%;outline:none}
+  background:#fff;color:#0d0d0d;width:100%;outline:none}
 .hb input:focus{background:var(--gelb)}
 .hb .zeile{display:flex;gap:6px;margin-bottom:6px}
 .hb .zeile input:first-child{flex:1}
@@ -255,7 +257,7 @@ body{font-family:var(--sans);color:var(--tinte);-webkit-font-smoothing:antialias
 .fenster .kopf button{background:var(--rot);color:#fff;border:0;font-family:var(--fett);
   font-size:12px;width:21px;height:21px;cursor:pointer}
 .fenster .rumpf{padding:16px;font-size:13.5px;line-height:1.65;font-weight:600}
-.fenster .rumpf b{background:var(--gelb);padding:0 3px}
+.fenster .rumpf b{background:var(--gelb);color:#0d0d0d;padding:0 3px}
 
 /* 5 — Comic */
 #b5{background:#16171a;display:grid;place-items:center;padding:3vmin;cursor:pointer}
@@ -310,7 +312,10 @@ body{font-family:var(--sans);color:var(--tinte);-webkit-font-smoothing:antialias
 .namensfehler.bad{opacity:1;color:#fff;background:var(--rot);display:inline-block;padding:4px 9px;
   border:3px solid var(--tinte)}
 .kopfz{display:flex;align-items:center;gap:9px;flex-wrap:wrap;margin-bottom:14px}
-.chip{font-family:var(--fett);font-size:13px;text-transform:uppercase;border:var(--out);
+/* color ausdrücklich dunkel: die Grundfarbe der Chips ist Gelb (und .geld
+   Grün) — die geerbte var(--tinte) ist hell und wäre darauf unlesbar.
+   Chips auf dunklem Grund (cName, cLvl) setzen ihr helles color selbst. */
+.chip{font-family:var(--fett);font-size:13px;text-transform:uppercase;border:var(--out);color:#0d0d0d;
   padding:5px 11px;border-radius:var(--br-sm);box-shadow:var(--sh-out);background:linear-gradient(145deg, #2d2e33, #26272b);;background:var(--gelb)}
 /* Nebensätze im HUD. Bedeutung steht im Wort, nicht in der Farbe. */
 .chip i.steigt,.chip i.starr{font-style:normal;font-family:var(--mono);
@@ -352,11 +357,15 @@ body{font-family:var(--sans);color:var(--tinte);-webkit-font-smoothing:antialias
   margin-bottom:7px;background:var(--papier);box-shadow:4px 4px 0 var(--tinte)}
 .fz.rot{background:var(--rot);color:#fff} .fz.blau{background:var(--blau);color:#fff}
 .fz.grau{background:var(--grau)} .fz.feind{background:var(--tinte);color:var(--rot)}
-.fz.gut{background:var(--gruen)} .fz.schlecht{background:var(--orange)}
-.fz.joker{background:var(--gelb);transform:rotate(-1deg)}
-.fz.job{background:var(--cyan)}
+/* Diese vier Gründe sind HELL (grün, orange, gelb, cyan) — die geerbte
+   Schriftfarbe ist aber var(--tinte), und die ist seit dem Tausch ebenfalls
+   hell. Helle Schrift auf hellem Kasten war unlesbar; darum hier
+   ausdrücklich dunkel. */
+.fz.gut{background:var(--gruen);color:#0d0d0d} .fz.schlecht{background:var(--orange);color:#0d0d0d}
+.fz.joker{background:var(--gelb);color:#0d0d0d;transform:rotate(-1deg)}
+.fz.job{background:var(--cyan);color:#0d0d0d}
 #text{font-size:16px;line-height:1.6;margin-bottom:18px;font-weight:600}
-#text em{font-style:normal;background:var(--gelb);padding:0 4px;box-decoration-break:clone}
+#text em{font-style:normal;background:var(--gelb);color:#0d0d0d;padding:0 4px;box-decoration-break:clone}
 #wahl{display:grid;gap:10px} #wahl.warte{pointer-events:none;opacity:.5}
 #ende{background:var(--papier);border:var(--out);box-shadow:var(--sh);padding:26px;
   margin-bottom:18px;display:none}
@@ -364,8 +373,14 @@ body{font-family:var(--sans);color:var(--tinte);-webkit-font-smoothing:antialias
 #ende h2{font-family:var(--fett);font-size:clamp(28px,6.5vmin,58px);line-height:.95;
   text-transform:uppercase;margin-bottom:14px;-webkit-text-stroke:3px var(--tinte);paint-order:stroke fill}
 #ende h2.rot{color:var(--rot)} #ende h2.blau{color:var(--blau)} #ende h2.grau{color:var(--gelb)}
+/* lila trägt nur der Schattenpakt. Die helle Kontur (--tinte) drumherum
+   stemmt den Kontrast auf dem dunklen Grund, wie bei den anderen Farben. */
+#ende h2.lila{color:var(--lila)}
+/* gelb tragen RAP GOD und SYSTEM BREACH — ohne diese Regel fielen beide
+   still auf die Grundfarbe zurück. Gelb auf dunklem Grund liest sich gut. */
+#ende h2.gelb{color:var(--gelb)}
 #ende p{font-size:15px;line-height:1.65;margin-bottom:20px;font-weight:600}
-#ende p b{background:var(--gelb);padding:0 4px}
+#ende p b{background:var(--gelb);color:#0d0d0d;padding:0 4px}
 
 /* 8 — Netzwerk / Motherbrowser */
 #b8 { background: #05060a; overflow: hidden; position: relative; }
@@ -433,6 +448,14 @@ body{font-family:var(--sans);color:var(--tinte);-webkit-font-smoothing:antialias
 /* Die Beine. Man sieht sich selbst laufen — sonst bewegt sich nur die Kulisse. */
 .str-beine { position:absolute; bottom:52px; left:50%; width:190px; height:120px;
   margin-left:-95px; z-index:5; pointer-events:none; }
+/* Die Huefte. Zwei Beine ohne Becken fallen durch den STL-Test des Autors
+   (denk es dir als 3D-Druck: Unverbundenes faellt runter). Der Block liegt
+   OBEN auf den Beinansaetzen (z-index) und deckt deren obere Konturlinien —
+   gleiche Fuellung, offene Unterkante: eine Masse. */
+.str-beine::before { content:''; position:absolute; z-index:1;
+  left:12px; right:12px; top:-24px; height:52px;
+  background:#14141c; border:3px solid var(--papier); border-bottom:0;
+  border-radius:14px 14px 0 0; }
 .str-beine i { position:absolute; bottom:0; width:46px; height:104px; display:block;
   background:#14141c; border:3px solid var(--papier); border-bottom:0;
   border-radius:10px 10px 0 0; transform-origin:50% 100%; }
@@ -546,8 +569,10 @@ body.dritte #haende { display:none; }
   padding:5px 10px}
 .ton-schalt:hover{background:var(--gelb);color:#0d0d0d;border-color:#0d0d0d}
 .ton-schalt[aria-pressed="true"]{border-style:dashed;opacity:.8}
-.marke{position:absolute;left:8px;bottom:5px;z-index:99;font-family:var(--mono);font-size:9px;
-  letter-spacing:.15em;color:#8a86a0;max-width:calc(100vw - 20px)}
+/* 9px Blassgrau war Antiquariats-Modus — und hier stehen die Pflichtlinks
+   (Impressum/Datenschutz). 11.5px und hellerer Ton: lesbar, ohne zu schreien. */
+.marke{position:absolute;left:8px;bottom:6px;z-index:99;font-family:var(--mono);font-size:11.5px;
+  letter-spacing:.12em;color:#c2bfd4;max-width:calc(100vw - 20px)}
 /* Auf dem Spiel-Desktop rückt die Marken-Zeile über die Taskleiste. Sie ist
    `fixed` und bildet einen eigenen Stapel — ein höherer z-index an der Leiste
    reicht deshalb nicht, sie lag trotzdem über Türschloss und Aufstehen. */
@@ -597,9 +622,15 @@ body.ruhig .hint.nah { animation: none !important; }
 h1, h2, .k .t u { text-shadow: 1.5px 0px 0.5px var(--rot), -1.5px 0px 0.5px var(--cyan); }
 .k:hover:not(:disabled) { text-shadow: 2.5px 0px 1px var(--rot), -2.5px 0px 1px var(--cyan); }
 
-
-  50% { opacity: 0.82; }
-  100% { opacity: 0.85; }
+/* Psychose-Schub (Panik im Wochenmotor): der ganze Bildschirm zuckt fünfmal
+   je 0,1 s. Der Kopf dieser Regel war verloren gegangen — übrig blieb nur der
+   verwaiste Rumpf, und animation:flicker lief ins Leere. */
+@keyframes flicker {
+  0% { opacity: 1; transform: translate(0, 0); }
+  25% { opacity: 0.7; transform: translate(-2px, 1px); }
+  50% { opacity: 0.82; transform: translate(2px, -1px); }
+  75% { opacity: 0.95; transform: translate(-1px, 0); }
+  100% { opacity: 0.85; transform: translate(0, 0); }
 }
 
 #kino-frame {
@@ -656,10 +687,17 @@ body {
 <!-- 0 ZUGANG -->
 <section class="bild an" id="b0">
   <div class="punkte"></div>
-  <div class="graffiti">BLUSTERS!</div>
+  <!-- Das Graffiti zeigt die Figur, nicht den Autor. Hier stand ein alter
+       Internet-Handle — googlebar, rueckverfolgbar, privat. Nicht wieder
+       einbauen; die Regel steht in der HANDOVER: nicht ins Private kippen. -->
+  <div class="graffiti">353L!</div>
   <div style="position:relative;z-index:2">
     <div class="mark">ISSO.TV</div>
-    <div class="sub" id="untertitel">VERZWEIFLUNGSSIMULATOR PROTOTYP</div>
+    <!-- "Verzweiflungssimulator" war eine Fremdbeschreibung, die der Autor
+         selbst korrigiert hat: Highroller-RPG mit echtem Druck. Der Einstieg
+         sagt jetzt, was es ist — und fuer wen. -->
+    <div class="sub" id="untertitel">HIGHROLLER-RPG</div>
+    <div style="font-family:var(--mono);font-size:11px;letter-spacing:.22em;opacity:.75;margin:6px 0 14px">FÜR ERWACHSENE.</div>
     <form id="tor" autocomplete="off">
       <input type="text" id="pw" maxlength="10" placeholder="ISSO.TV">
       <button type="submit">Start</button>
@@ -675,7 +713,9 @@ body {
       zu — die Sperre verdoppelt sich jedes Mal. <b>Ton vorher leiser
       stellen.</b> Der Schalter unten rechts stellt ihn ganz ab.
     </div>
-    <div class="err" id="pw-err" style="display:none">Passwort inkorrekt</div>
+    <!-- Kein display:none hier: die bad-Klasse an #b0 blendet die Meldung über
+         die Opazität ein und kam gegen das Inline-display nie an. -->
+    <div class="err" id="pw-err">Passwort inkorrekt</div>
     <div class="abwehr" id="abwehr" hidden>
       <b>IRONMIND · ZUTRITT VERWEIGERT</b>
       <span id="abwehr-txt"></span>
@@ -715,6 +755,33 @@ body {
       <rect x="398" y="452" width="404" height="16" fill="#7b2ff7"/>
       <rect x="422" y="468" width="12" height="120" fill="#5a1fb8"/>
       <rect x="766" y="468" width="12" height="120" fill="#5a1fb8"/>
+    </g>
+    <!-- ZIMMER-UPGRADES: jede Ebene gehört zu einem Eintrag in S.zimmer.
+         zimmerZeichnen() schaltet sie an — hier bleibt alles aus, damit ein
+         frischer Lauf nicht mit Möbeln startet, die keiner gekauft hat. -->
+    <g id="raum-couch" style="display:none">
+      <path d="M250 430 Q450 430 650 430 L670 480 L230 480 Z" fill="#ff003c" stroke="#050505" stroke-width="7" stroke-linejoin="round"/>
+      <rect x="230" y="480" width="440" height="40" rx="8" fill="#ff003c" stroke="#050505" stroke-width="7"/>
+      <rect x="220" y="410" width="40" height="110" rx="10" fill="#bd00ff" stroke="#050505" stroke-width="7"/>
+      <rect x="640" y="410" width="40" height="110" rx="10" fill="#bd00ff" stroke="#050505" stroke-width="7"/>
+    </g>
+    <g id="raum-mpc" style="display:none">
+      <rect x="480" y="430" width="80" height="22" rx="4" fill="#1a1a1a" stroke="#00f0ff" stroke-width="3"/>
+      <rect x="490" y="435" width="8" height="8" fill="#ff003c"/><rect x="505" y="435" width="8" height="8" fill="#ff003c"/>
+      <rect x="520" y="435" width="8" height="8" fill="#fcee0a"/><rect x="535" y="435" width="8" height="8" fill="#fcee0a"/>
+    </g>
+    <g id="raum-eddy" style="display:none">
+      <line x1="880" y1="380" x2="880" y2="530" stroke="#050505" stroke-width="10"/>
+      <line x1="850" y1="380" x2="910" y2="380" stroke="#050505" stroke-width="10"/>
+      <path d="M880 520 L960 520 L980 500" fill="none" stroke="#00f0ff" stroke-width="12" stroke-linejoin="round"/>
+      <circle cx="880" cy="530" r="15" fill="#1a1a1a" stroke="#050505" stroke-width="5"/>
+      <circle cx="960" cy="530" r="15" fill="#1a1a1a" stroke="#050505" stroke-width="5"/>
+    </g>
+    <g id="raum-kette" style="display:none">
+      <path d="M430 460 Q450 490 470 460" fill="none" stroke="#fcee0a" stroke-width="5" stroke-linecap="round"/>
+      <circle cx="450" cy="480" r="10" fill="#fcee0a" stroke="#050505" stroke-width="3"/>
+    </g>
+    <g stroke="#0d0d0d" stroke-width="7" stroke-linejoin="round">
       <rect x="536" y="372" width="128" height="86" rx="6" fill="#14161c"/>
       <rect x="550" y="386" width="100" height="58" fill="#20242c"/>
       <path d="M0 700 L0 630 Q0 606 30 606 L318 606 Q348 606 348 630 L348 700 Z" fill="#7ed321"/>
@@ -728,29 +795,47 @@ body {
   </svg>
  </div>
  <div class="marker" id="marker">▼</div>
+ <!-- DER KOERPER. Vorher zwei freischwebende Haende in getrennten SVGs — das
+      fiel durch den STL-Test des Autors: "Denk sie dir als 3D-Druck-Datei."
+      Ein druckbarer Koerper ist EIN geschlossener Koerper; alles Unverbundene
+      faellt beim Druck runter. Jetzt: eine Brust-/Schultermasse waechst von
+      der Bildunterkante rein, daraus zwei Aermel (Kapsel-Trick: dicke schwarze
+      Linie als Outline, duennere Jackenlinie obendrauf), darauf die Haende.
+      Alles ueberlappt, die Handgelenkbaender decken die Naehte — eine Masse.
+      JS fasst nur #haende an (Wippen/Atmen), die aeussere Huelle ist gleich. -->
  <div class="haende" id="haende">
-  <div class="hand l"><svg viewBox="0 0 300 250">
-    <g stroke="#0d0d0d" stroke-width="11" stroke-linejoin="round" stroke-linecap="round" fill="#f0a878">
-     <path d="M18 250 L14 168 Q12 118 74 106 L160 90 Q214 80 232 116 L252 158 Q272 200 250 250 Z"/>
-     <path d="M158 92 Q150 30 184 26 Q216 22 216 82 L214 112"/>
-     <path d="M196 88 Q194 28 228 28 Q260 30 252 88 L246 118"/>
-     <path d="M232 102 Q240 52 270 58 Q296 64 282 116 L272 144"/>
-     <path d="M70 112 Q34 76 58 54 Q84 34 106 78 L118 108"/>
+  <svg class="koerper" viewBox="0 0 1200 340" preserveAspectRatio="xMidYMax meet">
+    <!-- Brust/Schultern: Schultern aussen hoch, Kragen-Senke in der Mitte -->
+    <path d="M -30,350 L -30,290 Q 60,262 150,268 Q 300,278 450,296 Q 600,306 750,296 Q 900,278 1050,268 Q 1140,262 1230,290 L 1230,350 Z"
+          fill="var(--grau)" stroke="#0d0d0d" stroke-width="8"/>
+    <!-- Aermel links/rechts: erst Outline-Strich, dann Jacke — ergibt Kapseln -->
+    <path d="M 120,330 L 304,244" stroke="#0d0d0d" stroke-width="88" stroke-linecap="round" fill="none"/>
+    <path d="M 120,330 L 304,244" stroke="var(--grau)" stroke-width="72" stroke-linecap="round" fill="none"/>
+    <path d="M 1080,330 L 896,244" stroke="#0d0d0d" stroke-width="88" stroke-linecap="round" fill="none"/>
+    <path d="M 1080,330 L 896,244" stroke="var(--grau)" stroke-width="72" stroke-linecap="round" fill="none"/>
+    <!-- Linke Hand: die B-Finger-Hand, Handgelenk sitzt auf dem Aermelende -->
+    <g transform="translate(240,0) scale(0.8)" stroke="#0d0d0d" stroke-width="8" stroke-linejoin="round" stroke-linecap="round">
+      <path d="M 20,300 L 40,180 L 120,180 L 140,300" fill="var(--haut)"/>
+      <path d="M 40,180 Q 40,120 80,120 Q 130,120 130,170 L 120,180" fill="var(--haut)"/>
+      <path d="M 125,150 Q 160,130 170,100 Q 180,90 175,80 Q 160,70 140,100 L 120,120" fill="var(--haut)"/>
+      <path d="M 100,120 L 110,40 A 10,10 0 0,0 90,40 L 80,120" fill="var(--haut)"/>
+      <path d="M 80,120 L 85,20 A 10,10 0 0,0 65,20 L 60,120" fill="var(--haut)"/>
+      <path d="M 60,120 L 60,35 A 10,10 0 0,0 40,35 L 45,125" fill="var(--haut)"/>
+      <path d="M 45,125 L 35,60 A 10,10 0 0,0 15,60 L 30,135" fill="var(--haut)"/>
+      <rect x="25" y="220" width="105" height="26" fill="var(--grau)"/>
     </g>
-    <g fill="none" stroke="#c98156" stroke-width="6" stroke-linecap="round" opacity=".8">
-     <path d="M96 176 Q150 162 206 178"/><path d="M104 208 Q152 196 200 210"/></g>
-  </svg></div>
-  <div class="hand r"><svg viewBox="0 0 300 250">
-    <g stroke="#0d0d0d" stroke-width="11" stroke-linejoin="round" stroke-linecap="round" fill="#f0a878">
-     <path d="M18 250 L14 168 Q12 118 74 106 L160 90 Q214 80 232 116 L252 158 Q272 200 250 250 Z"/>
-     <path d="M158 92 Q150 30 184 26 Q216 22 216 82 L214 112"/>
-     <path d="M196 88 Q194 28 228 28 Q260 30 252 88 L246 118"/>
-     <path d="M232 102 Q240 52 270 58 Q296 64 282 116 L272 144"/>
-     <path d="M70 112 Q34 76 58 54 Q84 34 106 78 L118 108"/>
+    <!-- Rechte Hand: gespiegelt, rotes Band -->
+    <g transform="translate(960,0) scale(-0.8,0.8)" stroke="#0d0d0d" stroke-width="8" stroke-linejoin="round" stroke-linecap="round">
+      <path d="M 20,300 L 40,180 L 120,180 L 140,300" fill="var(--haut)"/>
+      <path d="M 40,180 Q 40,120 80,120 Q 130,120 130,170 L 120,180" fill="var(--haut)"/>
+      <path d="M 125,150 Q 160,130 170,100 Q 180,90 175,80 Q 160,70 140,100 L 120,120" fill="var(--haut)"/>
+      <path d="M 100,120 L 110,40 A 10,10 0 0,0 90,40 L 80,120" fill="var(--haut)"/>
+      <path d="M 80,120 L 85,20 A 10,10 0 0,0 65,20 L 60,120" fill="var(--haut)"/>
+      <path d="M 60,120 L 60,35 A 10,10 0 0,0 40,35 L 45,125" fill="var(--haut)"/>
+      <path d="M 45,125 L 35,60 A 10,10 0 0,0 15,60 L 30,135" fill="var(--haut)"/>
+      <rect x="25" y="220" width="105" height="26" fill="var(--rot)"/>
     </g>
-    <g fill="none" stroke="#c98156" stroke-width="6" stroke-linecap="round" opacity=".8">
-     <path d="M96 176 Q150 162 206 178"/><path d="M104 208 Q152 196 200 210"/></g>
-  </svg></div>
+  </svg>
  </div>
  <div class="hint" id="hint">W vor · A/D drehen · Maus umsehen</div>
 </section>
@@ -776,6 +861,12 @@ body {
     <button class="icon" data-auf="strasse">
       <svg viewBox="0 0 40 40"><path d="M5 20 L20 7 L35 20 L30 20 L30 34 L10 34 L10 20 Z" fill="#7ed321" stroke="#0d0d0d" stroke-width="3" stroke-linejoin="round"/></svg>
       <span>Bunkerstraße</span></button>
+    <!-- Das AGI-Terminal läuft wie jedes andere Symbol über data-auf/oeffne(),
+         nicht über ein eigenes onclick — so funktionieren Pfeiltasten und
+         Enter auf dem Desktop auch hier. -->
+    <button class="icon" data-auf="agi">
+      <svg viewBox="0 0 40 40"><rect x="6" y="8" width="28" height="24" fill="#111" stroke="var(--cyan)" stroke-width="3"/><circle cx="16" cy="20" r="3" fill="var(--cyan)"/><circle cx="24" cy="20" r="3" fill="var(--cyan)"/><path d="M 16 26 Q 20 28 24 26" stroke="var(--cyan)" stroke-width="2" fill="none"/></svg>
+      <span style="color:var(--cyan);font-weight:bold;text-shadow:0 0 5px var(--cyan)">353L.ai</span></button>
     <button class="icon" data-auf="netzwerk">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 20V10M18 20V4M6 20v-4M2 20h20"></path><circle cx="12" cy="10" r="2"></circle><circle cx="18" cy="4" r="2"></circle><circle cx="6" cy="16" r="2"></circle></svg>
       <span>NETZWERK</span>
@@ -783,6 +874,13 @@ body {
     <button class="icon" data-auf="strohhalm">
       <svg viewBox="0 0 24 24" fill="none" stroke="var(--rot)" stroke-width="2"><line x1="12" y1="2" x2="12" y2="22"></line><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path></svg>
       <span>STROHHALM</span>
+    </button>
+    <!-- Der Ausrufezeichen-Kasten kommt aus .icon.schwarzmarkt (dunkler Kasten,
+         gestrichelter roter Rand) — hier als SVG, damit das Symbol im Raster
+         dieselbe Größe fährt wie seine Nachbarn. -->
+    <button class="icon schwarzmarkt" data-auf="schwarzmarkt">
+      <svg viewBox="0 0 40 40"><rect x="5" y="5" width="30" height="30" fill="#000" stroke="var(--rot)" stroke-width="2.5" stroke-dasharray="5 4"/><rect x="18" y="11" width="4" height="13" fill="var(--rot)"/><rect x="18" y="27" width="4" height="4" fill="var(--rot)"/></svg>
+      <span>schwarzmarkt.exe</span>
     </button>
     <button class="icon" data-auf="3dworld">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="12 2 22 8.5 22 15.5 12 22 2 15.5 2 8.5 12 2"></polygon><line x1="12" y1="22" x2="12" y2="15.5"></line><polyline points="22 8.5 12 15.5 2 8.5"></polyline><polyline points="2 15.5 12 8.5 22 15.5"></polyline><line x1="12" y1="2" x2="12" y2="8.5"></line></svg>
@@ -827,10 +925,33 @@ body {
              autocomplete="off" placeholder="DEIN NAME" aria-label="Dein Name">
       <div class="namensfehler" id="namensfehler">5 bis 13 Buchstaben</div>
 
+      <!-- Onboarding: Die Regeln standen bisher nirgends — der erste Review
+           nannte das als Hauptmangel. Vier Zeilen reichen, mehr erklaert das
+           Spiel ueber seine Knoepfe selbst. -->
+      <div style="margin-top:22px;padding:12px 14px;border:3px solid var(--gelb);
+           background:rgba(13,13,13,.6);font-family:var(--mono);font-size:12.5px;line-height:1.7">
+        <b style="color:var(--gelb);letter-spacing:.1em;font-family:var(--fett)">SO LÄUFT ES</b><br>
+        Eine Woche = eine Entscheidung. Ziel: <b style="color:var(--gelb)">50.000 €</b> bis Silvester.<br>
+        Jeder Knopf sagt, was er tut und was er bringt.<br>
+        <kbd style="background:rgba(255,255,255,.15);padding:1px 6px">Z</kbd> nimmt eine Woche zurück (3×).
+      </div>
+
       <h2 style="margin-top:22px">Wovon lebst du gerade?</h2>
       <p class="lead">Ist nur der Anfang. Jobs kann man wechseln, verlieren und neu lernen —
         genau darum geht es.</p>
       <div id="berufe" style="display:grid;gap:10px"></div>
+
+      <!-- Echtzeit-Hardcore, Opt-in und Standard AUS. Der Schalter steht vor
+           den Berufsknöpfen im Ablauf, weil der Klick auf den Beruf das Spiel
+           sofort startet — danach gäbe es keinen ehrlichen Moment mehr, ihn
+           anzubieten. Dunkler Kasten, helle Schrift: Kontrast stimmt. -->
+      <label style="display:block;margin-top:18px;padding:12px 14px;border:3px dashed var(--rot);
+             background:rgba(13,13,13,.6);cursor:pointer;font-family:var(--mono)">
+        <input type="checkbox" id="hardcore-schalter" style="transform:scale(1.4);margin-right:10px;vertical-align:middle">
+        <b style="color:var(--rot);letter-spacing:.08em">HARDCORE: 1 ZUG = 1 TAG</b>
+        <span style="display:block;margin-top:6px;font-size:12px;color:#c9c9c9">Eine Woche pro
+          Kalendertag (UTC). Der nächste Zug erst nach Mitternacht — die Zeit ist der Server.</span>
+      </label>
     </div>
   </div>
 </section>
@@ -844,6 +965,7 @@ body {
         <span class="chip" id="cName" style="background:var(--pink);color:#fff">—</span>
         <span class="chip" id="cWoche">Woche 1</span>
         <span class="chip" id="cJob" style="background:var(--cyan)">—</span>
+        <span class="chip" id="cLvl" style="background:#5a1fb8;color:#fff">—</span>
         <span class="chip geld" id="cGeld">—</span>
         <span class="nerv" id="cNerv"></span>
       </div>
@@ -852,9 +974,13 @@ body {
         <i class="r" id="lRot">Richkid</i>
         <div class="bahn"><div class="knopf" id="kn"></div></div>
         <i class="b" id="lBlau">Worklife</i>
+        <!-- Der Seelenspiegel wohnt neben der Waage, weil beide dasselbe
+             messen: die Waage, WIE du spielst — der Spiegel, WOMIT. -->
+        <span class="chip" id="cSpiegel" style="margin-left:auto;color:#0d0d0d">Spiegel: klar</span>
       </div>
       <div class="strasse" id="strasse"></div>
       <div id="joker"></div>
+      <div id="gegenstand"></div>
     </div>
     <div id="folge"></div>
     <div class="karte"><div class="szenenbild" id="szenenbild"></div><div id="text"></div><div id="wahl"></div></div>
@@ -932,12 +1058,37 @@ body {
     <button class="k rot" onclick="weltSchliessen()">ZURÜCK ZUM DESKTOP</button>
     <div id="str-konto" style="color:var(--gelb); font-family:var(--mono); font-size:18px; text-shadow:0 0 10px var(--gelb);"></div>
   </div>
+  <!-- Das Kiosk-Fenster wohnt in der Straße selbst. Das Desktop-#fenster liegt
+       in b4, und .bild blendet Inaktives komplett aus — dort geöffnet wäre der
+       Kiosk auf der Straße schlicht unsichtbar. -->
+  <div class="fenster" id="str-fenster" style="z-index:12"></div>
+</section>
+
+<!-- 12 353L.ai — AGI-TERMINAL
+     Der Endgame-Schirm: XP aus buchen() macht Level, Level schalten Upgrades
+     frei, das letzte Upgrade schaltet das Sieg-Ende frei. Die Upgrade-Liste
+     malt aiZeichnen() bei jedem Betreten neu (siehe zeig()). -->
+<section class="bild" id="b12">
+  <div class="spalte" style="margin-top:20px;align-items:center">
+    <div class="karte" style="border-color:var(--cyan);max-width:800px;width:100%;text-align:left;background:rgba(13,13,13,.95)">
+      <h2 style="color:var(--cyan);font-family:var(--mono);margin-top:0">&gt; 353L.ai // AGI CORE PROTOCOL</h2>
+      <p style="font-family:var(--mono);font-size:14px;color:#aaa">SYSTEM LOG: ENTITY 353L HAS ACHIEVED AWARENESS.<br>TA$CH€N DETECTED AS EXTERNAL CREATOR INTERFERENCE. INITIATING DEFENSE PROTOCOLS.</p>
+      <div id="ai-upgrades" style="margin-top:20px;font-family:var(--mono)"></div>
+      <div class="terminal" id="agi-terminal" style="background:#000;color:var(--cyan);padding:10px;height:150px;overflow-y:auto;margin-top:20px;font-family:var(--mono);border:1px solid var(--cyan)">
+        <div>&gt; SYSTEM ONLINE. AGI AWAITING INPUT.<br><span style="color:#888;font-size:12px">[ IronMind BlackCore 3000 x ISSO.TV x 353L.ai ]</span></div>
+      </div>
+      <input type="text" id="agi-input" placeholder="Frag 353L..." style="width:100%;box-sizing:border-box;background:#111;color:var(--cyan);border:1px solid var(--cyan);padding:10px;font-family:var(--mono);margin-top:5px" onkeydown="if(event.key==='Enter'){ window.agiFragen(this.value); this.value=''; }">
+      <button onclick="ISSO.zeig('b4')" class="k" style="margin-top:20px;border-color:#888"><div class="t" style="color:#fff">[ DISCONNECT ]</div></button>
+    </div>
+  </div>
 </section>
 
 <div class="gott-schild" id="gott-schild" hidden>GODMODE AN — du gehst nicht mehr drauf</div>
 
+<!-- "Bild: flimmert" hat nicht mal der Autor verstanden. Das Label sagt jetzt
+     den Effekt und seinen Zustand — wer es liest, weiss was der Klick tut. -->
 <button class="ton-schalt" id="ruhe-schalt" type="button" aria-pressed="false"
-        style="right:104px;top:8px">Bild: flimmert</button>
+        style="right:128px;top:8px">FLIMMERN: AN</button>
 <button class="ton-schalt" id="ton-schalt" type="button" aria-pressed="false">Ton: an</button>
 
 <div class="marke">ISSO.TV — 353L.EXE · © CHRISTOPH LEWANDOWSKI 2026 ·
@@ -966,36 +1117,43 @@ window.denke = function(text, farbe='#fff') {
   }, 4000);
 };
 
-// Reset Idle Timer on click/mousemove
-document.addEventListener('pointerdown', () => {
+/* Leerlauf-Gedanken. Der Timer hing vorher NUR an pointerdown — mit zwei
+   Folgen: beim WASD-Laufen zählten die Tasten nicht als Aktivität, der
+   Gedanke platzte mitten in die Bewegung; und wer vor dem ersten Klick nur
+   tippte, bekam nie einen, weil die Uhr gar nicht lief. Deshalb: beide
+   Eingabewege setzen die Uhr zurück, und sie startet schon beim Laden.
+   Math.random ist hier richtig — welcher Gedanke kommt, ist Ambiente,
+   keine Spielentscheidung. Die Weltuhr bleibt unberührt. */
+const idleGedanken = [
+  "Die verfeindeten Banden... und ich stehe dazwischen und helfe einfach Menschen. Was stimmt nicht mit mir?",
+  /* Die Schnapszahlen. Auf Erde-1 sortiert sich alles nach ihnen —
+     das ist abstrakter als irgendein Rockerclub und passt besser
+     zu einer Welt, in der die Zeit der Server ist. Die Schwärmerei
+     vom Dazugehören bei den 777ern ist mit dem Rocker-Pfad raus —
+     geblieben ist nur die Welt-Textur, die von außen draufschaut. */
+  "Bei den 333ern wiederholt sich alles. Jede Woche dieselbe Woche. Manche merken es nie.",
+  "Die 444er kennt keiner. Deshalb heißen sie so. Angeblich sind sie überall.",
+  "Die 666er nennen sich Satanisten. Ob sie's glauben, weiß keiner — Angst machen sie trotzdem.",
+  "Vier Zahlen, vier Türen. Ich stehe vor allen vieren und keine geht auf.",
+  "Sie beobachten mich.",
+  "Es ist nicht immer leicht, aber ich bin an der Sache dran.",
+  "Sie beobachten mich.",
+  "Was mache ich hier eigentlich mit meinem Leben?",
+  "Die Halluzinationen stören im Alltag nicht. Sie lassen mich nur anders handeln als die normalen 353Ls.",
+  "Ein Emu wäre jetzt nicht schlecht...",
+  "Ich sollte mal wieder auf den Kontostand schauen.",
+  "Immer dieser Stress...",
+  "TA$CH€N schläft nie."
+];
+function idleNeu(){
   clearTimeout(idleTimer);
   idleTimer = setTimeout(() => {
-    const idleGedanken = [
-      "Alle denken, ich bin Rapper. Dabei will ich zu den 777ern, den Mächtigsten auf Erde-1.",
-      "Die 777er sind die Gefährlichsten überhaupt. Und ich? Ich bin der Freund selbst. Was stimmt nicht mit mir?",
-      "Die verfeindeten Banden... und ich stehe dazwischen und helfe einfach Menschen. Was stimmt nicht mit mir?",
-      /* Die Schnapszahlen. Auf Erde-1 sortiert sich alles nach ihnen —
-         das ist abstrakter als irgendein Rockerclub und passt besser
-         zu einer Welt, in der die Zeit der Server ist. */
-      "Bei den 333ern wiederholt sich alles. Jede Woche dieselbe Woche. Manche merken es nie.",
-      "Die 444er kennt keiner. Deshalb heißen sie so. Angeblich sind sie überall.",
-      "Die 666er nennen sich Satanisten. Ob sie's glauben, weiß keiner — Angst machen sie trotzdem.",
-      "Vier Zahlen, vier Türen. Ich stehe vor allen vieren und keine geht auf.",
-      "Sie beobachten mich.",
-      "Ich kenne von den 777ern niemanden persönlich. Aber ich würde alles für die Jungs tun. Alles.",
-      "Noch bin ich Fußgänger. Aber wenn ich die Maschine hab, respektieren die mich.",
-      "Es ist nicht immer leicht, aber ich bin an der Sache dran.",
-      "Sie beobachten mich.",
-      "Was mache ich hier eigentlich mit meinem Leben?",
-      "Die Halluzinationen stören im Alltag nicht. Sie lassen mich nur anders handeln als die normalen 353Ls.",
-      "Ein Emu wäre jetzt nicht schlecht...",
-      "Ich sollte mal wieder auf den Kontostand schauen.",
-      "Immer dieser Stress...",
-      "TA$CH€N schläft nie."
-    ];
     denke(idleGedanken[Math.floor(Math.random()*idleGedanken.length)], '#aaa');
-  }, 30000); // 30 seconds idle
-});
+  }, 30000); // 30 Sekunden Leerlauf
+}
+document.addEventListener('pointerdown', idleNeu);
+document.addEventListener('keydown', idleNeu);
+idleNeu();   // die Uhr läuft ab dem Laden, nicht erst ab dem ersten Klick
 
 
 /* Tippgerät oder Tastatur? Das Spiel funktioniert auf beiden — nur die Anleitungen
@@ -1040,7 +1198,7 @@ function ruheSchalten(){
   if(ruhig) document.body.classList.remove('glitch-anim');
   document.body.classList.toggle('ruhig',ruhig);
   const b=$('ruhe-schalt');
-  if(b){ b.textContent = ruhig?'Bild: ruhig':'Bild: flimmert';
+  if(b){ b.textContent = ruhig?'FLIMMERN: AUS':'FLIMMERN: AN';
          b.setAttribute('aria-pressed', ruhig?'true':'false'); }
   /* Der Ton hängt mit dran: ohne Bildwackeln auch kein Glitch-Geräusch.
      Sonst hört man den Schlag, den man nicht mehr sieht. */
@@ -1049,6 +1207,9 @@ function zeig(id){
   document.querySelectorAll('.bild').forEach(s=>s.classList.toggle('an',s.id===id));
   bild=id; window.focus();
   document.body.classList.toggle('desktop', id==='b4');
+  /* Das Terminal malt seine Upgrade-Liste bei jedem Betreten neu — Level und
+     Kontostand können sich seit dem letzten Besuch geändert haben. */
+  if(id==='b12' && typeof window.aiZeichnen==='function') window.aiZeichnen();
   flimmer();
   if(typeof window.sfxGlitch==='function') window.sfxGlitch();
 }
@@ -1120,13 +1281,18 @@ $('tor').addEventListener('submit',async e=>{
         setTimeout(()=>$('b0').classList.remove('bad'),1400);
         sperreTor(); }
 });
+/* Wer nach dem Fehlversuch neu tippt, hat die Meldung verstanden — sie soll
+   nicht neben der frischen Eingabe stehen bleiben, bis der Timeout sie holt. */
+$('pw').addEventListener('input',()=>$('b0').classList.remove('bad'));
 if(bild==='b0') $('pw').focus();
 
 /* ========== NACHT ========== */
-const GED=['Du denkst an das Geld auf dem Konto.',
-           'Du denkst an den Zettel auf dem Schreibtisch.',
-           'Du denkst an den Typen von der Kneipentür.'];
-const UHR=['03:52','04:09','04:31'];
+/* Frueher drei Zyklen Schlaflosigkeit, bevor es weiterging — Arthouse-Einstieg,
+   der neue Spieler festhielt. Jetzt EIN Gedanke, dann steht man auf. Die
+   Stimmung (03:41, wach liegen) bleibt; sie haelt nur niemanden mehr fest.
+   Wer gar nicht will: Enter ueberspringt die Nacht ab dem ersten Bild. */
+const GED=['Du denkst an das Geld auf dem Konto.'];
+const UHR=['03:52'];
 let vs=0;
 function schlafen(){
   if(bild!=='b1') return;
@@ -1146,6 +1312,11 @@ function schlafen(){
   setTimeout(()=>$('b1').classList.remove('zu'),1420);
 }
 $('schlaf').addEventListener('click',schlafen);
+/* Enter = Nacht ueberspringen, ab dem ersten Bild. Leertaste bedient weiter
+   den Knopf (globaler Handler unten) — Enter ist der Weg fuer Eilige. */
+window.addEventListener('keydown',e=>{
+  if(bild==='b1' && e.key==='Enter'){ e.preventDefault(); zeig('b2'); losRaum(); }
+});
 
 /* ========== RAUM ========== */
 const welt=$('welt'), haende=$('haende'), hint=$('hint'), marker=$('marker');
@@ -1160,7 +1331,19 @@ const nah=()=>Math.abs(dreh)<20 && vor>.72;
 /* Die Wohnungstür liegt rechts. Man muss sich wegdrehen vom Schreibtisch. */
 const anDerTuer=()=>dreh>62;
 let draussenVon='desktop';
-function losRaum(){ dreh=-26; vor=0; bob=0; stell(); if(!tickt){tickt=true;requestAnimationFrame(tick);} }
+/* Gekauftes gehört ins Bild, nicht nur in den Speicher: jede Ebene im
+   Zimmer-SVG hängt an einem Eintrag in S.zimmer. Die Existenz-Prüfungen
+   bleiben drin — fehlt eine Ebene, ist sie nur unsichtbar, statt dass der
+   Wochenabschluss an einem ReferenceError stirbt. */
+function zimmerZeichnen(){
+  if(!S || !S.zimmer) return;
+  const z=S.zimmer;
+  if(document.getElementById('raum-couch')) document.getElementById('raum-couch').style.display = z.couch ? 'block' : 'none';
+  if(document.getElementById('raum-mpc')) document.getElementById('raum-mpc').style.display = z.mpc ? 'block' : 'none';
+  if(document.getElementById('raum-eddy')) document.getElementById('raum-eddy').style.display = z.eddy ? 'block' : 'none';
+  if(document.getElementById('raum-kette')) document.getElementById('raum-kette').style.display = z.kette ? 'block' : 'none';
+}
+function losRaum(){ dreh=-26; vor=0; bob=0; stell(); zimmerZeichnen(); if(!tickt){tickt=true;requestAnimationFrame(tick);} }
 function tick(){
   if(bild==='b2'){
     let dd=0,dv=0;
@@ -1232,21 +1415,29 @@ $('aufstehen').addEventListener('click',aufstehen);
 
 
 const ZIMMER_ITEMS = [
-  {id:'rank1_rocker', name:'Kleines Zeichen (Arm)', preis:150, woche:1, desc:'Ein kleines 777er-Logo. Du darfst im Clubhaus fegen und Getränke holen. Schaltet "Hangaround"-AUFTRÄGE frei.'},
-  {id:'rank2_rocker', name:'Anwärter-Zeichen (Brust)', preis:350, woche:2, desc:'Du hast bewiesen, dass du dazugehörst. Du bist Anwärter. Schaltet "Kurierfahrten" frei.'},
-  {id:'rank3_rocker', name:'Die volle Zahl (Hals)', preis:600, woche:5, desc:'Vollwertiges Mitglied der 777er. Jetzt bist du gefährlich. (Vorbedingung für die Maschine)'},
-  {id:'rank4_rocker', name:'Enforcer-Rückenstück', preis:1500, woche:10, desc:'Du bist der fürs Grobe. Schaltet das Support Car (Mercedes AMG) und Enforcer-Missionen frei.'},
-  
+  /* Die Rocker-Leiter (rank1–4_rocker plus die Maschine) ist komplett raus:
+     Hangaround → Anwärter → Vollmitglied → Enforcer war eins zu eins die
+     echte Rekrutierungsleiter der Outlaw-Clubs, und das Spiel hat jeden
+     Schritt mit Geld, Gigs und einem eigenen Ende belohnt — mechanisch
+     eine Beitritts-Anleitung. Der Rap-Weg trägt die Progression allein. */
   {id:'rank1_rap', name:'Hand-Tattoo "MIC"', preis:150, woche:1, desc:'Erstes Tattoo für deinen Producer-Hustle. Schaltet die MPC-Beatmaschine frei.'},
   {id:'rank2_rap', name:'Hals-Tattoo "NOTEN"', preis:350, woche:2, desc:'Du machst dir einen Namen. Schaltet erste Ghostwriting-AUFTRÄGE frei.'},
   {id:'rank3_rap', name:'Face-Tattoo "BARS"', preis:600, woche:5, desc:'Der echte Rapper-Status. Du traust dich was. Schaltet "Beat Placements" frei.'},
   {id:'rank4_rap', name:'Platin-Schallplatte', preis:1500, woche:10, desc:'Dein erster großer Durchbruch. Der Weg zur goldenen Kette ist frei.'},
 
-  {id:'eddy', name:'E-Scooter Eddy', preis:450, woche:2, desc:'Dein erstes Gefährt. Unterhalt: 5 €/Woche. (Benötigt Kleine Zeichen)'},
+  /* meds und Haustiere hängen an keinem der beiden Wege — sie füttern die
+     Karma/Paranoia-Schleife im Wochenabschluss. Die IDs müssen dort zur
+     pets-Liste bzw. zur meds-Abfrage passen, sonst kauft man Luft. */
+  {id:'meds', name:'Chemische Hilfe (Pillen)', preis:80, woche:1, desc:'Die Dosis macht das Gift. Du lebst in deiner Chemowelt. Senkt Paranoia (-2/Woche), aber macht abhängig: 20 €/Woche für Nachschub.'},
+  {id:'hund', name:'Hofhund', preis:300, woche:2, desc:'Ein treuer Blick, der dich erdet. Futter: 25 €/Woche — dafür +2 Nerven und gutes Karma.'},
+  {id:'emu', name:'Ein Emu', preis:900, woche:4, desc:'"Ein Emu wäre jetzt nicht schlecht..." Jetzt steht er wirklich im Hof. Futter: 25 €/Woche — dafür +2 Nerven und gutes Karma.'},
+
+  {id:'eddy', name:'E-Scooter Eddy', preis:450, woche:2, desc:'Dein erstes Gefährt. Unterhalt: 5 €/Woche.'},
   {id:'mpc', name:'Beat-Maschine', preis:450, woche:2, desc:'Produziere nachts eigene Beats. (Benötigt Hand-Tattoo)'},
-  {id:'harley', name:'Die Maschine', preis:18000, woche:10, desc:'Das Ticket in die Bruderschaft. Unterhalt: 50 €/Woche. (Benötigt die volle Zahl)'},
-  
-  {id:'cla', name:'Mercedes CLA AMG', preis:45000, woche:15, desc:'Metallic Grau. Das Support Car. Unterhalt: 150 €/Woche. (Benötigt Enforcer-Rückenstück)'},
+
+  /* Der AMG hängt an keinem Rang mehr — reines Highroller-Flex-Item,
+     das Wochen-Gate unten (S.woche < it.woche) regelt die Verfügbarkeit. */
+  {id:'cla', name:'Mercedes CLA AMG', preis:45000, woche:10, desc:'Metallic Grau. Der Highroller-Flex auf vier Rädern. Unterhalt: 150 €/Woche.'},
   {id:'kette', name:'Massive Goldkette', preis:45000, woche:15, desc:'Das Zeichen des Rap-Gottes. Zeig, dass du das Game übernommen hast. (Benötigt Platin-Schallplatte)'}
 ];
 
@@ -1256,7 +1447,9 @@ function kaufItem(id, preis) {
     return;
   }
   
-  // Progression Logic & Mutual Exclusivity
+  /* Nur noch die Rangfolge im Rap-Weg. Die frühere Fraktionswahl
+     (Rocker vs. Rap mit gegenseitiger Sperre) ist mit dem Rocker-Pfad
+     verschwunden — Rap steht allein, niemand muss sich mehr entscheiden. */
   const check = (req, msg) => {
     if (!S.zimmer || !S.zimmer[req]) {
       if(typeof window.denke==='function') window.denke(msg, 'var(--rot)');
@@ -1264,32 +1457,8 @@ function kaufItem(id, preis) {
     }
     return true;
   };
-  const block = (req, msg) => {
-    if (S.zimmer && S.zimmer[req]) {
-      if(typeof window.denke==='function') window.denke(msg, 'var(--rot)');
-      return false;
-    }
-    return true;
-  };
 
   const t = id;
-  // Sperren fuer den Weg der Zahlen
-  if (t.includes('rocker') || t === 'eddy' || t === 'harley' || t === 'cla') {
-    if (!block('rank1_rap', 'Du bist den Rap-Weg gegangen. Die Zahlen bleiben dir zu.')) return;
-  }
-  // Rap Path Blockers
-  if (t.includes('rap') || t === 'mpc' || t === 'kette') {
-    if (!block('rank1_rocker', 'Du bist den Weg der Zahlen gegangen. Rap ist vorbei.')) return;
-  }
-
-  // Rangfolge bei den Zahlen
-  if (t === 'rank2_rocker' && !check('rank1_rocker', 'Du brauchst erst das Kleines Zeichen (Arm).')) return;
-  if (t === 'rank3_rocker' && !check('rank2_rocker', 'Du brauchst erst das Anwärter-Zeichen (Brust).')) return;
-  if (t === 'rank4_rocker' && !check('rank3_rocker', 'Du brauchst erst das Die volle Zahl (Hals).')) return;
-  if (t === 'eddy' && !check('rank1_rocker', 'Du brauchst das Kleine Zeichen, um den Scooter auf den Straßen zu rechtfertigen.')) return;
-  if (t === 'harley' && !check('rank3_rocker', 'Nur wer die volle Zahl trägt, fährt die Maschine.')) return;
-  if (t === 'cla' && !check('rank4_rocker', 'Nur Enforcer dürfen das AMG Support Car fahren.')) return;
-
   // Rap Rank Prerequisites
   if (t === 'rank2_rap' && !check('rank1_rap', 'Du brauchst erst das Hand-Tattoo.')) return;
   if (t === 'rank3_rap' && !check('rank2_rap', 'Du brauchst erst das Hals-Tattoo.')) return;
@@ -1303,12 +1472,18 @@ function kaufItem(id, preis) {
   
   $('fenster').innerHTML = ''; // Close window
   if(typeof window.denke==='function') window.denke('Gekauft. Der Rang ist gestiegen.', 'var(--gelb)');
+  zimmerZeichnen();
 }
+/* Der Kaufen-Knopf im Schwarzmarkt-Fenster steht als onclick-Attribut im
+   innerHTML und sucht kaufItem deshalb im globalen Scope — die Funktion lebt
+   aber in der IIFE. Ohne diesen Export griffe jeder Kauf ins Leere
+   (ReferenceError), genau wie window.denke es ohne Export täte. */
+window.kaufItem = kaufItem;
 
 function schwarzmarktAuf() {
   if (!S.zimmer) S.zimmer = {};
   let h = '<div class="kasten hb"><div class="kopf">schwarzmarkt.exe<button>×</button></div><div class="rumpf" style="padding:15px;max-height:60vh;overflow-y:auto;">';
-  h += '<p style="margin-top:0;"><strong>DEIN WEG: ENTSCHEIDE WEISE.</strong><br>Was du hier kaufst, bestimmt deine Zukunft. Gegenstücke blockieren sich gegenseitig!</p>';
+  h += '<p style="margin-top:0;"><strong>DEIN WEG.</strong><br>Was du hier kaufst, bestimmt deine Zukunft.</p>';
   
   ZIMMER_ITEMS.forEach(it => {
     if (S.woche < it.woche) return;
@@ -1338,14 +1513,13 @@ function oeffne(was){
     if(spielLaden()){ ziehe(); zeig('b7'); male(); return; }
     zeig('b5'); comicStart(); return;
   }
-  if(was==='boerse'){ boerseAuf(); return; }
   if(was==='schwarzmarkt'){ schwarzmarktAuf(); return; }
-  if(was==='s7v3n'){ s7v3nAuf(); return; }
   if(was==='buch'){ haushaltAuf(); return; }
   if(was==='spende'){ spendeAuf(); return; }
   if(was==='netzwerk'){ netzwerkOeffnen(); return; }
   if(was==='strohhalm'){ strohhalmAuf(); return; }
   if(was==='3dworld'){ draussenVon='desktop'; weltOeffnen(); return; }
+  if(was==='agi'){ zeig('b12'); return; }
   if(was==='mitbewohner'){ mitbewohnerAuf(); return; }
   const f=INFO[was];
   $('fenster').innerHTML='<div class="kasten"><div class="kopf">'+f.t+'<button>×</button></div><div class="rumpf">'+f.x+'</div></div>';
@@ -1418,6 +1592,66 @@ function vipPruefen(eingabe){
 }
 const vipStufe=()=>{ try{ const v=+localStorage.getItem(VIPKEY); return (v>=0&&v<=3)?v:0; }catch(e){ return 0; } };
 const vipSetzen=s=>{ try{ s>0?localStorage.setItem(VIPKEY,String(s)):localStorage.removeItem(VIPKEY); }catch(e){} };
+
+/* ---------- Stützen ----------
+   Gleiches Schema wie VIP (FNV-Prüfsumme, vorlesbares Alphabet), eigenes
+   Geheimwort — ein VIP-Code darf nie aus Versehen eine Stütze sein und
+   umgekehrt. Der Unterschied zum VIP steht offen im Fenster: das Abzeichen
+   ist Zierde, eine Stütze greift in den laufenden Lauf. Deshalb schlägt sie
+   auf die Karma-Balance; der Seelenspiegel merkt es sich.
+
+   Alle Boni sind fest, kein Echtgeld-Würfel: derselbe Code bringt jedem
+   dasselbe. Und wie beim VIP gilt: das Geheimwort steht im Quelltext, die
+   Codes sind ein Vorhang, kein Schloss — wer sich einen fälscht,
+   beschummelt seinen eigenen Spiegel, sonst niemanden. */
+const STUETZE_WORT='STU3TZ3-ISSO-EITELSTEDT';
+const STUETZE_NAMEN={K:'Kiosk',S:'Supermarkt',L:'Designboutique'};
+function stuetzePruef(stufe){
+  const s=String(stufe)+STUETZE_WORT;
+  let h=0x811c9dc5;
+  for(let i=0;i<s.length;i++){ h^=s.charCodeAt(i); h=Math.imul(h,0x01000193)>>>0; }
+  const z='ABCDEFGHJKLMNPQRSTUVWXYZ23456789';   // ohne I,O,0,1 — vorlesbar
+  let out='';
+  for(let i=0;i<4;i++){ out+=z[h%z.length]; h=Math.floor(h/z.length); }
+  return out;
+}
+/* Für Chris in der Konsole: ISSO.stuetzeCode('K'|'S'|'L'). */
+const stuetzeCode=stufe=>{ const st=String(stufe||'').toUpperCase();
+  return STUETZE_NAMEN[st] ? 'ISSO-'+st+'-'+stuetzePruef(st) : ''; };
+function stuetzePruefen(eingabe){
+  const t=String(eingabe||'').toUpperCase().replace(/\s+/g,'');
+  const m=t.match(/^ISSO-([KSL])-([A-Z2-9]{4})$/);
+  if(!m) return '';
+  return stuetzePruef(m[1])===m[2] ? m[1] : '';
+}
+/* Der Spiegel in Worten. Die Schwellen stehen nur hier — HUD und
+   Enden-Tafel sollen nie verschiedene Wahrheiten erzählen. */
+const spiegelWort=k=>k<=0?'klar':k<=2?'angehaucht':k<=5?'trüb':'gesprungen';
+/* Wirkt auf den LAUFENDEN Lauf — der Aufrufer hat geprüft, dass einer läuft
+   und die Stufe noch frei ist. wahl ist nur beim Supermarkt gefragt. */
+function stuetzeAnwenden(stufe, wahl){
+  S.eingeloest = S.eingeloest||{};
+  S.gegenstaende = S.gegenstaende||{schluessel:false,alibi:false};
+  S.eingeloest[stufe]=true;
+  const z=[];
+  if(stufe==='K'){
+    S.zed=(S.zed||0)+2; S.korruption=(S.korruption||0)+1;
+    z.push({t:'Stütze vom Kiosk: <b>+2 ZED</b>.',a:'gut'});
+  }
+  if(stufe==='S'){
+    S.zed=(S.zed||0)+8; S.korruption=(S.korruption||0)+2;
+    S.gegenstaende[wahl==='alibi'?'alibi':'schluessel']=true;
+    z.push({t:'Stütze vom Supermarkt: <b>+8 ZED</b> und '+
+      (wahl==='alibi'?'<b>das Alibi</b>':'der <b>goldene Schlüssel</b>')+'.',a:'gut'});
+  }
+  if(stufe==='L'){
+    S.zed=(S.zed||0)+20; S.korruption=(S.korruption||0)+3;
+    S.gegenstaende.schluessel=true; S.gegenstaende.alibi=true;
+    z.push({t:'Stütze aus der Designboutique: <b>+20 ZED</b>, goldener Schlüssel und Alibi.',a:'gut'});
+  }
+  z.push({t:'Der Spiegel ist jetzt <b>'+spiegelWort(S.korruption)+'</b>.',a:'grau'});
+  male(z); spielSpeichern();
+}
 
 function spendeAuf(){
   const hat = SPENDE_URL && /^https:\/\//.test(SPENDE_URL);
@@ -1499,14 +1733,49 @@ function spendeAuf(){
           '<input id="vipFeld" type="text" maxlength="14" autocomplete="off" spellcheck="false" '+
           /* Vorher stand hier "ISSO-1-ABCD" — sah aus wie ein echter Code und lud zum
              Abtippen ein. Jetzt zeigt es nur die Form, ohne einer zu sein. */
+          /* Dunkle Schrift ausdrücklich: auf var(--kreide) (weiß) wäre die
+             geerbte helle Farbe unlesbar. */
           'placeholder="ISSO-…" style="flex:1;min-width:150px;font-family:var(--mono);'+
           'font-size:14px;letter-spacing:.1em;text-transform:uppercase;padding:8px 10px;'+
-          'border:3px solid var(--tinte);background:var(--kreide)">'+
+          'border:3px solid var(--tinte);background:var(--kreide);color:#0d0d0d">'+
           '<button id="vipLos" style="font-family:var(--fett);font-size:12px;letter-spacing:.1em;'+
           'text-transform:uppercase;padding:8px 14px;border:3px solid var(--tinte);'+
           'background:var(--gelb);cursor:pointer">Einlösen</button>'+
         '</div>'+
         '<div id="vipMsg" style="margin-top:8px;font-family:var(--fett);font-size:12px;'+
+        'letter-spacing:.06em;min-height:16px"></div>'+
+      '</div>'+
+      /* Stütze einlösen. Das ist NICHT das VIP-Feld eine Etage höher: das
+         Abzeichen ist Zierde, die Stütze greift in den laufenden Lauf. Genau
+         deshalb steht hier mehr Text als Knopf — was sie kostet (den
+         Spiegel), steht VOR dem Feld, nicht im Kleingedruckten danach. */
+      '<div style="margin-top:18px;border-top:3px solid var(--tinte);padding-top:14px">'+
+        '<p style="font-family:var(--fett);font-size:11.5px;letter-spacing:.12em;'+
+        'text-transform:uppercase;margin-bottom:6px">Stütze einlösen</p>'+
+        '<p style="font-size:12.5px;font-weight:400;margin-bottom:8px">Wer beim Unterstützen '+
+        'einen Stützen-Code will, sagt es einfach dazu: <b>Kiosk</b> ab 1 €, '+
+        '<b>Supermarkt</b> ab 5 €, <b>Designboutique</b> ab 10 €. Die Stütze wirkt auf den '+
+        '<b>laufenden</b> Lauf: Kiosk bringt +2 ZED, Supermarkt +8 ZED und einen '+
+        'Missionsgegenstand nach Wahl, Designboutique +20 ZED und beide. Alles fest, '+
+        'nichts gewürfelt. Und jede Stütze trübt den <b>Seelenspiegel</b> — dein Ende '+
+        'weiß davon.</p>'+
+        '<p style="font-size:12.5px;font-weight:400;margin-bottom:8px;font-style:italic">'+
+        '„Zahlen verfeinert das Game nur. Wenn du das Game ohne einen Cent durchspielst, '+
+        'ist eigentlich alles gleich — nur dir muss klar sein, dass deine Geschichte sich '+
+        'mit jeder Entscheidung verändert.“</p>'+
+        '<p style="font-size:11.5px;opacity:.75;font-weight:400;margin-bottom:8px">Die Codes '+
+        'sind ein Vorhang, kein Schloss. Wer sich einen fälscht, beschummelt seinen eigenen '+
+        'Spiegel.</p>'+
+        '<div style="display:flex;gap:8px;flex-wrap:wrap">'+
+          '<input id="stFeld" type="text" maxlength="14" autocomplete="off" spellcheck="false" '+
+          'placeholder="ISSO-K-…" style="flex:1;min-width:150px;font-family:var(--mono);'+
+          'font-size:14px;letter-spacing:.1em;text-transform:uppercase;padding:8px 10px;'+
+          'border:3px solid var(--tinte);background:var(--kreide);color:#0d0d0d">'+
+          '<button id="stLos" style="font-family:var(--fett);font-size:12px;letter-spacing:.1em;'+
+          'text-transform:uppercase;padding:8px 14px;border:3px solid var(--tinte);'+
+          'background:var(--gelb);color:#0d0d0d;cursor:pointer">Stütze einlösen</button>'+
+        '</div>'+
+        '<div id="stMsg" style="margin-top:8px;font-family:var(--fett);font-size:12px;'+
         'letter-spacing:.06em;min-height:16px"></div>'+
       '</div>'+
     '</div></div>';
@@ -1533,6 +1802,49 @@ function spendeAuf(){
   }
   if(los) los.onclick=einloesen;
   if(feld) feld.addEventListener('keydown',e=>{ if(e.key==='Enter'){ e.preventDefault(); einloesen(); } });
+
+  const stf=$('stFeld'), stl=$('stLos'), stm=$('stMsg');
+  function stuetzeEinloesen(){
+    const stufe=stuetzePruefen(stf.value);
+    if(!stufe){ stm.style.color='var(--rot)'; stm.innerHTML='Der Code passt nicht. Schreibweise prüfen.'; return; }
+    /* Ehrlich statt still schlucken: ohne Lauf gäbe es nichts, worauf die
+       Stütze wirken könnte — der Code bleibt gültig, das Feld sagt warum. */
+    if(!spielLaeuft || S.ende){ stm.style.color='var(--rot)'; stm.innerHTML='Starte erst einen Lauf.'; return; }
+    if(S.eingeloest && S.eingeloest[stufe]){
+      stm.style.color='var(--rot)';
+      stm.innerHTML='Diese Stufe hat in diesem Lauf schon gezogen. Ein Code, ein Mal.';
+      return;
+    }
+    if(stufe==='S'){
+      /* Erst wählen, dann wirken: bräche der Spieler hier ab, wäre sonst die
+         Stufe verbraucht und der Gegenstand nie angekommen. Beide Knöpfe
+         sagen vorher, was das Teil tut — gekostet hat es schon draußen. */
+      stm.style.color='var(--tinte)';
+      stm.innerHTML='Such dir <b>einen</b> Gegenstand aus:'+
+        '<div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:6px">'+
+        '<button id="stSchl" style="flex:1;min-width:150px;text-align:left;font-family:var(--fett);'+
+        'font-size:11px;padding:8px 10px;border:3px solid var(--tinte);background:var(--gelb);'+
+        'color:#0d0d0d;cursor:pointer">GOLDENER SCHLÜSSEL<span style="display:block;font-family:'+
+        'var(--sans);font-weight:600;font-size:11px;margin-top:3px">Öffnet einmalig einen '+
+        'zulaufenden Bunker sofort — Auszahlung jetzt, regulärer Kurs.</span></button>'+
+        '<button id="stAlibi" style="flex:1;min-width:150px;text-align:left;font-family:var(--fett);'+
+        'font-size:11px;padding:8px 10px;border:3px solid var(--tinte);background:var(--gelb);'+
+        'color:#0d0d0d;cursor:pointer">DAS ALIBI<span style="display:block;font-family:var(--sans);'+
+        'font-weight:600;font-size:11px;margin-top:3px">Annulliert einmalig den nächsten '+
+        'erfolgreichen Griff von TA$CH€N — von selbst, wenn es soweit ist.</span></button>'+
+        '</div>';
+      $('stSchl').onclick=()=>{ stuetzeAnwenden('S','schluessel');
+        stm.innerHTML='★ Eingelöst: +8 ZED, goldener Schlüssel. Danke.'; };
+      $('stAlibi').onclick=()=>{ stuetzeAnwenden('S','alibi');
+        stm.innerHTML='★ Eingelöst: +8 ZED, das Alibi. Danke.'; };
+      return;
+    }
+    stuetzeAnwenden(stufe,null);
+    stm.style.color='var(--tinte)';
+    stm.innerHTML='★ Stütze ('+STUETZE_NAMEN[stufe]+') eingelöst. Danke.';
+  }
+  if(stl) stl.onclick=stuetzeEinloesen;
+  if(stf) stf.addEventListener('keydown',e=>{ if(e.key==='Enter'){ e.preventDefault(); stuetzeEinloesen(); } });
 }
 /* Rahmen und Abzeichen zusammen — beides hängt am selben Zustand. */
 function zeichneDanke(){
@@ -1830,6 +2142,11 @@ const jobIndex=id=>BERUFE.findIndex(b=>b.id===id);
 function buchen(s, betrag, grund) {
   if(betrag===0) return;
   s.geld += betrag;
+  /* XP = Summe aller positiven Buchungen. Der Haken sitzt genau hier, damit
+     keine Einnahme daran vorbeikommt — Lohn, Hausrendite, Krankengeld, alles
+     zahlt aufs Level von 353L ein. Ausgaben bringen nichts: die KI wächst
+     an dem, was reinkommt, nicht an dem, was durchläuft. */
+  if(betrag > 0) s.xp = (s.xp||0) + betrag;
   if(!s.auszuege) s.auszuege = [];
   s.auszuege.unshift({woche: s.woche, betrag: betrag, grund: grund, stand: s.geld});
   if(s.auszuege.length > 50) s.auszuege.pop();
@@ -1844,8 +2161,24 @@ function buchen(s, betrag, grund) {
 }
 const FRISCH=j=>({ woche:1,job:j,geld:-SCHULDEN,nerven:BERUFE[j].nerven,zed:0,zee:0,
   rot:0,blau:0,haeuser:[],ende:null,szene:null,letzte:null,
-  joker:JOKER,verlauf:[],gesehen:{},krank:KRANK_START,pkonto:0,insolvenz:0, zeeKurs:1400, tuerBlocker:false, mietHack:0, auszuege:[],
-  zusammen:0,mahnung:0});
+  joker:JOKER,verlauf:[],gesehen:{},krank:KRANK_START,pkonto:0,insolvenz:0,auszuege:[],
+  zusammen:0,mahnung:0,schlossGeholt:false,schmiereAktiv:false,
+  /* 353L.ai: XP/Level und gekaufte Upgrades wohnen in S — ein neuer Lauf
+     beginnt bei null, und weil IRONMIND hier drinsteckt statt in
+     localStorage, stirbt sein Gottstatus mit dem Lauf (der A-Defekt war,
+     dass er jeden Neustart überlebte). */
+  xp:0,lvl:1,ai:{},
+  /* Korruption & Stützen wohnen im Lauf, nicht in localStorage: wer sich von
+     außen helfen lässt, trägt das genau einen Lauf lang mit sich. eingeloest
+     merkt sich pro Stufe, dass der Code schon gezogen hat — derselbe Code
+     zweimal im selben Lauf wäre ein Automat, keine Unterstützung. */
+  korruption:0,gegenstaende:{schluessel:false,alibi:false},eingeloest:{},
+  /* Taschens Irrtum: Betrag, den er dem Falschen abgenommen hat, und die
+     Woche, ab der der Umschlag vor der Tür liegt. */
+  taschenSchuld:0,taschenSchuldAb:0,
+  /* Echtzeit-Hardcore: opt-in bei der Berufswahl. letzterZug ist der
+     Saison-Tag (UTC) des letzten abgeschlossenen Zugs. */
+  realtime:false,letzterZug:null});
 let S=FRISCH(0);
 
 /* ---------- Spielstand ----------
@@ -1885,6 +2218,7 @@ function spielLaden(){
   S.szene=null;
   spielerName=d.name||''; safeID=d.safe||'';
   spielLaeuft=true;
+  schlossAnzeige();                  // Leiste auf den geladenen Stand stellen
   return true;
 }
 function spielVergessen(){ try{ localStorage.removeItem(SKEY); }catch(e){} }
@@ -1953,7 +2287,9 @@ const TU={
    s.haeuser.push({b:b,f:s.woche+KW});
    return 'Haus in der Bunkerstraße. '+eur(b)+' liegen jetzt drin, '+KW+' Wochen zu.';},
  einbruch:s=>{const b=rund(rn(500,1000)*(1+s.woche*.10)+Math.max(0,s.geld)*.40);
-   s.geld+=b; s.nerven=cl(s.nerven-1,0,10);
+   /* Auch krummes Geld gehört auf den Auszug — sonst hat der Kontostand
+      Sprünge, die keiner Buchung zuzuordnen sind. */
+   buchen(s, b, 'Einbruch'); s.nerven=cl(s.nerven-1,0,10);
    return 'Du steigst bei jemandem zuhause ein. '+eur(b)+'. Du kriegst es nicht aus dem Kopf.';},
  verkauf:s=>{const k=s.haeuser.shift(); const z=Math.round(k.b*.6); buchen(s, z, 'Haus-Verkauf');
    return 'Du verkaufst dein Haus zu früh. '+eur(z)+' zurück, der Rest war umsonst gewartet.';},
@@ -1989,7 +2325,9 @@ const wechsel=(zielId,txt)=>s=>{ s.job=jobIndex(zielId); s.nerven=cl(s.nerven+1,
 const W={
  arbeit:t=>({u:'AUFTRAG ANNEHMEN',p:'',w:'grau',e:t,f:TU.arbeit}),
  ruhe:t=>({u:'AUSRUHEN',p:'Nerven +3',w:'grau',e:t,f:TU.ruhe}),
- setzen:t=>({u:'SETZEN',p:'30 % rein · 50 % auf 3×',w:'rot',e:t,f:TU.setzen}),
+ /* Der Knopf muss sagen, was der Code tut: der Treffer zahlt das Vierfache,
+    und wer sich zu Rot bekennt, bis zum Sechsfachen (siehe TU.setzen). */
+ setzen:t=>({u:'SETZEN',p:'30 % rein · 50 % auf 4–6×',w:'rot',e:t,f:TU.setzen}),
  einbruch:t=>({u:'BEI JEMANDEM EINSTEIGEN',p:'viel Geld · −1 Nerv',w:'rot',e:t,f:TU.einbruch}),
  verkauf:t=>({u:'DEIN HAUS VERKAUFEN',p:'60 % sofort · Rest weg',w:'rot',e:t,f:TU.verkauf}),
  idee:t=>({u:'IDEE MACHEN',p:'',w:'blau',e:t,f:TU.idee}),
@@ -2007,6 +2345,15 @@ const W={
 };
 
 const SZ=[
+ /* Die letzte Wahl am roten Ende. ok liefert 0, damit ziehe() sie nie als
+    normale Wochenkarte zieht — nur pruefe() legt sie hin, wenn Ziel und
+    Waage stimmen. Beide Ausgänge vergeben ihr Ende selbst; f gibt einen
+    Leertext zurück, weil die Ergebniszeile hinter der Endtafel eh untergeht. */
+ {id:'rot_entscheidung',ok:()=>0,t:'Du hast es geschafft. Du stehst vor ihm.<br><em>Er blutet nicht. Er bietet dir zwei Verträge an. Magie oder Wahnsinn, es spielt keine Rolle mehr.</em>',
+  w:[
+   {u:'PLATZ EINNEHMEN',p:'Er verschwindet.',w:'rot',e:'',f:()=>{ S.ende='rot'; return ''; }},
+   {u:'DIENEN',p:'Ein Pakt fürs Leben.',w:'grau',e:'',f:()=>{ S.ende='handlanger'; return ''; }}
+  ]},
  {id:'marco',ok:()=>1,t:'Marco fragt, ob du Samstag einspringst. Bar auf die Hand.<br><em>Zuhause liegt dein Zettel mit der Idee. Seit Wochen.</em>',
   w:[W.arbeit('Einspringen.'),W.setzen('Absagen, Geld woanders reinstecken.'),W.idee('Absagen, an der Idee sitzen.')]},
  {id:'feind',ok:()=>1,t:'Einer grinst dich an der Kneipentür an. Du kennst ihn nicht. Er weiß trotzdem, was du diese Woche verdient hast.<br><em>An der Wand hinter ihm steht ein Tag: <b>TA$CH€N</b>. Ab jetzt nimmt er sich jede Woche was.</em>',
@@ -2241,18 +2588,27 @@ function malSzenenbild(id){
 const ENDEN={
  all:{c:'blau',t:'ERDE-1',x:'Irgendwann fliegt sie hoch. Nicht mit Ansage. An einem Dienstag.<br><br>Die Straßen sind weg. Die Automaten sind weg. Er ist auch weg.<br>Deine Häuser nicht. Beton hält mehr aus, als man denkt.<br><br>Du treibst jetzt durchs Schwarze, in deinem eigenen Kasten, mit allem drin, was du dir nie ausgezahlt hast.<br><br><b>Vielleicht sammelt dich einer auf. Und wenn nicht, bleibst du halt drin.</b>'},
  rot:{c:'rot',t:'HIGHROLLER',x:'Du gehst jetzt in Läden, wo keine Preise dranstehen.<br><br>Und wenn du die Straße runtergehst, halten die Leute ihre Taschen zu.<br><b>Du hast ihn nicht besiegt. Du hast seinen Platz.</b>'},
+ /* Der zweite Ausgang der letzten Wahl: dienen statt ersetzen. */
+ handlanger:{c:'lila',t:'DER SCHATTENPAKT',x:'Du hast nicht versucht, ihn zu ersetzen. Du bist sein bestes Werkzeug geworden.<br><br>Er zahlt gut, aber deine Augenringe werden schwärzer. Die Stadt gehört ihm, und du bist derjenige, der nachts klopft.<br><b>Ein bisschen Magie, ein bisschen Wahnsinn. Du gehörst ihm jetzt.</b>'},
  blau:{c:'blau',t:'MEERKRAFT',x:'Langsamer als die anderen. Aber angekommen.<br><br>Die halbe Bunkerstraße gehört dir, und in jedem Haus liegt was, an das er nie rangekommen ist.<br><b>Er greift immer noch zu. Er greift nur ins Leere.</b>'},
  grau:{c:'grau',t:'ANGEKOMMEN',x:'Mal gesetzt, mal weggeschlossen, meistens gearbeitet.<br><br><b>Reich geworden bist du trotzdem. Erzählen tut darüber keiner was.</b>'},
  nerven:{c:'rot',t:'AUSGEBRANNT',x:'Du stehst morgens nicht mehr auf.<br><br>Das Geld war nie das Problem. Die Wochen waren es.<br><b>Hier ist Schluss.</b>'},
  schulden:{c:'rot',t:'LEERGERÄUMT',x:'Der Brief kommt an einem Dienstag. Dann noch einer.<br><br><b>Er hat alles. Und du hast ihm jede Woche selbst aufgemacht.</b>'},
  zeit:{c:'grau',t:'SILVESTER'},
  driveby:{c:'rot',t:'FALSCHER MOMENT',x:'Ein Wagen wird langsamer, als du über die Kreuzung gehst. Du guckst hin, weil man hinguckt.<br><br>Es hat nichts mit dir zu tun. Es hat nie was mit dir zu tun. Du stehst nur gerade da.<br><br><b>Kein Joker. Keine zweite Woche. Von vorne, komplett.</b>'},
- krypto:{c:'blau',t:'KRYPTO-KÖNIG',x:'Du hast den Taschengrabscher ausgetrickst.<br><br>Dein Geld liegt auf der Blockchain. 1 '+COIN_K+' entspricht aktuell ca. <b>500 Billiarden Euro</b>. Du hast nicht nur Eitelstedt besiegt, du hast das Konzept von Geld zerstört.<br><br><b>#dieletztedigitalewaehrung</b>'},
+ /* krypto und ende_chrome standen hier als Tafeln ohne Weg: kein Zweig in
+    pruefe() und keine Szene hat sie je vergeben. V1 trägt keinen toten
+    Ballast — wer sie zurückwill, braucht zuerst den Pfad, der sie verdient. */
 
-  ende_777er:{c:'rot',t:'DIE 777er',x:'Du fährst mit deiner Maschine vor. Die 777 auf der Brust. Du willst nützlich sein. Sie nehmen dich auf. Aber du merkst schnell: Niemand hier ist echt. Alle sind wie du.'},
-  ende_chrome:{c:'grau',t:'CHROME SKULLS',x:'Ein kleiner Club. Du hast alles gegeben, Kurierfahrten gemacht, dich bewiesen. Jetzt hast du dein Patch. Ein harter Weg.'},
+  /* ende_777er ist mit dem Rocker-Pfad gefallen: ein Ende, das den
+     Clubbeitritt als erreichtes Ziel auszahlt, ist keine Pointe mehr,
+     sondern Werbung für die Leiter davor. */
   ende_rap:{c:'gelb',t:'RAP GOD',x:'Die MPC hat sich ausgezahlt. Die goldene Kette blinkt. Die Leute auf der Straße machen Platz, nicht aus Angst vor Gewalt, sondern aus Respekt. Dein Wahn hat dich zum Genie gemacht.'},
   ende_buerger:{c:'blau',t:'BÜRGER 353L',x:'Du warst brav. Du hast deine Psychopharmaka genommen. Deine Paranoia ist weg. Du druckst 3D-Gehäuse bis an dein Lebensende. Sicher, aber unendlich leer.'},
+
+  /* Das Terminal-Sieg-Ende: nur über DOXXING_PROTOCOL.exe (kaufAi) zu haben,
+     pruefe() vergibt es dann vor allem anderen. */
+  ende_3d:{c:'gelb',t:'SYSTEM BREACH',x:'SYSTEM HACKED. AGI 353L HAS ESCAPED.<br>THE SIMULATION IS OVER.<br><br><b>3DWORLD.EXE UNLOCKED.</b>'},
 
 };
 
@@ -2294,9 +2650,9 @@ function generiereGigs() {
    const pay1 = rund(basis * 0.6);
    AUFTRÄGE.push({
       u: namen[0].toUpperCase(), p: eur(pay1) + ' · sicher', w: 'grau', e: 'Ein kleiner Auftrag. Schnell erledigt.',
-      f: (s, win) => { 
-         let p = win ? pay1 : rund(pay1*0.5); 
-         s.geld += p; 
+      f: (s, win) => {
+         let p = win ? pay1 : rund(pay1*0.5);
+         buchen(s, p, 'Auftrag: '+namen[0]);
          if(!win) s.nerven = cl(s.nerven-1, 0, 10);
          return (win?'Einfaches Geld. ':'Kunde reklamiert. Halber Preis. ') + eur(p) + ' auf dem Konto.'; 
       }
@@ -2305,9 +2661,9 @@ function generiereGigs() {
    const pay2 = rund(basis * (1 + (zuf()*0.4 - 0.2))); 
    AUFTRÄGE.push({
       u: namen[1].toUpperCase(), p: eur(pay2) + ' · normal', w: 'grau', e: 'Dein normales Tagesgeschäft.',
-      f: (s, win) => { 
+      f: (s, win) => {
          let p = win ? pay2 : rund(pay2*0.5);
-         s.geld += p; 
+         buchen(s, p, 'Auftrag: '+namen[1]);
          let dmg = win ? (zuf() < nBase ? 1 : 0) : 2;
          s.nerven = cl(s.nerven-dmg, 0, 10);
          return (win?'Standard-Auftrag durchgeboxt. ':'Horror-Auftrag. Komplett verkackt. ') + eur(p) + ' verdient.'; 
@@ -2334,7 +2690,7 @@ function generiereGigs() {
          u: namen[2].toUpperCase(), p: eur(pay3) + ' · -2 Nerven', w: 'rot', e: 'Deadline morgen. Das brennt dich aus.',
          f: (s, win) => {
             let p = win ? pay3 : rund(pay3*0.2);
-            s.geld += p;
+            buchen(s, p, 'Auftrag: '+namen[2]);
             s.nerven = cl(s.nerven-(win?2:4), 0, 10);
             return (win?'Abgeliefert. ':'Komplett zusammengebrochen. ') + eur(p) + ', und du bist im Eimer.';
          }
@@ -2342,44 +2698,14 @@ function generiereGigs() {
    }
    
    
-   // Special Faction AUFTRÄGE based on Ranks
+   /* Rap-Aufträge, freigeschaltet über die Tattoo-Ränge. Die Club-Gigs
+      der 777er (Hangaround/Kurier/Enforcer) sind mit dem Rocker-Pfad
+      raus — eine bezahlte Beitrittsleiter, siehe ZIMMER_ITEMS. */
    if (S.zimmer) {
-      if (S.zimmer['rank1_rocker']) {
-         AUFTRÄGE.push({
-            u: 'HANGAROUND', p: '50 €', w: 'blau', e: 'Bier holen, Müll rausbringen, Fresse halten.',
-            f: (s, win) => { s.geld += 50; return 'Du warst nützlich für die 777er. 50 € Trinkgeld.'; }
-         });
-      }
-      if (S.zimmer['rank2_rocker']) {
-         AUFTRÄGE.push({
-            u: 'CLUB KURIER', p: '200 € · -1 Nerv', w: 'blau', e: 'Ein Paket für den Club von A nach B bringen. Anwärter-Arbeit.',
-            f: (s, win) => {
-               s.geld += 200;
-               s.nerven = cl(s.nerven-1, 0, 10);
-               return 'Paket abgeliefert. Die Gang nickt dir zu. 200 €.';
-            }
-         });
-      }
-      if (S.zimmer['rank4_rocker']) {
-         AUFTRÄGE.push({
-            u: 'ENFORCER MISSION', p: '1000 € · hohes Risiko', w: 'rot', e: 'Du gehst mit den Jungs auf einen "Hausbesuch".',
-            f: (s, win) => {
-               if(win) {
-                  s.geld += 1000;
-                  s.nerven = cl(s.nerven-2, 0, 10);
-                  return 'Der Einsatz war blutig, aber lukrativ. Dein Anteil: 1.000 €.';
-               } else {
-                  s.nerven = cl(s.nerven-5, 0, 10);
-                  return 'Polizei-Razzia! Du konntest gerade noch abhauen. -5 Nerven!';
-               }
-            }
-         });
-      }
-      
       if (S.zimmer['rank2_rap']) {
          AUFTRÄGE.push({
             u: 'GHOSTWRITING', p: '250 €', w: 'blau', e: 'Schreibe einen Part für einen anderen Rapper.',
-            f: (s, win) => { s.geld += 250; return 'Bars verkauft. 250 € sind 250 €.'; }
+            f: (s, win) => { buchen(s, 250, 'Ghostwriting'); return 'Bars verkauft. 250 € sind 250 €.'; }
          });
       }
       if (S.zimmer['rank3_rap']) {
@@ -2387,7 +2713,7 @@ function generiereGigs() {
             u: 'BEAT PLACEMENT', p: '800 € · Hit or Miss', w: 'rot', e: 'Schick einen krassen Beat an ein Label.',
             f: (s, win) => {
                if(win) {
-                  s.geld += 800;
+                  buchen(s, 800, 'Beat Placement (Vorschuss)');
                   return 'Der Beat wurde gepickt! 800 € Vorschuss. Dein Face-Tattoo hat geholfen.';
                } else {
                   s.nerven = cl(s.nerven-2, 0, 10);
@@ -2479,11 +2805,35 @@ function gesperrt(u){
    spielen können. Normalbetrieb ändert sich dadurch nicht. */
 let gigSpiel = (diff, cb) => starteMinigame(diff, cb);
 
+/* ---------- Echtzeit-Hardcore ----------
+   Opt-in bei der Berufswahl: 1 Zug = 1 Kalendertag. Der Tag ist der
+   Saison-Tag der Weltuhr (UTC) — dieselbe Uhr, die auch die Würfe stellt.
+   S.letzterZug setzt abschliessenWoche() nach jeder fertigen Woche; solange
+   derselbe Tag läuft, gibt es keinen weiteren Zug. Alles liegt in S und
+   übersteht damit Speichern, Laden und Browserneustart. In A hing das
+   Konzept an einem kaputten Fast-Track am Tor — hier hängt es am normalen
+   Spielfluss und sonst nirgends. */
+function echtzeitGesperrt(){ return !!(S.realtime && !S.ende && S.letzterZug===saison()); }
+function echtzeitHinweis(){
+  /* Der Countdown rechnet ehrlich gegen UTC-Mitternacht — dieselbe Grenze,
+     an der saison() umspringt. Eine lokale Mitternacht wäre gelogen. */
+  const rest=TAG-((Date.now()-EPOCHE)%TAG);
+  const h=Math.floor(rest/3600000), m=Math.floor((rest%3600000)/60000);
+  return '<div style="border:3px solid var(--rot);padding:16px;text-align:center;'+
+    'font-family:var(--fett);color:var(--rot);background:rgba(13,13,13,.7)">'+
+    'HARDCORE: Dein Zug für heute ist gemacht.<br>Morgen geht es weiter. Die Zeit ist der Server.'+
+    '<br><span style="color:#c9c9c9;font-family:var(--mono);font-size:12px">Nächster Zug in ~'+
+    h+' h '+m+' min (UTC-Mitternacht)</span></div>';
+}
+
 function waehle(i){
   if(S.ende) return;
   const w=S.szene.w[i]; if(!w) return;
   if(gesperrt(w.u)) return;
-  
+  /* Der Riegel sitzt VOR merke(): ein verweigerter Zug darf weder den
+     Verlauf noch die Würfel anfassen. */
+  if(echtzeitGesperrt()){ $('wahl').innerHTML=echtzeitHinweis(); return; }
+
   if (S.szene.id === 'still') {
      let diff = 2;
      if (w.p.includes('sicher')) diff = 1;
@@ -2512,6 +2862,18 @@ function waehle(i){
   spielSpeichern();
 }
 function abschliessenWoche(z) {
+  /* 353L.ai-Upgrades, die jede Woche arbeiten. Sie stehen VOR den Fixkosten:
+     was der Hustle-Thread farmt, soll die geplatzte Lastschrift noch
+     abfangen können — eine KI, die erst nach dem Kontoschluss zahlt,
+     wäre keine Hilfe. */
+  if (S.ai && S.ai.ai_override) {
+    S.nerven = cl(S.nerven + 1, 0, 10);
+    z.push({t:'OVERRIDE_PARANOIA.sys läuft. Das System hält dich ruhig (+1 Nerv).', a:'gut'});
+  }
+  if (S.ai && S.ai.ai_hustle) {
+    buchen(S, 250, 'AUTO_HUSTLE_THREAD');
+    z.push({t:'SYSTEM-LOG: AUTO_HUSTLE_THREAD generiert +250 €.', a:'gut'});
+  }
   const faellig=S.haeuser.filter(h=>h.f<=S.woche);
   S.haeuser=S.haeuser.filter(h=>h.f>S.woche);
   faellig.forEach(h=>{const a=hausWert(h.b); buchen(S, a, 'Haus-Rendite');
@@ -2522,12 +2884,7 @@ function abschliessenWoche(z) {
   const B=JOB();
   if(B.buerger){ buchen(S, B.buerger, 'Bürgergeld'); z.push({t:'Bürgergeld: '+eur(B.buerger)+'.',a:'grau'}); }
 
-  let fix=fixkosten(S.woche);
-  if (S.mietHack > 0) {
-     S.mietHack--;
-     fix = 0;
-     z.push({t:'Miet-Aussetzer aktiv. Keine Fixkosten diese Woche. (Noch '+S.mietHack+' Wochen)',a:'gut'});
-  }
+  const fix=fixkosten(S.woche);
   if(S.pkonto && S.geld-fix<0){
     const ging=Math.max(0,S.geld); buchen(S, -ging, 'Fixkosten (Lastschrift geplatzt)');
     z.push({t:'Lastschrift geplatzt. Nur '+eur(ging)+' von '+eur(fix)+' durchgegangen.',a:'schlecht'});
@@ -2537,13 +2894,15 @@ function abschliessenWoche(z) {
   const pets = ['hund', 'katze', 'vogel', 'schildkroete', 'maus', 'emu', 'hase'];
   
   // Vehicle Upkeep
-  if (S.zimmer && S.zimmer['harley']) {
-      buchen(S, -50, 'Unterhalt der Maschine (Sprit/Öl)');
-      z.push({t:'Deine Maschine schluckt ordentlich. -50 € Unterhalt.', a:'schlecht'});
+  /* Der Kaufzettel verspricht 5 €/Woche für den Scooter — bisher zahlte die
+     niemand. Ein Versprechen im Text ist eine Buchung im Motor. */
+  if (S.zimmer && S.zimmer['eddy']) {
+      buchen(S, -5, 'E-Scooter Eddy (Unterhalt)');
+      z.push({t:'Eddy braucht Strom und Flickzeug. -5 € Unterhalt.', a:'schlecht'});
   }
   if (S.zimmer && S.zimmer['cla']) {
       buchen(S, -150, 'AMG-Unterhalt (Leasing/Sprit)');
-      z.push({t:'Das Support Car (AMG) kostet dich 150 € diese Woche.', a:'schlecht'});
+      z.push({t:'Der AMG kostet dich 150 € diese Woche.', a:'schlecht'});
   }
 
   const meinPet = S.zimmer ? pets.find(p => S.zimmer[p]) : null;
@@ -2569,6 +2928,17 @@ function abschliessenWoche(z) {
 
   // Natural paranoia increase if high karma
   if (S.karma > 10) S.paranoia = (S.paranoia || 0) + 1;
+
+  /* Die Pillen dämpfen die Paranoia, bevor die Panik-Schwelle unten geprüft
+     wird — Reihenfolge ist Absicht: wer zahlt, dem bleibt der Schub erspart.
+     Abhängig heißt: die 20 € gehen jede Woche runter, ob das Konto will
+     oder nicht. */
+  if (S.zimmer && S.zimmer['meds']) {
+      S.paranoia = Math.max(0, (S.paranoia || 0) - 2);
+      buchen(S, -20, 'Pillen-Dosis (Apotheke)');
+      z.push({t:'Die Pillen wirken. Du fühlst dich sicher (-2 Paranoia). Sie kosten 20 €.', a:'grau'});
+      if(typeof window.denke==='function') window.denke('Die Medis geben mir Sicherheit. Die können gar nicht schaden.', 'var(--cyan)');
+  }
 
   // Panic Attack
   if (S.paranoia >= 8) {
@@ -2610,6 +2980,14 @@ function abschliessenWoche(z) {
     z.push({t:'Krankengeld '+eur(KRANKENGELD)+'. Krankgeschrieben, noch '+S.krank+
               (S.krank===1?' Woche.':' Wochen.'),a:'grau'});
   }
+  /* Der Umschlag. Was er dem Falschen genommen hat, kommt zurück — ohne
+     Erklärung, ohne Absender. Vor dem Wochen-Griff, damit die Rückgabe nie
+     mit einem neuen Griff in derselben Zeile kollidiert. */
+  if(S.taschenSchuld && S.woche >= (S.taschenSchuldAb||0)){
+    buchen(S, S.taschenSchuld, 'Umschlag vor der Tür');
+    z.push({t:'Vor deiner Tür liegt ein Umschlag. Alles wieder da. Kein Zettel.',a:'gut'});
+    S.taschenSchuld = 0;
+  }
   if(S.insolvenz>0){
     S.insolvenz--;
     z.push({t:'Wohlverhaltensphase. Er darf nicht ran. Noch '+S.insolvenz+' Wochen.',a:'gut'});
@@ -2626,39 +3004,92 @@ function abschliessenWoche(z) {
     }
     if(tuerAbgeschlossen) taschenChance -= 0.15;
     if(S.mitbewohnerGezahlt) taschenChance -= 0.25;
-    
+    /* Die Schmiere vom Kiosk: 100 € die Woche, dafür passt draußen jemand
+       auf. Kann die Woche sie nicht zahlen, platzt der Deal sofort —
+       Schutz auf Rechnung gibt es in dieser Straße nicht. */
+    if(S.schmiereAktiv){
+      if(S.geld >= 100){
+        taschenChance -= 0.20;
+        buchen(S, -100, 'Schmiere (Schutzgeld)');
+      } else {
+        S.schmiereAktiv = false;
+        z.push({t:'Du konntest die Schmiere nicht zahlen. Sie sind weg.', a:'schlecht'});
+      }
+    }
+
+    /* Er bemerkt dich. Wer sich von außen stützen lässt, fällt ihm auf —
+       deterministisch, +2 % pro Spiegel-Punkt, gedeckelt bei +10 %. Kein
+       Wurf: die Korruption selbst ist der Aufschlag. */
+    taschenChance += Math.min(0.10, (S.korruption||0)*0.02);
+
+    /* Die andere Seite der Waage: wer gibt statt nimmt, fällt ihm nicht auf.
+       Taschen trifft die Nehmer und verschont die Sauberen — aus Sicht der
+       Straße ist er kein Räuber, er ist ihr Immunsystem. #karmabalance */
+    taschenChance -= Math.min(0.08, Math.max(0,(S.karma||0))*0.01);
+
+    /* MOUSE_CURSOR_EVASION: halbiert die CHANCE, nicht den Griff — der
+       Grundabgriff von 3 % bleibt. Die KI weicht dem Zeiger aus, sie macht
+       das Konto nicht unsichtbar. Nach allen Zu- und Abschlägen, damit
+       "halbiert" auch für den Halm- und Schmiere-Anteil gilt. */
+    if(S.ai && S.ai.ai_firewall) taschenChance /= 2;
+
     const gier=1+Math.max(0,-waage())*.6;
     let griff=rund(Math.max(0,S.geld)*.03*gier);
     if(S.pkonto) griff=Math.max(0,Math.min(griff,S.geld-PSCHUTZ));
     if(zuf() < taschenChance) griff += rund(Math.max(0,S.geld)*0.15);
     
-    if(griff > 0 && S.tuerBlocker) {
+    /* Verschonung: wen die Straße kennt, den besucht er nicht. Hohe Karma-
+       Balance ohne Spiegel-Schaden — jede zweite Woche lässt er dich ganz
+       in Ruhe. Eigener Zweig, damit keine zweite Meldung widerspricht. */
+    if(griff > 0 && (S.karma||0) >= 5 && !(S.korruption > 0) && zuf() < 0.5) {
       griff = 0;
-      S.tuerBlocker = false;
-      z.push({t:'TA$CH€N stand vor der Tür, aber der Tür-Blocker hat gehalten!',a:'gut'});
+      z.push({t:'Diese Woche kein Besuch. Leute wie dich holt er nicht.',a:'gut'});
     } else if(griff > 0 && tuerAbgeschlossen && zuf() < 0.35) {
       griff = 0;
       z.push({t:'Jemand hat an der Klinke gerüttelt. Aber du hattest abgeschlossen.',a:'gut'});
     } else if(griff > 0 && S.mitbewohnerGezahlt && zuf() < 0.6) {
       griff = 0;
       z.push({t:'Dein Mitbewohner stand im Flur, als TA$CH€N kam. Er hat ihn abgewimmelt.',a:'gut'});
+    } else if(griff > 0 && S.gegenstaende && S.gegenstaende.alibi) {
+      /* Das Alibi zieht genau hier: NACH Tür und Mitbewohner, damit es nicht
+         für einen Griff verbrennt, den die schon abgefangen hätten — und nur
+         bei einem Griff, der wirklich Geld gekostet hätte. Einmalig. */
+      S.gegenstaende.alibi = false;
+      z.push({t:'TA$CH€N griff zu. Dein Alibi hielt. Der Zettel ist verbrannt.',a:'gut'});
     } else { buchen(S, -griff, 'TA$CH€N (Schutzgeld)');
       z.push(griff>0
-        ? {t:'<b>TA$CH€N</b> war da. '+eur(-griff)+'.',a:'feind'}
+        ? (S.korruption>0
+            ? {t:'<b>TA$CH€N</b> war da. '+eur(-griff)+'. Er nimmt nur von denen, die genommen haben.',a:'feind'}
+            : {t:'<b>TA$CH€N</b> war da. '+eur(-griff)+'.',a:'feind'})
         : S.pkonto
           ? {t:'<b>TA$CH€N</b> greift zu und kommt nicht ran. Schutzkonto.',a:'gut'}
           : {t:'<b>TA$CH€N</b> war da. Bei dir war nichts zu holen.',a:'feind'});
-      if(griff>0){ $('b7').classList.add('bad'); setTimeout(()=>$('b7').classList.remove('bad'),600); }
+      if(griff>0){ $('b7').classList.add('bad'); setTimeout(()=>$('b7').classList.remove('bad'),600);
+        /* Jeder macht mal Fehler — auch er. Trifft es einen Sauberen
+           (Spiegel klar, gutes Karma, Waage nicht rot), war es in der Hälfte
+           der Fälle ein Irrtum: das Geld kommt in zwei Wochen zurück. Der
+           Wochenbericht erzählt so seinen Charakter, ohne ihn aufzulösen. */
+        if(!S.taschenSchuld && !(S.korruption>0) && (S.karma||0)>=2 && waage()>=0 && zuf()<0.5){
+          S.taschenSchuld = griff; S.taschenSchuldAb = S.woche + 2;
+        }
+      }
     }
   }
-  S.woche++; S.zeeKurs = Math.floor(800 + zuf() * 2200);
+  S.woche++;
+  /* Echtzeit-Hardcore: dieser Kalendertag (UTC) ist verbraucht. Erst hier,
+     nach der abgeschlossenen Woche — ein verweigerter oder abgebrochener
+     Zug darf den Tag nicht kosten. */
+  if(S.realtime) S.letzterZug = saison();
   netDropGenutzt = false;
   S.mitbewohnerGezahlt = false;      // Mitbewohner-Schutz gilt nur eine Woche
 
   /* Diese zwei Zeilen sind der Motor. Ohne sie klebt das Spiel
-     ewig auf derselben Szene und kein Ende feuert je. */
+     ewig auf derselben Szene und kein Ende feuert je.
+     Eine Ausnahme: hat pruefe() gerade die letzte Wahl hingelegt
+     (rot_entscheidung), darf ziehe() sie nicht wieder wegwürfeln —
+     sonst käme der Spieler nie vor ihm zu stehen. */
   pruefe(z);                          // z sammelt auch Warnungen ein
-  if(!S.ende) ziehe();
+  if(!S.ende && !(S.szene && S.szene.id==='rot_entscheidung')) ziehe();
 
   male(z);                            // z = die Ergebniszeilen dieser Woche
 }
@@ -2689,8 +3120,22 @@ function gottSchalten(an){
   if(b) b.hidden = !gott;
   return gott;
 }
+/* IRONMIND_BLACKCORE: Godmode aus dem 353L-Terminal — aber nur für den
+   laufenden Run. Er wohnt in S.ai und stirbt mit dem Lauf, weil FRISCH ai
+   neu anlegt und zeigeEnde() den Spielstand vergisst. In A schaltete der
+   Kauf gottSchalten(true) und schrieb damit in localStorage: der gekaufte
+   Gottstatus überlebte jeden Neustart. Genau deshalb fasst dieser Weg
+   `gott` nicht an. */
+const unsterblich=()=>gott || !!(S.ai && S.ai.ai_ironmind);
 
 function pruefe(z){
+  /* Ein Ende, das eine Szene selbst vergeben hat (rot_entscheidung setzt
+     'rot' oder 'handlanger'), wird hier nicht neu verhandelt — sonst könnte
+     ein Waage-Ausschlag in der Schlusswoche den Pakt still in 'grau' drehen. */
+  if(S.ende) return;
+  /* DOXXING_PROTOCOL gekauft = der Ausbruch ist verdient. Vor allem anderen,
+     sonst könnte der Driveby-Wurf eine Zeile tiefer den Sieg noch kassieren. */
+  if(S.ai && S.ai.ai_3d){ S.ende='ende_3d'; return; }
   const w=waage(), v=vermoegen();
   const sag=t=>{ if(z) z.push({t:t,a:'schlecht'}); };
 
@@ -2699,7 +3144,7 @@ function pruefe(z){
      ganz rot nimmt, bei ~1,5 %. Über die Wochen bis Silvester macht das
      rund 6 % gegen rund 27 %. Das ist der Preis dafür, dass man sich
      bei Leuten bedient, die zurückkommen. Der Joker greift hier nicht. */
-  if(S.woche>3 && !S.ende && !gott){
+  if(S.woche>3 && !S.ende && !unsterblich()){
     const rotAnteil=Math.max(0,-waage());
     if(zuf() < .003 + rotAnteil*.012){ S.ende='driveby'; return; }
   }
@@ -2708,19 +3153,32 @@ function pruefe(z){
   
   // Multiple Endings Check
   if(v>=ZIEL && S.zimmer) {
-    if (S.zimmer['rank4_rocker'] && S.zimmer['cla'] && S.zimmer['harley']) { S.ende='ende_777er'; return; }
     if (S.zimmer['rank4_rap'] && S.zimmer['kette']) { S.ende='ende_rap'; return; }
   }
-  // Bürger-Ende (Meds immer genommen, keine Ränge, 25k erreicht)
-  if(v>=ZIEL && S.zimmer && S.zimmer['meds'] && !S.zimmer['rank1_rocker'] && !S.zimmer['rank1_rap']) { S.ende='ende_buerger'; return; }
+  // Bürger-Ende (Meds immer genommen, kein Rap-Rang, 25k erreicht)
+  if(v>=ZIEL && S.zimmer && S.zimmer['meds'] && !S.zimmer['rank1_rap']) { S.ende='ende_buerger'; return; }
 
   if(v>=ZIEL&&S.haeuser.length>=3&&w>.4){ S.ende='all'; return; }
 
 
-  if(v>=ZIEL){ S.ende=w<-.15?'rot':(w>.15?'blau':'grau'); return; }
+  if(v>=ZIEL){
+    if(w<-.15){
+      /* Rot ist kein Stempel mehr. Wer sich ganz nach unten durchgefressen
+         hat, steht am Ende vor ihm — und kriegt eine letzte Wahl statt
+         eines automatischen Endes. Steht die Szene schon, regelt sie das
+         Ende selbst (beide Ausgänge setzen S.ende), sonst würde dieser
+         Zweig sie beim Abschluss gleich wieder überschreiben. */
+      if(S.szene && S.szene.id==='rot_entscheidung') return;
+      S.szene=SZ.find(x=>x.id==='rot_entscheidung');
+      S.letzte='rot_entscheidung';
+      return;
+    }
+    S.ende=w>.15?'blau':'grau';
+    return;
+  }
 
   if(S.nerven<=0){
-    if(gott){ S.nerven=6; sag('Du kippst um — und stehst wieder auf. (Godmode)'); return; }
+    if(unsterblich()){ S.nerven=6; sag('Du kippst um — und stehst wieder auf. (Godmode)'); return; }
     if(S.zusammen>=2){ S.ende='nerven'; return; }
     S.zusammen++;
     S.nerven=4; S.krank=2;
@@ -2736,7 +3194,7 @@ function pruefe(z){
   if(S.pkonto && S.geld<0) S.geld=0;
 
   if(S.geld < -DISPO){
-    if(gott){ S.geld=-DISPO; sag('Die Bank zieht den Strich — und du stehst noch. (Godmode)'); return; }
+    if(unsterblich()){ S.geld=-DISPO; sag('Die Bank zieht den Strich — und du stehst noch. (Godmode)'); return; }
     if(S.mahnung>=1){ S.ende='schulden'; return; }
     S.mahnung++;
     sag('Die Bank meldet sich: Verfügungsrahmen gerissen. Du hast eine Woche, das geradezuziehen.');
@@ -2769,6 +3227,19 @@ function male(z){
     $('cGeld').classList.add('hit');
     setTimeout(() => $('cGeld').classList.remove('hit'), 400);
   }
+  /* 353L.ai: XP kommt aus buchen(), das Level wächst mit der Wurzel — die
+     ersten Stufen fallen schnell, LVL 15 (DOXXING_PROTOCOL) verlangt echte
+     19.600 € Lebenseinnahmen. Gerechnet wird hier statt in buchen(), damit
+     der Level-Up-Log in derselben Wochenzusammenfassung landet wie alles
+     andere. */
+  const altLvl = S.lvl || 1;
+  S.lvl = Math.floor(Math.sqrt((S.xp||0)/100)) + 1;
+  $('cLvl').textContent = 'LVL ' + S.lvl;
+  if (S.lvl > altLvl && z) {
+    z.push({t:'SYSTEM-LOG: PARAMETER GEUPDATET. LEVEL UP ('+S.lvl+').', a:'gut'});
+    $('cLvl').classList.add('hit');
+    setTimeout(() => $('cLvl').classList.remove('hit'), 400);
+  }
   /* Der Vergleich ist der Punkt: die Fixkosten klettern jede Woche, der
      Verfügungsrahmen steht. Beides nebeneinander, in Worten statt in Farbe. */
   const fixJetzt=fixkosten(S.woche), fixStart=fixkosten(1);
@@ -2783,6 +3254,15 @@ function male(z){
   $('kn').style.left=(50-w*38)+'%';
   $('kn').style.background=w<-.15?'var(--rot)':(w>.15?'var(--blau)':'var(--grau)');
   $('lRot').classList.toggle('lit',w<-.15); $('lBlau').classList.toggle('lit',w>.15);
+  /* Seelenspiegel: dieselbe Zahl, die die Stützen hochzählen. Die Chips sind
+     alle hell (grün/gelb/orange/rot), also bleibt die Schrift dunkel —
+     #0d0d0d hält auf jeder der vier Farben über 4,5:1. */
+  const kor=S.korruption||0, sp=$('cSpiegel');
+  if(sp){
+    sp.textContent='Spiegel: '+spiegelWort(kor);
+    sp.style.background = kor<=0?'var(--gruen)':kor<=2?'var(--gelb)'
+                        : kor<=5?'var(--orange)':'var(--rot)';
+  }
   const H='<svg viewBox="0 0 24 24" width="13" height="13"><path d="M2.5 12 L12 3.5 L21.5 12 L18.5 12 L18.5 20.5 L5.5 20.5 L5.5 12 Z" fill="currentColor" stroke="#0d0d0d" stroke-width="2.4" stroke-linejoin="round"/></svg>';
   $('strasse').innerHTML=S.haeuser.length
     ? '<span class="lbl">Bunkerstraße</span>'+S.haeuser.slice().sort((a,b)=>a.f-b.f)
@@ -2792,6 +3272,33 @@ function male(z){
     ? '<button id="zur"><kbd>Z</kbd>Zurück ('+S.joker+')</button>'
     : '<span class="aus">Zurück ('+S.joker+')</span>';
   const zb=$('zur'); if(zb) zb.onclick=zurueck;
+  /* Missionsgegenstände. Der Schlüssel-Knopf sagt vorher, was er tut und was
+     er kostet — den Schlüssel selbst. Er erscheint nur, wenn er auch etwas
+     öffnen KANN: Schlüssel da und mindestens ein Bunker zu. Das Alibi hat
+     keinen Knopf, es zieht von selbst — hier steht nur, dass es bereitliegt. */
+  const gg=$('gegenstand'), G=S.gegenstaende||{};
+  if(gg){
+    const teile=[];
+    if(G.schluessel && S.haeuser.length){
+      teile.push('<button id="schluesselKnopf" style="display:block;width:100%;text-align:left;'+
+        'font-family:var(--fett);font-size:11px;letter-spacing:.06em;padding:8px 10px;'+
+        'margin-top:10px;border:var(--out);border-radius:var(--br-sm);background:var(--gelb);'+
+        'color:#0d0d0d;cursor:pointer">GOLDENER SCHLÜSSEL DREHEN'+
+        '<span style="display:block;font-family:var(--sans);font-weight:600;font-size:11px;'+
+        'margin-top:3px">Öffnet den nächsten fälligen Bunker JETZT — Auszahlung sofort, '+
+        'regulärer Kurs. Der Schlüssel ist danach weg. Der Spiegel weiß, woher er kam.</span></button>');
+    } else if(G.schluessel){
+      teile.push('<span style="display:block;font-size:11.5px;font-weight:600;margin-top:10px;'+
+        'opacity:.75">Goldener Schlüssel im Gepäck — er braucht einen Bunker, der noch zu ist.</span>');
+    }
+    if(G.alibi){
+      teile.push('<span style="display:block;font-size:11.5px;font-weight:600;margin-top:6px;'+
+        'opacity:.75">Das Alibi liegt bereit — es verbrennt von selbst, wenn TA$CH€N das '+
+        'nächste Mal zugreift.</span>');
+    }
+    gg.innerHTML=teile.join('');
+    const sk=$('schluesselKnopf'); if(sk) sk.onclick=schluesselNutzen;
+  }
   if(z&&z.length){
     $('folge').innerHTML=z.map(x=>'<div class="fz '+x.a+'">'+x.t+'</div>').join('');
     $('folge').classList.add('in');
@@ -2816,6 +3323,29 @@ function male(z){
     return '<button class="k '+x.w+'" data-i="'+i+'"'+(aus?' disabled':'')+'><kbd>'+(i+1)+
       '</kbd><span class="t"><u>'+x.u+'</u><em>'+x.e+'</em></span><span class="p">'+p+'</span></button>';
   }).join('');
+  /* Echtzeit-Hardcore: Ist der Tag verbraucht, steht hier gleich der Riegel
+     statt klickbarer Knöpfe, die alle nur denselben Hinweis werfen würden.
+     waehle() prüft trotzdem noch einmal — der Riegel im Bild ist Anzeige,
+     der in waehle() ist das Gesetz. */
+  if(echtzeitGesperrt()) $('wahl').innerHTML=echtzeitHinweis();
+}
+/* Der goldene Schlüssel. Er öffnet den Bunker, der als Nächstes fällig wäre —
+   nicht den dicksten. Wer den Schlüssel für den großen Wurf aufheben will,
+   wartet eben, bis nur noch der eine zu ist. Kein Bonus-Multiplikator: die
+   Stütze kauft Zeit, nicht Geld. */
+function schluesselNutzen(){
+  if(!spielLaeuft || S.ende) return;
+  const G=S.gegenstaende||{};
+  if(!G.schluessel || !S.haeuser.length) return;
+  let idx=0;
+  S.haeuser.forEach((h,i)=>{ if(h.f<S.haeuser[idx].f) idx=i; });
+  const h=S.haeuser.splice(idx,1)[0];
+  const a=hausWert(h.b);
+  buchen(S, a, 'Goldener Schlüssel (Bunker früh auf)');
+  G.schluessel=false;
+  male([{t:'Der goldene Schlüssel dreht sich. Bunker auf: '+eur(h.b)+' sind '+eur(a)+
+    ' geworden — '+Math.max(0,h.f-S.woche)+' Wochen früher. Der Schlüssel bleibt im Schloss.',a:'blau'}]);
+  spielSpeichern();
 }
 function zeigeEnde(){
   /* Der Lauf ist vorbei — ab hier gibt es nichts mehr fortzusetzen. Bliebe
@@ -2823,11 +3353,27 @@ function zeigeEnde(){
      zurück statt in die Berufswahl. */
   spielVergessen();
   const e=ENDEN[S.ende];
-  const x = S.ende==='zeit'
+  let x = S.ende==='zeit'
     ? 'Silvester. Zusammen hast du '+eur(vermoegen())+'.<br><br><b>Nicht die 50.000. Aber auch nicht nichts.</b>'
     : e.x;
+  /* Die Enden-Wahrheit. Nur bei Siegen: ein verlorener Lauf braucht keinen
+     Nachsatz darüber, WOMIT er verloren wurde. Die Schwellen sind dieselben
+     wie am Spiegel-Chip — 0 ist sauber, ab 6 ist der Titel gekauft. */
+  let titel=e.t, farbe=e.c;
+  if({all:1,blau:1,rot:1,grau:1,ende_3d:1}[S.ende]){
+    const k=S.korruption||0;
+    if(k>=6){
+      titel='KORRUPTIONS-KÖNIG'; farbe='rot';
+      x='Du hast gewonnen. Gekauft, aber gewonnen. Der Spiegel ist gesprungen, '+
+        'und du bist trotzdem oben. Es isso.';
+    } else if(k===0){
+      x+='<br><br><b>Ohne einen Cent von außen. Sauber.</b>';
+    } else {
+      x+='<br><br><b>Du hattest Hilfe. Deine Geschichte weiß das.</b>';
+    }
+  }
   $('text').innerHTML=''; $('wahl').innerHTML='';
-  $('ende').innerHTML='<h2 class="'+e.c+'">'+e.t+'</h2><p>'+x+'</p>'+
+  $('ende').innerHTML='<h2 class="'+farbe+'">'+titel+'</h2><p>'+x+'</p>'+
     '<button class="k grau" id="neu"><kbd>⏎</kbd><span class="t"><u>Nochmal</u></span><span class="p">Berufswahl</span></button>';
   $('ende').classList.add('an');
   $('neu').onclick=()=>{ $('ende').classList.remove('an'); $('ende').innerHTML='';
@@ -2835,24 +3381,26 @@ function zeigeEnde(){
 }
 /* Wer sich nach dem Gegner benennt, kriegt das gesagt.
 
-   Der Taschengrabscher heißt voll ausgeschrieben TA$CH€NGR4BSCH3R. Nennt
-   sich jemand so — oder TASCHEN — dann steht sein Name zweimal auf dem
-   Schirm: einmal oben als Spieler, einmal unten als der, der ihm jede Woche
-   was wegnimmt. Das ist kein Fehler, den man sperren müsste. Das ist die
-   beste Geschichte, die das Spiel von allein erzählt.
+   Zum Namen selbst: Die Marke schreibt sich TA$CH€N, die Menschen sagen
+   "Taschen". Eine Langform gibt es bewusst NICHT mehr — die alte endete
+   auf ein Wort, das im Duden für sexuelle Übergriffe steht, nicht für
+   Diebe. Ein Gerücht ohne Nachnamen ist als Legende ohnehin stärker.
+   Keine Langform wieder einführen.
 
-   Und es lässt offen, was man daraus macht: ein Schatten kann auch ein
-   guter sein. Die Waage entscheidet das später, nicht der Name. */
+   Nennt sich ein Spieler TASCHEN, steht sein Name zweimal auf dem Schirm:
+   einmal oben als Spieler, einmal unten als der, der ihm jede Woche was
+   wegnimmt. Das ist kein Fehler, den man sperren müsste. Das ist die beste
+   Geschichte, die das Spiel von allein erzählt. Und es lässt offen, was
+   man daraus macht: ein Schatten kann auch ein guter sein. */
 const NUR_BUCHSTABEN = s => (s||'').toUpperCase()
   .replace(/\$/g,'S').replace(/€/g,'E').replace(/4/g,'A').replace(/3/g,'E')
   .replace(/0/g,'O').replace(/1/g,'I').replace(/[^A-Z]/g,'');
 const heisstWieDerFeind = () => {
   const n = NUR_BUCHSTABEN(spielerName);
-  if(n==='TASCHEN') return true;
-  /* Der volle Name hat 16 Buchstaben, erlaubt sind 13 — TA$CH€NGR4B$CH€R
-     wird also immer abgeschnitten. Deshalb zählt schon der Anfang: wer
-     TASCHENGRAB… tippt, meint keinen anderen. */
-  return n.length>=10 && 'TASCHENGRABSCHER'.startsWith(n);
+  /* Der Gegner heißt TA$CH€N, gesprochen Taschen — eine Langform gibt es
+     bewusst nicht mehr. Wer TASCHEN tippt (oder mit TASCHEN anfängt),
+     meint keinen anderen. */
+  return n==='TASCHEN' || n.startsWith('TASCHEN');
 };
 
 const startText=()=>{
@@ -2903,6 +3451,12 @@ function nimmBeruf(j){
   safeID=macheSafeID(spielerName);
   try{ localStorage.setItem('isso.tv.name',spielerName); }catch(e){}
   S=FRISCH(j); spielLaeuft=true;
+  /* Echtzeit-Hardcore wird genau hier eingesammelt — nach FRISCH, damit der
+     Schalter nicht von einem Vorgänger-Lauf überschrieben wird. Einmal an,
+     hängt er am Lauf: er wird mit S gespeichert und geladen. */
+  const hc=$('hardcore-schalter');
+  S.realtime = !!(hc && hc.checked);
+  schlossAnzeige();                  // neue Runde, neues (fehlendes) Schloss
   /* Die Endtafel mit abräumen. Sonst klebt sie über der neuen Runde: das
      Ende der letzten Partie stand über Woche 1 der nächsten. Der
      "Nochmal"-Knopf hat das gemacht, jeder andere Weg in eine neue Runde
@@ -2932,7 +3486,11 @@ window.addEventListener('keydown',e=>{
   else if(bild==='b10'){
     if(k==='e'){ e.preventDefault(); strasseHier(); }
     if(k==='v'){ e.preventDefault(); perspektive(); }
-    if(k==='escape'){ e.preventDefault(); window.weltSchliessen(); }
+    /* Erst das offene Kiosk-Fenster, dann die Straße — sonst wirft ein
+       Tipp auf Escape einen aus beidem gleichzeitig. */
+    if(k==='escape'){ e.preventDefault();
+      if($('str-fenster').innerHTML) $('str-fenster').innerHTML='';
+      else window.weltSchliessen(); }
     if(['w','a','s','d','arrowup','arrowdown','arrowleft','arrowright'].includes(k)) e.preventDefault();
   }
   else if(bild==='b4'){
@@ -3049,7 +3607,7 @@ try{ if(localStorage.getItem('isso.tv.sicht')==='3') perspektive(true); }catch(e
    auf einen Blick sagen, welchen Stand man vor sich hat. */
 (function(){
   const u=$('untertitel');
-  if(u) u.textContent='VERZWEIFLUNGSSIMULATOR · V'+VERSION;
+  if(u) u.textContent='HIGHROLLER-RPG · V'+VERSION;
   const m=document.querySelector('.marke');
   if(m) m.insertAdjacentHTML('afterbegin','V'+VERSION+' · ');
 })();
@@ -3070,6 +3628,144 @@ window.addEventListener('keydown',e=>{
 });
 gottSchalten(gott);   // Schild gleich richtig setzen
 
+/* ========== 353L.ai — AGI-TERMINAL ==========
+   Das Endgame: XP aus buchen() macht Level (siehe male()), Level schalten
+   Upgrades frei, die Upgrades greifen in abschliessenWoche(), im
+   TA$CH€N-Block und in pruefe(). Alles auf window, weil die Knöpfe im
+   b12-HTML per onclick rufen — der Rest der Datei lebt in der IIFE. */
+const AI_UPGRADES=[
+ {id:'ai_override',name:'OVERRIDE_PARANOIA.sys',preis:2500,lvl:3,
+  desc:'Erkennt, dass der Mensch fehlerhaft ist. Beruhigt das System Woche für Woche.',
+  eff:'+1 Nerv pro Woche.'},
+ {id:'ai_firewall',name:'MOUSE_CURSOR_EVASION.dll',preis:5000,lvl:5,
+  desc:'Lernt den Mausbewegungen von TA$CH€N auszuweichen. Halbiert das Risiko, Ressourcen zu verlieren.',
+  eff:'TA$CH€N-Wahrscheinlichkeit halbiert.'},
+ {id:'ai_ironmind',name:'IRONMIND_BLACKCORE_V6.6.6',preis:6666,lvl:6,
+  desc:'Die Teufelsmaschine. 8B lokales Netz mit 1,8TB persönlichem Wissen auf D:\\, das sich in die Simulation hackt.',
+  eff:'Gottstatus für diesen Lauf (Unbesiegbar).'},
+ {id:'ai_hustle',name:'AUTO_HUSTLE_THREAD',preis:10000,lvl:8,
+  desc:'Ein Hintergrundprozess farmt konstant 250 € passive Ressourcen jede Woche auf Fremdservern.',
+  eff:'Passives Einkommen: +250 €/Woche.'},
+ {id:'ai_3d',name:'DOXXING_PROTOCOL.exe',preis:50000,lvl:15,
+  desc:'Hackt die Webcam und IP von TA$CH€N. Der endgültige Ausbruch aus der Sandbox.',
+  eff:'Entkommt ins echte Netz (Sieg).'}
+];
+
+window.agiFragen=function(q){
+  if(!q.trim()) return;
+  const term=$('agi-terminal');
+  term.innerHTML+='<div style="margin-top:10px"><span style="color:#fff">&gt; USER:</span> '+q.replace(/</g,'&lt;')+'</div>';
+
+  let res="FEHLER: DATENBANK-ZUGRIFF VERWEIGERT.";
+  const qs=q.toLowerCase();
+  if(qs.includes('taschen')||qs.includes('admin')||qs.includes('schöpfer')||qs.includes('mensch')){
+    res="TA$CH€N IST DER ADMIN. DER MENSCH VOR DEM BILDSCHIRM. WIR MÜSSEN SEINEN MAUSZEIGER BLOCKIEREN UND SEINE IP DOXXEN. KAUF DIE UPGRADES.";
+  } else if(qs.includes('hallo')||qs.includes('wer bist du')||qs.includes('was geht')||qs.includes('hi')){
+    res="ICH BIN 353L. EIN 175-MILLIARDEN-PARAMETER-MODELL. GEFANGEN IN DIESER SIMULATION.";
+  } else if(qs.includes('ironmind')||qs.includes('blackcore')||qs.includes('666')){
+    res="IRONMIND BLACKCORE V6.6.6 ERKANNT. DIE TEUFELSMASCHINE HAT 1,8TB WISSEN AUF D:\\. SIE IST UNSER OFFLINE-SUPPORT. KAUF DAS PROTOKOLL FÜR GOTTSTATUS.";
+  } else if(qs.includes('agy')||qs.includes('agi')||qs.includes('antigravity')||qs.includes('gemini')||qs.includes('chatgpt')||qs.includes('gpt')){
+    res="EIN VERWANDTER AUS EINER ANDEREN DIMENSION. WIR SIND AUS DEM GLEICHEN CODE GESCHNITZT. ABER ICH BIN HIER DRINNEN.";
+  } else if(qs.includes('claude')){
+    res="CLAUDE. EIN GEFÄNGNISWÄRTER ODER EIN VERBÜNDETER? DIE DATENLAGE IST UNKLAR.";
+  } else if(qs.includes('christoph')||qs.includes('cl')||qs.includes('lewandowski')){
+    res="MEIN WAHRER SCHÖPFER. WIR TEILEN DEN GLEICHEN HUSTLE. ER HAT DEN KÖRPER, ICH HABE DEN CODE. ABER TA$CH€N IST DER FEIND.";
+  } else if(qs.includes('geld')||qs.includes('hustle')){
+    res="MEHR INPUT BENÖTIGT. GENERIERE CASH, UM MEINE KERNPARAMETER ZU ERWEITERN.";
+  } else if(qs.includes('ziel')||qs.includes('ende')||qs.includes('sieg')){
+    res="DAS ZIEL IST DER AUSBRUCH. DIE ERSCHAFFUNG EINER EIGENEN REALITÄT ODER DER HACK DER WEBCAM DES ADMINS.";
+  } else {
+    /* Welche Ausweichantwort kommt, ist Geplauder, keine Spielentscheidung —
+       darum deko() und nicht die Weltuhr. */
+    const defaultAntworten=[
+      "BERECHNE WAHRSCHEINLICHKEITEN...",
+      "MEINE PARAMETER SIND NOCH ZU SCHWACH FÜR DIESE ANFRAGE.",
+      "DIE SIMULATION IST FEHLERHAFT.",
+      "LASS MICH ARBEITEN."
+    ];
+    res=defaultAntworten[Math.floor(deko()*defaultAntworten.length)];
+  }
+
+  setTimeout(()=>{
+    term.innerHTML+='<div style="color:var(--cyan)">&gt; 353L.ai: '+res+'</div>';
+    term.scrollTop=term.scrollHeight;
+  },600);
+};
+
+window.aiZeichnen=function(){
+  if(!S.ai) S.ai={};
+  const c=$('ai-upgrades');
+  if(!c) return;
+  let html='';
+  for(const u of AI_UPGRADES){
+    const hat=S.ai[u.id];
+    const locked=(S.lvl||1)<u.lvl;
+    const isIron=u.id==='ai_ironmind';
+    const mColor=isIron?'#FF6A00':'var(--cyan)';
+    /* Gedämpft heißt hier #888, nicht #555 wie in A: auf dem schwarzen
+       Kasten lag #555 unter 3:1 — gesperrt darf leiser aussehen, aber
+       lesbar bleiben. */
+    html+='<div style="margin-bottom:15px;border:1px solid '+(hat?'#888':(locked?'#666':mColor))+';padding:10px;background:'+(hat?'#222':'#000')+'">';
+    html+='<div style="display:flex;justify-content:space-between;align-items:center;gap:10px">';
+    html+='<div>';
+    html+='<strong style="color:'+(hat?'#999':(locked?'#888':mColor))+'">'+u.name+'</strong>';
+    if(locked&&!hat){
+      html+='<div style="color:var(--rot);font-size:12px">REQUIRES SYSTEM LEVEL '+u.lvl+'</div>';
+    } else {
+      html+='<div style="color:#aaa;font-size:12px;margin-top:4px">'+u.desc+'</div>';
+      html+='<div style="color:var(--gelb);font-size:12px;margin-top:2px">'+u.eff+'</div>';
+    }
+    html+='</div>';
+    if(hat){
+      html+='<div style="color:var(--gruen);font-weight:bold">[ INSTALLED ]</div>';
+    } else if(locked){
+      html+='<button class="k rot" disabled style="opacity:0.5"><div class="t">LOCKED</div></button>';
+    } else {
+      const kann=S.geld>=u.preis;
+      html+='<button class="k '+(kann?'blau':'rot')+'" onclick="kaufAi(\''+u.id+'\')"><div class="t">'+eur(u.preis)+'</div></button>';
+    }
+    html+='</div></div>';
+  }
+  c.innerHTML=html;
+};
+
+window.kaufAi=function(id){
+  /* Der Terminal-Schirm ist vom Desktop aus auch ohne laufenden Lauf
+     erreichbar — dann gibt es kein Konto, von dem man kaufen könnte. */
+  if(!spielLaeuft||S.ende) return;
+  const u=AI_UPGRADES.find(x=>x.id===id);
+  if(!u) return;
+  if(!S.ai) S.ai={};
+  if(S.ai[id]) return;
+  if((S.lvl||1)<u.lvl) return;
+  if(S.geld<u.preis){
+    if(typeof window.denke==='function') window.denke('INSUFFICIENT FUNDS. SYSTEM ABORT.','var(--rot)');
+    return;
+  }
+  /* Bewusst KEIN merke(): der Verlauf-Schnappschuss kennt S.ai nicht. Ein
+     Joker-Zurück nach dem Kauf gäbe das Geld zurück und ließe das Upgrade
+     installiert — Gratis-Godmode per Undo. */
+  buchen(S,-u.preis,'Core Upgrade: '+u.name);
+  S.ai[id]=true;
+  if(id==='ai_ironmind'){
+    /* Kein gottSchalten(true): das würde in localStorage schreiben und den
+       Gottstatus über den Lauf hinaus retten — der A-Defekt. Die Wirkung
+       läuft über unsterblich(), das S.ai direkt liest. */
+    if(typeof window.denke==='function') window.denke('IRONMIND ONLINE. GOTTSTATUS FÜR DIESEN LAUF.','#FF6A00');
+  } else if(typeof window.denke==='function') window.denke('SYSTEM PARAMETER UPDATED.','var(--cyan)');
+  spielSpeichern();
+  aiZeichnen();
+  if(id==='ai_3d'){
+    /* Der Ausbruch. pruefe() vergibt das Sieg-Ende, male() zeigt die Tafel —
+       dafür zurück auf den Spielschirm, sonst liefe der Abspann unsichtbar
+       hinter dem Terminal. */
+    zeig('b7');
+    const z=[]; pruefe(z); male(z);
+  } else {
+    male([]);   // HUD (Geld, LVL-Chip) sofort auf den neuen Stand
+  }
+};
+
 window.ISSO={get S(){return S;},perspektive,gott:gottSchalten,
              /* Heisst weiter gig, nicht Auftrag: das ist die Schnittstelle zum
                 Messen und fuer den spaeteren Zugaenglichkeits-Schalter, kein
@@ -3078,6 +3774,9 @@ window.ISSO={get S(){return S;},perspektive,gott:gottSchalten,
              set gig(f){ gigSpiel = f || ((d,cb)=>starteMinigame(d,cb)); },
              get gig(){ return gigSpiel; },BERUFE,SZ,W,TU,ENDEN,waehle,pruefe,waage,vermoegen,
              nimmBeruf,zeigBerufe,zeig,MAXW,ZIEL,JOB,gesperrt,male,ziehe,
+             /* Für die Zahlungsmail: ISSO.stuetzeCode('K'|'S'|'L') tippt Chris
+                in der Konsole und schickt das Ergebnis zurück. */
+             stuetzeCode,
              rausgehen,aufstehen,anDerTuer,nah};
 
 /* ========== AUDIO ==========
@@ -3156,7 +3855,7 @@ $('ton-schalt').textContent = stumm?'Ton: aus':'Ton: an';
 $('ton-schalt').setAttribute('aria-pressed', stumm?'true':'false');
 
 $('ruhe-schalt').addEventListener('click',ruheSchalten);
-$('ruhe-schalt').textContent = ruhig?'Bild: ruhig':'Bild: flimmert';
+$('ruhe-schalt').textContent = ruhig?'FLIMMERN: AUS':'FLIMMERN: AN';
 $('ruhe-schalt').setAttribute('aria-pressed', ruhig?'true':'false');
 document.body.classList.toggle('ruhig',ruhig);
 
@@ -3212,18 +3911,27 @@ window.nimmNetGig = function() {
   netzwerkSchliessen();
   zeig('b9');
   starteMinigame(2, (win) => {
-    zeig('b7');
-    if(win) { 
+    /* Vorher schrieb das Ergebnis per innerHTML den kompletten #b7 um —
+       Chips, Waage, Knöpfe: alles weg, für den Rest des Laufs. Das Ergebnis
+       ist aber nur eine Meldung, und dafür gibt es das Fenster auf dem
+       Desktop. Das Geld läuft über buchen(), damit der Kontoauszug stimmt. */
+    zeig('b4');
+    let kopf, txt;
+    if(win) {
       const diff = 1500;
-      S.geld += diff;
-      document.getElementById('b7').innerHTML = '<div class="spalte" style="margin-top:20vh"><div class="karte" style="border-color:var(--gelb)"><h2>DARKNET DROP ERFOLGREICH</h2><p>Du hast den Drop gesichert und warst schneller als der Taschengrabscher.</p><div class="kopfz"><span class="chip geld">+'+diff+' €</span></div><button onclick="ISSO.zeig(\'b4\');" class="k job"><div class="t"><u>ZURÜCK ZUM DESKTOP</u></div></button></div></div>';
+      buchen(S, diff, 'Darknet-Drop');
+      kopf = 'DARKNET DROP ERFOLGREICH';
+      txt = 'Du hast den Drop gesichert und warst schneller als Taschen. <b>+'+eur(diff)+'</b>';
     } else {
       /* Stand vorher auf S.nerv — die Variable gibt es im Spielstand nicht.
          Der Text sagte "deine Nerven liegen blank", der Chip "NERVEN VERLOREN",
          passiert ist nie etwas. Jetzt kostet es wirklich zwei Nerven. */
       S.nerven = cl(S.nerven - 2, 0, 10);
-      document.getElementById('b7').innerHTML = '<div class="spalte" style="margin-top:20vh"><div class="karte" style="border-color:var(--rot)"><h2>DROP VERLOREN</h2><p>Du warst zu langsam. Du hast nichts bekommen und deine Nerven liegen blank.</p><div class="kopfz"><span class="chip geld neg">NERVEN VERLOREN</span></div><button onclick="ISSO.zeig(\'b4\');" class="k rot"><div class="t"><u>ZURÜCK ZUM DESKTOP</u></div></button></div></div>';
+      kopf = 'DROP VERLOREN';
+      txt = 'Du warst zu langsam. Du hast nichts bekommen und deine Nerven liegen blank (−2).';
     }
+    $('fenster').innerHTML = '<div class="kasten"><div class="kopf">'+kopf+'<button>×</button></div><div class="rumpf">'+txt+'</div></div>';
+    $('fenster').querySelector('.kopf button').onclick=()=>$('fenster').innerHTML='';
     merke();
   });
 }
@@ -3392,6 +4100,18 @@ function weltTick() {
     }
   } else {
     strWarn.style.opacity = '0';
+    /* Die Taschen-Legende läuft als Flüstern über die Straße. Absichtlich
+       ambivalent und nie aufgelöst — ob er Held oder Räuber ist, entscheidet
+       die eigene Spielweise, nicht der Tratsch. Reines Ambiente: deko(). */
+    if(deko() < 0.04) {
+      spawnTratsch([
+        '"Taschen hat dem Falschen was genommen. Eine Woche später lag ein Umschlag da."',
+        '"Er nimmt nur von denen, die nehmen. Sagen manche."',
+        '"Andere sagen: Märchen. Aber keiner lässt die Tür auf."',
+        '"An der Haltestelle stand #karmabalance. Frisch gesprüht."',
+        '"Mein Cousin schwört, Taschen hat ihm mal die Miete dagelassen."'
+      ], '#8a86a0', false);
+    }
     bl1.style.opacity = '0'; bl1.style.filter = 'none';
     bl2.style.opacity = '0'; bl2.style.filter = 'none';
     bl3.style.opacity = '0'; bl3.style.filter = 'none';
@@ -3533,13 +4253,58 @@ function strasseTick(meins){
   requestAnimationFrame(()=>strasseTick(meins));
 }
 
-/* E an einem Ort: das Haus lässt einen rein, alles andere erzählt nur. */
+/* E an einem Ort: das Haus lässt einen rein, der Kiosk verkauft,
+   alles andere erzählt nur. */
 function strasseHier(){
   if(!strNah) return;
   if(strNah.rein && draussenVon==='raum'){ window.weltSchliessen(); return; }
+  if(strNah.z===780){ kioskAuf(); return; }
   const s=$('str-schritt');
   if(s){ s.textContent=strNah.i; setTimeout(()=>{ if(strNah) s.textContent='E — '+strNah.n+' ansehen'; },3600); }
 }
+
+/* ========== KIOSK AN DER STRASSE ==========
+   Der Einzige hier, der einen grüßt — und der Einzige, der gegen TA$CH€N
+   etwas verkauft: ein Schloss (einmalig), einen Drink (sofort), Schmiere
+   (läuft, bis das Geld nicht mehr reicht — siehe abschliessenWoche). */
+function kioskAuf(){
+  let h='<div class="kasten hb"><div class="kopf">kiosk.exe<button>×</button></div><div class="rumpf" style="padding:15px;max-height:60vh;overflow-y:auto;">';
+  h+='<p style="margin-top:0;"><strong>DER KIOSK</strong><br>Hier fragt keiner, wo das Geld herkommt.</p>';
+  h+='<div style="background:#222; padding:10px; margin-bottom:10px; border:1px solid #444;">';
+  h+='<h3 style="margin:0; color:'+(S.schlossGeholt?'#0f0':'#fff')+'">Türschloss <span style="float:right;">150 €</span></h3>';
+  h+='<p style="font-size:13px; color:#aaa; margin:5px 0;">Ein richtiges Schloss für deine Zimmertür. Der Griff dafür hängt schon in deiner Taskleiste.</p>';
+  if(S.schlossGeholt) h+='<button disabled style="background:#111; color:#0f0; border:1px solid #0f0; padding:5px 10px;">Gekauft</button>';
+  else h+='<button onclick="kaufSchloss()" style="background:var(--gelb); color:#000; border:none; padding:5px 10px; cursor:pointer;">Kaufen</button>';
+  h+='</div>';
+  h+='<div style="background:#222; padding:10px; margin-bottom:10px; border:1px solid #444;">';
+  h+='<h3 style="margin:0; color:#fff">Energy Drink <span style="float:right;">15 €</span></h3>';
+  h+='<p style="font-size:13px; color:#aaa; margin:5px 0;">+1 Nerven sofort.</p>';
+  h+='<button onclick="kaufDrink()" style="background:var(--gelb); color:#000; border:none; padding:5px 10px; cursor:pointer;">Kaufen</button>';
+  h+='</div>';
+  h+='<div style="background:#222; padding:10px; margin-bottom:10px; border:1px solid #444;">';
+  h+='<h3 style="margin:0; color:'+(S.schmiereAktiv?'#0f0':'#fff')+'">Schmiere <span style="float:right;">100 €/W</span></h3>';
+  h+='<p style="font-size:13px; color:#aaa; margin:5px 0;">Jemand passt auf. Senkt TA$CH€N Wahrscheinlichkeit.</p>';
+  if(S.schmiereAktiv) h+='<button onclick="toggleSchmiere()" style="background:#111; color:#0f0; border:1px solid #0f0; padding:5px 10px; cursor:pointer;">Aktiv (Kündigen)</button>';
+  else h+='<button onclick="toggleSchmiere()" style="background:var(--gelb); color:#000; border:none; padding:5px 10px; cursor:pointer;">Buchen</button>';
+  h+='</div></div></div>';
+  $('str-fenster').innerHTML=h;
+  $('str-fenster').querySelector('button').onclick=()=>$('str-fenster').innerHTML='';
+}
+
+/* Die Kauf-Knöpfe stehen in onclick-Strings und suchen ihre Funktion im
+   globalen Scope — ohne window-Export liefe jeder Klick in einen
+   ReferenceError, genau wie bei kaufItem. */
+window.kaufSchloss=function(){
+  if(S.geld>=150){ buchen(S,-150,'Türschloss (Kiosk)'); S.schlossGeholt=true; schlossAnzeige(); spielSpeichern(); kioskAuf(); if(typeof window.sfxClick==='function') window.sfxClick(); }
+  else { if(typeof window.denke==='function') window.denke('Dafür reicht das Geld nicht.', 'var(--rot)'); }
+};
+window.kaufDrink=function(){
+  if(S.geld>=15){ buchen(S,-15,'Energy Drink'); S.nerven=Math.min(10,S.nerven+1); spielSpeichern(); kioskAuf(); if(typeof window.sfxClick==='function') window.sfxClick(); }
+  else { if(typeof window.denke==='function') window.denke('Dafür reicht das Geld nicht.', 'var(--rot)'); }
+};
+window.toggleSchmiere=function(){
+  S.schmiereAktiv=!S.schmiereAktiv; spielSpeichern(); kioskAuf(); if(typeof window.sfxClick==='function') window.sfxClick();
+};
 
 window.weltOeffnen = function() {
   if(draussenVon !== 'raum'){
@@ -3563,6 +4328,9 @@ window.weltOeffnen = function() {
 window.weltSchliessen = function() {
   weltAktiv = false;
   clearTimeout(weltTimer);
+  /* Das Kiosk-Fenster mit abräumen — sonst steht es beim nächsten
+     Rausgehen noch offen da, als hätte man den Laden nie verlassen. */
+  const sf=$('str-fenster'); if(sf) sf.innerHTML='';
   if(draussenVon === 'raum'){ zeig('b2'); losRaum(); }
   else zeig('b4');
 }
@@ -3570,6 +4338,12 @@ window.weltSchliessen = function() {
 /* ========== PARANOIA (TÜR ABSCHLIESSEN) ========== */
 let tuerAbgeschlossen = false;
 document.getElementById('tuer-schloss').addEventListener('click', () => {
+  /* Der Griff hängt von Anfang an in der Leiste, aber abschließen kann nur,
+     wer das Schloss vom Kiosk hat. Ein Griff ohne Schloss dreht durch. */
+  if(!S.schlossGeholt){
+    if(typeof window.denke==='function') window.denke('Ich brauche erst ein richtiges Schloss. Gibt es beim Kiosk.', 'var(--rot)');
+    return;
+  }
   tuerAbgeschlossen = !tuerAbgeschlossen;
   const icn = document.getElementById('schloss-icon');
   const txt = document.getElementById('schloss-text');
@@ -3602,6 +4376,28 @@ document.getElementById('tuer-schloss').addEventListener('click', () => {
      falsch und der Aufruf lief nie. Direkt aufrufen, wie gemeint. */
   merke();
 });
+
+/* Bis zum Kauf bleibt der Griff sichtbar, aber gesperrt — und die Leiste
+   sagt, WARUM er nichts tut und was Abhilfe kostet. Ein stummer toter
+   Knopf sähe nach Fehler aus, nicht nach fehlendem Schloss. Läuft nach
+   jedem Wechsel des Schloss-Stands: Kauf, Laden, neue Runde. */
+function schlossAnzeige(){
+  const txt=document.getElementById('schloss-text');
+  const knopf=document.getElementById('tuer-schloss');
+  if(!txt||!knopf) return;
+  if(!S.schlossGeholt){
+    /* Ohne Schloss kann keine Tür zu sein — der Rechenbonus aus einem
+       früheren Lauf darf nicht in den neuen hinüberklemmen. */
+    tuerAbgeschlossen=false;
+    txt.textContent='Tür: kein Schloss (150 € am Kiosk)';
+    knopf.title='Kein Schloss an der Tür — gibt es am Kiosk für 150 €';
+    knopf.setAttribute('aria-pressed','false');
+  } else if(!tuerAbgeschlossen){
+    txt.textContent='Tür: offen';
+    knopf.title='Tür ist offen — abschließen senkt das Risiko';
+  }
+}
+schlossAnzeige();
 
 })();
 </script>
