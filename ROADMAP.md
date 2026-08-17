@@ -180,13 +180,16 @@ Ziel: Die Große Vereinfachung/Klarheit+ trägt eine eigene satirische Story; ha
 | `P4-06` | P1 | Krise/Behandlung | sichere Erklärung, Ruhe, Gespräche, Rückkehrplan, Selbstbestimmung und mindestens zwei Rückwege. |
 | `P4-07` | P1 | Rechtliche Folgen/Haft | komplett fiktiver Konsequenzpfad mit Zeit, Kontakten, Arbeit, Entlassung und Stadtrückkehr; keine Tat-Anleitung. |
 | `P4-08` | P0 | Würde-/Safety-Review | alle harten Kapitel erfüllen `STORY_BIBLE.md`; keine Diagnose-/Sucht-/Armutsstereotype. |
-| `P4-09` | P1 | 1-gegen-1-Hufwehr in Eitelstedt | in der Kneipe „Zum falschen Signal“ eskaliert ein vermeidbarer Streit nur bei tatsächlichem Angriff zum kurzen Notwehrmoment: lesen, blocken/ausweichen, höchstens ein harter Hufkonter, Abstand gewinnen; Zeugen, Verletzung und Ruf reagieren, aber es gibt kein Gore, keine Wellenkämpfe, kein Farmen und kein Kampf-XP. |
+| `P4-09` | P1 | Kneipenstreit / Stärke zurückhalten | in „Zum falschen Signal“ kann 353L einen Streit früh lesen, beruhigen oder verlassen. Die Szene zeigt, dass er seine Kraft kennt und gerade deshalb keinen Kampf sucht; Beziehungen und Zeugen erinnern sein Verhalten. |
+| `P4-10` | P1 | Straßenraub / kanonisches 1-gegen-1-QTE | ein einzelner Straßenräuber greift 353L klar erkennbar an. Ein kurzes filmisches QTE aus Wahrnehmen, Abwehren, Hufkontern und bewusstem Aufhören zeigt, dass 353L den Angreifer erschreckend heftig überwältigt. Kein Gore, keine reale Kampfanleitung, keine Gegnerwelle und kein Kampf-XP; der eigentliche Spielwert liegt in Schock, Hilfeentscheidung, Zeugen, Ruf und der offenen Frage nach seiner aggressiven Seite. |
 
 ## M4-Gate
 
 - [ ] Akte I–IV sind mindestens als durchgehende Hauptlinie spielbar,
 - [ ] Behandlung und Haft sind eigenständige Orte mit Rückwegen, keine Endscreens,
-- [ ] das optionale 1-gegen-1-Setpiece ist lesbar, selten, konsequenzbehaftet und nicht als reale Kampfanleitung inszeniert,
+- [ ] das einmalige Straßenraub-QTE ist klar als Notwehr begonnen, filmisch statt technisch inszeniert und endet mit 353Ls bewusstem Stopp,
+- [ ] der Nachhall bietet mindestens: Zustand des Räubers prüfen, Hilfe rufen, Abstand nehmen und mit einer Vertrauensfigur darüber sprechen,
+- [ ] die Frage nach dem „Bösen“ bleibt eine offene Charakterfrage und wird weder durch Karmawert noch Diagnose beantwortet,
 - [ ] jede harte Szene wurde auf Klarheit, Würde und mögliche Fehlinterpretation geprüft,
 - [ ] Satire trifft Systeme/Macht und erzeugt Gameplay.
 

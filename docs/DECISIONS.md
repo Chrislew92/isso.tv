@@ -30,6 +30,14 @@ Dieses Protokoll hält dauerhafte Produkt-/Architekturentscheidungen fest. Neue 
 - Grund: Story-, Wirtschafts- und Save-Regeln bleiben testbar und unabhängig vom Renderer.
 - Folge: 3D-Komponenten melden Absichten/Positionen, schreiben aber keine langfristigen Spielwerte direkt.
 
+## D-005 — Gewalt bleibt ein einmaliger Charakterbruch
+
+- Datum: 17.08.2026
+- Entscheidung: 353L erhält genau ein kanonisches 1-gegen-1-QTE gegen einen tatsächlich angreifenden Straßenräuber. Die Gegenwehr fällt erschreckend heftig aus und zwingt 353L zur Frage nach seiner aggressiven Seite.
+- Grund: Seine enorme körperliche Stärke wird dramatisch sichtbar, ohne ihn zum Schläger oder Kämpfen zum wiederholbaren Belohnungsloop zu machen.
+- Erwogene Alternative: Kneipenprügelei als normales Minispiel; verworfen, weil dies 353Ls bewusster Konfliktvermeidung und dem seltenen Gewicht der Szene widerspricht.
+- Folge: Die Kneipe zeigt Zurückhaltung. Der Straßenraub zeigt Kontrollverlust und bewusstes Aufhören. Kein Gore, keine reale Kampfanleitung, kein Kampf-XP und kein Gut-/Böse-Meter; entscheidend sind Nachhall und spätere Verantwortung.
+
 ## Vorlage
 
 ```text

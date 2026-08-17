@@ -68,7 +68,7 @@ EyTonLand und das Schloss sind ein späteres Kapitel, kein Abspann. Die Frage wi
 4. **Risiko bleibt Fiktion.** Glücksspiel und Märkte verwenden Spielwerte; reale Kurse sind nur ein Kontextsignal, niemals Anlageberatung.
 5. **Keine Kriminalitätsfantasie als Tutorial.** Illegale Wege werden nicht als Anleitung dargestellt. Ihr Preis und ihre Folgen sind sichtbar, konkrete Durchführung bleibt außerhalb des Spiels.
 6. **Eigene Werte zuerst.** Charakter-, Konto-, Vermögens-, Budget- und Zielwerte sind bei einem neuen Run sichtbar einstellbar; ein Preset ist nur ein Startpunkt.
-7. **Hufwehr ist ein seltener Moment, kein Hauptloop.** 353L kann sich in einer klaren 1-gegen-1-Notwehrlage mit seinen Vorderhufen verteidigen. Der Spieler liest die Situation, blockt oder weicht aus, setzt höchstens einen kurzen harten Konter und gewinnt Abstand. Reden, Weggehen und Hilfe holen bleiben gleichwertig; es gibt kein Gore, keine Bandenwellen, keine Belohnung fürs Prügeln und keine reale Kampfanleitung.
+7. **Hufwehr ist ein einmaliger Wendepunkt, kein Hauptloop.** In einer klaren 1-gegen-1-Notwehrlage gegen einen Straßenräuber verteidigt sich 353L mit seinen Vorderhufen. Das kurze filmische QTE zeigt Wahrnehmen, Abwehren, heftige Konter und den Moment, in dem 353L bewusst aufhören muss. Die Gewalt ist erschreckend wirksam, aber nicht blutig oder technisch erklärt. Es gibt keine Bandenwellen, keine Belohnung fürs Prügeln und keine reale Kampfanleitung.
 
 ## 6. Wiederkehrende Figuren und Gruppen
 
@@ -83,11 +83,22 @@ EyTonLand und das Schloss sind ein späteres Kapitel, kein Abspann. Die Frage wi
 
 ### 353Ls Stärke
 
-353L ist körperlich sehr stark, aber kein Schläger. Er weiß, dass ein Vorderhuf einen Menschen schwer verletzen kann, und versucht Streit deshalb früh zu erkennen, zu beruhigen oder zu verlassen. Selbstkontrolle ist Teil seiner Stärke. Wenn eine klare Notwehrlage keinen sicheren Ausweg mehr lässt, verteidigt er sich kurz, schafft Abstand und hört auf, sobald die Gefahr vorbei ist.
+353L ist körperlich sehr stark, aber kein Schläger. Er weiß, dass ein Vorderhuf einen Menschen schwer verletzen kann, und versucht Streit deshalb früh zu erkennen, zu beruhigen oder zu verlassen. Selbstkontrolle ist Teil seiner Stärke.
+
+Einmal versagt diese Gewissheit: Ein Straßenräuber greift ihn an, 353L übernimmt im Adrenalin die Kontrolle und vermöbelt den Angreifer heftiger, als er selbst für möglich hielt. Er stoppt — aber der Schock bleibt. Die Geschichte beantwortet nicht, ob etwas „Böses“ in ihm steckt. Sie zeigt den Unterschied zwischen Impuls und Entscheidung und lässt spätere Handlungen sprechen: Schaut er nach dem Verletzten, ruft er Hilfe, erzählt er Lotte davon, verdrängt er es oder beginnt er, seiner eigenen Kraft zu misstrauen? Es gibt keinen Gut-/Böse-Balken.
 
 ### Wiederkehrender Ort: Zum falschen Signal
 
-Die Eitelstedter Kneipe **„Zum falschen Signal“** liegt auf dem Weg zwischen Bahnhof und HQ1. Sie ist kein reiner Kampfplatz, sondern ein sozialer Knoten: Feierabend, Gerüchte, kleine Aufträge, Musik, alte Geschichten und Leute, die 353L später wiedererkennen. Hier kann ein seltener Streit aus einem Missverständnis eskalieren. Mehrere Auswege bleiben sichtbar; nur ein tatsächlicher Angriff löst das kurze 1-gegen-1-Hufwehr-Setpiece aus. Danach reagiert die Welt mit Zeugen, Gespräch, möglicher Verletzung und Ruf — nicht mit Kampf-XP.
+Die Eitelstedter Kneipe **„Zum falschen Signal“** liegt auf dem Weg zwischen Bahnhof und HQ1. Sie ist kein reiner Kampfplatz, sondern ein sozialer Knoten: Feierabend, Gerüchte, kleine Aufträge, Musik, alte Geschichten und Leute, die 353L später wiedererkennen. Hier kann ein Streit aus einem Missverständnis entstehen, aber 353L zeigt, dass Stärke auch heißt, nicht zuzuschlagen. Die Kneipenszene bereitet den Kontrast zum späteren Straßenraub vor.
+
+### Kanonisches Setpiece: Der Straßenraub
+
+- **Ort:** ein später, übersichtlicher Verbindungsweg zwischen Eitelstedt und Bahnhof; keine anonyme Gangkulisse.
+- **Auslöser:** ein einzelner Straßenräuber bedroht und greift 353L tatsächlich an.
+- **Form:** sehr kurzes filmisches 1-gegen-1-QTE; Wahrnehmen, Abwehren, Hufkonter, dann ein deutlich gesetzter Stopp-Moment.
+- **Wirkung:** 353Ls Kraft erschreckt den Angreifer, Zeugen und vor allem ihn selbst. Sound, Kamera und Reaktionen tragen die Härte; kein Gore.
+- **Nachhall:** Zustand prüfen, Hilfe rufen, Abstand nehmen, ehrlich erzählen oder verdrängen. Spätere Figuren reagieren auf das, was 353L danach tut.
+- **Offene Frage:** Aggression existiert in ihm, aber das Spiel erklärt sie nicht automatisch zum „Bösen“. Die Antwort entsteht über weitere Entscheidungen.
 
 ## 7. Episodenformel
 

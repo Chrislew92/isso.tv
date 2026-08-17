@@ -13,7 +13,7 @@ Arbeitspaket: Dokumentations- und Agentenfundament
 - `docs/PROJECT_STATE.md` als belegter V3-Ist-Stand,
 - `docs/ARCHITECTURE.md`, `docs/DECISIONS.md` und `docs/QA_RELEASE.md`,
 - `MERGE_MATRIX.md` als ehrliche V2-Spendermatrix,
-- `STORY_BIBLE.md` um 353Ls kontrollierte Stärke, die Eitelstedter Kneipe „Zum falschen Signal“ und das seltene 1-gegen-1-Notwehr-Setpiece ergänzt.
+- `STORY_BIBLE.md` um 353Ls kontrollierte Stärke, die Eitelstedter Kneipe „Zum falschen Signal“ und das einmalige 1-gegen-1-Straßenraub-QTE ergänzt: heftige Gegenwehr, bewusster Stopp und offene Frage nach seiner aggressiven Seite.
 
 ## Aktueller sichtbarer Stand
 
