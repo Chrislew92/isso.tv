@@ -86,12 +86,13 @@ Ziel: Der Pfad **Film → Wohnung → Flur → Hafen → Bahnhof/Signalwerk → 
 | `P1-04` | P1 | Wohnung-Art-Pass | P1-01 | Matratze, Tisch, Donkey-Connection, Fenster, Tür, persönliche Requisiten, Materialien und Licht erzählen den Start ohne Textwand. |
 | `P1-05` | P1 | Flur-/Schwellen-Art-Pass | P1-03, P1-04 | Wohnungstür, Hausflur und Vordach bilden eine räumlich lesbare, atmosphärische Schwelle. |
 | `P1-06` | P1 | Hafen-Art-Pass | P1-03 | Pier, Kiosk-Silhouette, Wagen, Wasser, Schienenweg, Schilder und Regen besitzen eigenständige Strammburg-Qualität. |
-| `P1-07` | P0 | Erster 353L-Animationspass | P1-03 | Idle, Walk, Run, Turn, Stop, Interact und der explosive Hufsprint werden geblendet; Füße rutschen nicht auffällig; Emote deformiert das Rig nicht. Der Hufsprint vermittelt für wenige Sekunden ungefähr doppelte Menschengeschwindigkeit, bleibt lenkbar und besitzt kontrolliertes Auslaufen. |
+| `P1-07` | P0 | Erster 353L-Animationspass | P1-03 | Idle, Walk, Run, Turn, Stop, Interact und der explosive Hufsprint werden geblendet; Füße rutschen nicht auffällig; Emote deformiert das Rig nicht. Der Hufsprint vermittelt für wenige Sekunden ungefähr doppelte Menschengeschwindigkeit, bleibt lenkbar und besitzt kontrolliertes Auslaufen. Alle vier Gliedmaßen bleiben sichtbar echte Hufe. |
 | `P1-08` | P1 | Kamera und Spielgefühl | P1-03, P1-07 | Maus/Zoom reagieren weich, Kamera clippt nicht durch Hauptwände, Sprint/Turn fühlen sich kontrolliert an, Optionen für Sensitivität vorhanden. |
 | `P1-09` | P1 | Audio- und Filmübergang | P1-04 bis P1-08 | Regen, Raumton, Schritte, Tür, Hafen und UI haben eigene Lautstärken; Filmton/Spielton überblenden; Untertitel bleiben verfügbar. |
 | `P1-10` | P1 | Ein kompletter Entscheidungsbogen | P1-02 bis P1-09 | Jede der fünf Stationen besitzt klare Interaktion, sofortige Folge und einen korrekten Nachhall ohne Duplikat. |
 | `P1-11` | P0 | Lade-/Fehlerzustände | P1-01 | Modellfortschritt ist sichtbar; fehlendes WebGL/Assetfehler führen zu verständlicher Meldung statt Weißbild. |
 | `P1-12` | P0 | Vertical-Slice-QA | alle P1 | `docs/QA_RELEASE.md` lokales Gate vollständig; frischer Save, Reload, Reset, Build, Test und Konsole geprüft. |
+| `P1-13` | P1 | Haltungstest der Oberen Gabe | P1-03, P1-07 | 353L wechselt flüssig zwischen aufrechter Stadtbewegung und Tierlauf/Hufsprint. Der Test entscheidet anhand Lesbarkeit und Rigqualität, ob der Sprint vierbeinig oder stark vorgebeugt bleibt; keine Menschenhände/-füße und keine brechende Transformation. |
 
 ## M1-Gate
 
@@ -115,7 +116,7 @@ Ziel: Aus dem festen Morgen wird ein neuer, persönlich konfigurierbarer Run mit
 | --- | --- | --- | --- | --- |
 | `P2-01` | P0 | Save-Schema V3 | V2 Save-Normalisierung | versionierte Migration, beschädigter-Save-Fallback, Tests; aktueller Slot bleibt erhalten. |
 | `P2-02` | P1 | Save-Slots/Export | V2 persönlicher Run | mindestens drei benannte lokale Slots, Vorschau, Export/Import, Lösch-Wiederherstellung. |
-| `P2-03` | P1 | Charaktererstellung | V2 Presets/Formen | Name, Alter, Identität/Form, Look, Wohnstart und editierbare Kurzbiografie; keine Herkunfts-/Körper-Stats. |
+| `P2-03` | P1 | Charaktererstellung | V2 Presets/Formen | Name, Alter, Identität/Form, Look, Wohnstart und editierbare Kurzbiografie; Menschen/KI/Cyborg sowie Gabenträger-Arten nach `docs/ANIMAL_LORE.md`; keine Herkunfts-/Körper-Wertigkeit. |
 | `P2-04` | P0 | Startprofil | V2 Finanzprofil | Presets und eigene Werte für liquide Mittel, Konto, geschützte Mittel, Vermögen, Schulden, Banking/Unterstützung; klare Verfügbarkeit. |
 | `P2-05` | P0 | Zeit/Kalender | V2 Zyklen | Minuten, Tage, Wochen, Fristen und Jahresziel deterministisch; Entscheidungen kosten nachvollziehbare Zeit. |
 | `P2-06` | P0 | Bedürfnisse kompakt | V2 Hunger/Durst/Essen | Hunger, Durst, Energie und Stress mit sanftem Takt; Versorgung schafft Handlungsmacht, kein hektisches Balkenpflegen. |
@@ -123,6 +124,7 @@ Ziel: Aus dem festen Morgen wird ein neuer, persönlich konfigurierbarer Run mit
 | `P2-08` | P1 | Haushalt/Verträge | V2 Haushaltsbuch | Miete, Strom, Telefon, Internet, Fixkosten, Mahnungen und einfache „Wo ging Geld hin?“-Ansicht. |
 | `P2-09` | P1 | Gewohnheiten/Entzug | V2 Tabak | Startwahl oder späterer Beginn, individuelle Verläufe, freiwillige Ausstiegswege, sensible Texte und keine medizinische Pauschalaussage. |
 | `P2-10` | P0 | 3D-Tagesloop | neue V3-Arbeit | Zuhause → Versorgung → Termin/Arbeit/Projekt → Kontakt → Rückkehr/Schlaf vollständig räumlich spielbar. |
+| `P2-11` | P1 | Artspezifische Verben | Obere-Gabe-Kanon | jede spielbare Tierart erhält mindestens zwei eigene Bewegungs-/Interaktionsverben, eine interessante Reibung und gleichwertige Lösungswege; keine Art ist die beste Klasse. |
 
 ## M2-Gate
 
@@ -156,6 +158,7 @@ Ziel: Eine kleine, hochwertige Stadtzone mit wiederkehrenden Menschen, Verkehr u
 | `P3-06` | P1 | Beziehungen | Bekanntschaft, Vertrauen, Crew, Konflikt und Distanz ohne „richtige“ Antwort oder romantischen Zwang. |
 | `P3-07` | P1 | Stadtfunk | Tageslage, Wetter, Aushänge, Satire und Konsequenzen spiegeln den Run. |
 | `P3-08` | P1 | Gruppen/Rang | Parkkreis, Signalwerk und Neonhafen erhalten Eintritt, Arbeit, Rang, Ausstieg und Ruf-Folgen. |
+| `P3-09` | P1 | Tiernetz und Legendenfragmente | Gabenträger erkennen Zeichen und unterschiedliche Versionen der Oberen Gabe; mindestens drei Tierfiguren vertreten widersprechende Deutungen, ohne endgültige Infobox-Wahrheit. |
 
 ## M3-Gate
 

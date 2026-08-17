@@ -59,6 +59,13 @@ Dieses Protokoll hält dauerhafte Produkt-/Architekturentscheidungen fest. Neue 
 - Grund: 353Ls Eselkörper soll nicht nur im Kampf Bedeutung haben. Geschwindigkeit schafft eine charaktereigene Lösung, die Gewalt vermeidet und trotzdem Adrenalin liefert.
 - Folge: Offene Flucht gegen einen einzelnen menschlichen Verfolger gelingt bei früher freier Routenwahl fast immer. Spannung entsteht aus Raum, Untergrund, Gepäck und Hindernissen. Animation, Kamera, Sound und Assist-Modus gehören zum Hufsprint-Feature.
 
+## D-009 — Die Obere Gabe richtet Tiere auf, macht sie aber nicht zu Menschen
+
+- Datum: 17.08.2026
+- Entscheidung: Eine alte, nur unter Tieren weitergegebene Legende erzählt von der Oberen Gabe. Manche Tiere können sich freiwillig aufrichten und auf zwei Beinen gehen. Der Preis ist, vollständig als ihre Art erkennbar zu bleiben: Hufe, Pfoten, Krallen, Schnabel, Flügel, Panzer, Sinne und Bewegungslogik verschwinden nicht.
+- Grund: Der aufrechte Gang erklärt die gemeinsame Stadtwelt, ohne die Tierfiguren zu Menschen in Kostümen zu machen. Anatomie wird zu Story, Bewegung und Entscheidung.
+- Folge: 353L behält vier echte Hufe; Katzen behalten Pfoten/Krallen. Aufrecht- und Tierhaltung werden langfristig spielbar. Charakter-, Kleidungs-, Werkzeug- und Rigdesign folgt `docs/ANIMAL_LORE.md`. Die Legende bleibt innerhalb der Welt mehrdeutig und erzeugt keine überlegene Tierkaste.
+
 ## Vorlage
 
 ```text

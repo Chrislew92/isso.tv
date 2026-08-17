@@ -18,6 +18,12 @@ Es ist kein Elends- oder Schock-Simulator: Druck, Geldmangel, Gesundheit, Abhän
 | **Stadtwitz** | Schnelle, absurde Sozial-Satire: Apps, Ämter, Banken und Konzerne machen Dinge "einfacher" und erzeugen neue Formulare. Der Witz trifft Systeme und Macht, nie Herkunft, Krankheit oder Identität. |
 | **Figuren** | Mensch, KI, Mensch im Roboterkörper, unbewusste KI im Menschen oder Tier-Avatar. Alle starten mit gleichwertigen Chancen; Perspektive verändert Szenen, nicht den Wert einer Figur. |
 
+## 2.1 Die Obere Gabe
+
+Unter Tieren lebt eine alte Legende: Die **Obere Gabe** erlaubte ausgewählten Tieren, sich aufzurichten und auf zwei Beinen zu gehen, wenn sie es selbst wollten. Der Preis war, tierisch zu bleiben. Ein Esel behält Hufe, eine Katze Pfoten und Krallen, ein Hund seine Pfoten, ein Vogel Schnabel, Flügel und Krallen. Die Gabe ermöglicht Haltung und neue Möglichkeiten, aber keine Verwandlung zum Menschen.
+
+353L ist ein Eselträger dieser Gabe. Seine Hufe sind seine Hände und bleiben gefährlich kräftig; sein Hufsprint stammt aus dem erhaltenen Eselkörper. Aufrecht- und Tierhaltung sind langfristig spielbare Bewegungsformen. Die vollständigen Lore-, Gameplay- und 3D-Art-Regeln stehen in `docs/ANIMAL_LORE.md`.
+
 Die Energie darf frech, schnell und überdreht sein — eine Hommage an scharfe Animationssatire im **Gefühl**, ohne Figuren, Bildsprache, Dialoge oder Handlungen anderer Werke zu kopieren.
 
 ## 3. Zentraler Konflikt: Die Große Vereinfachung
@@ -142,5 +148,6 @@ Die verbindliche technische Reihenfolge steht in `ROADMAP.md`. Erzählerisch gil
 1. Zuerst wird der bestehende Morgen — Wohnung, Schwelle, Hafen und Signalwerk — als hochwertiger 3D-Vertical-Slice fertig erzählt.
 2. Danach folgen Charakterstart, Versorgung, ein verlässlicher Tagesloop und der erste soziale Kontakt.
 3. Anschließend schreiben Parkkreis, Signalwerk, Neonhafen und Klarheit+ als wiederkehrende Figuren/Systeme zurück.
-4. Behandlung, Krise, rechtliche Folgen und die zwei gespiegelten 1-gegen-1-Hufwehr-Setpieces entstehen erst auf dem stabilen Beziehungs-/Konsequenzsystem.
-5. EyTonLand und Z-Coin bleiben Langzeitbögen; sie werden nicht als schneller Preis ausgeschüttet.
+4. Die Obere Gabe wird über Tierbegegnungen, Zeichen und Bewegungsformen langsam sichtbar; sie erhält keine einmalige Lexikon-Erklärung.
+5. Behandlung, Krise, rechtliche Folgen und die zwei gespiegelten 1-gegen-1-Hufwehr-Setpieces entstehen erst auf dem stabilen Beziehungs-/Konsequenzsystem.
+6. EyTonLand und Z-Coin bleiben Langzeitbögen; sie werden nicht als schneller Preis ausgeschüttet.

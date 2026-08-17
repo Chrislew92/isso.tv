@@ -65,6 +65,7 @@ Dieses Dokument beschreibt ausschließlich Funktionen, die im aktuellen V3-Code 
 Die folgenden Systeme existierten teilweise als V2-Prototyp oder Konzept, sind aber **nicht** Teil der aktuellen V3-Runtime:
 
 - Charaktererstellung, Presets, Alter, Wohnform oder freie Startwerte,
+- die Obere Gabe als spielbares Haltungssystem, Tierlauf oder weitere artspezifische Figuren/Fähigkeiten,
 - Euro-/Vermögens-/Schutzkonto-/Schulden-/Insolvenz-System,
 - Hunger, Durst, Essensgutscheine, Bestellung, Schlaf und Routinen,
 - BTC/ETH/LTC/SOL/Z-Coin-Portfolio und echte/simulierte Marktwerte,

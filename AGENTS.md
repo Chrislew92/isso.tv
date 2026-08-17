@@ -21,6 +21,8 @@ Diese Datei gilt für Codex, Claude, Manus, Copilot, AGI-IDE-Agenten und jede an
 
 Für Arbeiten an Kneipenstreit, Straßenraub, QTE oder Konfliktfolgen zusätzlich `docs/CONFLICT_SCENARIOS.md` vollständig lesen.
 
+Für Arbeiten an Tierfiguren, Charaktermodellen, Bewegung, Kleidung, Werkzeugen oder der Oberen Gabe zusätzlich `docs/ANIMAL_LORE.md` vollständig lesen. Menschliche Hände/Füße an aufrechten Tierfiguren sind ohne ausdrückliche kanonische Ausnahme ein Art-Fehler.
+
 Für den **tatsächlichen Implementierungsstand** gilt: ausführbare Tests und aktueller Code > `docs/PROJECT_STATE.md` > `ROADMAP.md` > ältere Konzepttexte. Für **Arbeits-, Sicherheits- und Deploymentregeln** bleibt `AGENTS.md` verbindlich. Ein Widerspruch wird dokumentiert und bereinigt; er wird nicht stillschweigend geraten.
 
 ## 3. Nicht verhandelbare Regeln

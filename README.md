@@ -36,5 +36,6 @@ Codex, Claude, Manus und andere IDE-/AGI-Agenten beginnen verbindlich mit [AGENT
 5. [Aktuelle Übergabe](docs/HANDOFF.md)
 6. [QA- und Release-Gates](docs/QA_RELEASE.md)
 7. [Konflikt- und Entscheidungsvarianten](docs/CONFLICT_SCENARIOS.md)
+8. [Tierkanon: Die Obere Gabe](docs/ANIMAL_LORE.md)
 
 V3 ist die einzige aktive Codebasis. V2 bleibt ein archivierter Feature-Spender; geplant bedeutet niemals automatisch eingebaut. Kein Agent veröffentlicht oder verändert `isso.tv` ohne eine ausdrückliche Freigabe in der aktuellen Aufgabe.
