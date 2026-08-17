@@ -19,3 +19,6 @@ Thumbs.db
 *.log
 npm-debug.log*
 vite.config.*.timestamp-*
+
+# Blender automatic backups
+*.blend1

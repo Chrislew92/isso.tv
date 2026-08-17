@@ -1,7 +1,7 @@
 # ISSO.TV — Master Roadmap (lokal / intern)
 
-Stand: 11.08.2026  
-Status: **spielbarer Vertical Slice** — Kernsysteme vorhanden, Master Edition im Ausbau.
+Stand: 17.08.2026
+Status: **lokaler echter 3D-Vertical-Slice** — Filmstart, frei steuerbarer Avatar und zusammenhängende Strammburg-Geometrie vorhanden; noch nicht zur Veröffentlichung freigegeben.
 
 Diese Datei ist unsere Fortsetzungsgrundlage. Neue Gedanken kommen zuerst in den Backlog, dann werden sie zu einer klaren, testbaren Aufgabe. Nur tatsächlich eingebaute und geprüfte Punkte werden abgehakt.
 
@@ -73,6 +73,7 @@ ISSO.TV ist ein endloser Stadtrun in der fiktiven Metropole **Strammburg**. Es g
 - [x] Vier gleichwertige Crew-Presets mit eigenen Auftaktszenen: Alex, Malik, Yuna, Ally.
 - [x] Keine Wertevor- oder -nachteile aufgrund von Herkunft oder Look.
 - [x] Esel-/353L-Visual als aktuelles Key Art.
+- [x] 353L als eigenes texturiertes, geriggtes 3D-Modell mit Laufpose, Blick und Emote.
 
 ## Offen
 
@@ -80,7 +81,7 @@ ISSO.TV ist ein endloser Stadtrun in der fiktiven Metropole **Strammburg**. Es g
 - [ ] Outfit, Inventar, Wohnung, Stimme und Körperform als rein erzählerische Anpassung.
 - [ ] Charakter-Biografie in drei kurzen, editierbaren Sätzen.
 - [ ] Konsequente KI-/Cyborg-/Sleeper-spezifische spätere Storysignale.
-- [ ] 3D-Avatar-Prototyp: laufen, stehen, Blickrichtung, einfache Emotes.
+- [ ] Charakteranimationen ausbauen: weichere Schritte, Hände, Gesicht, Atem, Interaktionsposen.
 
 # 2. Alltag, Basis & Überleben
 
@@ -111,7 +112,8 @@ ISSO.TV ist ein endloser Stadtrun in der fiktiven Metropole **Strammburg**. Es g
 - [x] Ortsaktionen mit kleinen, sichtbaren Folgen.
 - [x] Lokale Wege und spätere Netzfreischaltung über den Bahnhof.
 - [x] Haftkapitel ist als nicht-finaler Schauplatz vorbereitet.
-- [x] Filmische 3D-Stadtfahrt: sieben anfahrbare Schauplätze, freie Blickbewegung und Augenhöhe-/Vogel-/Eselblick ohne Zeitkosten.
+- [x] Echte zusammenhängende 3D-Welt: Wohnung, Flur, Hafen, Bahnhof und Signalwerk ohne Bildhintergründe oder 2.5D-Figuren.
+- [x] Freie Echtzeitsteuerung mit WASD/Pfeiltasten, Mausblick, Zoom, Kamera-Nachführung und räumlichen Interaktionen.
 
 ## Offen
 
@@ -229,7 +231,11 @@ ISSO.TV ist ein endloser Stadtrun in der fiktiven Metropole **Strammburg**. Es g
 
 - [x] Dark Master-Edition-UI, Symbole, Legenden und Key Art.
 - [x] Responsive Basis für Mobile.
-- [x] CSS-3D-Diorama als filmischer Schauplatz-Prototyp für Wohnung, Park, Kiosk, Bahnhof, HQ1, Neonhafen und Schloss EyTonLand.
+- [x] Automatischer Filmstart mit direktem Übergang in die begehbare 3D-Szene.
+- [x] Three.js-/React-Three-Fiber-Laufzeit und reproduzierbare Blender-Asset-Pipeline.
+- [x] Eigenständiges 353L-Mastermodell mit 93.441 Vertices, 2K-Textur, Skelett und übertragenen Gewichten.
+- [x] GPU-Regen, adaptive Auflösung und pausierender Renderloop für Film/Dialoge.
+- [x] Interner Desktop-Test: vier stabile Messfenster mit 56 FPS und 20–24 ms schlechtestem Normalframe; keine neuen Konsolenwarnungen.
 
 ## Offen
 
@@ -237,8 +243,8 @@ ISSO.TV ist ein endloser Stadtrun in der fiktiven Metropole **Strammburg**. Es g
 - [ ] Sound: Hafen, U-Bahn, Wohnung, Markt, ruhige/angespannte Zustände.
 - [ ] Musik-States: Alltag, Risiko, Krise, Crew, Meilenstein.
 - [ ] Barrierefreiheit: Tastatur, Fokus, Textgrößen, Motion-Reduktion, Kontrast.
-- [ ] Dioramen mit individuellen Requisiten, Tageszeiten und echten Innenräumen vertiefen.
-- [ ] Echte Lauf-/Kamera-Prototypen mit steuerbarem Avatar und kleinen, dichten Bezirken.
+- [ ] Environment-Art-Pass: hochwertige Materialien, Requisiten, Fassaden, Wasser, Vegetation, Beschilderung und Lichtstimmung.
+- [ ] Bewegungs-Polish: Blend-Animationen, saubere Füße, Treppen, Kollisionen, Controller und Touch-Steuerung.
 - [ ] Charakterporträts/Look-Varianten mit gleicher Qualität für alle Presets.
 
 # 11. Qualität, Datenschutz & Veröffentlichung
@@ -260,16 +266,15 @@ ISSO.TV ist ein endloser Stadtrun in der fiktiven Metropole **Strammburg**. Es g
 
 # Nächster Sprint — jetzt anfangen
 
-1. [ ] **Haft- und Behandlungskapitel spielbar machen**
-   - Eigene Aktionen, Zeitfortschritt, Kontakte, Rückkehr in die Stadt.
-   - Kein Game Over, keine Stigmatisierung, mindestens zwei Wege zurück.
-2. [ ] **Telefon/Messenger bauen**
-   - Kolleg:innen, Einladungen, Fraktionsnachrichten und Termine als kurze, relevante Impulse.
-   - MVP vorhanden: dynamische Strammburg-Nachrichten; als Nächstes Antworten und Terminfolgen ergänzen.
-3. [ ] **Map-Spieltest & Bewegung polieren**
-   - Alle Verbindungen, Mobile-Layout, Netzfreischaltung und Ortsaktionen prüfen.
-4. [ ] **Erste drei vollständigen Fraktionsaufträge schreiben**
-   - Je Signalwerk, Neonhafen, Parkkreis: Rang 1 → Rang 2 → sichtbare Konsequenz.
+1. [ ] **3D-Vertical-Slice visuell auf Master-Niveau bringen**
+   - Wohnung, Flur und erste Hafenstraße mit hochwertigen Materialien, Requisiten, Schildern und Licht ausarbeiten.
+   - Platzhalter-Geometrie sichtbar abbauen; keine 2D-Spielhintergründe zurückholen.
+2. [ ] **353L-Bewegung polieren**
+   - Idle/Walk/Run/Turn/Interact sauber blenden, Füße stabilisieren, Kamera und Kollisionen nachziehen.
+3. [ ] **Ersten kompletten Spieltag in 3D bauen**
+   - Donkey-Connection → Tür → Hafenbegegnung → Bahnhof/Signalwerk → sichtbarer Nachhall.
+4. [ ] **Audio und Bedienbarkeit ergänzen**
+   - Raumklang, Regen, Schritte, Untertitel, Lautstärke, Motion-Reduktion, Controller/Touch.
 
 # Parkplatz — Ideen, noch nicht im Sprint
 
