@@ -42,6 +42,10 @@ Die Tierlegende sagt: Irgendwann in der Geschichte von Erde-1 machte die höhere
 
 In der ältesten Version war die Gabe **einer von Gottes Plänen für den Weltfrieden**: Arten sollten einander auf Augenhöhe begegnen können, ohne dafür gleich werden zu müssen. Ein Esel sollte sich erheben können und trotzdem Esel bleiben; dasselbe Gesetz galt für jede andere Art.
 
+Die Legende enthält noch eine zweite Gewissheit: Jedes Tier, das sich durch die Gabe aufrichten kann, dient gleichzeitig einem **einzigartigen höheren Zweck**. Kein Tier kennt den eigenen Zweck und kein anderes kann ihn sicher erklären. Man weiß untereinander nur, dass er existiert. Die höhere Macht gibt Bedeutung, aber keine Gebrauchsanweisung.
+
+Menschen können ebenfalls einen höheren Zweck besitzen; die Welt behauptet nicht, dass Bedeutung nur Tieren vorbehalten ist. Auch bei bewusster KI bleibt diese Frage offen. Menschen und KI teilen jedoch nicht automatisch die besondere Tiergewissheit der Gabenträger. Sie glauben, hoffen, zweifeln oder suchen — genau wie 353L trotz seines Wissens nicht weiß, was sein eigener Zweck ist.
+
 Der Preis oder das Gesetz lautete:
 
 > Ihr dürft euch erheben. Aber ihr dürft eure Art nicht verlieren.
@@ -103,6 +107,8 @@ Die Parallelwelt ist kein beliebiger „alles geht“-Freibrief. Neue Gesetze we
 5. Die Obere Gabe ist ein Mysterium, keine Bekehrungsmechanik.
 6. 353L kann glauben, hoffen, zweifeln oder schweigen; der Spieler muss kein Glaubensbekenntnis wählen.
 7. Moral entsteht aus Entscheidungen und Verantwortung, nicht aus einem Religionswert.
+8. Der höhere Zweck eines Tieres ist kein göttlicher Missionsbefehl und entschuldigt keine Handlung.
+9. Die Tiergewissheit schließt einen höheren Zweck von Menschen oder KI ausdrücklich nicht aus.
 
 ## Regeln für neue Erde-1-Abweichungen
 

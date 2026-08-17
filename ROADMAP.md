@@ -33,6 +33,8 @@ Das Ziel ist nicht „möglichst viele Menüs“. Jeder neue Systemwert muss min
 - Strammburg ist eine fiktive Metropole; Eitelstedt/HQ1, EyTonLand und Earthpeace 2033 gehören zum eigenen Kanon.
 - Erde-1 ist eine Parallelwelt mit demselben Kalender, nicht unsere reale Erde sieben Jahre später. Die höhere Macht kann für Gott stehen, ohne das Spiel religiös festzulegen.
 - Die Obere Gabe war laut ältester Tierlegende einer von Gottes Friedensplänen. Earthpeace 2033 wurde nicht pünktlich erreicht; der verpasste Termin eröffnet den fortlaufenden Weltauftrag statt eines Prophezeiungs-Endes.
+- Jedes aufgerichtete Tier trägt einen unbekannten eigenen höheren Zweck. 353Ls Zweck bleibt unbenannt; kein System, Agent oder NPC darf daraus früh eine feste Prophezeiung oder optimale Route machen.
+- Menschen können ebenfalls einen unbekannten Zweck besitzen; bei bewusster KI bleibt es eine offene Erde-1-Frage. Nur Tiere teilen durch die Gabe eine gemeinsame Gewissheit darüber.
 - `50.000 € + 35 Renommee` ist ein früher Langzeit-Meilenstein, kein Spielende.
 - Krise, Behandlung und Haft sind potenzielle weiterlaufende Kapitel, kein pauschales Game Over.
 - Keine Echtgeldtransaktion, keine Tat-Anleitung, keine Abwertung realer Gruppen.
@@ -160,7 +162,15 @@ Ziel: Eine kleine, hochwertige Stadtzone mit wiederkehrenden Menschen, Verkehr u
 | `P3-06` | P1 | Beziehungen | Bekanntschaft, Vertrauen, Crew, Konflikt und Distanz ohne „richtige“ Antwort oder romantischen Zwang. |
 | `P3-07` | P1 | Stadtfunk | Tageslage, Wetter, Aushänge, Satire und Konsequenzen spiegeln den Run. |
 | `P3-08` | P1 | Gruppen/Rang | Parkkreis, Signalwerk und Neonhafen erhalten Eintritt, Arbeit, Rang, Ausstieg und Ruf-Folgen. |
-| `P3-09` | P1 | Tiernetz und Erde-1-Fragmente | Gabenträger erkennen Zeichen und unterschiedliche Versionen der Oberen Gabe; mindestens drei Tierfiguren und zwei menschliche Perspektiven vertreten religiöse, wissenschaftliche oder zweifelnde Deutungen, ohne endgültige Infobox-Wahrheit. Der Begriff Erde-1 fällt erst nach mehreren sichtbaren Hinweisen. |
+| `P3-09` | P1 | Tiernetz, Zwecke und Erde-1-Fragmente | Gabenträger erkennen Zeichen und unterschiedliche Versionen der Oberen Gabe; mindestens drei Tierfiguren und zwei menschliche Perspektiven vertreten religiöse, wissenschaftliche oder zweifelnde Deutungen. Jedes Tier spürt, dass ein eigener höherer Zweck existiert, aber keine Figur erhält eine sichere Zweck-Auflösung. Der Begriff Erde-1 fällt erst nach mehreren sichtbaren Hinweisen. |
+
+### Zweck-System: erzählerische Abnahme
+
+- [ ] Zweck wird nur durch wiederkehrende Motive, Beziehungen und unerwarteten Nachhall angedeutet.
+- [ ] kein Questmarker, Dialog oder UI-Wert behauptet, 353Ls Zweck endgültig zu kennen,
+- [ ] unterschiedliche Figuren dürfen widersprechende Vermutungen äußern,
+- [ ] kein Zweck erzeugt eine bessere Tierart, feste Klasse oder moralische Entschuldigung,
+- [ ] ein Run kann dauerhaft offenlassen, wofür 353L aufgerichtet wurde.
 
 ## M3-Gate
 

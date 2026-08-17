@@ -80,6 +80,13 @@ Dieses Protokoll hält dauerhafte Produkt-/Architekturentscheidungen fest. Neue 
 - Grund: Die Gabe erhält einen Sinn jenseits von Fähigkeiten, während freie Entscheidungen und die offene religiöse Deutung erhalten bleiben.
 - Folge: Earthpeace 2033 ist kein erfülltes Prophezeiungs-Ende, sondern eine verspätete Aufgabe. EyTonLand kann später ein neuer praktischer Versuch werden. Strammburg darf die verpasste Deadline satirisch verwalten; das Spiel verteilt trotzdem keine Glaubenspunkte und erklärt keine reale Religion zur einzig richtigen.
 
+## D-012 — Jedes aufgerichtete Tier trägt einen unbekannten höheren Zweck
+
+- Datum: 17.08.2026
+- Entscheidung: Jedes Tier, das durch die Obere Gabe aufrecht gehen kann, dient zugleich einem einzigartigen höheren Zweck. Kein Tier kennt den eigenen Zweck; Tiere wissen untereinander nur, dass jeder einen besitzt. Menschen können ebenfalls einen unbekannten Zweck haben, bei bewusster KI bleibt es offen. 353Ls Zweck bleibt ausdrücklich unbekannt.
+- Grund: Die Gabe erhält persönliche Tiefe und verbindet freien Alltag mit einem größeren Mysterium, ohne Figuren auf vorbestimmte Missionen zu reduzieren.
+- Folge: Zweck erscheint nur als mögliche Spur, Muster und Nachhall. Es gibt keinen Zweckwert, Questmarker, Klassenbonus oder göttliche Rechtfertigung. Die Tiergewissheit macht Menschen nicht zwecklos oder minderwertig. Kein Agent darf 353Ls Zweck ohne spätere ausdrückliche Nutzerentscheidung kanonisch auflösen.
+
 ## Vorlage
 
 ```text

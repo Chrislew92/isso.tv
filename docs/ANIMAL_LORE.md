@@ -20,6 +20,26 @@ Kein Mensch kennt den vollständigen Ursprung der Geschichte. Manche Tiere nenne
 - Die ursprüngliche tierische Bewegung bleibt wichtig: Sprint, Klettern, Schwimmen, Fliegen, Kriechen, Schutz oder feine Sinne verschwinden nicht.
 - Nicht jedes Tier trägt oder nutzt die Gabe gleich. Die Legende nennt jene, die sie hören und annehmen, „Erwählte“ — nicht als bessere Wesen, sondern als Träger einer zusätzlichen Verantwortung.
 
+## Der eigene höhere Zweck
+
+Nach dem gemeinsamen Tierwissen trägt jedes aufgerichtete Tier gleichzeitig einen **eigenen höheren Zweck**. Die Gabe richtet kein Tier ohne Grund auf — aber sie verrät keinem Tier, wofür.
+
+- Kein Tier kennt seinen eigenen Zweck sicher.
+- Kein anderes Tier kann ihn zuverlässig lesen oder verkünden.
+- Es gibt keine Rangliste wichtiger und unwichtiger Zwecke.
+- Der Zweck kann groß, unscheinbar, persönlich, gesellschaftlich oder erst viel später erkennbar sein.
+- Er erscheint nicht als Questmarker, Prophezeiungstext oder versteckter Klassenbonus.
+- Ein Tier kann zweifeln, sich irren, weglaufen, neu anfangen und trotzdem nicht „aus seinem Zweck fallen“.
+- Zweck hebt freien Willen nicht auf und entschuldigt keine schädliche Handlung.
+
+Tiere wissen nur, **dass** jeder Gabenträger einen Zweck trägt. Woher sie dieses Wissen haben, ist selbst Teil der alten Legende. Manche nennen es Gewissheit, andere ein gemeinsames Erinnern oder das Echo der höheren Macht.
+
+Die Legende sagt nicht, dass Menschen keinen Zweck hätten. Viele Tiere vermuten, dass Menschen — und vielleicht auch bewusste KI — ebenfalls einen eigenen höheren Zweck tragen, ohne ihn zu kennen. Der Unterschied ist nur: Unter Gabenträgern gehört die Existenz des Zwecks zum gemeinsamen Tierwissen; bei Menschen bleibt sie Glaube, Hoffnung, Philosophie oder Zweifel.
+
+Bei 353L ist der höhere Zweck unbekannt. Seine Ideen, seine Kraft, die Donkey-Connection, EyTonLand oder Earthpeace können Spuren sein — keine davon ist bereits die bestätigte Antwort. Kein Agent und keine einzelne Figur darf 353Ls Zweck ohne eine spätere ausdrückliche Kanonentscheidung endgültig benennen.
+
+Erzählerisch wird Zweck über Muster spürbar: wiederkehrende Menschen, Dinge, die nur diese Figur bemerkt, Entscheidungen mit unerwartetem Echo und Momente, in denen eine artspezifische Fähigkeit genau zur richtigen Zeit Bedeutung bekommt. Die Auflösung darf ausbleiben; die Suche selbst kann den endlosen Run tragen.
+
 ## Der Preis: tierisch bleiben
 
 Die Gabe baut keinen Menschenkörper über das Tier. Sie erlaubt Haltung und Bewusstsein, aber keine anatomische Auslöschung.

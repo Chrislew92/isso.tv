@@ -29,6 +29,10 @@ Hinter der Legende steht eine höhere Macht, die als Gott verstanden werden kann
 
 Die älteste Tierfassung nennt die Obere Gabe einen von Gottes Plänen für den Weltfrieden. Sie sollte Begegnung auf Augenhöhe ermöglichen, ohne Arten gleichzumachen. Die Möglichkeit wurde gegeben, aber der Frieden nicht erzwungen. Im Jahr 2033 ist die Earthpeace-Frist sichtbar verpasst; die Aufgabe bleibt offen und kann später in EyTonLand praktisch neu verhandelt werden.
 
+Jedes Tier, das sich aufrichten kann, trägt laut Tierwissen außerdem einen eigenen höheren Zweck. Niemand kennt den eigenen; niemand kann den eines anderen sicher deuten. Auch 353Ls Zweck bleibt offen. Das Spiel zeigt mögliche Spuren und Echos, aber keinen Prophezeiungsbildschirm und keinen „richtigen Lebensweg“.
+
+Menschen können ebenso einen höheren Zweck besitzen, und bei bewusster KI bleibt die Frage offen. Nur die aufgerichteten Tiere teilen die besondere Gewissheit, **dass** ihr Zweck existiert — nicht das Wissen, welcher es ist.
+
 Die Energie darf frech, schnell und überdreht sein — eine Hommage an scharfe Animationssatire im **Gefühl**, ohne Figuren, Bildsprache, Dialoge oder Handlungen anderer Werke zu kopieren.
 
 ## 3. Zentraler Konflikt: Die Große Vereinfachung
@@ -81,6 +85,7 @@ EyTonLand und das Schloss sind ein späteres Kapitel, kein Abspann. Die Frage wi
 6. **Eigene Werte zuerst.** Charakter-, Konto-, Vermögens-, Budget- und Zielwerte sind bei einem neuen Run sichtbar einstellbar; ein Preset ist nur ein Startpunkt.
 7. **Hufwehr ist eine seltene Möglichkeit, kein vorgeschriebener Hauptloop.** Abhängig von Ort, Zeit und Entscheidungen kann 353L einen gefeierten Kneipenkampf erleben und sich später gegen einen Straßenräuber deutlich aggressiver verteidigen. Beide kurzen filmischen QTEs sind vermeidbare Verzweigungen; ein komplett gewaltfreier Run bleibt gleichwertig. Es gibt keine Blutinszenierung, Bandenwellen, wiederholbaren Belohnungen fürs Prügeln oder reale Kampfanleitung.
 8. **Glaube bleibt offen.** Die höhere Macht kann für Gott stehen, ist aber kein Questgeber, Karma-System oder Beweis für eine reale Religion. Figuren dürfen glauben, zweifeln oder nicht glauben.
+9. **Zweck bleibt ein Mysterium.** Jedes aufgerichtete Tier besitzt einen höheren Zweck, kennt ihn aber nicht. Menschen können ebenfalls einen Zweck besitzen; bei KI bleibt die Frage offen. Zweck ersetzt weder freien Willen noch Verantwortung und wird nicht als Missionsliste oder Klassenwert angezeigt.
 
 ## 6. Wiederkehrende Figuren und Gruppen
 
