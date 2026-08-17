@@ -73,6 +73,13 @@ Dieses Protokoll hält dauerhafte Produkt-/Architekturentscheidungen fest. Neue 
 - Grund: Vertrauter Alltag bleibt verständlich, während aufrechte Tiere, KI-Körper, Strammburg und spätere Weltideen keinen unrealistischen Technologiesprung unserer realen nächsten Jahre benötigen.
 - Folge: Das Spiel bestätigt keine konkrete Religion und erklärt Zeitpunkt/Mechanismus der Gabe nicht endgültig. Glaube, Zweifel, Wissenschaft und Nichtglaube bleiben gleichwertige Perspektiven. Neue Erde-1-Gesetze brauchen Gameplaynutzen, Grenze und eigenen Entscheidungseintrag gemäß `docs/EARTH_1.md`.
 
+## D-011 — Earthpeace 2033 ist ein verspäteter Friedensplan
+
+- Datum: 17.08.2026
+- Entscheidung: Die älteste Tierlegende beschreibt die Obere Gabe als einen von Gottes Plänen für den Weltfrieden. Die höhere Macht eröffnete Begegnung auf Augenhöhe, erzwang Frieden jedoch nicht. Im Spieljahr 2033 gilt die Earthpeace-Frist als sichtbar verpasst.
+- Grund: Die Gabe erhält einen Sinn jenseits von Fähigkeiten, während freie Entscheidungen und die offene religiöse Deutung erhalten bleiben.
+- Folge: Earthpeace 2033 ist kein erfülltes Prophezeiungs-Ende, sondern eine verspätete Aufgabe. EyTonLand kann später ein neuer praktischer Versuch werden. Strammburg darf die verpasste Deadline satirisch verwalten; das Spiel verteilt trotzdem keine Glaubenspunkte und erklärt keine reale Religion zur einzig richtigen.
+
 ## Vorlage
 
 ```text

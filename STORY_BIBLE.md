@@ -15,7 +15,7 @@ Es ist kein Elends- oder Schock-Simulator: Druck, Geldmangel, Gesundheit, Abhän
 | **Stadt** | **Strammburg**, eine erfundene Hafenmetropole mit Hamburger DNA, aber eigener Karte, eigenen Regeln und eigenem Stadtfunk. |
 | **Welt** | **Erde-1 im Jahr 2033**: gleicher Kalender und vertrauter Alltag, aber eine parallele Geschichte mit anderen Grundgesetzen. |
 | **Ursprung** | **HQ1 in Eitelstedt**: ein kleiner Raum, Ideenordner, Steckdosenantrag und der Beginn von EyTonLand. |
-| **Fernziel** | **EyTonLand**: Insel, Schloss und Earthpeace-2033-Idee. Kein Fluchtknopf, sondern eine später verdiente Verantwortung. |
+| **Fernziel** | **EyTonLand**: Insel, Schloss und der verspätete Earthpeace-2033-Plan. Kein Fluchtknopf, sondern eine später verdiente Verantwortung. |
 | **Stadtwitz** | Schnelle, absurde Sozial-Satire: Apps, Ämter, Banken und Konzerne machen Dinge "einfacher" und erzeugen neue Formulare. Der Witz trifft Systeme und Macht, nie Herkunft, Krankheit oder Identität. |
 | **Figuren** | Mensch, KI, Mensch im Roboterkörper, unbewusste KI im Menschen oder Tier-Avatar. Alle starten mit gleichwertigen Chancen; Perspektive verändert Szenen, nicht den Wert einer Figur. |
 
@@ -26,6 +26,8 @@ Unter Tieren lebt eine alte Legende: Die **Obere Gabe** erlaubte ausgewählten T
 353L ist ein Eselträger dieser Gabe. Seine Hufe sind seine Hände und bleiben gefährlich kräftig; sein Hufsprint stammt aus dem erhaltenen Eselkörper. Aufrecht- und Tierhaltung sind langfristig spielbare Bewegungsformen. Die vollständigen Lore-, Gameplay- und 3D-Art-Regeln stehen in `docs/ANIMAL_LORE.md`.
 
 Hinter der Legende steht eine höhere Macht, die als Gott verstanden werden kann, ohne dass ISSO.TV eine bestimmte Religion bestätigt. Glaube, Zweifel, Wissenschaft und andere Deutungen existieren gleichberechtigt. Erde-1 und die religiöse Offenheit sind in `docs/EARTH_1.md` festgelegt.
+
+Die älteste Tierfassung nennt die Obere Gabe einen von Gottes Plänen für den Weltfrieden. Sie sollte Begegnung auf Augenhöhe ermöglichen, ohne Arten gleichzumachen. Die Möglichkeit wurde gegeben, aber der Frieden nicht erzwungen. Im Jahr 2033 ist die Earthpeace-Frist sichtbar verpasst; die Aufgabe bleibt offen und kann später in EyTonLand praktisch neu verhandelt werden.
 
 Die Energie darf frech, schnell und überdreht sein — eine Hommage an scharfe Animationssatire im **Gefühl**, ohne Figuren, Bildsprache, Dialoge oder Handlungen anderer Werke zu kopieren.
 
@@ -154,4 +156,4 @@ Die verbindliche technische Reihenfolge steht in `ROADMAP.md`. Erzählerisch gil
 3. Anschließend schreiben Parkkreis, Signalwerk, Neonhafen und Klarheit+ als wiederkehrende Figuren/Systeme zurück.
 4. Erde-1 und die Obere Gabe werden über Tierbegegnungen, Zeichen und Bewegungsformen langsam sichtbar; sie erhalten keine einmalige Lexikon-Erklärung.
 5. Behandlung, Krise, rechtliche Folgen und die zwei gespiegelten 1-gegen-1-Hufwehr-Setpieces entstehen erst auf dem stabilen Beziehungs-/Konsequenzsystem.
-6. EyTonLand und Z-Coin bleiben Langzeitbögen; sie werden nicht als schneller Preis ausgeschüttet.
+6. EyTonLand, der verspätete Earthpeace-Plan und Z-Coin bleiben Langzeitbögen; sie werden nicht als schneller Preis ausgeschüttet.

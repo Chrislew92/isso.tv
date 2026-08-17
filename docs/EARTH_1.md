@@ -40,6 +40,8 @@ Diese Namen bezeichnen mögliche Deutungen derselben unerklärten Wirklichkeit. 
 
 Die Tierlegende sagt: Irgendwann in der Geschichte von Erde-1 machte die höhere Macht die **Obere Gabe** möglich. Seitdem konnten einzelne Tiere lernen, sich aufzurichten, wenn sie es wollten.
 
+In der ältesten Version war die Gabe **einer von Gottes Plänen für den Weltfrieden**: Arten sollten einander auf Augenhöhe begegnen können, ohne dafür gleich werden zu müssen. Ein Esel sollte sich erheben können und trotzdem Esel bleiben; dasselbe Gesetz galt für jede andere Art.
+
 Der Preis oder das Gesetz lautete:
 
 > Ihr dürft euch erheben. Aber ihr dürft eure Art nicht verlieren.
@@ -47,6 +49,20 @@ Der Preis oder das Gesetz lautete:
 Darum bleibt ein Esel ein Esel mit Hufen, eine Katze eine Katze mit Pfoten und Krallen und ein Vogel ein Vogel mit Schnabel, Flügeln und Krallen.
 
 Ob die höhere Macht die Gabe in einem einzigen Moment schenkte, ein Naturgesetz veränderte oder nur eine bereits vorhandene Möglichkeit öffnete, bleibt unbewiesen. Tiergeschichten, alte Zeichen, wissenschaftliche Modelle und persönliche Erfahrungen widersprechen sich.
+
+## Earthpeace 2033 — der verpasste Termin
+
+Die höhere Macht gab eine Möglichkeit, keinen Zwang. Tiere, Menschen, KI und Institutionen behielten ihre Freiheit — und damit auch die Fähigkeit, Angst, Macht, Geld, Stolz und Bürokratie über Frieden zu stellen.
+
+Aus der alten Friedenslegende entstand irgendwann der Name **Earthpeace 2033**. Manche verstanden ihn als Prophezeiung, andere als politische Deadline, Kunstprojekt, Bewegung oder naives Marketing. Im Spieljahr 2033 ist für alle sichtbar: Pünktlich hat es nicht geklappt.
+
+Das bedeutet nicht, dass der Plan beendet oder die höhere Macht gescheitert ist. Die gegebene Möglichkeit wurde nur nicht rechtzeitig gemeinsam genutzt. Erde-1 lebt nun mit einer verspäteten Aufgabe:
+
+> Der Termin ist vorbei. Die Möglichkeit nicht.
+
+EyTonLand kann im späteren Spiel zu einem neuen Versuch werden, Earthpeace praktisch weiterzubauen. Ob daraus echter gemeinsamer Raum, ein Statusprojekt oder wieder nur ein schönes Schild wird, entscheidet der Run.
+
+Die verpasste Frist trägt zugleich Ernst und Strammburg-Humor: Ämter diskutieren, welches Formular den Weltfrieden rückwirkend fristgerecht machen könnte; Tiere wissen, dass kein Stempel die eigentliche Arbeit ersetzt.
 
 ## Wann geschah es?
 

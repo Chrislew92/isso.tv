@@ -32,6 +32,7 @@ Das Ziel ist nicht „möglichst viele Menüs“. Jeder neue Systemwert muss min
 - Spielraum, Figuren und Bewegung sind echtes 3D; HUD/Untertitel dürfen 2D bleiben.
 - Strammburg ist eine fiktive Metropole; Eitelstedt/HQ1, EyTonLand und Earthpeace 2033 gehören zum eigenen Kanon.
 - Erde-1 ist eine Parallelwelt mit demselben Kalender, nicht unsere reale Erde sieben Jahre später. Die höhere Macht kann für Gott stehen, ohne das Spiel religiös festzulegen.
+- Die Obere Gabe war laut ältester Tierlegende einer von Gottes Friedensplänen. Earthpeace 2033 wurde nicht pünktlich erreicht; der verpasste Termin eröffnet den fortlaufenden Weltauftrag statt eines Prophezeiungs-Endes.
 - `50.000 € + 35 Renommee` ist ein früher Langzeit-Meilenstein, kein Spielende.
 - Krise, Behandlung und Haft sind potenzielle weiterlaufende Kapitel, kein pauschales Game Over.
 - Keine Echtgeldtransaktion, keine Tat-Anleitung, keine Abwertung realer Gruppen.
@@ -215,7 +216,7 @@ Ziel: Der Highroller-Aspekt entsteht aus langfristigem Aufbau, nachvollziehbarem
 | `P5-04` | P1 | Markt-Simulation | V2 BTC/ETH/LTC/SOL/ZED | EUR-Hauptrechnung, reale Startwerte nur mit Cache/Fallback, danach klar markierte Run-Simulation; Tests für Kauf/Verkauf/P&L. |
 | `P5-05` | P1 | Risiko-/Spilo-System | V2 10/20/50/100 | transparente Spielwahrscheinlichkeiten, Zeit-/Stress-/Versorgungsfolgen, kein Echtgeld-Look, Schutz vor unverständlichem Totalverlust. |
 | `P5-06` | P1 | Z-Coin-Langzeitbogen | V2 ZED + Story Bible | Skepsis → Community → Nutzen → Königsmoment → Gegenreaktion; fiktiv und nicht als reale Anlage beworben. |
-| `P5-07` | P1 | EyTonLand-Aufbau | Story Bible | UG/GmbH, Team, Lizenzen, Insel/Schloss und Earthpeace als Verantwortung über viele Kapitel. |
+| `P5-07` | P1 | EyTonLand-/Earthpeace-Aufbau | Story Bible | UG/GmbH, Team, Lizenzen, Insel/Schloss und der verspätete Earthpeace-Plan als Verantwortung über viele Kapitel; der Spieler entscheidet zwischen gemeinsamem Ort, Statusprojekt und neuer schöner Fassade. |
 | `P5-08` | P0 | Balancing-Simulation | alle Wirtschaftssysteme | mindestens zehn automatisierte/gespielte Runs; keine frühe Geldexplosion, keine unvermeidbare Armutssackgasse. |
 
 ## M5-Gate
