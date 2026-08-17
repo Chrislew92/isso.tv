@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from 'react'
 
-export default function OpeningFilm({ onFinish }) {
+export default function OpeningFilm({ onFinish, onSoundEnabled }) {
   const videoRef = useRef(null)
   const [muted, setMuted] = useState(true)
   const [started, setStarted] = useState(false)
@@ -16,6 +16,7 @@ export default function OpeningFilm({ onFinish }) {
     if (!video) return
     video.muted = false
     setMuted(false)
+    onSoundEnabled?.()
     video.play().then(() => setStarted(true)).catch(() => {})
   }
 
@@ -29,7 +30,7 @@ export default function OpeningFilm({ onFinish }) {
         poster="/media/prolog-matratze.png"
         preload="auto"
         onPlay={() => setStarted(true)}
-        onEnded={onFinish}
+        onEnded={() => onFinish({ canPlayAudio: !muted })}
       >
         <source src="/media/prolog-matratzenmorgen.mp4" type="video/mp4" />
         <track src="/media/prolog-de.srt" kind="subtitles" srcLang="de" label="Deutsch" default />
@@ -47,7 +48,7 @@ export default function OpeningFilm({ onFinish }) {
       <div className="opening-film__actions">
         {muted && <button onClick={enableSound}>◖ TON EINSCHALTEN</button>}
         {!started && <button onClick={() => videoRef.current?.play()}>▶ FILM STARTEN</button>}
-        <button onClick={onFinish}>FILM ÜBERSPRINGEN →</button>
+        <button onClick={() => onFinish({ canPlayAudio: true })}>FILM ÜBERSPRINGEN →</button>
       </div>
     </section>
   )

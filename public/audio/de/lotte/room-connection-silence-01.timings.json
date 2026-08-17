@@ -1,0 +1,36 @@
+{
+  "dialogueId": "de.room.connection.silence.lotte.01",
+  "speaker": "Lotte",
+  "words": [
+    {
+      "atMs": 50,
+      "durationMs": 521,
+      "text": "Alles"
+    },
+    {
+      "atMs": 571,
+      "durationMs": 534,
+      "text": "klar"
+    },
+    {
+      "atMs": 1456,
+      "durationMs": 300,
+      "text": "Ich"
+    },
+    {
+      "atMs": 1756,
+      "durationMs": 456,
+      "text": "bleibe"
+    },
+    {
+      "atMs": 2211,
+      "durationMs": 456,
+      "text": "kurz"
+    },
+    {
+      "atMs": 2667,
+      "durationMs": 300,
+      "text": "da"
+    }
+  ]
+}

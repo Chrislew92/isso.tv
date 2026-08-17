@@ -40,6 +40,15 @@ Dieses Dokument beschreibt ausschließlich Funktionen, die im aktuellen V3-Code 
 - GPU-Regen, Fog, Schatten, mehrere Lichtquellen und adaptive Auflösung,
 - Renderloop pausiert während Film und Dialogen.
 
+### Lokaler HD-/Voice-Vertical-Slice
+
+- Wohnung mit HD-Eichenbodentextur, einzelnen Dielen, sauberem Bettaufbau, Teppich, Nachttisch, Lampe, Fensterrahmen, Fensterbank, Heizkörper, geschlossenem Stauraum und klarerer Lichtführung,
+- eigene 2K-Raumtextur unter `assets/textures/room-oak-hd-v1.png`, im GLB eingebettet,
+- 353L-Material mit höherer Anisotropie, ruhigerer Rauheit und neuem deformierendem `rig_jaw`,
+- elf lokale deutsche KI-Sprachzeilen für 353L, Lotte und Bahnhof,
+- stabile Dialog-IDs, MP3-Dateien, Wortzeitmarken, Untertiteloverlay, Stimme-an/aus und Autoplay-Fallback,
+- Kiefer-, Kopf- und Ohrperformance reagieren in Echtzeit auf den Sprachpegel.
+
 ### Aktueller spielbarer Morgen
 
 1. Film endet; 353L steht in der Wohnung auf.
@@ -76,8 +85,8 @@ Die folgenden Systeme existierten teilweise als V2-Prototyp oder Konzept, sind a
 - Behandlung, Krise, Haft und Rückkehrpfade als spielbare 3D-Kapitel,
 - mehrere Save-Slots, Export/Import und Save-Migrationen,
 - Controller-, Touch- und vollständige Mobile-Steuerung,
-- Audio-Landschaft, Musik-State-System und professionelle Animation-Blends,
-- Synchronsprecher, datengetriebenes Dialogsystem, vollständige Vertonung und Tier-Lippensynchronität,
+- vollständige Audio-Landschaft, Musik-State-System und professionelle Animation-Blends,
+- finale rechtlich geprüfte Masterstimmen, vollständige Vertonung, Offline-Phonem-/Visem-Timing und alle artspezifischen Mundformen,
 - echte Kollisions-/Physikschicht, Navigation Mesh, Treppen und Interaktionsanimationen,
 - finaler Environment-Art-Pass, LOD/Kompression und Ladefortschritt,
 - fertige Impressums-/Datenschutzseiten im aktuellen V3-Build,
@@ -95,9 +104,14 @@ Die folgenden Systeme existierten teilweise als V2-Prototyp oder Konzept, sind a
 | Zustandslogik | `src/game/state.js` | Run-Zustand und Folgen |
 | Persistenz | `src/game/save.js` | localStorage lesen/schreiben/löschen |
 | Tests | `src/game/state.test.js` | reducerbasierte Regeln |
+| Voice-Runtime | `src/audio/useVoicePlayer.js` | Web Audio, Pegel, Untertitel- und Autoplayzustand |
+| Dialogdaten | `src/content/dialogue/` | stabile deutsche Dialog-IDs und Sprachdateiverweise |
+| Sprachdateien | `public/audio/de/` | lokaler KI-Voice-Vertical-Slice plus Wortzeitmarken |
 | Runtime-Modelle | `public/models/` | ausgelieferte GLB-Dateien |
 | Blender-Quellen | `assets/source/` | editierbare Master-Assets |
+| HD-Texturen | `assets/textures/` | projektgebundene Oberflächenquellen |
 | Asset-Pipeline | `tools/blender/` | reproduzierbare Erstellung/Inspektion |
+| Voice-Pipeline | `tools/audio/` | reproduzierbare lokale Stimmerzeugung |
 
 ## Bekannte technische Schulden
 
@@ -109,6 +123,9 @@ Die folgenden Systeme existierten teilweise als V2-Prototyp oder Konzept, sind a
 6. Footer verlinkt Rechtstexte, die im aktuellen `public/` noch nicht vorhanden sind.
 7. `useGLTF.preload` startet erst beim Lazy-Import der 3D-Runtime; ein definierter Lade-/Fehlerzustand fehlt.
 8. Save-Schema akzeptiert nur exakt Version `2`; echte Migrationsketten fehlen.
+9. Die lokalen KI-Stimmen sind noch nicht zur öffentlichen Veröffentlichung lizenzgeprüft.
+10. Der erste Kieferpass ist amplitudenbasiert; echte Phonem-/Visem-Blends fehlen noch.
+11. Die zusätzliche HD-Bodentextur erhöht das Level-GLB auf ungefähr 4,75 MB; KTX2/Streaming fehlen.
 
 ## Nächster freigegebener Arbeitsbereich
 

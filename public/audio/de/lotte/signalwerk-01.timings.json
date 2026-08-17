@@ -1,0 +1,41 @@
+{
+  "dialogueId": "de.signalwerk.lotte.01",
+  "speaker": "Lotte",
+  "words": [
+    {
+      "atMs": 50,
+      "durationMs": 312,
+      "text": "Ich"
+    },
+    {
+      "atMs": 362,
+      "durationMs": 300,
+      "text": "kann"
+    },
+    {
+      "atMs": 662,
+      "durationMs": 872,
+      "text": "mitdenken"
+    },
+    {
+      "atMs": 1899,
+      "durationMs": 443,
+      "text": "Nicht"
+    },
+    {
+      "atMs": 2342,
+      "durationMs": 195,
+      "text": "für"
+    },
+    {
+      "atMs": 2537,
+      "durationMs": 247,
+      "text": "dich"
+    },
+    {
+      "atMs": 2784,
+      "durationMs": 586,
+      "text": "leben"
+    }
+  ]
+}

@@ -1,4 +1,5 @@
 import { lazy, Suspense, useCallback, useEffect, useMemo, useReducer, useState } from 'react'
+import useVoicePlayer from './audio/useVoicePlayer.js'
 import GameInterface from './components/GameInterface.jsx'
 import Modal from './components/Modal.jsx'
 import OpeningFilm from './components/OpeningFilm.jsx'
@@ -36,14 +37,24 @@ export default function App() {
   const [prompt, setPrompt] = useState(null)
   const [ready, setReady] = useState(false)
   const [position, setPosition] = useState({ x: -0.8, z: -0.7, location: 'room' })
+  const voice = useVoicePlayer()
 
   const paused = opening || run.phase !== 'free' || Boolean(modal)
   const filmEvents = useMemo(() => run.events.filter((event) => event.isRunFilmEligible), [run.events])
 
-  const chooseConnection = useCallback((choice) => {
+  const chooseConnection = useCallback(async (choice) => {
     dispatch({ type: 'CONNECTION_RESPONSE', choice: choice.id, aftermath: choice.aftermath })
     setModal(null)
-  }, [])
+    if (choice.id === 'morning') {
+      await voice.play('de.room.connection.morning.353l.01')
+      await voice.play('de.room.connection.morning.lotte.01')
+    } else if (choice.id === 'signals') {
+      await voice.play('de.room.connection.signals.353l.01')
+      await voice.play('de.room.connection.signals.lotte.01')
+    } else {
+      await voice.play('de.room.connection.silence.lotte.01')
+    }
+  }, [voice.play])
 
   const chooseCart = useCallback((choice) => {
     dispatch({ type: 'CART_STANCE', stance: choice.id, aftermath: CART_AFTERMATH[choice.id] })
@@ -80,16 +91,41 @@ export default function App() {
       return
     }
 
-    if (action === 'connection') setModal('connection')
-    if (action === 'door') dispatch({ type: 'OPEN_DOOR' })
-    if (action === 'cart') setModal('cart')
-    if (action === 'station') setModal('station')
-    if (action === 'signalwerk') setModal('signalwerk')
-  }, [chooseCart, chooseConnection])
+    if (action === 'voice-toggle') {
+      voice.toggle()
+      return
+    }
+    if (action === 'voice-replay') {
+      voice.replay()
+      return
+    }
+
+    if (action === 'connection') {
+      setModal('connection')
+      voice.play('de.room.connection.lotte.01')
+    }
+    if (action === 'door') {
+      dispatch({ type: 'OPEN_DOOR' })
+      voice.play('de.hallway.threshold.353l.01')
+    }
+    if (action === 'cart') {
+      setModal('cart')
+      voice.play('de.harbor.cart.353l.01')
+    }
+    if (action === 'station') {
+      setModal('station')
+      voice.play('de.station.platform.announcement.01')
+    }
+    if (action === 'signalwerk') {
+      setModal('signalwerk')
+      voice.play('de.signalwerk.lotte.01')
+    }
+  }, [chooseCart, chooseConnection, voice.play, voice.replay, voice.toggle])
 
   const handleWorldReady = useCallback(() => setReady(true), [])
 
   function resetRun() {
+    voice.stop()
     clearRun()
     dispatch({ type: 'RESET' })
     setModal(null)
@@ -98,9 +134,11 @@ export default function App() {
     window.location.reload()
   }
 
-  function finishOpening() {
+  async function finishOpening({ canPlayAudio = false } = {}) {
+    if (canPlayAudio) await voice.unlock()
     if (run.phase === 'mattress') dispatch({ type: 'MORNING_CHOICE', choice: 'stand' })
     setOpening(false)
+    window.setTimeout(() => voice.play('de.room.wake.353l.01'), 620)
   }
 
   return (
@@ -113,15 +151,17 @@ export default function App() {
           onPrompt={setPrompt}
           onPosition={setPosition}
           onReady={handleWorldReady}
+          voiceState={voice.voiceState}
+          voiceActive={voice.active}
         />
       </Suspense>
 
       {!ready && <div className="world-loader"><span>ISSO<span>.TV</span></span><small>STRAMMBURG WIRD GELADEN</small></div>}
 
       {opening ? (
-        <OpeningFilm onFinish={finishOpening} />
+        <OpeningFilm onFinish={finishOpening} onSoundEnabled={voice.unlock} />
       ) : (
-        <GameInterface run={run} position={position} prompt={prompt} onAction={handleInteract} />
+        <GameInterface run={run} position={position} prompt={prompt} voice={voice} onAction={handleInteract} />
       )}
 
       {modal === 'film' && (

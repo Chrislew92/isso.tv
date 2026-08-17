@@ -96,6 +96,20 @@ Der Character-Builder erwartet zusätzlich ein lokal erzeugtes OBJ-Verzeichnis m
 blender --background --python tools/blender/build_master_character.py -- <source.obj> <repo-root>
 ```
 
+Danach den aktuellen Sprachkiefer und Runtime-Materialpass anwenden:
+
+```text
+blender --background assets/source/353l-master-character-v3.blend --python tools/blender/add_voice_rig.py -- <repo-root>
+```
+
+Lokale deutsche KI-Vorschauzeilen aus dem kanonischen Dialog-JSON neu erzeugen:
+
+```text
+python tools/audio/generate_voice_preview.py
+```
+
+Das benötigt das lokale Python-Paket `edge-tts` und Netzwerkzugang. Erzeugte Dateien bleiben bis zur Rechteprüfung Vorschauassets und dürfen nicht automatisch veröffentlicht werden.
+
 Vor einem Asset-Commit prüfen:
 
 - korrekte Achsen, Bodenhöhe und Maßstab,
@@ -123,6 +137,7 @@ Die verbindliche Spezifikation steht in `docs/VOICE_AND_LIPSYNC.md`.
 - Tier-Viseme werden auf artspezifische Shape Keys/Bones gemappt; Performance-Layer für Ohren/Blick/Gesten bleibt getrennt.
 - Fehlendes Audio/Viseme fällt auf Untertitel bzw. ruhige Kieferbewegung zurück und blockiert den Run nicht.
 - Sprachassets werden szenenweise lazy geladen und getrennt von Musik/Effekten geregelt.
+- Der aktuelle Slice liest den Pegel über Web Audio und schreibt ihn in ein Ref; der 3D-Renderloop liest dieses Ref ohne React-Rerender pro Audioblock.
 
 ## Architekturentscheidungen
 

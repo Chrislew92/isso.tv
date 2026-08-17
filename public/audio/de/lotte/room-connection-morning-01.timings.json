@@ -1,0 +1,11 @@
+{
+  "dialogueId": "de.room.connection.morning.lotte.01",
+  "speaker": "Lotte",
+  "words": [
+    {
+      "atMs": 50,
+      "durationMs": 768,
+      "text": "Morgen"
+    }
+  ]
+}

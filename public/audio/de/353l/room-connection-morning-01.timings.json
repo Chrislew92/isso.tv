@@ -1,0 +1,16 @@
+{
+  "dialogueId": "de.room.connection.morning.353l.01",
+  "speaker": "353L",
+  "words": [
+    {
+      "atMs": 104,
+      "durationMs": 380,
+      "text": "Guten"
+    },
+    {
+      "atMs": 498,
+      "durationMs": 584,
+      "text": "Morgen"
+    }
+  ]
+}

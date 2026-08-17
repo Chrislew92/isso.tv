@@ -1,0 +1,46 @@
+{
+  "dialogueId": "de.hallway.threshold.353l.01",
+  "speaker": "353L",
+  "words": [
+    {
+      "atMs": 104,
+      "durationMs": 394,
+      "text": "Licht"
+    },
+    {
+      "atMs": 512,
+      "durationMs": 285,
+      "text": "unter"
+    },
+    {
+      "atMs": 811,
+      "durationMs": 408,
+      "text": "anderen"
+    },
+    {
+      "atMs": 1232,
+      "durationMs": 571,
+      "text": "Türen"
+    },
+    {
+      "atMs": 2745,
+      "durationMs": 503,
+      "text": "Draußen"
+    },
+    {
+      "atMs": 3261,
+      "durationMs": 231,
+      "text": "liegt"
+    },
+    {
+      "atMs": 3505,
+      "durationMs": 136,
+      "text": "der"
+    },
+    {
+      "atMs": 3655,
+      "durationMs": 557,
+      "text": "Hafen"
+    }
+  ]
+}

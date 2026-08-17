@@ -1,0 +1,21 @@
+{
+  "dialogueId": "de.room.connection.signals.353l.01",
+  "speaker": "353L",
+  "words": [
+    {
+      "atMs": 104,
+      "durationMs": 367,
+      "text": "Was"
+    },
+    {
+      "atMs": 485,
+      "durationMs": 326,
+      "text": "liegt"
+    },
+    {
+      "atMs": 824,
+      "durationMs": 367,
+      "text": "an"
+    }
+  ]
+}

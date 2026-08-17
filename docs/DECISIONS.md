@@ -101,6 +101,13 @@ Dieses Protokoll hält dauerhafte Produkt-/Architekturentscheidungen fest. Neue 
 - Grund: Das Spiel soll sich wie ein durchgehender interaktiver 3D-Film anfühlen und Figuren über Stimme ebenso unverwechselbar machen wie über Körper und Entscheidungen.
 - Folge: Dialoge werden datengetrieben über stabile IDs produziert. Der erste Slice vertont 353L/Lotte vollständig. Dynamische Zahlen bleiben semantischer Text statt Sprachschnipsel. Die finale Stimme braucht ausdrückliche Besetzungsfreigabe und geklärte Rechte; synthetische Ableitung ist niemals automatisch erlaubt. Untertitel-only und stummes Spielen bleiben vollständig möglich.
 
+## D-015 — KI-Stimmen sind für den lokalen Casting-/Timing-Slice freigegeben
+
+- Datum: 17.08.2026
+- Entscheidung: Der Nutzer hat ausdrücklich freigegeben, den ersten V3-Vertical-Slice mit erzeugten deutschen KI-Stimmen umzusetzen. 353L nutzt zunächst Killian, Lotte Seraphina und die Bahnhofsstimme Conrad.
+- Grund: Stimme, Timing, Untertitel, Autoplay-Fallback und tierische Mund-/Körperperformance müssen im echten Spiel geprüft werden, bevor der gesamte Textbestand vertont wird.
+- Folge: Die erzeugten MP3-/Timing-Dateien dürfen lokal im Projekt bleiben und weiterentwickelt werden. Sie sind noch keine automatisch veröffentlichungsfähige Masterbesetzung. Vor Deploy werden Anbieterbedingungen, Nutzungsrechte und die finale künstlerische Besetzung ausdrücklich geprüft und protokolliert.
+
 ## Vorlage
 
 ```text

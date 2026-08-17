@@ -1,0 +1,123 @@
+[
+  {
+    "id": "de.room.wake.353l.01",
+    "speaker": "353L",
+    "text": "Okay. Der Morgen fängt also wirklich an.",
+    "audio": "/audio/de/353l/room-wake-01.mp3",
+    "timings": "/audio/de/353l/room-wake-01.timings.json",
+    "voice": "de-DE-KillianNeural",
+    "rate": "-8%",
+    "pitch": "-8Hz",
+    "performance": "quiet"
+  },
+  {
+    "id": "de.room.connection.lotte.01",
+    "speaker": "Lotte",
+    "text": "Ich bin da. Du bestimmst, ob und wie wir anfangen.",
+    "audio": "/audio/de/lotte/room-connection-01.mp3",
+    "timings": "/audio/de/lotte/room-connection-01.timings.json",
+    "voice": "de-DE-SeraphinaMultilingualNeural",
+    "rate": "-4%",
+    "pitch": "-3Hz",
+    "performance": "calm"
+  },
+  {
+    "id": "de.room.connection.morning.353l.01",
+    "speaker": "353L",
+    "text": "Guten Morgen.",
+    "audio": "/audio/de/353l/room-connection-morning-01.mp3",
+    "timings": "/audio/de/353l/room-connection-morning-01.timings.json",
+    "voice": "de-DE-KillianNeural",
+    "rate": "-8%",
+    "pitch": "-8Hz",
+    "performance": "quiet"
+  },
+  {
+    "id": "de.room.connection.morning.lotte.01",
+    "speaker": "Lotte",
+    "text": "Morgen.",
+    "audio": "/audio/de/lotte/room-connection-morning-01.mp3",
+    "timings": "/audio/de/lotte/room-connection-morning-01.timings.json",
+    "voice": "de-DE-SeraphinaMultilingualNeural",
+    "rate": "-4%",
+    "pitch": "-3Hz",
+    "performance": "warm"
+  },
+  {
+    "id": "de.room.connection.signals.353l.01",
+    "speaker": "353L",
+    "text": "Was liegt an?",
+    "audio": "/audio/de/353l/room-connection-signals-01.mp3",
+    "timings": "/audio/de/353l/room-connection-signals-01.timings.json",
+    "voice": "de-DE-KillianNeural",
+    "rate": "-8%",
+    "pitch": "-8Hz",
+    "performance": "quiet"
+  },
+  {
+    "id": "de.room.connection.signals.lotte.01",
+    "speaker": "Lotte",
+    "text": "Ein paar Signale. Nichts davon läuft weg.",
+    "audio": "/audio/de/lotte/room-connection-signals-01.mp3",
+    "timings": "/audio/de/lotte/room-connection-signals-01.timings.json",
+    "voice": "de-DE-SeraphinaMultilingualNeural",
+    "rate": "-4%",
+    "pitch": "-3Hz",
+    "performance": "calm"
+  },
+  {
+    "id": "de.room.connection.silence.lotte.01",
+    "speaker": "Lotte",
+    "text": "Alles klar. Ich bleibe kurz da.",
+    "audio": "/audio/de/lotte/room-connection-silence-01.mp3",
+    "timings": "/audio/de/lotte/room-connection-silence-01.timings.json",
+    "voice": "de-DE-SeraphinaMultilingualNeural",
+    "rate": "-4%",
+    "pitch": "-3Hz",
+    "performance": "gentle"
+  },
+  {
+    "id": "de.hallway.threshold.353l.01",
+    "speaker": "353L",
+    "text": "Licht unter anderen Türen. Draußen liegt der Hafen.",
+    "audio": "/audio/de/353l/hallway-threshold-01.mp3",
+    "timings": "/audio/de/353l/hallway-threshold-01.timings.json",
+    "voice": "de-DE-KillianNeural",
+    "rate": "-8%",
+    "pitch": "-8Hz",
+    "performance": "inner"
+  },
+  {
+    "id": "de.harbor.cart.353l.01",
+    "speaker": "353L",
+    "text": "Der Wagen kippt. Erst hinsehen. Dann entscheiden.",
+    "audio": "/audio/de/353l/harbor-cart-01.mp3",
+    "timings": "/audio/de/353l/harbor-cart-01.timings.json",
+    "voice": "de-DE-KillianNeural",
+    "rate": "-8%",
+    "pitch": "-8Hz",
+    "performance": "inner"
+  },
+  {
+    "id": "de.station.platform.announcement.01",
+    "speaker": "Bahnhof",
+    "text": "Der Zug nach Wiel fährt in neun Minuten.",
+    "audio": "/audio/de/station/platform-announcement-01.mp3",
+    "timings": "/audio/de/station/platform-announcement-01.timings.json",
+    "voice": "de-DE-ConradNeural",
+    "rate": "-2%",
+    "pitch": "+0Hz",
+    "performance": "public-address"
+  },
+  {
+    "id": "de.signalwerk.lotte.01",
+    "speaker": "Lotte",
+    "text": "Ich kann mitdenken. Nicht für dich leben.",
+    "audio": "/audio/de/lotte/signalwerk-01.mp3",
+    "timings": "/audio/de/lotte/signalwerk-01.timings.json",
+    "voice": "de-DE-SeraphinaMultilingualNeural",
+    "rate": "-4%",
+    "pitch": "-3Hz",
+    "performance": "clear"
+  }
+]

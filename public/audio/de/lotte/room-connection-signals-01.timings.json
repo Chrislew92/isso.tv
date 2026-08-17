@@ -1,0 +1,41 @@
+{
+  "dialogueId": "de.room.connection.signals.lotte.01",
+  "speaker": "Lotte",
+  "words": [
+    {
+      "atMs": 50,
+      "durationMs": 352,
+      "text": "Ein"
+    },
+    {
+      "atMs": 402,
+      "durationMs": 326,
+      "text": "paar"
+    },
+    {
+      "atMs": 727,
+      "durationMs": 755,
+      "text": "Signale"
+    },
+    {
+      "atMs": 1834,
+      "durationMs": 469,
+      "text": "Nichts"
+    },
+    {
+      "atMs": 2303,
+      "durationMs": 443,
+      "text": "davon"
+    },
+    {
+      "atMs": 2745,
+      "durationMs": 404,
+      "text": "läuft"
+    },
+    {
+      "atMs": 3149,
+      "durationMs": 404,
+      "text": "weg"
+    }
+  ]
+}

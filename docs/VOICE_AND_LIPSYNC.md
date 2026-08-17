@@ -1,6 +1,19 @@
 # ISSO.TV V3 — Full Voice, Synchronsprecher und Tier-Lippensynchronität
 
-Status: verbindlicher Produktionsstandard; Sprecher-Casting, Dialogsystem und Laufzeit-Lippensynchronität sind noch nicht implementiert.
+Status: verbindlicher Produktionsstandard; der erste lokale KI-Stimm-/Kiefer-Vertical-Slice ist implementiert, die endgültige Release-Stimme und vollständige Phonem-/Visem-Pipeline noch nicht.
+
+## Implementierter lokaler KI-Stimmtest (17.08.2026)
+
+Der Nutzer hat KI-Stimmen für die lokale V3-Vorschau ausdrücklich freigegeben. Aktuell vorhanden:
+
+- elf deutsche Sprachzeilen mit stabilen Dialog-IDs unter `src/content/dialogue/de.json`,
+- 353L als `de-DE-KillianNeural`, Lotte als `de-DE-SeraphinaMultilingualNeural`, Bahnhof als `de-DE-ConradNeural`,
+- erzeugte MP3-Dateien und Wortzeitmarken unter `public/audio/de/`,
+- reproduzierbarer Generator `tools/audio/generate_voice_preview.py`,
+- Web-Audio-Wiedergabe mit Untertitel, Stimme an/aus, Autoplay-Fallback und Wiederholknopf,
+- amplitudenbasierter `rig_jaw`-Fallback plus Kopf-/Ohrperformance für 353L.
+
+Diese Dateien sind ein **lokaler Casting-/Timing-Vertical-Slice**. Vor öffentlicher Veröffentlichung müssen Anbieterbedingungen, konkrete Nutzungsrechte und die Entscheidung „provisorische KI-Stimme oder finale Besetzung“ erneut dokumentiert werden. Die Nutzerfreigabe zur Erstellung ersetzt keine ungeprüfte Drittanbieter-Lizenz.
 
 ## Ziel
 
@@ -50,7 +63,7 @@ Beim Casting werden mindestens diese Testszenen gesprochen:
 5. erschrockener Atem/innerer Gedanke nach dem Straßenraub-Gegenwehrpfad,
 6. hoffnungsvoller, aber nicht kitschiger Satz über HQ1/Earthpeace.
 
-Die endgültige Besetzung ist eine bewusste Nutzerentscheidung. Kein Agent erklärt eine provisorische Stimme ungefragt zur Masterstimme.
+Die aktuelle KI-Stimme wurde als Vorschau freigegeben, ist aber noch nicht automatisch die rechtlich und künstlerisch finale Masterstimme.
 
 ## Rechte und Einwilligung
 

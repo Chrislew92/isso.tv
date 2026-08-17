@@ -28,6 +28,21 @@ def material(name, color, metallic=0.0, roughness=0.65, emission=None):
     return mat
 
 
+def image_material(name, image_path, roughness=0.72):
+    mat = bpy.data.materials.new(name)
+    mat.use_nodes = True
+    nodes = mat.node_tree.nodes
+    links = mat.node_tree.links
+    bsdf = nodes.get('Principled BSDF')
+    bsdf.inputs['Roughness'].default_value = roughness
+    bsdf.inputs['Specular IOR Level'].default_value = 0.32
+    texture = nodes.new('ShaderNodeTexImage')
+    texture.image = bpy.data.images.load(str(image_path), check_existing=True)
+    texture.interpolation = 'Linear'
+    links.new(texture.outputs['Color'], bsdf.inputs['Base Color'])
+    return mat
+
+
 def apply_material(obj, mat):
     if len(obj.data.materials):
         obj.data.materials[0] = mat
@@ -192,7 +207,7 @@ def build_character(mats):
 def build_level(mats):
     world = empty('WORLD_ROOT')
 
-    # Apartment: deliberately open ceiling and camera-facing wall, but fully volumetric.
+    # Apartment: a clean, lived-in room. The camera-facing wall stays open for gameplay.
     box('room_floor', (0, 0, -0.11), (9.0, 8.0, 0.22), mats['wood'], world, 0.03)
     box('room_wall_back', (0, 4.0, 2.0), (9.0, 0.22, 4.0), mats['plaster'], world, 0.04)
     box('room_wall_left', (-4.5, 0, 2.0), (0.22, 8.0, 4.0), mats['plaster'], world, 0.04)
@@ -201,9 +216,26 @@ def build_level(mats):
     box('room_wall_door_a', (4.45, 2.55, 2.0), (0.2, 2.9, 4.0), mats['plaster'], world, 0.03)
     box('room_wall_door_b', (4.45, -2.55, 2.0), (0.2, 2.9, 4.0), mats['plaster'], world, 0.03)
 
-    box('mattress', (-2.25, -1.5, 0.22), (2.5, 3.25, 0.42), mats['fabric'], world, 0.15)
-    box('blanket', (-2.2, -1.58, 0.47), (2.35, 2.7, 0.16), mats['blanket'], world, 0.08, rotation=(0, 0, math.radians(3)))
-    box('pillow', (-2.2, -2.55, 0.61), (1.4, 0.72, 0.24), mats['pillow'], world, 0.12)
+    # Narrow floorboards, skirting and a quiet rug replace the large blockout floor plane.
+    for index, x in enumerate((-4.08, -3.34, -2.60, -1.86, -1.12, -0.38, 0.36, 1.10, 1.84, 2.58, 3.32, 4.06)):
+        box(f'room_floorboard_{index}', (x, 0, 0.018), (0.70, 7.78, 0.036), mats['wood_alt' if index % 3 == 1 else 'wood'], world, 0.012)
+    box('room_skirting_back', (0, 3.82, 0.13), (8.75, 0.13, 0.25), mats['paint'], world, 0.018)
+    box('room_skirting_left', (-4.33, 0, 0.13), (0.13, 7.65, 0.25), mats['paint'], world, 0.018)
+    box('room_rug', (-2.18, -1.42, 0.055), (3.22, 3.78, 0.07), mats['rug'], world, 0.035, rotation=(0, 0, math.radians(-2)))
+
+    box('bed_platform', (-2.25, -1.5, 0.18), (2.74, 3.48, 0.28), mats['bed_frame'], world, 0.08)
+    box('mattress', (-2.25, -1.5, 0.43), (2.54, 3.28, 0.34), mats['linen'], world, 0.14)
+    box('blanket', (-2.2, -1.32, 0.64), (2.36, 2.18, 0.14), mats['blanket'], world, 0.075, rotation=(0, 0, math.radians(2)))
+    box('blanket_fold', (-2.2, -0.40, 0.75), (2.36, 0.34, 0.12), mats['blanket_alt'], world, 0.055, rotation=(0, 0, math.radians(2)))
+    box('pillow', (-2.2, -2.58, 0.70), (1.42, 0.73, 0.23), mats['pillow'], world, 0.12)
+
+    # One small bedside piece, one lamp and a book: readable, but not cluttered.
+    box('bedside_body', (-0.18, -2.50, 0.39), (0.82, 0.72, 0.76), mats['bed_frame'], world, 0.07)
+    box('bedside_drawer', (-0.18, -2.87, 0.49), (0.66, 0.035, 0.25), mats['desk'], world, 0.018)
+    cylinder('bedside_lamp_stem', (-0.18, -2.50, 1.02), 0.035, 0.52, mats['metal'], world, 16)
+    cylinder('bedside_lamp_shade', (-0.18, -2.50, 1.34), 0.25, 0.34, mats['lamp_shade'], world, 28, radius_top=0.13)
+    box('bedside_book', (0.05, -2.45, 0.83), (0.34, 0.46, 0.055), mats['orange'], world, 0.016, rotation=(0, 0, math.radians(-8)))
+
     box('desk_top', (-2.2, 2.65, 1.04), (2.45, 1.05, 0.16), mats['desk'], world, 0.05)
     for x in (-3.18, -1.22):
         for y in (2.28, 3.02):
@@ -213,6 +245,27 @@ def build_level(mats):
     screen['interaction'] = 'connection'
     cylinder('hoof_button', (-1.46, 2.27, 1.2), 0.24, 0.12, mats['orange'], world, 28, rotation=(math.radians(90), 0, 0))
     box('rain_window', (0.2, 3.88, 2.25), (2.5, 0.06, 1.72), mats['window'], world, 0.03)
+
+    # Proper window casing, sill and radiator make the apartment feel constructed.
+    box('window_frame_left', (-1.10, 3.73, 2.25), (0.12, 0.18, 1.96), mats['paint'], world, 0.018)
+    box('window_frame_right', (1.50, 3.73, 2.25), (0.12, 0.18, 1.96), mats['paint'], world, 0.018)
+    box('window_frame_top', (0.20, 3.73, 3.20), (2.72, 0.18, 0.12), mats['paint'], world, 0.018)
+    box('window_frame_bottom', (0.20, 3.73, 1.31), (2.72, 0.18, 0.12), mats['paint'], world, 0.018)
+    box('window_mullion', (0.20, 3.70, 2.25), (0.075, 0.16, 1.80), mats['paint'], world, 0.014)
+    box('window_sill', (0.20, 3.55, 1.25), (2.92, 0.42, 0.13), mats['paint'], world, 0.025)
+    for index, x in enumerate((-0.72, -0.42, -0.12, 0.18, 0.48, 0.78, 1.08)):
+        box(f'radiator_fin_{index}', (x, 3.55, 0.66), (0.18, 0.18, 0.78), mats['radiator'], world, 0.045)
+    box('radiator_pipe', (1.35, 3.55, 0.34), (0.10, 0.10, 0.62), mats['radiator'], world, 0.03)
+
+    # Minimal wall graphic and closed storage keep the room intentional and clean.
+    box('wall_print_frame', (-4.34, 1.10, 2.32), (0.08, 1.42, 1.08), mats['metal_dark'], world, 0.025)
+    box('wall_print_paper', (-4.28, 1.10, 2.32), (0.025, 1.24, 0.90), mats['paper'], world, 0.008)
+    box('wall_print_signal', (-4.255, 1.10, 2.32), (0.018, 0.16, 0.62), mats['orange'], world, 0.004, rotation=(math.radians(18), 0, 0))
+    box('storage_body', (3.45, 2.72, 0.92), (1.38, 1.02, 1.84), mats['storage'], world, 0.075)
+    box('storage_door_l', (3.10, 2.19, 0.94), (0.56, 0.035, 1.54), mats['storage_front'], world, 0.022)
+    box('storage_door_r', (3.80, 2.19, 0.94), (0.56, 0.035, 1.54), mats['storage_front'], world, 0.022)
+    cylinder('storage_handle_l', (3.32, 2.15, 0.96), 0.025, 0.18, mats['metal'], world, 12, rotation=(math.radians(90), 0, 0))
+    cylinder('storage_handle_r', (3.58, 2.15, 0.96), 0.025, 0.18, mats['metal'], world, 12, rotation=(math.radians(90), 0, 0))
 
     door_pivot = empty('door_pivot', (4.42, -0.82, 0), world)
     door = box('apartment_door', (4.32, 0, 1.38), (0.18, 1.65, 2.76), mats['door'], door_pivot, 0.05)
@@ -313,6 +366,7 @@ def export_project(repo_root):
 def main():
     repo_root = Path(sys.argv[sys.argv.index('--') + 1]).resolve() if '--' in sys.argv else Path.cwd()
     clean_scene()
+    oak = image_material('floor_oak_hd', repo_root / 'assets' / 'textures' / 'room-oak-hd-v1.png', 0.70)
     mats = {
         'fur': material('fur_warm_grey_brown', (0.20, 0.155, 0.12), 0.0, 0.9),
         'fur_dark': material('fur_dark', (0.075, 0.052, 0.038), 0.0, 0.95),
@@ -332,12 +386,23 @@ def main():
         'orange': material('signal_orange', (0.95, 0.16, 0.025), 0.0, 0.52, (0.15, 0.012, 0.001)),
         'device': material('device_case', (0.035, 0.048, 0.052), 0.42, 0.46),
         'screen': material('connection_screen', (0.025, 0.19, 0.21), 0.18, 0.25, (0.02, 0.18, 0.2)),
-        'wood': material('floor_wood', (0.085, 0.045, 0.025), 0.0, 0.78),
-        'desk': material('desk_wood', (0.18, 0.085, 0.032), 0.0, 0.62),
+        'wood': oak,
+        'wood_alt': oak,
+        'desk': material('desk_wood', (0.19, 0.092, 0.038), 0.0, 0.58),
+        'bed_frame': material('bed_frame_oak', (0.075, 0.042, 0.025), 0.0, 0.76),
         'fabric': material('mattress_fabric', (0.028, 0.038, 0.052), 0.0, 0.96),
+        'linen': material('clean_linen', (0.26, 0.285, 0.29), 0.0, 0.92),
         'blanket': material('blanket_navy', (0.015, 0.032, 0.055), 0.0, 1.0),
+        'blanket_alt': material('blanket_fold_petrol', (0.018, 0.08, 0.09), 0.0, 0.96),
         'pillow': material('pillow_navy', (0.022, 0.035, 0.05), 0.0, 1.0),
-        'plaster': material('plaster_worn', (0.145, 0.14, 0.13), 0.0, 0.96),
+        'rug': material('room_rug_warm', (0.16, 0.115, 0.075), 0.0, 0.98),
+        'paint': material('trim_warm_white', (0.48, 0.46, 0.42), 0.0, 0.72),
+        'paper': material('print_warm_paper', (0.42, 0.40, 0.36), 0.0, 0.88),
+        'radiator': material('radiator_painted_steel', (0.32, 0.34, 0.33), 0.18, 0.64),
+        'storage': material('storage_dark_oak', (0.055, 0.037, 0.026), 0.0, 0.76),
+        'storage_front': material('storage_front', (0.11, 0.072, 0.045), 0.0, 0.67),
+        'lamp_shade': material('lamp_shade_warm', (0.34, 0.20, 0.09), 0.0, 0.76, (0.18, 0.065, 0.012)),
+        'plaster': material('plaster_worn', (0.21, 0.205, 0.19), 0.0, 0.94),
         'plaster_dark': material('plaster_shadow', (0.075, 0.075, 0.072), 0.0, 0.98),
         'door': material('apartment_door', (0.065, 0.043, 0.026), 0.0, 0.78),
         'window': material('rain_glass', (0.08, 0.24, 0.32), 0.18, 0.12),

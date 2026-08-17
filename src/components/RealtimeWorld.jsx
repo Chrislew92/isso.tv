@@ -121,7 +121,7 @@ function Rain() {
   )
 }
 
-function Level({ run, paused, onInteract, onPrompt, onPosition, onReady }) {
+function Level({ run, paused, onInteract, onPrompt, onPosition, onReady, voiceState }) {
   const gltf = useGLTF(MODEL_URL)
   const characterGltf = useGLTF(CHARACTER_MODEL_URL)
   const level = useMemo(() => clone(gltf.scene), [gltf.scene])
@@ -142,7 +142,7 @@ function Level({ run, paused, onInteract, onPrompt, onPosition, onReady }) {
     target: new Vector3(),
     followDelta: new Vector3(),
   })
-  const { camera } = useThree()
+  const { camera, gl } = useThree()
 
   const rigs = useMemo(() => ({
     armL: characterModel.getObjectByName('rig_arm_l'),
@@ -153,6 +153,7 @@ function Level({ run, paused, onInteract, onPrompt, onPosition, onReady }) {
     earL: characterModel.getObjectByName('rig_ear_l'),
     earR: characterModel.getObjectByName('rig_ear_r'),
     tail: characterModel.getObjectByName('rig_tail'),
+    jaw: characterModel.getObjectByName('rig_jaw'),
   }), [characterModel])
   const rigRest = useMemo(() => Object.fromEntries(
     Object.entries(rigs).map(([name, rig]) => [name, rig?.rotation.clone()]),
@@ -174,25 +175,54 @@ function Level({ run, paused, onInteract, onPrompt, onPosition, onReady }) {
     door.current = level.getObjectByName('door_pivot')
     cart.current = level.getObjectByName('cart_root')
     if (cart.current) motion.current.cartBaseZ = cart.current.position.z
+    const maxAnisotropy = Math.min(8, gl.capabilities.getMaxAnisotropy())
+    const detailedCaster = /(door|cart|mattress|blanket|pillow|bed_|bedside|desk_|connection_|storage_|window_frame|radiator|lamp_|kiosk|awning)/
     level.traverse((object) => {
       if (!object.isMesh) return
-      object.castShadow = object.name.startsWith('char_') || object.name.includes('door') || object.name.includes('cart')
+      object.castShadow = detailedCaster.test(object.name)
       object.receiveShadow = !object.name.startsWith('char_eye')
       object.frustumCulled = true
+      const materials = Array.isArray(object.material) ? object.material : [object.material]
+      for (const material of materials) {
+        if (material?.map) {
+          material.map.anisotropy = maxAnisotropy
+          material.map.colorSpace = SRGBColorSpace
+          material.map.needsUpdate = true
+        }
+        if (material?.name === 'floor_oak_hd') {
+          material.color.set('#8d7867')
+          material.roughness = 0.76
+          material.needsUpdate = true
+        }
+      }
     })
     characterModel.traverse((object) => {
       if (!object.isMesh) return
       object.castShadow = true
       object.receiveShadow = true
       object.frustumCulled = true
+      const materials = Array.isArray(object.material) ? object.material : [object.material]
+      for (const material of materials) {
+        if (material?.map) {
+          material.map.anisotropy = maxAnisotropy
+          material.map.colorSpace = SRGBColorSpace
+          material.map.needsUpdate = true
+        }
+        if (material) {
+          material.color?.set('#c4ad96')
+          material.roughness = Math.max(material.roughness ?? 0.72, 0.78)
+          material.needsUpdate = true
+        }
+      }
     })
+
     const root = character.current
     if (root) {
       controls.current?.target.copy(root.position).add(new Vector3(0, 1.55, 0))
       controls.current?.update()
     }
     onReady()
-  }, [level, characterModel])
+  }, [level, characterModel, gl])
 
   useEffect(() => {
     const down = (event) => {
@@ -255,13 +285,20 @@ function Level({ run, paused, onInteract, onPrompt, onPosition, onReady }) {
 
     const step = moving ? Math.sin(motion.current.time * (activeKeys.has('shift') ? 11 : 8.5)) * 0.45 : 0
     const emote = performance.now() < motion.current.emoteUntil
+    const voice = voiceState?.current
+    const voiceLevel = voice?.active && voice.speaker === '353L' ? voice.level : 0
+    const mouthLevel = voice?.active ? voice.mouth : 0
     if (rigs.legL) rigs.legL.rotation.x = MathUtils.lerp(rigs.legL.rotation.x, rigRest.legL.x + step, dt * 12)
     if (rigs.legR) rigs.legR.rotation.x = MathUtils.lerp(rigs.legR.rotation.x, rigRest.legR.x - step, dt * 12)
     if (rigs.armL) rigs.armL.rotation.x = MathUtils.lerp(rigs.armL.rotation.x, rigRest.armL.x - step * 0.62 - (emote ? 0.75 : 0), dt * 12)
     if (rigs.armR) rigs.armR.rotation.x = MathUtils.lerp(rigs.armR.rotation.x, rigRest.armR.x + step * 0.62 + (emote ? 0.22 : 0), dt * 12)
-    if (rigs.head) rigs.head.rotation.z = rigRest.head.z + Math.sin(motion.current.time * 1.1) * 0.018
-    if (rigs.earL) rigs.earL.rotation.x = rigRest.earL.x + Math.sin(motion.current.time * 1.7) * 0.035
-    if (rigs.earR) rigs.earR.rotation.x = rigRest.earR.x + Math.sin(motion.current.time * 1.5 + 1.4) * 0.03
+    if (rigs.head) {
+      rigs.head.rotation.z = rigRest.head.z + Math.sin(motion.current.time * 1.1) * 0.018 + voiceLevel * 0.025
+      rigs.head.rotation.x = MathUtils.lerp(rigs.head.rotation.x, rigRest.head.x - voiceLevel * 0.035, dt * 10)
+    }
+    if (rigs.earL) rigs.earL.rotation.x = rigRest.earL.x + Math.sin(motion.current.time * 1.7) * 0.035 - voiceLevel * 0.08
+    if (rigs.earR) rigs.earR.rotation.x = rigRest.earR.x + Math.sin(motion.current.time * 1.5 + 1.4) * 0.03 + voiceLevel * 0.055
+    if (rigs.jaw) rigs.jaw.rotation.x = MathUtils.lerp(rigs.jaw.rotation.x, rigRest.jaw.x + mouthLevel * 0.24, dt * 22)
     if (rigs.tail) rigs.tail.rotation.y = rigRest.tail.y + Math.sin(motion.current.time * 1.8) * 0.12
 
     target.copy(root.position)
@@ -319,17 +356,21 @@ function WorldLighting() {
       <directionalLight
         castShadow
         color="#ffc58b"
-        intensity={2.2}
+        intensity={1.72}
         position={[18, 24, 10]}
-        shadow-mapSize-width={768}
-        shadow-mapSize-height={768}
+        shadow-mapSize-width={1024}
+        shadow-mapSize-height={1024}
+        shadow-bias={-0.00018}
+        shadow-normalBias={0.025}
         shadow-camera-far={75}
         shadow-camera-left={-28}
         shadow-camera-right={28}
         shadow-camera-top={28}
         shadow-camera-bottom={-28}
       />
-      <pointLight color="#ffd6ae" intensity={28} distance={11} decay={2} position={[0, 3.4, 4.2]} />
+      <pointLight color="#ffd6ae" intensity={23} distance={11} decay={2} position={[0, 3.4, 4.2]} />
+      <pointLight color="#ffc17b" intensity={14} distance={6.5} decay={2} position={[-0.2, 1.45, 2.5]} />
+      <spotLight color="#ffd0a0" intensity={29} distance={13} decay={2} angle={0.72} penumbra={0.82} position={[-2.1, 3.6, -0.2]} />
       <pointLight color="#ff9c45" intensity={19} distance={9} decay={2} position={[2.2, 3.3, -3.5]} />
       <pointLight color="#ffad55" intensity={24} distance={12} decay={2} position={[12, 3.0, 0]} />
       <pointLight color="#ff923c" intensity={30} distance={14} decay={2} position={[23, 3.0, 5]} />
@@ -344,8 +385,8 @@ export default function RealtimeWorld(props) {
     <section className="realtime-world" aria-label="Echte frei begehbare 3D-Welt von Strammburg">
       <Canvas
         shadows={SHADOW_OPTIONS}
-        frameloop={props.paused ? 'demand' : 'always'}
-        dpr={[0.75, 1]}
+        frameloop={props.paused && !props.voiceActive ? 'demand' : 'always'}
+        dpr={[0.9, 1.35]}
         camera={{ fov: 48, near: 0.08, far: 110, position: [0, 3.0, 6.5] }}
         gl={{ antialias: true, powerPreference: 'high-performance', alpha: false }}
         onCreated={({ gl }) => {

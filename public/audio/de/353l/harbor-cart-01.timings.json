@@ -1,0 +1,41 @@
+{
+  "dialogueId": "de.harbor.cart.353l.01",
+  "speaker": "353L",
+  "words": [
+    {
+      "atMs": 104,
+      "durationMs": 163,
+      "text": "Der"
+    },
+    {
+      "atMs": 281,
+      "durationMs": 353,
+      "text": "Wagen"
+    },
+    {
+      "atMs": 648,
+      "durationMs": 435,
+      "text": "kippt"
+    },
+    {
+      "atMs": 2024,
+      "durationMs": 340,
+      "text": "Erst"
+    },
+    {
+      "atMs": 2378,
+      "durationMs": 625,
+      "text": "hinsehen"
+    },
+    {
+      "atMs": 3940,
+      "durationMs": 231,
+      "text": "Dann"
+    },
+    {
+      "atMs": 4185,
+      "durationMs": 747,
+      "text": "entscheiden"
+    }
+  ]
+}

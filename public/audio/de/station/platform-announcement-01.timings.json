@@ -1,0 +1,46 @@
+{
+  "dialogueId": "de.station.platform.announcement.01",
+  "speaker": "Bahnhof",
+  "words": [
+    {
+      "atMs": 101,
+      "durationMs": 166,
+      "text": "Der"
+    },
+    {
+      "atMs": 318,
+      "durationMs": 230,
+      "text": "Zug"
+    },
+    {
+      "atMs": 586,
+      "durationMs": 179,
+      "text": "nach"
+    },
+    {
+      "atMs": 777,
+      "durationMs": 179,
+      "text": "Wiel"
+    },
+    {
+      "atMs": 968,
+      "durationMs": 281,
+      "text": "fährt"
+    },
+    {
+      "atMs": 1313,
+      "durationMs": 102,
+      "text": "in"
+    },
+    {
+      "atMs": 1428,
+      "durationMs": 230,
+      "text": "neun"
+    },
+    {
+      "atMs": 1695,
+      "durationMs": 472,
+      "text": "Minuten"
+    }
+  ]
+}

@@ -1,0 +1,56 @@
+{
+  "dialogueId": "de.room.connection.lotte.01",
+  "speaker": "Lotte",
+  "words": [
+    {
+      "atMs": 50,
+      "durationMs": 378,
+      "text": "Ich"
+    },
+    {
+      "atMs": 428,
+      "durationMs": 299,
+      "text": "bin"
+    },
+    {
+      "atMs": 727,
+      "durationMs": 365,
+      "text": "da"
+    },
+    {
+      "atMs": 1443,
+      "durationMs": 208,
+      "text": "Du"
+    },
+    {
+      "atMs": 1652,
+      "durationMs": 742,
+      "text": "bestimmst"
+    },
+    {
+      "atMs": 2602,
+      "durationMs": 286,
+      "text": "ob"
+    },
+    {
+      "atMs": 2889,
+      "durationMs": 247,
+      "text": "und"
+    },
+    {
+      "atMs": 3136,
+      "durationMs": 143,
+      "text": "wie"
+    },
+    {
+      "atMs": 3279,
+      "durationMs": 182,
+      "text": "wir"
+    },
+    {
+      "atMs": 3461,
+      "durationMs": 729,
+      "text": "anfangen"
+    }
+  ]
+}

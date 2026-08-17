@@ -22,13 +22,15 @@ Arbeitspaket: Dokumentations- und Agentenfundament
 - Jedes aufgerichtete Tier trägt laut Tierwissen einen eigenen höheren Zweck, kennt ihn aber nicht. 353Ls Zweck bleibt ausdrücklich offen; Agenten dürfen Spuren schreiben, aber keine endgültige Antwort erfinden.
 - Menschen können ebenfalls einen unbekannten höheren Zweck besitzen; bei bewusster KI bleibt die Frage offen. Nur Tiere teilen die Gewissheit der Oberen Gabe.
 - Eitelstedt beginnt bewusst grau und nass. Hoffnung erscheint ohne Balken als lokale Weltveränderung: warme Fenster, reparierte Lichter, Grüße, Pflanzen, offene Orte und erinnerte gute Handlungen.
-- `docs/VOICE_AND_LIPSYNC.md` definiert Full Voice: 353L braucht einen festen Synchronsprecher, relevante Dialoge werden gesprochen/untertitelt und Tierfiguren erhalten artspezifische Viseme plus Ohren-/Blick-/Atemperformance. Casting und Rechte sind noch offen; noch nicht implementiert.
+- `docs/VOICE_AND_LIPSYNC.md` definiert Full Voice. Der lokale KI-Voice-Vertical-Slice ist umgesetzt: elf Zeilen, stabile IDs, Untertitel, Audiofallback, `rig_jaw` sowie Kopf-/Ohrperformance. Anbieterrechte, finale Masterstimme und Phonemviseme bleiben offen; nichts davon ist zur Veröffentlichung freigegeben.
 
 ## Aktueller sichtbarer Stand
 
 - Film startet automatisch.
 - Danach ist 353L in einer zusammenhängenden 3D-Szene frei steuerbar.
 - Donkey-Connection, Tür, Pier-Wagen, Bahnhof und Signalwerk erzeugen lokalen Nachhall.
+- Die Wohnung besitzt jetzt einen ersten HD-Art-Pass: texturierter dunkler Eichenboden, einzelne Dielen, Bettaufbau, Teppich, Nachttisch/Lampe, Fensterrahmen, Heizkörper und geschlossener Stauraum.
+- 353L besitzt einen deformierenden Kiefer; 353L/Lotte/Bahnhof sprechen elf lokale deutsche KI-Vorschauzeilen mit Untertitel- und Autoplay-Fallback.
 - Die lokale Vorschau ist noch kein freigegebener Release.
 
 ## Zuletzt geprüft
@@ -36,11 +38,11 @@ Arbeitspaket: Dokumentations- und Agentenfundament
 - `npm run test`: 8 Tests bestanden.
 - `npm run build`: erfolgreich.
 - `npm audit`: 0 bekannte Sicherheitslücken.
-- Browser-Referenzlauf: ungefähr 55–56 FPS nach Initialladung, keine neuen Runtime-Fehler.
+- Browser-Abnahme nach HD-/Voice-Pass: alle geprüften Audio-/GLB-Endpunkte HTTP 200; keine Konsolenwarnungen oder -fehler. Die frühere 55–56-FPS-Baseline muss nach dem 2K-Texturpass erneut mit dem Performance-Werkzeug gemessen werden.
 
 ## Bekannte Risiken
 
-- Environment und Animationen sind noch Vertical-Slice-/Blockout-Qualität.
+- Wohnung besitzt den ersten Art-Pass; Flur, Hafen, Bahnhof und Signalwerk sind weiterhin Vertical-Slice-/Blockout-Qualität.
 - Harte Bewegungsgrenzen statt echter Kollision/Navmesh.
 - Große 3D-Assets ohne Produktionskompression/LOD.
 - V2-Systeme sind noch nicht in V3 integriert.
@@ -48,7 +50,7 @@ Arbeitspaket: Dokumentations- und Agentenfundament
 
 ## Nächster kleinster Produktionsschritt
 
-Mit `ROADMAP.md` Arbeitspaket `P1-01` beginnen: messbare Visual-/Performance-Budgets festlegen und danach Wohnung → Flur → Hafen als einen vollständigen Art-Pass bearbeiten.
+`P1-01` abschließen: HD-Wohnung mit dem Performance-Werkzeug messen, Asset-Budgets festhalten und danach `P1-05` Flur/Schwelle visuell auf denselben Standard ziehen.
 
 Live verändert: **NEIN**
 

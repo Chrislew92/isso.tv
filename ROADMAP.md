@@ -99,6 +99,11 @@ Ziel: Der Pfad **Film → Wohnung → Flur → Hafen → Bahnhof/Signalwerk → 
 | `P1-13` | P1 | Haltungstest der Oberen Gabe | P1-03, P1-07 | 353L wechselt flüssig zwischen aufrechter Stadtbewegung und Tierlauf/Hufsprint. Der Test entscheidet anhand Lesbarkeit und Rigqualität, ob der Sprint vierbeinig oder stark vorgebeugt bleibt; keine Menschenhände/-füße und keine brechende Transformation. |
 | `P1-14` | P0 | Full-Voice-/Tier-Lip-Sync-Fundament | P1-07, P1-09 | Pipeline gemäß `docs/VOICE_AND_LIPSYNC.md`: stabile Dialog-IDs, deutsche Untertitel, 353L-Castingtest, erste Donkey-Connection vollständig gesprochen, Schnauzen-Viseme plus Ohren/Blick/Atem, Skip/Reload/Fallback geprüft. |
 
+Teilstand 17.08.2026:
+
+- `P1-04`: erster lokaler Wohnung-HD-Pass mit Eichenboden, Bett, Lampe, Fenster, Heizkörper, Stauraum, Material- und Lichtbalance ist im Browser sichtbar; weitere Detail-/Kameraabnahme bleibt offen.
+- `P1-14`: elf deutsche KI-Vorschauzeilen, stabile Dialog-IDs, Untertitel, Audiofallback, deformierender Kiefer und Pegelperformance sind implementiert; finale Lizenz-/Castingentscheidung und echte Phonemviseme bleiben offen.
+
 ## M1-Gate
 
 - [ ] gesamter Morgen ohne Blocker spielbar,

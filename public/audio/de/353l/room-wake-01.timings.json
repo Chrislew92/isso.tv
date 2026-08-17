@@ -1,0 +1,41 @@
+{
+  "dialogueId": "de.room.wake.353l.01",
+  "speaker": "353L",
+  "words": [
+    {
+      "atMs": 104,
+      "durationMs": 489,
+      "text": "Okay"
+    },
+    {
+      "atMs": 1535,
+      "durationMs": 190,
+      "text": "Der"
+    },
+    {
+      "atMs": 1739,
+      "durationMs": 380,
+      "text": "Morgen"
+    },
+    {
+      "atMs": 2133,
+      "durationMs": 353,
+      "text": "fängt"
+    },
+    {
+      "atMs": 2500,
+      "durationMs": 340,
+      "text": "also"
+    },
+    {
+      "atMs": 2853,
+      "durationMs": 503,
+      "text": "wirklich"
+    },
+    {
+      "atMs": 3370,
+      "durationMs": 326,
+      "text": "an"
+    }
+  ]
+}

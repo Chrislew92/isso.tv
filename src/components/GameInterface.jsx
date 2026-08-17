@@ -1,7 +1,7 @@
 import { BUILD, PLACES, formatWorldTime } from '../game/canon.js'
 import MiniMap from './MiniMap.jsx'
 
-export default function GameInterface({ run, position, prompt, onAction }) {
+export default function GameInterface({ run, position, prompt, voice, onAction }) {
   const place = PLACES[position.location] ?? PLACES.room
   const currentEvent = run.events.at(-1)
 
@@ -20,6 +20,7 @@ export default function GameInterface({ run, position, prompt, onAction }) {
         <nav aria-label="Spielmenü">
           <button onClick={() => onAction('film')}>▶ FILM</button>
           <button onClick={() => onAction('memory')}>◫ NACHHALL <i>{run.events.length}</i></button>
+          <button onClick={() => onAction('voice-toggle')} title="Gesprochene Dialoge ein- oder ausschalten">{voice.enabled ? '◖ STIMME AN' : '○ STIMME AUS'}</button>
           <button onClick={() => onAction('reset')}>↻ RESET</button>
         </nav>
       </header>
@@ -46,6 +47,14 @@ export default function GameInterface({ run, position, prompt, onAction }) {
             <span className="keycap keycap--quiet">Q</span>
             <p><b>{prompt.quiet}</b><small>Stille ist eine Haltung</small></p>
           </button>
+        </div>
+      )}
+
+      {voice.caption && (
+        <div className={`voice-caption${voice.active ? ' voice-caption--active' : ''}`} aria-live="polite">
+          <span>{voice.caption.speaker}</span>
+          <p>{voice.caption.text}</p>
+          {voice.needsGesture && <button onClick={() => onAction('voice-replay')}>◖ STIMME STARTEN</button>}
         </div>
       )}
 
