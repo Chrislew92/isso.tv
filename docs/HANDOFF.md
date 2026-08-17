@@ -13,7 +13,7 @@ Arbeitspaket: Dokumentations- und Agentenfundament
 - `docs/PROJECT_STATE.md` als belegter V3-Ist-Stand,
 - `docs/ARCHITECTURE.md`, `docs/DECISIONS.md` und `docs/QA_RELEASE.md`,
 - `MERGE_MATRIX.md` als ehrliche V2-Spendermatrix,
-- `STORY_BIBLE.md` um 353Ls kontrollierte Stärke, die Eitelstedter Kneipe „Zum falschen Signal“ und das einmalige 1-gegen-1-Straßenraub-QTE ergänzt: heftige Gegenwehr, bewusster Stopp und offene Frage nach seiner aggressiven Seite.
+- `STORY_BIBLE.md` um 353Ls kontrollierte Stärke und zwei **mögliche** gespiegelte 1-gegen-1-QTE-Pfade ergänzt: gefeierter Kneipensieg mit innerem Unbehagen sowie späterer Straßenraub mit heftiger Gegenwehr, bewusstem Stopp und offener Frage nach seiner aggressiven Seite. Beide können vermieden werden; ein gewaltfreier Run bleibt gleichwertig.
 
 ## Aktueller sichtbarer Stand
 

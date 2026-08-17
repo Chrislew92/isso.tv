@@ -180,14 +180,16 @@ Ziel: Die Große Vereinfachung/Klarheit+ trägt eine eigene satirische Story; ha
 | `P4-06` | P1 | Krise/Behandlung | sichere Erklärung, Ruhe, Gespräche, Rückkehrplan, Selbstbestimmung und mindestens zwei Rückwege. |
 | `P4-07` | P1 | Rechtliche Folgen/Haft | komplett fiktiver Konsequenzpfad mit Zeit, Kontakten, Arbeit, Entlassung und Stadtrückkehr; keine Tat-Anleitung. |
 | `P4-08` | P0 | Würde-/Safety-Review | alle harten Kapitel erfüllen `STORY_BIBLE.md`; keine Diagnose-/Sucht-/Armutsstereotype. |
-| `P4-09` | P1 | Kneipenstreit / Stärke zurückhalten | in „Zum falschen Signal“ kann 353L einen Streit früh lesen, beruhigen oder verlassen. Die Szene zeigt, dass er seine Kraft kennt und gerade deshalb keinen Kampf sucht; Beziehungen und Zeugen erinnern sein Verhalten. |
-| `P4-10` | P1 | Straßenraub / kanonisches 1-gegen-1-QTE | ein einzelner Straßenräuber greift 353L klar erkennbar an. Ein kurzes filmisches QTE aus Wahrnehmen, Abwehren, Hufkontern und bewusstem Aufhören zeigt, dass 353L den Angreifer erschreckend heftig überwältigt. Kein Gore, keine reale Kampfanleitung, keine Gegnerwelle und kein Kampf-XP; der eigentliche Spielwert liegt in Schock, Hilfeentscheidung, Zeugen, Ruf und der offenen Frage nach seiner aggressiven Seite. |
+| `P4-09` | P1 | Möglicher Kneipenstreit / gefeierter 1-gegen-1-Sieg | in „Zum falschen Signal“ kann der Spieler den Streit vermeiden, verlassen oder durch vorherige Entscheidungen ins kurze 1-gegen-1-QTE geraten. Im Kampfpfad gewinnt 353L deutlich; die Kneipe jubelt, während er denkt: „Ich wollte ihm gar nicht wehtun.“ Kein Gore, kein Kampf-XP; Gegner, Zeugen und Wirtsleute erinnern Verlauf und Verhalten danach. |
+| `P4-10` | P1 | Möglicher Straßenraub / dunkleres 1-gegen-1-QTE | Weg, Uhrzeit und frühere Entscheidungen können eine Begegnung mit einem einzelnen Straßenräuber auslösen. Reden, Abgeben, Flucht/Hilfe oder Gegenwehr bleiben mögliche Pfade. Im Kampfpfad zeigt ein kurzes filmisches QTE, dass 353L den Angreifer erschreckend heftig überwältigt und bewusst stoppen muss. Kein Gore, keine reale Kampfanleitung, keine Gegnerwelle und kein Kampf-XP; der Spielwert liegt in Schock, Hilfeentscheidung, Zeugen, Ruf und der offenen Frage nach seiner aggressiven Seite. |
 
 ## M4-Gate
 
 - [ ] Akte I–IV sind mindestens als durchgehende Hauptlinie spielbar,
 - [ ] Behandlung und Haft sind eigenständige Orte mit Rückwegen, keine Endscreens,
-- [ ] das einmalige Straßenraub-QTE ist klar als Notwehr begonnen, filmisch statt technisch inszeniert und endet mit 353Ls bewusstem Stopp,
+- [ ] beide Begegnungen sind echte Verzweigungen; ein vollständiger Run ohne Kampf bleibt möglich und gleichwertig,
+- [ ] werden beide Kampfpfade erlebt, spielen sie sich mechanisch verwandt, aber emotional klar verschieden: öffentlicher Jubel versus erschrockene Stille,
+- [ ] der Straßenraub-Gegenwehrpfad ist klar als Notwehr begonnen, filmisch statt technisch inszeniert und endet mit 353Ls bewusstem Stopp,
 - [ ] der Nachhall bietet mindestens: Zustand des Räubers prüfen, Hilfe rufen, Abstand nehmen und mit einer Vertrauensfigur darüber sprechen,
 - [ ] die Frage nach dem „Bösen“ bleibt eine offene Charakterfrage und wird weder durch Karmawert noch Diagnose beantwortet,
 - [ ] jede harte Szene wurde auf Klarheit, Würde und mögliche Fehlinterpretation geprüft,

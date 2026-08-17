@@ -38,6 +38,20 @@ Dieses Protokoll hält dauerhafte Produkt-/Architekturentscheidungen fest. Neue 
 - Erwogene Alternative: Kneipenprügelei als normales Minispiel; verworfen, weil dies 353Ls bewusster Konfliktvermeidung und dem seltenen Gewicht der Szene widerspricht.
 - Folge: Die Kneipe zeigt Zurückhaltung. Der Straßenraub zeigt Kontrollverlust und bewusstes Aufhören. Kein Gore, keine reale Kampfanleitung, kein Kampf-XP und kein Gut-/Böse-Meter; entscheidend sind Nachhall und spätere Verantwortung.
 
+## D-006 — Zwei gespiegelte 1-gegen-1-Momente ersetzen D-005
+
+- Datum: 17.08.2026
+- Entscheidung: D-005 wird erzählerisch präzisiert und durch zwei nicht wiederholbare Spiegelmomente ersetzt. In der Kneipe gewinnt 353L ein kurzes 1-gegen-1 und wird öffentlich gefeiert, obwohl er niemandem wehtun wollte. Beim späteren Straßenraub wird seine Gegenwehr aggressiver und endet in erschrockener Stille.
+- Grund: Derselbe körperliche Sieg erhält durch Umgebung und 353Ls Innenleben zwei völlig verschiedene Bedeutungen.
+- Folge: Beide Szenen teilen eine knappe filmische QTE-Grammatik, vergeben aber weder Kampf-XP noch Loot. Kneipe: Jubel außen, Zweifel innen. Straßenraub: Gefahr außen, Kontrollverlust und Verantwortungsfrage innen. D-006 ersetzt die Aussage aus D-005, es gebe genau einen Kampf.
+
+## D-007 — Kampfideen sind mögliche Pfade, keine Pflichtszenen
+
+- Datum: 17.08.2026
+- Entscheidung: D-006 beschreibt zwei mögliche Spiegelpfade, nicht zwei garantierte Ereignisse. Ort, Zeit, Beziehungen und Spielerentscheidungen bestimmen, ob Kneipenstreit oder Straßenraub stattfinden und ob daraus überhaupt ein Kampf wird.
+- Grund: ISSO.TV soll Gedankenpunkte als echte Möglichkeiten abbilden und die Freiheit des Runs erhalten.
+- Folge: Ein gewaltfreier Run ist vollständig und gleichwertig. Nur erlebte Pfade erzeugen Nachhall. Die emotionale Spiegelung entsteht, wenn ein Spieler beide Kampfvarianten tatsächlich erlebt.
+
 ## Vorlage
 
 ```text

@@ -68,7 +68,7 @@ EyTonLand und das Schloss sind ein späteres Kapitel, kein Abspann. Die Frage wi
 4. **Risiko bleibt Fiktion.** Glücksspiel und Märkte verwenden Spielwerte; reale Kurse sind nur ein Kontextsignal, niemals Anlageberatung.
 5. **Keine Kriminalitätsfantasie als Tutorial.** Illegale Wege werden nicht als Anleitung dargestellt. Ihr Preis und ihre Folgen sind sichtbar, konkrete Durchführung bleibt außerhalb des Spiels.
 6. **Eigene Werte zuerst.** Charakter-, Konto-, Vermögens-, Budget- und Zielwerte sind bei einem neuen Run sichtbar einstellbar; ein Preset ist nur ein Startpunkt.
-7. **Hufwehr ist ein einmaliger Wendepunkt, kein Hauptloop.** In einer klaren 1-gegen-1-Notwehrlage gegen einen Straßenräuber verteidigt sich 353L mit seinen Vorderhufen. Das kurze filmische QTE zeigt Wahrnehmen, Abwehren, heftige Konter und den Moment, in dem 353L bewusst aufhören muss. Die Gewalt ist erschreckend wirksam, aber nicht blutig oder technisch erklärt. Es gibt keine Bandenwellen, keine Belohnung fürs Prügeln und keine reale Kampfanleitung.
+7. **Hufwehr ist eine seltene Möglichkeit, kein vorgeschriebener Hauptloop.** Abhängig von Ort, Zeit und Entscheidungen kann 353L einen gefeierten Kneipenkampf erleben und sich später gegen einen Straßenräuber deutlich aggressiver verteidigen. Beide kurzen filmischen QTEs sind vermeidbare Verzweigungen; ein komplett gewaltfreier Run bleibt gleichwertig. Es gibt keine Blutinszenierung, Bandenwellen, wiederholbaren Belohnungen fürs Prügeln oder reale Kampfanleitung.
 
 ## 6. Wiederkehrende Figuren und Gruppen
 
@@ -85,20 +85,31 @@ EyTonLand und das Schloss sind ein späteres Kapitel, kein Abspann. Die Frage wi
 
 353L ist körperlich sehr stark, aber kein Schläger. Er weiß, dass ein Vorderhuf einen Menschen schwer verletzen kann, und versucht Streit deshalb früh zu erkennen, zu beruhigen oder zu verlassen. Selbstkontrolle ist Teil seiner Stärke.
 
-Einmal versagt diese Gewissheit: Ein Straßenräuber greift ihn an, 353L übernimmt im Adrenalin die Kontrolle und vermöbelt den Angreifer heftiger, als er selbst für möglich hielt. Er stoppt — aber der Schock bleibt. Die Geschichte beantwortet nicht, ob etwas „Böses“ in ihm steckt. Sie zeigt den Unterschied zwischen Impuls und Entscheidung und lässt spätere Handlungen sprechen: Schaut er nach dem Verletzten, ruft er Hilfe, erzählt er Lotte davon, verdrängt er es oder beginnt er, seiner eigenen Kraft zu misstrauen? Es gibt keinen Gut-/Böse-Balken.
+Ein möglicher erster Bruch geschieht in der Kneipe: Falls der Streit nicht vermieden wird, wollte 353L dem anderen trotzdem nicht wehtun, gewinnt das 1-gegen-1 aber fast erschreckend klar. Die Leute feiern ihn, klopfen ihm auf die Schulter und erzählen am nächsten Tag eine lustige Heldengeschichte. 353L erlebt dieselbe Szene anders: Er erinnert sich an den Aufprall und daran, wie wenig Kraft dafür nötig war.
+
+Ein möglicher zweiter Bruch ist ernster: Trifft der Spieler unter passenden Bedingungen auf einen angreifenden Straßenräuber und wählt Gegenwehr, übernimmt 353L im Adrenalin die Kontrolle und vermöbelt den Angreifer heftiger, als er selbst für möglich hielt. Er stoppt — aber der Schock bleibt. Die Geschichte beantwortet nicht, ob etwas „Böses“ in ihm steckt. Sie zeigt den Unterschied zwischen Impuls und Entscheidung und lässt spätere Handlungen sprechen: Schaut er nach dem Verletzten, ruft er Hilfe, erzählt er Lotte davon, verdrängt er es oder beginnt er, seiner eigenen Kraft zu misstrauen? Es gibt keinen Gut-/Böse-Balken.
 
 ### Wiederkehrender Ort: Zum falschen Signal
 
-Die Eitelstedter Kneipe **„Zum falschen Signal“** liegt auf dem Weg zwischen Bahnhof und HQ1. Sie ist kein reiner Kampfplatz, sondern ein sozialer Knoten: Feierabend, Gerüchte, kleine Aufträge, Musik, alte Geschichten und Leute, die 353L später wiedererkennen. Hier kann ein Streit aus einem Missverständnis entstehen, aber 353L zeigt, dass Stärke auch heißt, nicht zuzuschlagen. Die Kneipenszene bereitet den Kontrast zum späteren Straßenraub vor.
+Die Eitelstedter Kneipe **„Zum falschen Signal“** liegt auf dem Weg zwischen Bahnhof und HQ1. Sie ist kein reiner Kampfplatz, sondern ein sozialer Knoten: Feierabend, Gerüchte, kleine Aufträge, Musik, alte Geschichten und Leute, die 353L später wiedererkennen. Hier versucht 353L einen Streit aus einem Missverständnis zu vermeiden, gewinnt das unvermeidbar gewordene 1-gegen-1 dann jedoch deutlich. Die Kneipe jubelt, der Gegner kommt wieder auf die Beine und die Umgebung erklärt die Sache für halb so wild. Nur 353L denkt: **„Ich wollte ihm gar nicht wehtun.“** Die Szene bereitet den dunkleren Kontrast zum späteren Straßenraub vor.
 
-### Kanonisches Setpiece: Der Straßenraub
+### Möglicher Spiegelpfad: Der Kneipensieg
+
+- **Ort:** „Zum falschen Signal“, mitten unter bekannten und später wiederkehrenden Gästen.
+- **Auslöser:** ein persönlicher Streit kann abhängig von Antworten, Beziehungen und Verlassen/Weiterreden kippen.
+- **Form:** kurzes 1-gegen-1-QTE; 353L gewinnt klar und ohne ausgedehnte Prügelei.
+- **Außenwirkung:** Jubel, Schulterklopfen, eine übertriebene Heldengeschichte im Eitelstedter Stadtfunk.
+- **Innenwirkung:** 353L wollte niemandem wehtun und begreift, wie gefährlich wenig Kraft er einsetzen muss.
+- **Nachhall:** Der Gegner, die Wirtsleute und Gäste erinnern nicht nur den Sieg, sondern auch 353Ls Verhalten danach.
+
+### Möglicher Spiegelpfad: Der Straßenraub
 
 - **Ort:** ein später, übersichtlicher Verbindungsweg zwischen Eitelstedt und Bahnhof; keine anonyme Gangkulisse.
-- **Auslöser:** ein einzelner Straßenräuber bedroht und greift 353L tatsächlich an.
+- **Auslöser:** Weg, Uhrzeit und frühere Entscheidungen können die Begegnung öffnen; Bedrohung, Flucht, Hilfe und Gegenwehr verzweigen sie weiter.
 - **Form:** sehr kurzes filmisches 1-gegen-1-QTE; Wahrnehmen, Abwehren, Hufkonter, dann ein deutlich gesetzter Stopp-Moment.
 - **Wirkung:** 353Ls Kraft erschreckt den Angreifer, Zeugen und vor allem ihn selbst. Sound, Kamera und Reaktionen tragen die Härte; kein Gore.
 - **Nachhall:** Zustand prüfen, Hilfe rufen, Abstand nehmen, ehrlich erzählen oder verdrängen. Spätere Figuren reagieren auf das, was 353L danach tut.
-- **Offene Frage:** Aggression existiert in ihm, aber das Spiel erklärt sie nicht automatisch zum „Bösen“. Die Antwort entsteht über weitere Entscheidungen.
+- **Offene Frage im Gegenwehrpfad:** Aggression existiert in ihm, aber das Spiel erklärt sie nicht automatisch zum „Bösen“. Die Antwort entsteht über weitere Entscheidungen.
 
 ## 7. Episodenformel
 
@@ -127,5 +138,5 @@ Die verbindliche technische Reihenfolge steht in `ROADMAP.md`. Erzählerisch gil
 1. Zuerst wird der bestehende Morgen — Wohnung, Schwelle, Hafen und Signalwerk — als hochwertiger 3D-Vertical-Slice fertig erzählt.
 2. Danach folgen Charakterstart, Versorgung, ein verlässlicher Tagesloop und der erste soziale Kontakt.
 3. Anschließend schreiben Parkkreis, Signalwerk, Neonhafen und Klarheit+ als wiederkehrende Figuren/Systeme zurück.
-4. Behandlung, Krise, rechtliche Folgen und das seltene 1-gegen-1-Hufwehr-Setpiece entstehen erst auf dem stabilen Beziehungs-/Konsequenzsystem.
+4. Behandlung, Krise, rechtliche Folgen und die zwei gespiegelten 1-gegen-1-Hufwehr-Setpieces entstehen erst auf dem stabilen Beziehungs-/Konsequenzsystem.
 5. EyTonLand und Z-Coin bleiben Langzeitbögen; sie werden nicht als schneller Preis ausgeschüttet.
