@@ -8,7 +8,7 @@ Tiere erzählen sie einander seit Generationen, meistens dort, wo Menschen nicht
 
 > Eines Tages kam die Obere Gabe in die Tierwelt. Sie versprach keinem Tier, ein Mensch zu werden. Sie gab ihnen nur die Möglichkeit, sich aufzurichten, wenn sie es selbst wollten. Der Preis war einfach und endgültig: Wer auf zwei Beinen geht, muss trotzdem Tier bleiben.
 
-Kein Mensch kennt den vollständigen Ursprung der Geschichte. Manche Tiere nennen die Quelle „oben“, andere „vor uns“, „hinter dem Himmel“ oder einfach „die alte Stimme“. Das Spiel bestätigt keine reale Religion und erklärt die Gabe nicht technisch. Die Erzählung bleibt ein Tierwissen mit mehreren Versionen.
+Kein Mensch kennt den vollständigen Ursprung der Geschichte. Manche Tiere nennen die Quelle „oben“, andere „vor uns“, „hinter dem Himmel“ oder einfach „die alte Stimme“. Dahinter steht eine höhere Macht, die für Gott stehen kann, ohne eine reale Religion als einzig richtige Erklärung festzulegen. Die Erzählung bleibt ein Tierwissen mit mehreren Versionen. Der vollständige Erde-1-Rahmen steht in `docs/EARTH_1.md`.
 
 ## Was die Gabe ermöglicht
 

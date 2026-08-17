@@ -66,6 +66,7 @@ Die folgenden Systeme existierten teilweise als V2-Prototyp oder Konzept, sind a
 
 - Charaktererstellung, Presets, Alter, Wohnform oder freie Startwerte,
 - die Obere Gabe als spielbares Haltungssystem, Tierlauf oder weitere artspezifische Figuren/Fähigkeiten,
+- Erde-1-/höhere-Macht-Lore als sichtbare In-Game-Fragmente oder Dialoge,
 - Euro-/Vermögens-/Schutzkonto-/Schulden-/Insolvenz-System,
 - Hunger, Durst, Essensgutscheine, Bestellung, Schlaf und Routinen,
 - BTC/ETH/LTC/SOL/Z-Coin-Portfolio und echte/simulierte Marktwerte,

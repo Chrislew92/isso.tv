@@ -20,7 +20,7 @@ Diese Roadmap ist die ausführbare Reihenfolge für die einzige aktive ISSO.TV-C
 
 ## Produktziel
 
-ISSO.TV wird ein filmisch beginnendes, frei begehbares 3D-Stadt-RPG in Strammburg. Der Spieler erlebt 353Ls Alltag, Entscheidungen, Beziehungen, Projekte, Geld, Risiko und Konsequenzen in einer fortlaufenden Welt. Der Run besitzt Meilensteine, aber keinen erzwungenen Abspann.
+ISSO.TV wird ein filmisch beginnendes, frei begehbares 3D-Stadt-RPG in Strammburg auf **Erde-1 im Jahr 2033**. Der Spieler erlebt 353Ls Alltag, Entscheidungen, Beziehungen, Projekte, Geld, Risiko und Konsequenzen in einer fortlaufenden Parallelwelt mit vertrautem Kalender und eigenen Gesetzen. Der Run besitzt Meilensteine, aber keinen erzwungenen Abspann.
 
 Das Ziel ist nicht „möglichst viele Menüs“. Jeder neue Systemwert muss mindestens eine räumliche Szene, eine verständliche Entscheidung und einen später sichtbaren Nachhall erzeugen.
 
@@ -31,6 +31,7 @@ Das Ziel ist nicht „möglichst viele Menüs“. Jeder neue Systemwert muss min
 - Der Prolog startet automatisch und führt in dieselbe 3D-Welt.
 - Spielraum, Figuren und Bewegung sind echtes 3D; HUD/Untertitel dürfen 2D bleiben.
 - Strammburg ist eine fiktive Metropole; Eitelstedt/HQ1, EyTonLand und Earthpeace 2033 gehören zum eigenen Kanon.
+- Erde-1 ist eine Parallelwelt mit demselben Kalender, nicht unsere reale Erde sieben Jahre später. Die höhere Macht kann für Gott stehen, ohne das Spiel religiös festzulegen.
 - `50.000 € + 35 Renommee` ist ein früher Langzeit-Meilenstein, kein Spielende.
 - Krise, Behandlung und Haft sind potenzielle weiterlaufende Kapitel, kein pauschales Game Over.
 - Keine Echtgeldtransaktion, keine Tat-Anleitung, keine Abwertung realer Gruppen.
@@ -158,7 +159,7 @@ Ziel: Eine kleine, hochwertige Stadtzone mit wiederkehrenden Menschen, Verkehr u
 | `P3-06` | P1 | Beziehungen | Bekanntschaft, Vertrauen, Crew, Konflikt und Distanz ohne „richtige“ Antwort oder romantischen Zwang. |
 | `P3-07` | P1 | Stadtfunk | Tageslage, Wetter, Aushänge, Satire und Konsequenzen spiegeln den Run. |
 | `P3-08` | P1 | Gruppen/Rang | Parkkreis, Signalwerk und Neonhafen erhalten Eintritt, Arbeit, Rang, Ausstieg und Ruf-Folgen. |
-| `P3-09` | P1 | Tiernetz und Legendenfragmente | Gabenträger erkennen Zeichen und unterschiedliche Versionen der Oberen Gabe; mindestens drei Tierfiguren vertreten widersprechende Deutungen, ohne endgültige Infobox-Wahrheit. |
+| `P3-09` | P1 | Tiernetz und Erde-1-Fragmente | Gabenträger erkennen Zeichen und unterschiedliche Versionen der Oberen Gabe; mindestens drei Tierfiguren und zwei menschliche Perspektiven vertreten religiöse, wissenschaftliche oder zweifelnde Deutungen, ohne endgültige Infobox-Wahrheit. Der Begriff Erde-1 fällt erst nach mehreren sichtbaren Hinweisen. |
 
 ## M3-Gate
 

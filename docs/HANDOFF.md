@@ -17,6 +17,7 @@ Arbeitspaket: Dokumentations- und Agentenfundament
 - `docs/CONFLICT_SCENARIOS.md` enthält die vollständige Entscheidungs- und Nachhallmatrix. Beim Straßenraub sind frühes Vermeiden, **Weglaufen**, Abgeben, Reden, Hilfe und Gegenwehr gleichwertige Hauptpfade; pro Moment werden höchstens drei kontextuelle Optionen gezeigt.
 - 353Ls **Hufsprint** ist verbindlicher Bewegungskanon: für wenige Sekunden ungefähr doppelte Menschengeschwindigkeit, spektakulär und direkt steuerbar; auf offener Strecke ist Flucht vor einem einzelnen menschlichen Räuber normalerweise erfolgreich.
 - `docs/ANIMAL_LORE.md` definiert die **Obere Gabe**: ausgewählte Tiere können sich freiwillig aufrichten, müssen aber anatomisch Tier bleiben. 353L behält Vorder-/Hinterhufe; Katzen behalten Pfoten und Krallen. Aufrecht- und Tierhaltung sowie artspezifische Verben sind zukünftige Gameplay-Pakete.
+- `docs/EARTH_1.md` definiert **Erde-1 im Jahr 2033** als Parallelwelt mit demselben Kalender und anderen Grundgesetzen. Eine höhere Macht kann für Gott stehen und machte die Obere Gabe möglich; ISSO.TV bestätigt dennoch keine bestimmte Religion und vergibt keine Glaubenspunkte.
 
 ## Aktueller sichtbarer Stand
 

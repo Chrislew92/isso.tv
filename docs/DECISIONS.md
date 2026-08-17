@@ -66,6 +66,13 @@ Dieses Protokoll hält dauerhafte Produkt-/Architekturentscheidungen fest. Neue 
 - Grund: Der aufrechte Gang erklärt die gemeinsame Stadtwelt, ohne die Tierfiguren zu Menschen in Kostümen zu machen. Anatomie wird zu Story, Bewegung und Entscheidung.
 - Folge: 353L behält vier echte Hufe; Katzen behalten Pfoten/Krallen. Aufrecht- und Tierhaltung werden langfristig spielbar. Charakter-, Kleidungs-, Werkzeug- und Rigdesign folgt `docs/ANIMAL_LORE.md`. Die Legende bleibt innerhalb der Welt mehrdeutig und erzeugt keine überlegene Tierkaste.
 
+## D-010 — ISSO.TV spielt 2033 auf Erde-1
+
+- Datum: 17.08.2026
+- Entscheidung: 2033 bezeichnet denselben Kalender wie bei uns, aber Erde-1 ist eine Parallelwelt mit eigener Geschichte und anderen Grundgesetzen. Eine höhere Macht machte die Obere Gabe irgendwann möglich und kann als Gott verstanden werden.
+- Grund: Vertrauter Alltag bleibt verständlich, während aufrechte Tiere, KI-Körper, Strammburg und spätere Weltideen keinen unrealistischen Technologiesprung unserer realen nächsten Jahre benötigen.
+- Folge: Das Spiel bestätigt keine konkrete Religion und erklärt Zeitpunkt/Mechanismus der Gabe nicht endgültig. Glaube, Zweifel, Wissenschaft und Nichtglaube bleiben gleichwertige Perspektiven. Neue Erde-1-Gesetze brauchen Gameplaynutzen, Grenze und eigenen Entscheidungseintrag gemäß `docs/EARTH_1.md`.
+
 ## Vorlage
 
 ```text

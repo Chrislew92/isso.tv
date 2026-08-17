@@ -13,6 +13,7 @@ Es ist kein Elends- oder Schock-Simulator: Druck, Geldmangel, Gesundheit, Abhän
 | Element | Kanon |
 | --- | --- |
 | **Stadt** | **Strammburg**, eine erfundene Hafenmetropole mit Hamburger DNA, aber eigener Karte, eigenen Regeln und eigenem Stadtfunk. |
+| **Welt** | **Erde-1 im Jahr 2033**: gleicher Kalender und vertrauter Alltag, aber eine parallele Geschichte mit anderen Grundgesetzen. |
 | **Ursprung** | **HQ1 in Eitelstedt**: ein kleiner Raum, Ideenordner, Steckdosenantrag und der Beginn von EyTonLand. |
 | **Fernziel** | **EyTonLand**: Insel, Schloss und Earthpeace-2033-Idee. Kein Fluchtknopf, sondern eine später verdiente Verantwortung. |
 | **Stadtwitz** | Schnelle, absurde Sozial-Satire: Apps, Ämter, Banken und Konzerne machen Dinge "einfacher" und erzeugen neue Formulare. Der Witz trifft Systeme und Macht, nie Herkunft, Krankheit oder Identität. |
@@ -23,6 +24,8 @@ Es ist kein Elends- oder Schock-Simulator: Druck, Geldmangel, Gesundheit, Abhän
 Unter Tieren lebt eine alte Legende: Die **Obere Gabe** erlaubte ausgewählten Tieren, sich aufzurichten und auf zwei Beinen zu gehen, wenn sie es selbst wollten. Der Preis war, tierisch zu bleiben. Ein Esel behält Hufe, eine Katze Pfoten und Krallen, ein Hund seine Pfoten, ein Vogel Schnabel, Flügel und Krallen. Die Gabe ermöglicht Haltung und neue Möglichkeiten, aber keine Verwandlung zum Menschen.
 
 353L ist ein Eselträger dieser Gabe. Seine Hufe sind seine Hände und bleiben gefährlich kräftig; sein Hufsprint stammt aus dem erhaltenen Eselkörper. Aufrecht- und Tierhaltung sind langfristig spielbare Bewegungsformen. Die vollständigen Lore-, Gameplay- und 3D-Art-Regeln stehen in `docs/ANIMAL_LORE.md`.
+
+Hinter der Legende steht eine höhere Macht, die als Gott verstanden werden kann, ohne dass ISSO.TV eine bestimmte Religion bestätigt. Glaube, Zweifel, Wissenschaft und andere Deutungen existieren gleichberechtigt. Erde-1 und die religiöse Offenheit sind in `docs/EARTH_1.md` festgelegt.
 
 Die Energie darf frech, schnell und überdreht sein — eine Hommage an scharfe Animationssatire im **Gefühl**, ohne Figuren, Bildsprache, Dialoge oder Handlungen anderer Werke zu kopieren.
 
@@ -75,6 +78,7 @@ EyTonLand und das Schloss sind ein späteres Kapitel, kein Abspann. Die Frage wi
 5. **Keine Kriminalitätsfantasie als Tutorial.** Illegale Wege werden nicht als Anleitung dargestellt. Ihr Preis und ihre Folgen sind sichtbar, konkrete Durchführung bleibt außerhalb des Spiels.
 6. **Eigene Werte zuerst.** Charakter-, Konto-, Vermögens-, Budget- und Zielwerte sind bei einem neuen Run sichtbar einstellbar; ein Preset ist nur ein Startpunkt.
 7. **Hufwehr ist eine seltene Möglichkeit, kein vorgeschriebener Hauptloop.** Abhängig von Ort, Zeit und Entscheidungen kann 353L einen gefeierten Kneipenkampf erleben und sich später gegen einen Straßenräuber deutlich aggressiver verteidigen. Beide kurzen filmischen QTEs sind vermeidbare Verzweigungen; ein komplett gewaltfreier Run bleibt gleichwertig. Es gibt keine Blutinszenierung, Bandenwellen, wiederholbaren Belohnungen fürs Prügeln oder reale Kampfanleitung.
+8. **Glaube bleibt offen.** Die höhere Macht kann für Gott stehen, ist aber kein Questgeber, Karma-System oder Beweis für eine reale Religion. Figuren dürfen glauben, zweifeln oder nicht glauben.
 
 ## 6. Wiederkehrende Figuren und Gruppen
 
@@ -148,6 +152,6 @@ Die verbindliche technische Reihenfolge steht in `ROADMAP.md`. Erzählerisch gil
 1. Zuerst wird der bestehende Morgen — Wohnung, Schwelle, Hafen und Signalwerk — als hochwertiger 3D-Vertical-Slice fertig erzählt.
 2. Danach folgen Charakterstart, Versorgung, ein verlässlicher Tagesloop und der erste soziale Kontakt.
 3. Anschließend schreiben Parkkreis, Signalwerk, Neonhafen und Klarheit+ als wiederkehrende Figuren/Systeme zurück.
-4. Die Obere Gabe wird über Tierbegegnungen, Zeichen und Bewegungsformen langsam sichtbar; sie erhält keine einmalige Lexikon-Erklärung.
+4. Erde-1 und die Obere Gabe werden über Tierbegegnungen, Zeichen und Bewegungsformen langsam sichtbar; sie erhalten keine einmalige Lexikon-Erklärung.
 5. Behandlung, Krise, rechtliche Folgen und die zwei gespiegelten 1-gegen-1-Hufwehr-Setpieces entstehen erst auf dem stabilen Beziehungs-/Konsequenzsystem.
 6. EyTonLand und Z-Coin bleiben Langzeitbögen; sie werden nicht als schneller Preis ausgeschüttet.
