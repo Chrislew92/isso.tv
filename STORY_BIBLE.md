@@ -68,6 +68,7 @@ EyTonLand und das Schloss sind ein späteres Kapitel, kein Abspann. Die Frage wi
 4. **Risiko bleibt Fiktion.** Glücksspiel und Märkte verwenden Spielwerte; reale Kurse sind nur ein Kontextsignal, niemals Anlageberatung.
 5. **Keine Kriminalitätsfantasie als Tutorial.** Illegale Wege werden nicht als Anleitung dargestellt. Ihr Preis und ihre Folgen sind sichtbar, konkrete Durchführung bleibt außerhalb des Spiels.
 6. **Eigene Werte zuerst.** Charakter-, Konto-, Vermögens-, Budget- und Zielwerte sind bei einem neuen Run sichtbar einstellbar; ein Preset ist nur ein Startpunkt.
+7. **Hufwehr ist ein seltener Moment, kein Hauptloop.** 353L kann sich in einer klaren 1-gegen-1-Notwehrlage mit seinen Vorderhufen verteidigen. Der Spieler liest die Situation, blockt oder weicht aus, setzt höchstens einen kurzen harten Konter und gewinnt Abstand. Reden, Weggehen und Hilfe holen bleiben gleichwertig; es gibt kein Gore, keine Bandenwellen, keine Belohnung fürs Prügeln und keine reale Kampfanleitung.
 
 ## 6. Wiederkehrende Figuren und Gruppen
 
@@ -79,6 +80,14 @@ EyTonLand und das Schloss sind ein späteres Kapitel, kein Abspann. Die Frage wi
 | **Neonhafen-Kollektiv** | Nachtarbeit, Tempo, Kontakte | Verlockende Abkürzungen; die Kosten werden nicht verschwiegen. |
 | **Klarheit+** | Plattform und Verwaltungsverbund | Wiederkehrender System-Gegenspieler, nie allmächtig und nie eine einzelne Person. |
 | **353L** | Name, Symbol und Perspektive | Kein allwissender Retter: eine Stimme, die Muster sieht, Fragen stellt und selbst Teil der Welt bleibt. |
+
+### 353Ls Stärke
+
+353L ist körperlich sehr stark, aber kein Schläger. Er weiß, dass ein Vorderhuf einen Menschen schwer verletzen kann, und versucht Streit deshalb früh zu erkennen, zu beruhigen oder zu verlassen. Selbstkontrolle ist Teil seiner Stärke. Wenn eine klare Notwehrlage keinen sicheren Ausweg mehr lässt, verteidigt er sich kurz, schafft Abstand und hört auf, sobald die Gefahr vorbei ist.
+
+### Wiederkehrender Ort: Zum falschen Signal
+
+Die Eitelstedter Kneipe **„Zum falschen Signal“** liegt auf dem Weg zwischen Bahnhof und HQ1. Sie ist kein reiner Kampfplatz, sondern ein sozialer Knoten: Feierabend, Gerüchte, kleine Aufträge, Musik, alte Geschichten und Leute, die 353L später wiedererkennen. Hier kann ein seltener Streit aus einem Missverständnis eskalieren. Mehrere Auswege bleiben sichtbar; nur ein tatsächlicher Angriff löst das kurze 1-gegen-1-Hufwehr-Setpiece aus. Danach reagiert die Welt mit Zeugen, Gespräch, möglicher Verletzung und Ruf — nicht mit Kampf-XP.
 
 ## 7. Episodenformel
 
@@ -100,11 +109,12 @@ Beispiel: Am Bahnhof bietet Klarheit+ einen Termin ohne Wartezeit an. Der Spiele
 - Humor entsteht aus Übertreibung, Bürokratie, Statusdenken, Tech-Sprech und der Sturheit der Stadt.
 - Jede neue Episode wird auf Klarheit, Entscheidungswert, Würde und Folgewirkung geprüft.
 
-## 9. Was als Nächstes ins Spiel kommt
+## 9. Erzählerische Produktionsreihenfolge
 
-1. Sichtbarer Kapitelkompass für die fünf Akte.
-2. Die erste Klarheit+-Episode mit drei spielbaren Antworten.
-3. Messenger-Fäden für Parkkreis, Signalwerk und Neonhafen.
-4. Behandlung- und Konsequenzkapitel als vollständige Orte mit Rückwegen.
-5. Karte mit Tageszeit, Begegnungen, Zugängen und späteren Stadtteilen.
-6. EyTonLand erst als fernes, spielbares Langzeitziel freischalten.
+Die verbindliche technische Reihenfolge steht in `ROADMAP.md`. Erzählerisch gilt:
+
+1. Zuerst wird der bestehende Morgen — Wohnung, Schwelle, Hafen und Signalwerk — als hochwertiger 3D-Vertical-Slice fertig erzählt.
+2. Danach folgen Charakterstart, Versorgung, ein verlässlicher Tagesloop und der erste soziale Kontakt.
+3. Anschließend schreiben Parkkreis, Signalwerk, Neonhafen und Klarheit+ als wiederkehrende Figuren/Systeme zurück.
+4. Behandlung, Krise, rechtliche Folgen und das seltene 1-gegen-1-Hufwehr-Setpiece entstehen erst auf dem stabilen Beziehungs-/Konsequenzsystem.
+5. EyTonLand und Z-Coin bleiben Langzeitbögen; sie werden nicht als schneller Preis ausgeschüttet.

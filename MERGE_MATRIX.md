@@ -1,46 +1,37 @@
-# ISSO.TV — Merge Matrix zur einzigen Master Edition
+# ISSO.TV V2 → V3 — geprüfte Spendermatrix
 
-Ziel: Die **ISSO.TV Master Edition** in diesem Ordner ist die einzige Quellbasis für den künftigen Release auf `isso.tv`. Die laufende Vanilla-Version und die Git-Historie unter `C:\Users\chris\AndroidStudioProjects\isso.tv` sind ausschließlich geprüfte Spender — nie wieder eine zweite Produktbasis.
+V3 in diesem Repository ist die einzige aktive Produktbasis. V2 ist am Git-Tag `v2-archive-2026-08-17` eingefroren. Diese Matrix sagt nur, was dort als möglicher Spender existiert; kein Eintrag ist deshalb bereits in V3 eingebaut.
 
-## Verifizierter Ausgangspunkt
+Der verbindliche V3-Ist-Stand steht in `docs/PROJECT_STATE.md`, die Reihenfolge der Neu-Integration in `ROADMAP.md`.
 
-| Bereich | Stand |
-|---|---|
-| Öffentliche Live-Adresse | `https://isso.tv` antwortet mit HTTP 200; gelieferte HTML-Datei: 201.579 Zeichen beim letzten Check. |
-| Live-Produkt | stabile Vanilla-/353L.EXE-Fassung mit Weltuhr, lokalem Spielstand und Rechtstexten. |
-| Künftige Quellbasis | `outputs\isso-tv-master-edition`, React/Vite, lokaler Master-Run. |
-| Alter AndroidStudio-Ordner | Git-Historie vorhanden, aktueller Arbeitsbaum dirty; nicht deployen und nicht überschreiben. |
+## Regeln für jede Rettung
 
-## Übernahme-Regeln
+1. Nur das konkrete V2-System untersuchen, niemals den gesamten V2-`App.jsx` zurückkopieren.
+2. Begriffe, Rechenfälle und Content-Ideen dürfen Spender sein; Architektur, UI und Save werden V3-gerecht neu gebaut.
+3. Keine persönlichen Werte, Zugangsdaten, Live-Konfigurationen oder privaten Realwelttexte übernehmen.
+4. Jede Rettung braucht reine Domänenlogik, Tests, Save-Entscheidung und sichtbare V3-Einbindung.
+5. Eine Funktion wird erst nach Browserprüfung im aktuellen V3-Branch als implementiert markiert.
 
-1. Die Master Edition übernimmt nur Funktionen, die im neuen Spielloop sinnvoll, sicher und testbar sind.
-2. Kein Kopieren von Passwörtern, Zugangscodes, privaten Angaben oder undeutlichen alten Texten.
-3. Keine Rückkehr zu alten Waffen-/Tatmechaniken oder zu privaten Realweltbezügen.
-4. Jede Übernahme erhält eine sichtbare Master-Edition-UI, einen Save-Fallback und einen erfolgreichen Produktions-Build.
-5. Erst nach Abnahme ersetzt der Master die einzige öffentliche Adresse `isso.tv`.
+## Spenderbestand
 
-## Feature-Matrix
+| V2-Bereich | Beleg im Archiv | V3-Ziel | Status |
+| --- | --- | --- | --- |
+| Charakter-Presets, Alter, Form, Wohnen | V2 `src/App.jsx` | `P2-03` | nur Spender |
+| Finanzprofil, Schutzkonto, Schulden, Banking/Unterstützung | V2 `src/App.jsx` | `P2-04`, `P5-01` | nur Spender |
+| Hunger, Durst, Essen, Gutscheine, Bestellung | V2 `src/App.jsx` | `P2-06`, `P2-07` | nur Spender |
+| Zeit, Zyklen, Fristen | V2 `src/App.jsx` | `P2-05` | nur Spender |
+| Park, Kiosk, Markt, Behandlung, Haft | V2 Ortsdaten | `P3`, `P4` | nur Story-/UX-Spender |
+| Messenger, Parkkreis, Signalwerk, Neonhafen, Rang | V2 `src/App.jsx` | `P3-03`–`P3-08` | nur Spender |
+| BTC, ETH, LTC, SOL, Z-Coin | V2 Marktdaten/-logik | `P5-04`, `P5-06` | nur Spender |
+| Spilo 10/20/50/100 | V2 Spiellogik | `P5-05` | nur Spender |
+| Klarheit+, Akte, Stadtfunk | V2 Content + `STORY_BIBLE.md` | `P3-07`, `P4` | konzeptioneller Spender |
+| lokaler persönlicher Run/Normalisierung | V2 Save-Code | `P2-01`, `P2-02` | nur Spender |
 
-| Legacy-/Live-Element | Entscheidung | Master-Status |
-|---|---|---|
-| Lokaler Spielstand über Reload | übernehmen | **bereits vorhanden** — getrennte Runs und Save-Normalisierung. |
-| Weltuhr / gemeinsamer Tageskontext | neu interpretieren | **übernommen** — sichtbare Strammburg-Uhr; Stadtfunk-Lage ist für alle am selben Kalendertag gleich. |
-| Schutzkonto | übernehmen | **übernommen** — sichtbare Benennung und Finanzprofil vereinheitlicht. |
-| Passwort/Tor | nicht übernehmen | nicht erforderlich; kein Klartext-Passwort im Master. |
-| „Vorhang, kein Schloss“-Transparenz | als Sicherheitsprinzip übernehmen | **offen** — bei späteren lokalen Daten-/Settings-Hinweisen. |
-| Desktop, Raum, alte Comic-Route | nicht direkt übernehmen | durch Charakter-Start, Karte und Story-Run ersetzt. |
-| Kiosk/Alltagsorte | neu interpretieren | **bereits vorhanden** — Kiosk, Markt, Park, Verkehr und Ortsaktionen. |
-| Impressum/Datenschutz | beim Release neu und korrekt übernehmen | **offen** — keine veralteten oder privaten Angaben blind kopieren. |
-| Logo-Vektoren | optional als Legacy-Asset sichern | **offen** — nur übernehmen, wenn sie visuell zur Master Edition passen. |
-| Alte Waffen-/Tat- oder private Realweltbezüge | ausschließen | bewusst nicht Teil des Masters. |
+## Ausgeschlossen
 
-## Reihenfolge bis zum einzigen Live-Release
-
-- [ ] Master-Ordner mit Git und `.gitignore` als einzige Release-Quelle sichern.
-- [x] Weltuhr als Strammburg-Kalender/Tageslage bauen.
-- [ ] Live-Funktionen aus dieser Matrix einzeln in den Master übernehmen und testen.
-- [ ] Rechtstexte für den tatsächlichen späteren Betreiber/Host neu prüfen und ergänzen.
-- [ ] Lokalen Master auf Desktop und Mobile abnehmen.
-- [ ] Bestehendes Live-Release sichern.
-- [ ] Einmaliger, atomarer Austausch auf `isso.tv`.
-- [ ] Danach nur diesen Master weiterentwickeln.
+- monolithische Rückkehr zum alten V2-`App.jsx`,
+- 2D-/Dashboard-Ersatz für die begehbare V3-Welt,
+- alte Passwörter, Tore oder private Live-Konfiguration,
+- ungeprüfte Rechtstexte oder personenbezogene Angaben,
+- reale Tat-Anleitungen oder stereotype Krisen-/Suchttexte,
+- ein paralleler V2-Live- oder Preview-Release.

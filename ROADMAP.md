@@ -1,296 +1,298 @@
-# ISSO.TV — Master Roadmap (lokal / intern)
+# ISSO.TV V3 / Master Edition — Produktionsroadmap
 
 Stand: 17.08.2026
-Status: **lokaler echter 3D-Vertical-Slice** — Filmstart, frei steuerbarer Avatar und zusammenhängende Strammburg-Geometrie vorhanden; noch nicht zur Veröffentlichung freigegeben.
 
-Diese Datei ist unsere Fortsetzungsgrundlage. Neue Gedanken kommen zuerst in den Backlog, dann werden sie zu einer klaren, testbaren Aufgabe. Nur tatsächlich eingebaute und geprüfte Punkte werden abgehakt.
+Aktiver Branch: `master`
 
-> **Projektgrenze:** Diese Roadmap und dieses Repository betreffen ausschließlich das Spiel **ISSO.TV Master Edition**. Der KI-Chat **353L.ai** ist ein getrenntes Projekt unter `C:\Users\chris\AndroidStudioProjects\353l.ai` und wird hier nicht bearbeitet.
+Verifizierter 3D-Meilenstein: `eee01eb`
 
-> **Ein-Version-Regel:** Es gibt genau **eine** öffentliche Produktionsversion: `isso.tv`. Lokale Entwicklung läuft ausschließlich auf `127.0.0.1`; keine zweite öffentliche Vorschau, keine parallele Master-/Beta-Domain und keine zusätzlichen Live-Server. Ein Release ersetzt die bestehende Live-Version erst nach Backup, Build und Abnahme.
+Freigabe: **nur lokal; kein Deploy**
 
-## Leitidee
+Diese Roadmap ist die ausführbare Reihenfolge für die einzige aktive ISSO.TV-Codebasis. Der beweisbare Ist-Stand steht in `docs/PROJECT_STATE.md`; der erzählerische Kanon in `STORY_BIBLE.md`; Agentenregeln in `AGENTS.md`.
 
-ISSO.TV ist ein endloser Stadtrun in der fiktiven Metropole **Strammburg**. Es geht um Geld, Alltag, Hunger, Zeit, Beziehungen, Projekte, Risiko und Konsequenzen — immer mit einer spielbaren Entscheidung, niemals nur als Textwand.
+## Statuslegende
 
-`50.000 € + 35 Renommee` ist der erste Meilenstein, kein Abspann. Ein Run endet nicht durch eine Zahl: Krisen, Behandlung und Haft sind weiterlaufende Kapitel mit veränderten Optionen.
+- `[x]` im aktuellen V3-Branch implementiert und geprüft.
+- `[ ]` noch nicht implementiert.
+- **Spender**: in V2 auffindbar, aber erst nach Neu-Integration eine V3-Funktion.
+- **Gate**: muss vollständig erfüllt sein, bevor die nächste Phase als abgeschlossen gilt.
+- Priorität `P0` blockiert alles, `P1` gehört zum aktuellen Meilenstein, `P2` folgt danach.
 
-## Fester Canon
+## Produktziel
 
-- Strammburg ist eine eigenständige Hafenmetropole mit Hamburg-DNA, aber keine reale Hamburg-Karte.
-- Eitelstedt ist der Ursprung; **HQ1** ist die Keimzelle von EyTonLand.
-- EyTonLand, Schloss EyTonLand und Earthpeace 2033 sind spätere Endgame-/Weltkapitel.
-- 353L kann als Esel-Avatar, Mensch, KI, Mensch im Roboterkörper oder als unerkanntes KI-im-Mensch-Mysterium erzählt werden.
-- Z-Coin / `#zedcoinz` ist eine **fiktive** ISSO.TV-Währung mit hohem Risiko.
-- Psychische Krisen und Behandlung werden würdevoll erzählt: kein Horrorbild, keine Diagnose als Spielwert, keine Behauptung, dass Krankheit Kriminalität verursacht.
-- Riskante/illegale Storywege bleiben fiktional und abstrakt. Das Spiel zeigt Folgen, nicht reale Vorgehensweisen.
-- Vielfalt ist selbstverständlich: Herkunft, Look, Geschlecht, Beziehung und Körperform erzeugen keine besseren oder schlechteren Stats.
-- Der Humor ist eine Hommage an schnelle, absurde Gesellschaftssatire: eigenständige Strammburg-Figuren, keine South-Park-Charaktere, -Bilder, -Dialoge oder kopierten Storys.
+ISSO.TV wird ein filmisch beginnendes, frei begehbares 3D-Stadt-RPG in Strammburg. Der Spieler erlebt 353Ls Alltag, Entscheidungen, Beziehungen, Projekte, Geld, Risiko und Konsequenzen in einer fortlaufenden Welt. Der Run besitzt Meilensteine, aber keinen erzwungenen Abspann.
 
-## Humor-Leitplanken
+Das Ziel ist nicht „möglichst viele Menüs“. Jeder neue Systemwert muss mindestens eine räumliche Szene, eine verständliche Entscheidung und einen später sichtbaren Nachhall erzeugen.
 
-- [ ] Jede große Storylinie bekommt mindestens einen absurden Kontrast: ein Amt, ein Vertrag, eine App, ein Konzern oder ein Stadtmythos dreht völlig durch.
-- [ ] Der Witz trifft Systeme, Geldlogik, Bürokratie, Tech-Hype und Macht — nicht Menschen wegen Krankheit, Herkunft, Körper oder Identität.
-- [ ] Nach einer starken Pointe muss eine echte Entscheidung folgen; Humor ist Gameplay, nicht nur Text.
-- [ ] Zwischen Eskalationen bleiben ruhige, ehrliche Szenen möglich. Dadurch tragen die harten Gags besser.
-- [ ] Strammburg hat eigene Running Gags: Esel-353L, Zedcoinz, überforderte Stadttechnik, HQ1, EyTonLand-Mythos und Hafenlogik.
+## Unveränderliche Produktentscheidungen
 
-## Arbeitsmodus
+- V3 ist die einzige aktive Codebasis.
+- V2 bleibt am Tag `v2-archive-2026-08-17` als Feature-Spender eingefroren.
+- Der Prolog startet automatisch und führt in dieselbe 3D-Welt.
+- Spielraum, Figuren und Bewegung sind echtes 3D; HUD/Untertitel dürfen 2D bleiben.
+- Strammburg ist eine fiktive Metropole; Eitelstedt/HQ1, EyTonLand und Earthpeace 2033 gehören zum eigenen Kanon.
+- `50.000 € + 35 Renommee` ist ein früher Langzeit-Meilenstein, kein Spielende.
+- Krise, Behandlung und Haft sind potenzielle weiterlaufende Kapitel, kein pauschales Game Over.
+- Keine Echtgeldtransaktion, keine Tat-Anleitung, keine Abwertung realer Gruppen.
+- Es gibt nur eine öffentliche Version auf `isso.tv`; jeder Austausch braucht eine ausdrückliche Freigabe.
 
-- [ ] Vor jeder größeren Änderung: diese Roadmap um Status und nächsten Sprint ergänzen.
-- [ ] Pro Sprint nur ein spielbarer Kern: bauen, lokal testen, Build prüfen, dann abhaken.
-- [ ] Neue Ideen zuerst unter **Parkplatz** sammeln; nicht mitten im Sprint das Kernziel wechseln.
-- [ ] Nach jedem Sprint einen kurzen Spielstand-Test mit neuem Charakter und persönlichem Run durchführen.
-- [ ] Spielstände nie ungefragt löschen oder überschreiben.
+## Abhängigkeiten der großen Meilensteine
+
+```mermaid
+flowchart LR
+  M0["M0 Technischer 3D-Kern"] --> M1["M1 Master-Vertical-Slice"]
+  M1 --> M2["M2 Alltag & Charakter"]
+  M2 --> M3["M3 Strammburg & Beziehungen"]
+  M3 --> M4["M4 Konsequenz & Story"]
+  M2 --> M5["M5 Geld, Projekte & Endlosspiel"]
+  M4 --> M6["M6 Alpha"]
+  M5 --> M6
+  M6 --> M7["M7 Einziger Live-Release"]
+```
 
 ---
 
-# 0. Grundgerüst & Stabilität
+# M0 — Technischer echter 3D-Kern
 
-## Erledigt
+Status: **abgeschlossen und lokal gesichert**
 
-- [x] React/Vite-Projekt läuft lokal.
-- [x] Produktions-Build läuft.
-- [x] Persönlicher Spielstand und neuer Charakter-Run sind getrennt.
-- [x] Finanzprofil kann liquide Mittel, Sparbuch, Schutzkonto, Schulden, Fixkosten und Banking bearbeiten.
-- [x] Alte Saves werden normalisiert; neue Systeme erhalten Fallback-Werte.
-- [x] Das Spiel ist als Dauer-Run angelegt; 50k sind Meilenstein.
+- [x] React/Vite-Anwendung und Produktions-Build.
+- [x] Film-first Prolog mit Poster, Video, Untertiteln und Skip.
+- [x] Lazy geladene React-Three-Fiber-Szene.
+- [x] Zusammenhängende Wohnung/Flur/Hafen/Bahnhof/Signalwerk-Geometrie.
+- [x] Eigenes texturiertes, geriggtes 353L-Modell.
+- [x] WASD/Pfeile, Sprint, Mausblick, Zoom und Kamera-Nachführung.
+- [x] Donkey-Connection, Tür, Wagen, Bahnhof und Signalwerk als räumliche Interaktionen.
+- [x] Lokaler Run-Zustand, Nachhall, Reload und Reset.
+- [x] Blender-Quellen und reproduzierbare Exportskripte.
+- [x] Acht State-Tests, erfolgreicher Build und Audit ohne bekannte Lücke.
+- [x] Interner stabiler Referenzlauf mit ungefähr 55–56 FPS nach Initialladung.
 
-## Offen
-
-- [ ] Save-Slot-Verwaltung: benannte Slots, Zeitpunkt, Charakter, Kapitel, Vorschau.
-- [ ] Export/Import eines Spielstands als lokale Datei.
-- [ ] Sicheres Versions-/Migrationssystem für spätere Änderungen.
-- [ ] „Neuer Run“-Bestätigung und Wiederherstellung eines zuletzt gelöschten lokalen Slots.
-- [ ] Settings: Lautstärke, Animationen, Kontrast, Schriftgröße, Sprache.
-
-# 1. Charakter-Erstellung & Identität
-
-## Erledigt
-
-- [x] Name, Alter, Form, Wohnen und Startweg sind wählbar.
-- [x] Freie Formen: Mensch, KI, Mensch + Roboterkörper, KI im Menschen.
-- [x] Vier gleichwertige Crew-Presets mit eigenen Auftaktszenen: Alex, Malik, Yuna, Ally.
-- [x] Keine Wertevor- oder -nachteile aufgrund von Herkunft oder Look.
-- [x] Esel-/353L-Visual als aktuelles Key Art.
-- [x] 353L als eigenes texturiertes, geriggtes 3D-Modell mit Laufpose, Blick und Emote.
-
-## Offen
-
-- [ ] Mehr Presets und Look-Varianten ohne Stat-Unterschiede.
-- [ ] Outfit, Inventar, Wohnung, Stimme und Körperform als rein erzählerische Anpassung.
-- [ ] Charakter-Biografie in drei kurzen, editierbaren Sätzen.
-- [ ] Konsequente KI-/Cyborg-/Sleeper-spezifische spätere Storysignale.
-- [ ] Charakteranimationen ausbauen: weichere Schritte, Hände, Gesicht, Atem, Interaktionsposen.
-
-# 2. Alltag, Basis & Überleben
-
-## Erledigt
-
-- [x] Giro, Sparbuch, Schutzkonto, Schulden, Fixkosten, Banking-Kontext.
-- [x] Hunger, Durst und wöchentlicher Essenskorb.
-- [x] Selbst gekaufte Essensgutscheine für Essen und Getränke.
-- [x] Tabak als optionaler Gewohnheits-/Entzugsstrang.
-- [x] Routine, Kontakte, Zeitkosten und Alltagsanker.
-- [x] Krisen führen in ein weiterlaufendes Krisenkapitel statt in den Abspann.
-- [x] Strammburg-Weltuhr und tagesgleiche Stadtfunk-Lage.
-
-## Offen
-
-- [ ] Kalender: Tage, Wochen, Monate, Jahreszeiten, Feiertage, Fristen.
-- [ ] Miete, Strom, Internet, Telefon, Verträge und Mahnungen als verständliche monatliche Abläufe.
-- [ ] Inventar: Essen, Getränke, Tickets, Schlüssel, Unterlagen, Technik.
-- [ ] Schlaf, Energie, Hygiene und Wohnungskomfort — kompakt, ohne Mikromanagement.
-- [ ] Krankmeldung, Termine und Unterstützung als sensible, freiwillige Story-/Alltagsoptionen.
-- [ ] Weitere Gewohnheiten nur mit eigenen, nicht-stereotypen Spielsystemen und klaren Schutzgrenzen.
-
-# 3. Strammburg, Karte & Bewegung
-
-## Erledigt
-
-- [x] Klickbare Schemamap mit HQ1, Park, Kiosk, Supermarkt, Haltestelle, Bahnhof, Zuhause, Behandlung, Neonhafen und Haftkapitel.
-- [x] Ortsaktionen mit kleinen, sichtbaren Folgen.
-- [x] Lokale Wege und spätere Netzfreischaltung über den Bahnhof.
-- [x] Haftkapitel ist als nicht-finaler Schauplatz vorbereitet.
-- [x] Echte zusammenhängende 3D-Welt: Wohnung, Flur, Hafen, Bahnhof und Signalwerk ohne Bildhintergründe oder 2.5D-Figuren.
-- [x] Freie Echtzeitsteuerung mit WASD/Pfeiltasten, Mausblick, Zoom, Kamera-Nachführung und räumlichen Interaktionen.
-
-## Offen
-
-- [ ] Viertel definieren: Eitelstedt, Neonhafen, Glasring, Wohnring, Bahnhofsviertel, Inselhafen.
-- [ ] Map-Ansicht im Browser auf Desktop und Mobile visuell testen und nachziehen.
-- [ ] Verkehr: zu Fuß, Bus, Bahn, Nachtlinie, Taxi/Fahrtendienst — mit Zeit und Preis.
-- [ ] Ortsabhängige Begegnungen, Fundstücke und Tageszeiten.
-- [ ] Innenräume: Wohnung, Kiosk, Markt, Bahnhofshalle, HQ1, Park, Behandlung, Haft.
-- [ ] Spätere 3D-Stadt als bewusst kleine, dichte Bezirke statt leerer Riesenkulisse.
-
-# 4. Menschen, Nachrichten & Beziehungen
-
-## Erledigt
-
-- [x] Park-Nachricht eines Kollegen als erste freiwillige Sozialszene.
-- [x] Kontakte sind ein sichtbarer Wert.
-- [x] Der Parkkreis ist als soziale Gruppierung angelegt.
-
-## Offen
-
-- [ ] Telefon-/Messenger-Ansicht: Nachrichten, Anrufe, Einladungen, verpasste Termine.
-- [ ] 12–20 wiederkehrende NPCs mit Ort, Beziehung, Grenzen, Erinnerung und eigener Agenda.
-- [ ] Beziehungssystem: Bekanntschaft, Vertrauen, Crew, Konflikt, Distanz — ohne „richtige“ Antwort.
-- [ ] Regenbogenfreundliche Beziehungen und Figuren als normale Weltteile, nicht als Bonus-System.
-- [ ] Hund-/KI-Begleiter als Supportfiguren mit klaren Grenzen und keinen Zwangseingriffen.
-- [ ] Nachrichten-Pacing: höchstens ein relevanter Impuls pro Zyklus, damit das Tempo bleibt.
-
-# 5. Wege, Gruppen & Rang
-
-## Erledigt
-
-- [x] Drei Gruppierungen: Signalwerk/HQ1, Neonhafen-Kollektiv, Parkkreis.
-- [x] Einladungen erscheinen abhängig von gewählten Wegen und Kontakten.
-- [x] Rang, Aufträge und Auftragszähler sind implementiert.
-
-## Offen
-
-- [ ] Rangtitel und 3–5 echte Aufträge pro Gruppierung.
-- [ ] Fraktionswechsel, Ausstieg, Rivalitäten und Ruf-Folgen.
-- [ ] Signalwerk: Lizenzen, digitale Produkte, Projektpitches, EyTonLand-Aufbau.
-- [ ] Neonhafen: fiktive Nachtarbeit/Risikoaufträge mit nachvollziehbaren Folgen, ohne reale Tat-Anleitung.
-- [ ] Parkkreis: Community, kleine Jobs, Fürsorge, Crew und lokale Chancen.
-- [ ] Weitere Wege: Haushalt/Arbeit, Unternehmertum, Kunst/Content, Markt/Trading, Stadtpolitik.
-
-# 6. Konsequenzkapitel: Krise, Behandlung, Haft
-
-## Erledigt
-
-- [x] Krisen werden nicht mehr als Endbild behandelt.
-- [x] Behandlungsort kann besucht werden und bietet Check-in/Routine.
-- [x] Haftkapitel ist als gesperrter, später freischaltbarer Ort vorhanden.
-
-## Offen
-
-- [ ] Krisenkapitel mit klarer UI: Was ist passiert? Welche sicheren nächsten Schritte gibt es?
-- [ ] Behandlungs-/Station-Kapitel mit Ruhe, Gesprächen, Rückkehrplan und Selbstbestimmung.
-- [ ] Haftkapitel mit Zeit, Briefen, Arbeit, Kontakten, Entlassung und Rückkehr in die Stadt.
-- [ ] Forensik nur als sehr sensibler, komplett fiktiver Rechts-/Behandlungspfad; nie als Synonym für psychische Krise oder Strafe.
-- [ ] Konsequenzketten für riskante Wege, Schulden, Verträge und Ruf.
-- [ ] Schutznetz: Jeder harte Zustand hat mindestens zwei nachvollziehbare Wege zurück in den Run.
-
-# 7. Geld, Markt & Stadtrun-System
-
-## Erledigt
-
-- [x] Euro als Hauptwährung; BTC, ETH, LTC, SOL mit EUR-Startkurs und Run-Simulation.
-- [x] Z-Coin als fiktiver #zedcoinz-Asset.
-- [x] Kaufen/Verkaufen, Portfolio, Vermögen, Risiko und Zeitkosten.
-- [x] Spilo-Sprung mit 10/20/50/100 € Einsatz.
-- [x] Z-Coin-Storymoment bei ausreichendem Bestand vorbereitet.
-- [x] Start-Balancing: 0 € bleiben 0 €; frühe Ideen, Jobs, Fraktionsaufträge und Mini-Positionen bauen langsam auf statt nach zwei Klicks Tausende Euro zu erzeugen.
-
-## Offen
-
-- [ ] Portfolio-Diagramm und klare Gewinn-/Verlust-Historie.
-- [ ] Markt-News als fiktive, spielrelevante Ereignisse.
-- [ ] Risikoprofil, Limit-Mechanik, Sparziele und Notgroschen ohne Echtgeld-Bezug.
-- [ ] Z-Coin-Langzeitbogen: frühe Skepsis, Community, Nutzen, Königsmoment, Gegenreaktion.
-- [ ] Spilo ausbalancieren: sichtbare Wahrscheinlichkeiten, Krisenschutz, keine Echtgeld-Ästhetik.
-- [ ] Haushaltsbuch-Auswertung: „wo ging Geld hin?“ in einfacher Sprache.
-
-# 8. Unternehmen & EyTonLand
-
-## Offen
-
-- [ ] HQ1-Projektboard: Idee → Prototyp → Lizenz → erste Kundschaft → Team.
-- [ ] Digitale Lizenzen und Projekte als wiederholbarer, sauberer Einkommensweg.
-- [ ] EyTonLand GmbH/UG als fiktive Unternehmensphase: Papierkram, Branding, Team, Verantwortung.
-- [ ] Eigene Domains/Marken im Spiel als fiktive Assets, keine Live-Konten.
-- [ ] Schutz von Assets: Passwörter, Backups, Verträge, Marken, Delegation, Vertrauen.
-- [ ] Schloss EyTonLand und Insel als spätes Weltkapitel, nicht als schneller Geldpreis.
-
-# 9. Story, Kapitel & Endlosspiel
-
-## Erledigt
-
-- [x] Prolog für Neuankunft und vier erste Akte.
-- [x] Erste Storyakte, Rauch-/Recovery-Akte und Z-Coin-Akte.
-- [x] 50k-Meilenstein ohne Endscreen.
-- [x] Verbindliche Story Bible: Strammburg, HQ1, EyTonLand, Humor- und Würde-Leitplanken.
-- [x] Sichtbarer Akt-Kompass: Ankommen → Stadtfunk → Große Vereinfachung → Eigenes Signal → offene Zukunft.
-- [x] Erste Klarheit+-Entscheidung mit drei unterschiedlichen Spuren im Run.
-
-## Offen
-
-- [ ] Kapitelstruktur für 1–3 Spieljahre: Basis, Crew, Druck, Aufbau, Insel mit wiederkehrenden Szenen ausbauen.
-- [ ] Wiederkehrende Jahreszeiten, Silvester, Geburtstage, Deadline- und Jubiläumsereignisse.
-- [ ] Storygedächtnis: Figuren erinnern Entscheidungen und Ortsbesuche.
-- [ ] Mehrere Endgame-Zustände statt eines Endes: EyTonLand, Zed-König, stabiles Leben, Crew-Stadt, Rückkehr nach HQ1.
-- [ ] New Game+ mit geerbten kosmetischen Erinnerungen, nicht mit unfairen Stats.
-
-# 10. Präsentation, Audio & 3D
-
-## Erledigt
-
-- [x] Dark Master-Edition-UI, Symbole, Legenden und Key Art.
-- [x] Responsive Basis für Mobile.
-- [x] Automatischer Filmstart mit direktem Übergang in die begehbare 3D-Szene.
-- [x] Three.js-/React-Three-Fiber-Laufzeit und reproduzierbare Blender-Asset-Pipeline.
-- [x] Eigenständiges 353L-Mastermodell mit 93.441 Vertices, 2K-Textur, Skelett und übertragenen Gewichten.
-- [x] GPU-Regen, adaptive Auflösung und pausierender Renderloop für Film/Dialoge.
-- [x] Interner Desktop-Test: vier stabile Messfenster mit 56 FPS und 20–24 ms schlechtestem Normalframe; keine neuen Konsolenwarnungen.
-
-## Offen
-
-- [ ] Visuelles QA auf 360px, 768px und Desktop.
-- [ ] Sound: Hafen, U-Bahn, Wohnung, Markt, ruhige/angespannte Zustände.
-- [ ] Musik-States: Alltag, Risiko, Krise, Crew, Meilenstein.
-- [ ] Barrierefreiheit: Tastatur, Fokus, Textgrößen, Motion-Reduktion, Kontrast.
-- [ ] Environment-Art-Pass: hochwertige Materialien, Requisiten, Fassaden, Wasser, Vegetation, Beschilderung und Lichtstimmung.
-- [ ] Bewegungs-Polish: Blend-Animationen, saubere Füße, Treppen, Kollisionen, Controller und Touch-Steuerung.
-- [ ] Charakterporträts/Look-Varianten mit gleicher Qualität für alle Presets.
-
-# 11. Qualität, Datenschutz & Veröffentlichung
-
-## Offen
-
-- [ ] Release-Protokoll für die einzige Live-Adresse `isso.tv`: Backup → Build → Abnahme → atomarer Austausch → Live-Check → Rückfallplan.
-- [ ] Den Master-Edition-Ordner als einzige Release-Quelle festlegen; alte Skeleton-/Nebenordner niemals deployen.
-- [ ] Vor jedem Deploy prüfen: keine Test-URLs, lokalen Hosts, API-Schlüssel oder alternativen Domains im Build.
-- [ ] Keine persönlichen Bankdaten, medizinischen Daten oder privaten Zugangsdaten im Spielstand/Repository.
-- [ ] Klarer Hinweis: Simulation, kein Echtgeld, keine Anlage- oder Gesundheitsberatung.
-- [ ] Lokale Datenlöschung und Export verständlich machen.
-- [ ] Component-/Logiktests für Essen, Krise, Reise, Saves, Fraktionen und Markt.
-- [ ] Balancing-Tests mit 10 vollständigen Runs verschiedener Charaktere.
-- [ ] Fehlerlog, Crash-Schutz, Offline-Fallback für Kurse.
-- [ ] Release-Checkliste, Impressum/Datenschutz nur bei echter Veröffentlichung.
+M0 ist ein technisches Fundament, kein fertiger Premium-Look.
 
 ---
 
-# Nächster Sprint — jetzt anfangen
+# M1 — Master-Vertical-Slice: ein Morgen in echter Qualität
 
-1. [ ] **3D-Vertical-Slice visuell auf Master-Niveau bringen**
-   - Wohnung, Flur und erste Hafenstraße mit hochwertigen Materialien, Requisiten, Schildern und Licht ausarbeiten.
-   - Platzhalter-Geometrie sichtbar abbauen; keine 2D-Spielhintergründe zurückholen.
-2. [ ] **353L-Bewegung polieren**
-   - Idle/Walk/Run/Turn/Interact sauber blenden, Füße stabilisieren, Kamera und Kollisionen nachziehen.
-3. [ ] **Ersten kompletten Spieltag in 3D bauen**
-   - Donkey-Connection → Tür → Hafenbegegnung → Bahnhof/Signalwerk → sichtbarer Nachhall.
-4. [ ] **Audio und Bedienbarkeit ergänzen**
-   - Raumklang, Regen, Schritte, Untertitel, Lautstärke, Motion-Reduktion, Controller/Touch.
+Ziel: Der Pfad **Film → Wohnung → Flur → Hafen → Bahnhof/Signalwerk → Nachhall** fühlt sich wie der Anfang eines hochwertigen Spiels an und ist auf Referenz-Desktop vollständig spielbar.
 
-# Parkplatz — Ideen, noch nicht im Sprint
+## Aktuelle Arbeitsreihenfolge
 
-- Strammburg als Hafenmetropole mit Untergrundbahn, Fähren, Inselhafen und Bezirkskultur.
-- ISSO.TV als schneller Stadt-/Entscheidungsmodus, nicht als reale Fahrzeug- oder Verbrechenssimulation.
-- Hund, KI und Ally als spätere Begleiterfiguren.
-- Earthpeace 2033, EyTonLand-Insel, Riesenschildkröten, Schloss und Queen als spätes Mythos-Kapitel.
-- Weitere Charakter-Looks, Wohnungen, Stadtjobs, Minispiele, Clubs, Content-/Medienwelt.
-- Zedcoinz-Community und digitale Lizenzen als fiktive Spiel-Assets.
+| ID | Prio | Paket | Abhängigkeit | Abnahme |
+| --- | --- | --- | --- | --- |
+| `P1-01` | P0 | Referenz- und Asset-Budgets | M0 | Desktop-Screenshots, FPS-/Frame-Baseline, GLB-/Textur-/Chunkgrößen in `docs/HANDOFF.md`; Zielbudgets in `docs/QA_RELEASE.md` bestätigt. |
+| `P1-02` | P0 | Kanonische Weltkoordinaten | P1-01 | Orte, Interaktionspunkte, Radien und Kartenpositionen stammen aus einer Datenquelle; keine Ziel-Doppelung in `RealtimeWorld.jsx`. |
+| `P1-03` | P0 | Bewegung und Kollision | P1-02 | Wände/Tür/Objekte sind nicht durchlaufbar; keine harten unsichtbaren Rechteckwechsel; Figur bleibt am Boden; Tür steuert Zugang. |
+| `P1-04` | P1 | Wohnung-Art-Pass | P1-01 | Matratze, Tisch, Donkey-Connection, Fenster, Tür, persönliche Requisiten, Materialien und Licht erzählen den Start ohne Textwand. |
+| `P1-05` | P1 | Flur-/Schwellen-Art-Pass | P1-03, P1-04 | Wohnungstür, Hausflur und Vordach bilden eine räumlich lesbare, atmosphärische Schwelle. |
+| `P1-06` | P1 | Hafen-Art-Pass | P1-03 | Pier, Kiosk-Silhouette, Wagen, Wasser, Schienenweg, Schilder und Regen besitzen eigenständige Strammburg-Qualität. |
+| `P1-07` | P0 | Erster 353L-Animationspass | P1-03 | Idle, Walk, Run, Turn, Stop und Interact werden geblendet; Füße rutschen nicht auffällig; Emote deformiert das Rig nicht. |
+| `P1-08` | P1 | Kamera und Spielgefühl | P1-03, P1-07 | Maus/Zoom reagieren weich, Kamera clippt nicht durch Hauptwände, Sprint/Turn fühlen sich kontrolliert an, Optionen für Sensitivität vorhanden. |
+| `P1-09` | P1 | Audio- und Filmübergang | P1-04 bis P1-08 | Regen, Raumton, Schritte, Tür, Hafen und UI haben eigene Lautstärken; Filmton/Spielton überblenden; Untertitel bleiben verfügbar. |
+| `P1-10` | P1 | Ein kompletter Entscheidungsbogen | P1-02 bis P1-09 | Jede der fünf Stationen besitzt klare Interaktion, sofortige Folge und einen korrekten Nachhall ohne Duplikat. |
+| `P1-11` | P0 | Lade-/Fehlerzustände | P1-01 | Modellfortschritt ist sichtbar; fehlendes WebGL/Assetfehler führen zu verständlicher Meldung statt Weißbild. |
+| `P1-12` | P0 | Vertical-Slice-QA | alle P1 | `docs/QA_RELEASE.md` lokales Gate vollständig; frischer Save, Reload, Reset, Build, Test und Konsole geprüft. |
 
-## Definition of Done für eine Aufgabe
+## M1-Gate
 
-Eine Checkbox wird erst abgehakt, wenn:
+- [ ] gesamter Morgen ohne Blocker spielbar,
+- [ ] keine sichtbare Platzhalterfigur und keine flache Spielkulisse,
+- [ ] stabile Bewegung/Kamera/Kollision,
+- [ ] verständliches Laden und Fehlerhandling,
+- [ ] kohärenter Visual-, Licht- und Audio-Pass,
+- [ ] keine neue Konsolenwarnschleife,
+- [ ] Performance-Budget auf Referenz-Desktop erfüllt,
+- [ ] Tests/Build/Audit/Reload/Reset bestanden,
+- [ ] Nutzer hat den lokalen Vertical Slice ausdrücklich als Basis akzeptiert.
 
-1. die Aktion im Spiel auffindbar und verständlich ist,
-2. sie mindestens eine sichtbare Folge hat,
-3. sie den Spielstand nicht kaputtmacht,
-4. sie auf Mobile lesbar bleibt,
-5. `npm run build` erfolgreich durchläuft.
+---
+
+# M2 — Charakter, Save und täglicher Kernloop
+
+Ziel: Aus dem festen Morgen wird ein neuer, persönlich konfigurierbarer Run mit verständlicher deutscher Alltags-/Finanzbasis. V2 dient nur als Logik- und UX-Spender.
+
+| ID | Prio | Paket | Spender | Abnahme |
+| --- | --- | --- | --- | --- |
+| `P2-01` | P0 | Save-Schema V3 | V2 Save-Normalisierung | versionierte Migration, beschädigter-Save-Fallback, Tests; aktueller Slot bleibt erhalten. |
+| `P2-02` | P1 | Save-Slots/Export | V2 persönlicher Run | mindestens drei benannte lokale Slots, Vorschau, Export/Import, Lösch-Wiederherstellung. |
+| `P2-03` | P1 | Charaktererstellung | V2 Presets/Formen | Name, Alter, Identität/Form, Look, Wohnstart und editierbare Kurzbiografie; keine Herkunfts-/Körper-Stats. |
+| `P2-04` | P0 | Startprofil | V2 Finanzprofil | Presets und eigene Werte für liquide Mittel, Konto, geschützte Mittel, Vermögen, Schulden, Banking/Unterstützung; klare Verfügbarkeit. |
+| `P2-05` | P0 | Zeit/Kalender | V2 Zyklen | Minuten, Tage, Wochen, Fristen und Jahresziel deterministisch; Entscheidungen kosten nachvollziehbare Zeit. |
+| `P2-06` | P0 | Bedürfnisse kompakt | V2 Hunger/Durst/Essen | Hunger, Durst, Energie und Stress mit sanftem Takt; Versorgung schafft Handlungsmacht, kein hektisches Balkenpflegen. |
+| `P2-07` | P1 | Essen und Gutscheine | V2 Einkauf/Bestellung | selbst gekaufte Supermarkt-/Online-Gutscheine, Einkauf, wöchentliche Bestellung, Inventar und sichtbare Kosten. |
+| `P2-08` | P1 | Haushalt/Verträge | V2 Haushaltsbuch | Miete, Strom, Telefon, Internet, Fixkosten, Mahnungen und einfache „Wo ging Geld hin?“-Ansicht. |
+| `P2-09` | P1 | Gewohnheiten/Entzug | V2 Tabak | Startwahl oder späterer Beginn, individuelle Verläufe, freiwillige Ausstiegswege, sensible Texte und keine medizinische Pauschalaussage. |
+| `P2-10` | P0 | 3D-Tagesloop | neue V3-Arbeit | Zuhause → Versorgung → Termin/Arbeit/Projekt → Kontakt → Rückkehr/Schlaf vollständig räumlich spielbar. |
+
+## M2-Gate
+
+- [ ] neuer Charakter kann erstellt, gespeichert, exportiert und erneut geladen werden,
+- [ ] eigene 0-Euro-/Schutzkonto-/Schuldenwerte bleiben exakt und verständlich,
+- [ ] ein kompletter Spieltag funktioniert ohne ungewollte Geldsprünge,
+- [ ] Bedürfnisse beeinflussen Entscheidungen, blockieren aber nicht unfair den Run,
+- [ ] alle neue Domänenlogik ist getestet.
+
+---
+
+# M3 — Strammburg als dichte, lebendige Metropole
+
+Ziel: Eine kleine, hochwertige Stadtzone mit wiederkehrenden Menschen, Verkehr und Tagesrhythmus statt einer leeren riesigen Karte.
+
+## Bezirke in Ausbau-Reihenfolge
+
+1. **Hafenrand** — Wohnung, Vordach, Pier, Kiosk, Markt, Haltestelle.
+2. **Bahnhofsviertel** — Bahnhofshalle, Gleise, Nachtlinie, Klarheit+-Schalter.
+3. **Eitelstedt / HQ1** — Signalwerk, Projektboard, erste EyTonLand-Arbeit und die Kneipe „Zum falschen Signal“ als sozialer Knoten.
+4. **Parkkreis** — Park, Wasser, soziale Treffen, kleine Jobs.
+5. **Neonhafen** — Nachtarbeit, Kultur und risikoreiche Abkürzungen ohne Tat-Tutorial.
+
+| ID | Prio | Paket | Abnahme |
+| --- | --- | --- | --- |
+| `P3-01` | P0 | Datengetriebene Zonen/Streaming | Bezirke laden kontrolliert; Minimap und Orte verwenden dieselben Daten. |
+| `P3-02` | P1 | Verkehr | zu Fuß, Bus, Bahn, Fähre, Nachtlinie und Taxi kosten sichtbar Zeit/Geld; mindestens Bus+Bahn spielbar. |
+| `P3-03` | P0 | NPC-Grundsystem | NPC-ID, Ort, Termin, Beziehung, Erinnerung und Agenda sind persistierbar/testbar. |
+| `P3-04` | P1 | 12 Kernfiguren | jede Figur hat eigenen Ort, Wunsch, Grenze, Erinnerung, Alltag und mindestens drei Folgeszenen. |
+| `P3-05` | P1 | Messenger/Anrufe | Nachrichten, Einladungen, verpasste Termine und Rückrufe; höchstens ein relevanter Impuls gleichzeitig. |
+| `P3-06` | P1 | Beziehungen | Bekanntschaft, Vertrauen, Crew, Konflikt und Distanz ohne „richtige“ Antwort oder romantischen Zwang. |
+| `P3-07` | P1 | Stadtfunk | Tageslage, Wetter, Aushänge, Satire und Konsequenzen spiegeln den Run. |
+| `P3-08` | P1 | Gruppen/Rang | Parkkreis, Signalwerk und Neonhafen erhalten Eintritt, Arbeit, Rang, Ausstieg und Ruf-Folgen. |
+
+## M3-Gate
+
+- [ ] Hafenrand und zwei weitere Bezirke besitzen jeweils vollständige Spielschleifen,
+- [ ] mindestens zwölf wiederkehrende NPCs erinnern relevante Entscheidungen,
+- [ ] Verkehr, Nachrichten und Tageszeit greifen ineinander,
+- [ ] kein Bezirk besteht nur aus Kulisse oder Menü.
+
+---
+
+# M4 — Hauptstory, Konsequenzkapitel und Freiheit
+
+Ziel: Die Große Vereinfachung/Klarheit+ trägt eine eigene satirische Story; harte Lebenslagen werden als würdige, weiterlaufende Kapitel umgesetzt.
+
+| ID | Prio | Paket | Abnahme |
+| --- | --- | --- | --- |
+| `P4-01` | P0 | Kapitel-/Episodenformat | jede Episode besitzt Ort, Konflikt, 2–3 Entscheidungen, sofortige Folge und späteres Echo. |
+| `P4-02` | P1 | Akt I — Ankommen | Wohnung, Versorgung, erster Kontakt und erster eigener Plan als zusammenhängender Bogen. |
+| `P4-03` | P1 | Akt II — Stadt schreibt zurück | Parkkreis, Kiosk, Bahnhof und HQ1 öffnen Beziehungen und Wege. |
+| `P4-04` | P1 | Akt III — Klarheit+ | mindestens fünf System-Satire-Episoden mit Nutzen, Bedingungen, Widerspruch und Alternativen. |
+| `P4-05` | P1 | Akt IV — Signal wird Arbeit | Projekte wachsen durch Aufgaben, Termine, Team und Verantwortung statt Geldgeschenk. |
+| `P4-06` | P1 | Krise/Behandlung | sichere Erklärung, Ruhe, Gespräche, Rückkehrplan, Selbstbestimmung und mindestens zwei Rückwege. |
+| `P4-07` | P1 | Rechtliche Folgen/Haft | komplett fiktiver Konsequenzpfad mit Zeit, Kontakten, Arbeit, Entlassung und Stadtrückkehr; keine Tat-Anleitung. |
+| `P4-08` | P0 | Würde-/Safety-Review | alle harten Kapitel erfüllen `STORY_BIBLE.md`; keine Diagnose-/Sucht-/Armutsstereotype. |
+| `P4-09` | P1 | 1-gegen-1-Hufwehr in Eitelstedt | in der Kneipe „Zum falschen Signal“ eskaliert ein vermeidbarer Streit nur bei tatsächlichem Angriff zum kurzen Notwehrmoment: lesen, blocken/ausweichen, höchstens ein harter Hufkonter, Abstand gewinnen; Zeugen, Verletzung und Ruf reagieren, aber es gibt kein Gore, keine Wellenkämpfe, kein Farmen und kein Kampf-XP. |
+
+## M4-Gate
+
+- [ ] Akte I–IV sind mindestens als durchgehende Hauptlinie spielbar,
+- [ ] Behandlung und Haft sind eigenständige Orte mit Rückwegen, keine Endscreens,
+- [ ] das optionale 1-gegen-1-Setpiece ist lesbar, selten, konsequenzbehaftet und nicht als reale Kampfanleitung inszeniert,
+- [ ] jede harte Szene wurde auf Klarheit, Würde und mögliche Fehlinterpretation geprüft,
+- [ ] Satire trifft Systeme/Macht und erzeugt Gameplay.
+
+---
+
+# M5 — Geld, Projekte, Markt und endloser Aufstieg
+
+Ziel: Der Highroller-Aspekt entsteht aus langfristigem Aufbau, nachvollziehbarem Risiko und echten Rückschlägen – nicht aus zufälligen Tausendern nach drei Klicks.
+
+| ID | Prio | Paket | Spender/Quelle | Abnahme |
+| --- | --- | --- | --- | --- |
+| `P5-01` | P0 | Doppelte Buchführung light | V2 Finanzsystem | jede Geldbewegung hat Quelle, Ziel, Zeit, Kategorie und Historie; Vermögen ≠ verfügbare Mittel. |
+| `P5-02` | P1 | Arbeit/Nebenjobs | neue V3-Arbeit | verlässliche kleine Einkommenswege mit Zeit-/Energie-/Beziehungsfolgen. |
+| `P5-03` | P1 | HQ1-Projekte | V2 Signalwerk | Idee → Prototyp → Gespräch → Lizenz → Kundschaft → Wartung; kein magischer Pitch-Gewinn. |
+| `P5-04` | P1 | Markt-Simulation | V2 BTC/ETH/LTC/SOL/ZED | EUR-Hauptrechnung, reale Startwerte nur mit Cache/Fallback, danach klar markierte Run-Simulation; Tests für Kauf/Verkauf/P&L. |
+| `P5-05` | P1 | Risiko-/Spilo-System | V2 10/20/50/100 | transparente Spielwahrscheinlichkeiten, Zeit-/Stress-/Versorgungsfolgen, kein Echtgeld-Look, Schutz vor unverständlichem Totalverlust. |
+| `P5-06` | P1 | Z-Coin-Langzeitbogen | V2 ZED + Story Bible | Skepsis → Community → Nutzen → Königsmoment → Gegenreaktion; fiktiv und nicht als reale Anlage beworben. |
+| `P5-07` | P1 | EyTonLand-Aufbau | Story Bible | UG/GmbH, Team, Lizenzen, Insel/Schloss und Earthpeace als Verantwortung über viele Kapitel. |
+| `P5-08` | P0 | Balancing-Simulation | alle Wirtschaftssysteme | mindestens zehn automatisierte/gespielte Runs; keine frühe Geldexplosion, keine unvermeidbare Armutssackgasse. |
+
+## M5-Gate
+
+- [ ] 0 Euro verfügbar bleibt ohne Aktion 0 Euro,
+- [ ] verfügbare Mittel, geschützte Mittel, Portfolio und Gesamtvermögen sind nie vermischt,
+- [ ] 50.000 Euro/35 Renommee ist erreichbar, aber nicht nach wenigen Klicks,
+- [ ] jeder Gewinn hat Ursache und jeder Verlust verständliche Historie,
+- [ ] das Spiel läuft nach jedem Meilenstein weiter.
+
+---
+
+# M6 — Alpha: ein zusammenhängendes Spiel statt Technikdemo
+
+| ID | Prio | Paket | Abnahme |
+| --- | --- | --- | --- |
+| `P6-01` | P0 | Content-Integration | M2–M5 greifen ohne getrennte Demo-Screens ineinander. |
+| `P6-02` | P0 | Onboarding | Film, Steuerung, Charakter, Versorgung und erster freier Plan sind ohne externe Erklärung verständlich. |
+| `P6-03` | P0 | Accessibility | Tastatur, Fokus, Untertitel, Lautstärke, Kontrast, Textgröße, Reduced Motion, Controller/Touch. |
+| `P6-04` | P0 | Performance/Streaming | Geräte-Matrix bestanden, Assets komprimiert, Ladefehler abgefangen, Memory stabil. |
+| `P6-05` | P0 | Save-/Langzeittest | mehrere Wochen/Jahre, Migrationen, Export/Import und beschädigter Save getestet. |
+| `P6-06` | P1 | geschlossene lokale Abnahme | vollständige Testprotokolle, reproduzierbare Fehlerliste, kein ungeklärter kritischer Blocker. |
+
+## M6-Gate
+
+- [ ] mindestens ein vollständiger Mehrwochen-Run ohne Blocker,
+- [ ] Desktop, Laptop, Tablet und Mobile gemäß `docs/QA_RELEASE.md` geprüft,
+- [ ] keine kritischen Save-, Datenschutz-, Performance- oder Barrierefreiheitsfehler,
+- [ ] Nutzer gibt den Build ausdrücklich als Release-Kandidaten frei.
+
+---
+
+# M7 — Einziger Live-Release auf isso.tv
+
+Status: **gesperrt, bis M6 abgenommen und ausdrücklich freigegeben ist**
+
+| ID | Prio | Paket | Abnahme |
+| --- | --- | --- | --- |
+| `P7-01` | P0 | Betreiber/Recht/Datenschutz | korrekte Rechtstexte, lokale Dateninfo, Simulation-/Beratungshinweise, keine privaten Angaben. |
+| `P7-02` | P0 | Live-Backup/Rollback | bestehender Live-Stand und Konfiguration nachweislich wiederherstellbar. |
+| `P7-03` | P0 | reproduzierbarer Release-Build | nur dieses Repository/Commit, keine Secrets/localhost/privaten Pfade. |
+| `P7-04` | P0 | atomarer Austausch | genau `isso.tv` wird ersetzt; keine zweite öffentliche Version. |
+| `P7-05` | P0 | Live-Smoke-Test | Startfilm, 3D-Laden, Bewegung, Save, Reload, Rechtstexte und Mobile geprüft. |
+| `P7-06` | P1 | Betriebsplan | Monitoring, Fehlerannahme, Rollback, Save-Kompatibilität und nächste Version dokumentiert. |
+
+Der genaue Ablauf steht in `docs/QA_RELEASE.md`. Ohne aktuelle ausdrückliche Nutzerfreigabe beginnt kein Agent mit P7.
+
+---
+
+# V2-Rettungsmatrix
+
+V2 ist kein zweites Produkt. Der Tag `v2-archive-2026-08-17` wird nur gezielt gelesen. Jede Übernahme erhält V3-Domänenlogik, Tests und eine echte 3D-/UI-Einbindung.
+
+| V2-System | V3-Zielpaket | Übernahmeregel |
+| --- | --- | --- |
+| Charakter-Presets/Formen | P2-03 | Daten/Ideen prüfen; UI und Save neu bauen. |
+| Finanzprofil/Schutzkonto/Schulden | P2-04, P5-01 | Begriffe und Rechenfälle retten; keinerlei persönliche Werte übernehmen. |
+| Hunger/Durst/Essen/Gutscheine | P2-06, P2-07 | Balancing neu; als räumlicher Tagesloop statt Dashboard-Karten. |
+| Zeit/Zyklen/Fristen | P2-05 | in ein kalendarisches, testbares Modell überführen. |
+| Park/Kiosk/Behandlung/Haft-Karte | P3, P4 | nur Orts-/Storyideen; 3D-Gebiete neu produzieren. |
+| Messenger/Fraktionen/Rang | P3-03 bis P3-08 | persistentes NPC-Gedächtnis zuerst, danach Inhalte. |
+| BTC/ETH/LTC/SOL/ZED | P5-04, P5-06 | Rechenlogik prüfen; externe Daten nur robust und klar als Kontext. |
+| Spilo 10/20/50/100 | P5-05 | Transparenz, Schutz und Folgen neu designen. |
+| Klarheit+/Storyakte | P4 | mit Story Bible abgleichen und als räumliche Episoden schreiben. |
+| Weltuhr/Stadtfunk | P2-05, P3-07 | gemeinsame Datenquelle und Tageskontext. |
+
+# Ideenparkplatz
+
+Nicht direkt implementieren, solange sie keinem aktiven Arbeitspaket zugeordnet sind:
+
+- EyTonLand-Insel, Schloss, Riesenschildkröten und Earthpeace 2033,
+- Ally im Roboterkörper, KI-/Mensch-/Sleeper-Perspektiven,
+- weitere Stadtteile, Wohnungen, Clubs, Medien- und Content-Welt,
+- Hund-/KI-Begleiter mit selbstbestimmten Supportgrenzen,
+- New Game+ mit kosmetischen Erinnerungen,
+- spätere Community-/Modding-Schnittstellen.
+
+# Definition of Done für jede Roadmap-Checkbox
+
+Eine Checkbox wird erst auf `[x]` gesetzt, wenn:
+
+1. die Funktion im aktuellen V3-Code vorhanden ist,
+2. sie im Browser auffindbar und verständlich ist,
+3. sie eine sichtbare Folge erzeugt,
+4. Save/Reload/Reset nicht beschädigt werden,
+5. neue Zustandslogik getestet ist,
+6. Browserkonsole keine neuen Fehler enthält,
+7. `npm run test` und `npm run build` erfolgreich sind,
+8. Status, Entscheidung und Handoff dokumentiert wurden.
+
+„War in V2 vorhanden“, „ist geplant“ oder „sieht im Mockup so aus“ erfüllt diese Definition ausdrücklich nicht.

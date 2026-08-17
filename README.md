@@ -24,3 +24,16 @@ Das erste Ziel eines Runs: 50.000 € Gesamtvermögen und 35 Renommee. Das ist e
 ## Roadmap
 
 Die lokale Arbeitsgrundlage mit Canon, Status, offenen Punkten und dem nächsten Sprint steht in [ROADMAP.md](ROADMAP.md).
+
+## Einstieg für KI-Agenten
+
+Codex, Claude, Manus und andere IDE-/AGI-Agenten beginnen verbindlich mit [AGENTS.md](AGENTS.md). Danach gelten:
+
+1. [Verifizierter Projektstand](docs/PROJECT_STATE.md)
+2. [Produktionsroadmap](ROADMAP.md)
+3. [Story Bible](STORY_BIBLE.md)
+4. [Architektur](docs/ARCHITECTURE.md)
+5. [Aktuelle Übergabe](docs/HANDOFF.md)
+6. [QA- und Release-Gates](docs/QA_RELEASE.md)
+
+V3 ist die einzige aktive Codebasis. V2 bleibt ein archivierter Feature-Spender; geplant bedeutet niemals automatisch eingebaut. Kein Agent veröffentlicht oder verändert `isso.tv` ohne eine ausdrückliche Freigabe in der aktuellen Aufgabe.
