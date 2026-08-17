@@ -19,6 +19,8 @@ Diese Datei gilt für Codex, Claude, Manus, Copilot, AGI-IDE-Agenten und jede an
 5. `docs/ARCHITECTURE.md` — Runtime, Zustand, Assets und bekannte technische Schulden.
 6. Für Release-/Hosting-Aufgaben zusätzlich `docs/QA_RELEASE.md`.
 
+Für Arbeiten an Kneipenstreit, Straßenraub, QTE oder Konfliktfolgen zusätzlich `docs/CONFLICT_SCENARIOS.md` vollständig lesen.
+
 Für den **tatsächlichen Implementierungsstand** gilt: ausführbare Tests und aktueller Code > `docs/PROJECT_STATE.md` > `ROADMAP.md` > ältere Konzepttexte. Für **Arbeits-, Sicherheits- und Deploymentregeln** bleibt `AGENTS.md` verbindlich. Ein Widerspruch wird dokumentiert und bereinigt; er wird nicht stillschweigend geraten.
 
 ## 3. Nicht verhandelbare Regeln

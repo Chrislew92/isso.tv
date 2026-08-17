@@ -52,6 +52,13 @@ Dieses Protokoll hält dauerhafte Produkt-/Architekturentscheidungen fest. Neue 
 - Grund: ISSO.TV soll Gedankenpunkte als echte Möglichkeiten abbilden und die Freiheit des Runs erhalten.
 - Folge: Ein gewaltfreier Run ist vollständig und gleichwertig. Nur erlebte Pfade erzeugen Nachhall. Die emotionale Spiegelung entsteht, wenn ein Spieler beide Kampfvarianten tatsächlich erlebt.
 
+## D-008 — Weglaufen wird durch den Hufsprint zur starken Esel-Fähigkeit
+
+- Datum: 17.08.2026
+- Entscheidung: 353L kann auf freier Strecke für kurze Zeit ungefähr doppelt so schnell wie ein durchschnittlicher Mensch sprinten. Flucht wird direkt in 3D gespielt und ausdrücklich als starke, kluge Option inszeniert.
+- Grund: 353Ls Eselkörper soll nicht nur im Kampf Bedeutung haben. Geschwindigkeit schafft eine charaktereigene Lösung, die Gewalt vermeidet und trotzdem Adrenalin liefert.
+- Folge: Offene Flucht gegen einen einzelnen menschlichen Verfolger gelingt bei früher freier Routenwahl fast immer. Spannung entsteht aus Raum, Untergrund, Gepäck und Hindernissen. Animation, Kamera, Sound und Assist-Modus gehören zum Hufsprint-Feature.
+
 ## Vorlage
 
 ```text

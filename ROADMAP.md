@@ -86,7 +86,7 @@ Ziel: Der Pfad **Film → Wohnung → Flur → Hafen → Bahnhof/Signalwerk → 
 | `P1-04` | P1 | Wohnung-Art-Pass | P1-01 | Matratze, Tisch, Donkey-Connection, Fenster, Tür, persönliche Requisiten, Materialien und Licht erzählen den Start ohne Textwand. |
 | `P1-05` | P1 | Flur-/Schwellen-Art-Pass | P1-03, P1-04 | Wohnungstür, Hausflur und Vordach bilden eine räumlich lesbare, atmosphärische Schwelle. |
 | `P1-06` | P1 | Hafen-Art-Pass | P1-03 | Pier, Kiosk-Silhouette, Wagen, Wasser, Schienenweg, Schilder und Regen besitzen eigenständige Strammburg-Qualität. |
-| `P1-07` | P0 | Erster 353L-Animationspass | P1-03 | Idle, Walk, Run, Turn, Stop und Interact werden geblendet; Füße rutschen nicht auffällig; Emote deformiert das Rig nicht. |
+| `P1-07` | P0 | Erster 353L-Animationspass | P1-03 | Idle, Walk, Run, Turn, Stop, Interact und der explosive Hufsprint werden geblendet; Füße rutschen nicht auffällig; Emote deformiert das Rig nicht. Der Hufsprint vermittelt für wenige Sekunden ungefähr doppelte Menschengeschwindigkeit, bleibt lenkbar und besitzt kontrolliertes Auslaufen. |
 | `P1-08` | P1 | Kamera und Spielgefühl | P1-03, P1-07 | Maus/Zoom reagieren weich, Kamera clippt nicht durch Hauptwände, Sprint/Turn fühlen sich kontrolliert an, Optionen für Sensitivität vorhanden. |
 | `P1-09` | P1 | Audio- und Filmübergang | P1-04 bis P1-08 | Regen, Raumton, Schritte, Tür, Hafen und UI haben eigene Lautstärken; Filmton/Spielton überblenden; Untertitel bleiben verfügbar. |
 | `P1-10` | P1 | Ein kompletter Entscheidungsbogen | P1-02 bis P1-09 | Jede der fünf Stationen besitzt klare Interaktion, sofortige Folge und einen korrekten Nachhall ohne Duplikat. |
@@ -170,6 +170,8 @@ Ziel: Eine kleine, hochwertige Stadtzone mit wiederkehrenden Menschen, Verkehr u
 
 Ziel: Die Große Vereinfachung/Klarheit+ trägt eine eigene satirische Story; harte Lebenslagen werden als würdige, weiterlaufende Kapitel umgesetzt.
 
+Die vollständige Verzweigungsmatrix für Kneipenstreit und Straßenraub steht in `docs/CONFLICT_SCENARIOS.md`. Sie ist verbindliche Designgrundlage für `P4-09` und `P4-10`.
+
 | ID | Prio | Paket | Abnahme |
 | --- | --- | --- | --- |
 | `P4-01` | P0 | Kapitel-/Episodenformat | jede Episode besitzt Ort, Konflikt, 2–3 Entscheidungen, sofortige Folge und späteres Echo. |
@@ -180,8 +182,8 @@ Ziel: Die Große Vereinfachung/Klarheit+ trägt eine eigene satirische Story; ha
 | `P4-06` | P1 | Krise/Behandlung | sichere Erklärung, Ruhe, Gespräche, Rückkehrplan, Selbstbestimmung und mindestens zwei Rückwege. |
 | `P4-07` | P1 | Rechtliche Folgen/Haft | komplett fiktiver Konsequenzpfad mit Zeit, Kontakten, Arbeit, Entlassung und Stadtrückkehr; keine Tat-Anleitung. |
 | `P4-08` | P0 | Würde-/Safety-Review | alle harten Kapitel erfüllen `STORY_BIBLE.md`; keine Diagnose-/Sucht-/Armutsstereotype. |
-| `P4-09` | P1 | Möglicher Kneipenstreit / gefeierter 1-gegen-1-Sieg | in „Zum falschen Signal“ kann der Spieler den Streit vermeiden, verlassen oder durch vorherige Entscheidungen ins kurze 1-gegen-1-QTE geraten. Im Kampfpfad gewinnt 353L deutlich; die Kneipe jubelt, während er denkt: „Ich wollte ihm gar nicht wehtun.“ Kein Gore, kein Kampf-XP; Gegner, Zeugen und Wirtsleute erinnern Verlauf und Verhalten danach. |
-| `P4-10` | P1 | Möglicher Straßenraub / dunkleres 1-gegen-1-QTE | Weg, Uhrzeit und frühere Entscheidungen können eine Begegnung mit einem einzelnen Straßenräuber auslösen. Reden, Abgeben, Flucht/Hilfe oder Gegenwehr bleiben mögliche Pfade. Im Kampfpfad zeigt ein kurzes filmisches QTE, dass 353L den Angreifer erschreckend heftig überwältigt und bewusst stoppen muss. Kein Gore, keine reale Kampfanleitung, keine Gegnerwelle und kein Kampf-XP; der Spielwert liegt in Schock, Hilfeentscheidung, Zeugen, Ruf und der offenen Frage nach seiner aggressiven Seite. |
+| `P4-09` | P1 | Möglicher Kneipenstreit / gefeierter 1-gegen-1-Sieg | Branches und erste Lieferstufe gemäß `docs/CONFLICT_SCENARIOS.md`: klären, gehen/Hilfe, Gegenwehr; im Kampfpfad gewinnt 353L deutlich, die Kneipe jubelt und er denkt: „Ich wollte ihm gar nicht wehtun.“ |
+| `P4-10` | P1 | Möglicher Straßenraub / Flucht oder dunkleres 1-gegen-1-QTE | Branches und erste Lieferstufe gemäß `docs/CONFLICT_SCENARIOS.md`: früh vermeiden, spektakulärer Hufsprint, abgeben, reden, Hilfe oder Gegenwehr; nur der Gegenwehrpfad öffnet die Frage nach 353Ls aggressiver Seite. |
 
 ## M4-Gate
 

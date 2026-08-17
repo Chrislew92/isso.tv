@@ -85,6 +85,8 @@ EyTonLand und das Schloss sind ein späteres Kapitel, kein Abspann. Die Frage wi
 
 353L ist körperlich sehr stark, aber kein Schläger. Er weiß, dass ein Vorderhuf einen Menschen schwer verletzen kann, und versucht Streit deshalb früh zu erkennen, zu beruhigen oder zu verlassen. Selbstkontrolle ist Teil seiner Stärke.
 
+Als Esel besitzt er außerdem einen explosiven **Hufsprint**: Auf freier Strecke erreicht er für kurze Zeit ungefähr die doppelte Geschwindigkeit eines durchschnittlichen Menschen. Weglaufen ist für ihn keine Schande, sondern oft die klügste Anwendung seiner Kraft. Enge Räume, nasser Untergrund, Gepäck und die gewählte Route entscheiden, ob er diese Stärke einsetzen kann.
+
 Ein möglicher erster Bruch geschieht in der Kneipe: Falls der Streit nicht vermieden wird, wollte 353L dem anderen trotzdem nicht wehtun, gewinnt das 1-gegen-1 aber fast erschreckend klar. Die Leute feiern ihn, klopfen ihm auf die Schulter und erzählen am nächsten Tag eine lustige Heldengeschichte. 353L erlebt dieselbe Szene anders: Er erinnert sich an den Aufprall und daran, wie wenig Kraft dafür nötig war.
 
 Ein möglicher zweiter Bruch ist ernster: Trifft der Spieler unter passenden Bedingungen auf einen angreifenden Straßenräuber und wählt Gegenwehr, übernimmt 353L im Adrenalin die Kontrolle und vermöbelt den Angreifer heftiger, als er selbst für möglich hielt. Er stoppt — aber der Schock bleibt. Die Geschichte beantwortet nicht, ob etwas „Böses“ in ihm steckt. Sie zeigt den Unterschied zwischen Impuls und Entscheidung und lässt spätere Handlungen sprechen: Schaut er nach dem Verletzten, ruft er Hilfe, erzählt er Lotte davon, verdrängt er es oder beginnt er, seiner eigenen Kraft zu misstrauen? Es gibt keinen Gut-/Böse-Balken.
@@ -103,6 +105,8 @@ Die Eitelstedter Kneipe **„Zum falschen Signal“** liegt auf dem Weg zwischen
 - **Nachhall:** Der Gegner, die Wirtsleute und Gäste erinnern nicht nur den Sieg, sondern auch 353Ls Verhalten danach.
 
 ### Möglicher Spiegelpfad: Der Straßenraub
+
+Die vollständige Entscheidungs- und Nachhallmatrix beider Konflikte steht in `docs/CONFLICT_SCENARIOS.md`. Insbesondere ist **Weglaufen eine kluge, gleichwertige Option** und kein Feigheitswert. Auf freier Strecke kann 353L mit seinem Hufsprint einen menschlichen Verfolger spektakulär abhängen.
 
 - **Ort:** ein später, übersichtlicher Verbindungsweg zwischen Eitelstedt und Bahnhof; keine anonyme Gangkulisse.
 - **Auslöser:** Weg, Uhrzeit und frühere Entscheidungen können die Begegnung öffnen; Bedrohung, Flucht, Hilfe und Gegenwehr verzweigen sie weiter.
