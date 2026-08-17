@@ -1,8 +1,8 @@
 # ISSO.TV V3 — verifizierter Projektstand
 
-Stand: 17.08.2026
+Stand: 18.08.2026
 
-Verifizierter Code-Meilenstein: `eee01eb` (`Build true 3D ISSO.TV V3 vertical slice`)
+Verifizierter Code-Meilenstein: `146b92f` (`Expand apartment and build HD hallway`)
 
 Produktstatus: **lokaler technischer 3D-Vertical-Slice, nicht releasefähig und nicht zur Veröffentlichung freigegeben**
 
@@ -36,14 +36,16 @@ Dieses Dokument beschreibt ausschließlich Funktionen, die im aktuellen V3-Code 
 - zusammenhängendes GLB mit Wohnung, Flur, Vordach, Hafen, Bahnhof und Signalwerk,
 - texturiertes und geriggtes 353L-GLB statt Sprite,
 - WASD/Pfeiltasten, Sprint mit Shift, Orbit-Kamera, Zoom und Kamera-Nachführung,
-- einfacher harter Bewegungsbereich ohne vollständige Physik/Kollision,
+- getestete harte Bewegungszonen mit passierbarer geöffneter Wohnungstür, ohne vollständige Physik/Kollision,
+- zonenabhängige Kameraführung: offener Filmset-Blick im Zimmer, längs geführte Perspektive im schmalen Flur,
 - GPU-Regen, Fog, Schatten, mehrere Lichtquellen und adaptive Auflösung,
 - Renderloop pausiert während Film und Dialogen.
 
 ### Lokaler HD-/Voice-Vertical-Slice
 
-- Wohnung mit HD-Eichenbodentextur, einzelnen Dielen, sauberem Bettaufbau, Teppich, Nachttisch, Lampe, Fensterrahmen, Fensterbank, Heizkörper, geschlossenem Stauraum und klarerer Lichtführung,
-- eigene 2K-Raumtextur unter `assets/textures/room-oak-hd-v1.png`, im GLB eingebettet,
+- Wohnung mit rund 10,3 × 9,6 m Grundfläche, glaubwürdig skaliertem 2,15-m-353L, HD-Eichenbodentextur, einzelnen Dielen, sauberem Bettaufbau, Teppich, Nachttisch, Lampe, Fensterrahmen, Fensterbank, Heizkörper, geschlossenem Stauraum und klarerer Lichtführung,
+- Hausflur mit eigenem gekacheltem Terrazzo, Vertäfelung, vier Wohnungstüren, Rahmen, Briefkästen, Messingdetails, Lichtspalten und Leuchten,
+- eigene Raum- und Flurtexturen unter `assets/textures/`, im GLB eingebettet,
 - 353L-Material mit höherer Anisotropie, ruhigerer Rauheit und neuem deformierendem `rig_jaw`,
 - elf lokale deutsche KI-Sprachzeilen für 353L, Lotte und Bahnhof,
 - stabile Dialog-IDs, MP3-Dateien, Wortzeitmarken, Untertiteloverlay, Stimme-an/aus und Autoplay-Fallback,
@@ -64,7 +66,7 @@ Dieses Dokument beschreibt ausschließlich Funktionen, die im aktuellen V3-Code 
 - reducerbasierter Run-Zustand mit Weltminuten, Tür, Wagen, Besuchen und Ereignissen,
 - Save/Load/Reset über `localStorage` mit Schema-Version `2`,
 - doppelte Ereignisse werden für denselben Moment verhindert,
-- acht Vitest-Fälle (einschließlich fünf Wagen-Haltungen),
+- sechzehn Vitest-Fälle, darunter fünf Wagen-Haltungen und fünf Regressionen für Zimmer-/Tür-/Flurbewegung,
 - Produktions-Build erfolgreich,
 - npm-Audit zuletzt ohne bekannte Sicherheitslücke,
 - interner Referenzlauf nach Initialladung bei ungefähr 55–56 FPS und 20–24 ms schlechtestem Normalframe.
@@ -102,8 +104,9 @@ Die folgenden Systeme existierten teilweise als V2-Prototyp oder Konzept, sind a
 | Film | `src/components/OpeningFilm.jsx` | Auto-Prolog und Übergang |
 | Weltkanon | `src/game/canon.js` | Orte, Texte, Interaktionen, Zeitformat |
 | Zustandslogik | `src/game/state.js` | Run-Zustand und Folgen |
+| Bewegungslogik | `src/game/movement.js` | getestete Raum-/Tür-/Flurgrenzen und Ortszuordnung |
 | Persistenz | `src/game/save.js` | localStorage lesen/schreiben/löschen |
-| Tests | `src/game/state.test.js` | reducerbasierte Regeln |
+| Tests | `src/**/*.test.js` | reducerbasierte Regeln, Dialogkonsistenz und Bewegungsregressionen |
 | Voice-Runtime | `src/audio/useVoicePlayer.js` | Web Audio, Pegel, Untertitel- und Autoplayzustand |
 | Dialogdaten | `src/content/dialogue/` | stabile deutsche Dialog-IDs und Sprachdateiverweise |
 | Sprachdateien | `public/audio/de/` | lokaler KI-Voice-Vertical-Slice plus Wortzeitmarken |
@@ -125,7 +128,8 @@ Die folgenden Systeme existierten teilweise als V2-Prototyp oder Konzept, sind a
 8. Save-Schema akzeptiert nur exakt Version `2`; echte Migrationsketten fehlen.
 9. Die lokalen KI-Stimmen sind noch nicht zur öffentlichen Veröffentlichung lizenzgeprüft.
 10. Der erste Kieferpass ist amplitudenbasiert; echte Phonem-/Visem-Blends fehlen noch.
-11. Die zusätzliche HD-Bodentextur erhöht das Level-GLB auf ungefähr 4,75 MB; KTX2/Streaming fehlen.
+11. Zwei eingebettete HD-Bodentexturen erhöhen das Level-GLB auf ungefähr 8,74 MB; KTX2/Streaming fehlen.
+12. Der zonenabhängige Kamerapass löst die Hauptverdeckung an der Schwelle, ersetzt aber noch keine geometrische Kamera-Kollision.
 
 ## Nächster freigegebener Arbeitsbereich
 

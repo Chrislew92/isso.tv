@@ -17,7 +17,7 @@ flowchart TD
   K --> B
 ```
 
-`App.jsx` hält die Verbindung zwischen UI, 3D-Szene und Zustand. Die Welt meldet nur räumliche Fakten und Interaktions-IDs; der Reducer entscheidet über Folgen.
+`App.jsx` hält die Verbindung zwischen UI, 3D-Szene und Zustand. Die Welt meldet nur räumliche Fakten und Interaktions-IDs; der Reducer entscheidet über Folgen. Reine Raum-/Tür-/Flurgrenzen und Ortszuordnung liegen testbar in `src/game/movement.js`.
 
 ## Zustandsmodell
 
@@ -64,6 +64,8 @@ Aktuelle Bewegungszonen:
 - Außenwelt: `x >= 10.7`
 
 Diese Werte sind Übergangscode. Phase 1 ersetzt sie durch nachvollziehbare Collider/Nav-Daten.
+
+Die Kamera benutzt aktuell Zonenpresets: Im offenen Zimmer bleibt sie auf der Filmset-Seite, beim Übertritt in den schmalen Flur fährt sie weich auf dessen Längsachse. Für lokale Sichtprüfung existieren ausschließlich im Vite-Entwicklungsmodus `?preview=hall` und `?preview=threshold`; Produktionsstarts ignorieren diese Parameter.
 
 ## Kanonische Daten
 
