@@ -12,6 +12,7 @@ import {
   Vector3,
 } from 'three'
 import { INTERACTIONS } from '../game/canon.js'
+import { clampMovement, placeFor } from '../game/movement.js'
 
 const MODEL_URL = '/models/isso-v3-vertical-slice-v1.glb'
 const CHARACTER_MODEL_URL = '/models/353l-master-character-v3.glb'
@@ -19,36 +20,11 @@ const UP = new Vector3(0, 1, 0)
 const SHADOW_OPTIONS = { enabled: true, type: PCFShadowMap }
 
 const targets = {
-  connection: { ...INTERACTIONS.connection, point: new Vector3(-2.2, 0, -2.65), radius: 2.25 },
+  connection: { ...INTERACTIONS.connection, point: new Vector3(-3.15, 0, -3.36), radius: 2.25 },
   door: { ...INTERACTIONS.door, point: new Vector3(4.15, 0, 0.8), radius: 2.1 },
   cart: { ...INTERACTIONS.cart, point: new Vector3(19, 0, 3.1), radius: 2.8 },
   station: { ...INTERACTIONS.station, point: new Vector3(35.5, 0, -4.5), radius: 3.4 },
   signalwerk: { ...INTERACTIONS.signalwerk, point: new Vector3(27, 0, -11), radius: 3.4 },
-}
-
-function clampMovement(current, desired, doorOpen) {
-  const next = desired
-  if (!doorOpen && current.x < 4.0 && next.x > 3.65) next.x = 3.65
-  if (next.x < 4.25) {
-    next.x = Math.max(-4.05, Math.min(3.7, next.x))
-    next.z = Math.max(-3.45, Math.min(3.45, next.z))
-  } else if (next.x < 10.7) {
-    next.x = Math.max(4.25, next.x)
-    next.z = Math.max(-1.25, Math.min(1.25, next.z))
-  } else {
-    next.x = Math.max(10.7, Math.min(49.5, next.x))
-    next.z = Math.max(-13.7, Math.min(13.7, next.z))
-  }
-  return next
-}
-
-function placeFor(position) {
-  if (position.x < 4.25) return 'room'
-  if (position.x < 10.7) return 'hallway'
-  if (position.x > 33 && position.z < 0) return 'station'
-  if (position.x > 24 && position.z < -8) return 'signalwerk'
-  if (position.x < 15) return 'awning'
-  return 'harbor'
 }
 
 function closestInteraction(position, run) {
@@ -133,7 +109,16 @@ function Level({ run, paused, onInteract, onPrompt, onPosition, onReady, voiceSt
   const keys = useRef(new Set())
   const prompt = useRef(null)
   const lastReport = useRef(0)
-  const motion = useRef({ moving: false, time: 0, emoteUntil: 0, doorAngle: 0, cartShift: 0, cartBaseZ: 0 })
+  const motion = useRef({
+    moving: false,
+    time: 0,
+    emoteUntil: 0,
+    doorAngle: 0,
+    cartShift: 0,
+    cartBaseZ: 0,
+    zone: 'room',
+    cameraTransition: 0,
+  })
   const vectors = useRef({
     forward: new Vector3(),
     right: new Vector3(),
@@ -141,6 +126,7 @@ function Level({ run, paused, onInteract, onPrompt, onPosition, onReady, voiceSt
     next: new Vector3(),
     target: new Vector3(),
     followDelta: new Vector3(),
+    cameraGoal: new Vector3(),
   })
   const { camera, gl } = useThree()
 
@@ -168,15 +154,20 @@ function Level({ run, paused, onInteract, onPrompt, onPosition, onReady, voiceSt
     character.current.updateMatrixWorld(true)
     const initialBounds = new Box3().setFromObject(character.current)
     const initialHeight = Math.max(initialBounds.max.y - initialBounds.min.y, 0.001)
-    character.current.scale.setScalar(3.35 / initialHeight)
+    // Canon scale: 353L is a strong adult humanoid donkey, not a 3.35-metre giant.
+    character.current.scale.setScalar(2.15 / initialHeight)
     character.current.updateMatrixWorld(true)
     const groundedBounds = new Box3().setFromObject(character.current)
-    character.current.position.set(-1.1, -groundedBounds.min.y, 0.7)
+    const previewZone = import.meta.env.DEV ? new URLSearchParams(window.location.search).get('preview') : null
+    const previewHallway = previewZone === 'hall'
+    const previewThreshold = previewZone === 'threshold'
+    character.current.position.set(previewHallway ? 7.35 : previewThreshold ? 3.48 : -1.1, -groundedBounds.min.y, previewHallway || previewThreshold ? 0 : 0.7)
+    motion.current.zone = previewHallway ? 'hallway' : 'room'
     door.current = level.getObjectByName('door_pivot')
     cart.current = level.getObjectByName('cart_root')
     if (cart.current) motion.current.cartBaseZ = cart.current.position.z
     const maxAnisotropy = Math.min(8, gl.capabilities.getMaxAnisotropy())
-    const detailedCaster = /(door|cart|mattress|blanket|pillow|bed_|bedside|desk_|connection_|storage_|window_frame|radiator|lamp_|kiosk|awning)/
+    const detailedCaster = /(door|frame|cart|mattress|blanket|pillow|bed_|bedside|desk_|connection_|storage_|window_frame|radiator|lamp_|kiosk|awning|hall_|mailbox)/
     level.traverse((object) => {
       if (!object.isMesh) return
       object.castShadow = detailedCaster.test(object.name)
@@ -218,7 +209,12 @@ function Level({ run, paused, onInteract, onPrompt, onPosition, onReady, voiceSt
 
     const root = character.current
     if (root) {
-      controls.current?.target.copy(root.position).add(new Vector3(0, 1.55, 0))
+      if (previewHallway) camera.position.set(root.position.x - 4.8, 2.35, root.position.z)
+      if (controls.current) {
+        controls.current.minAzimuthAngle = previewHallway ? -Math.PI * 0.78 : -Math.PI * 0.46
+        controls.current.maxAzimuthAngle = previewHallway ? -Math.PI * 0.22 : Math.PI * 0.46
+      }
+      controls.current?.target.copy(root.position).add(new Vector3(0, 1.08, 0))
       controls.current?.update()
     }
     onReady()
@@ -261,7 +257,7 @@ function Level({ run, paused, onInteract, onPrompt, onPosition, onReady, voiceSt
     if (!root) return
     const dt = Math.min(delta, 0.033)
     motion.current.time += dt
-    const { forward, right, direction, next, target, followDelta } = vectors.current
+    const { forward, right, direction, next, target, followDelta, cameraGoal } = vectors.current
     camera.getWorldDirection(forward)
     forward.y = 0
     forward.normalize()
@@ -301,13 +297,39 @@ function Level({ run, paused, onInteract, onPrompt, onPosition, onReady, voiceSt
     if (rigs.jaw) rigs.jaw.rotation.x = MathUtils.lerp(rigs.jaw.rotation.x, rigRest.jaw.x + mouthLevel * 0.24, dt * 22)
     if (rigs.tail) rigs.tail.rotation.y = rigRest.tail.y + Math.sin(motion.current.time * 1.8) * 0.12
 
+    const zone = placeFor(root.position)
+    if (zone !== motion.current.zone) {
+      motion.current.zone = zone
+      motion.current.cameraTransition = zone === 'hallway' || zone === 'room' ? 1.35 : 0
+      if (controls.current) {
+        if (zone === 'hallway') {
+          controls.current.minAzimuthAngle = -Math.PI * 0.78
+          controls.current.maxAzimuthAngle = -Math.PI * 0.22
+        } else if (zone === 'room') {
+          controls.current.minAzimuthAngle = -Math.PI * 0.46
+          controls.current.maxAzimuthAngle = Math.PI * 0.46
+        } else {
+          controls.current.minAzimuthAngle = -Math.PI
+          controls.current.maxAzimuthAngle = Math.PI
+        }
+      }
+    }
+
     target.copy(root.position)
-    target.y += 1.55
+    target.y += 1.08
     if (controls.current) {
       followDelta.copy(target).sub(controls.current.target).multiplyScalar(1 - Math.exp(-dt * 9))
       controls.current.target.add(followDelta)
       camera.position.add(followDelta)
       controls.current.update()
+    }
+
+    if (motion.current.cameraTransition > 0 && controls.current) {
+      if (zone === 'hallway') cameraGoal.set(root.position.x - 4.8, root.position.y + 2.35, root.position.z)
+      else cameraGoal.set(root.position.x, root.position.y + 2.2, root.position.z + 6.2)
+      camera.position.lerp(cameraGoal, 1 - Math.exp(-dt * 5.5))
+      controls.current.update()
+      motion.current.cameraTransition = Math.max(0, motion.current.cameraTransition - dt)
     }
 
     motion.current.doorAngle = MathUtils.lerp(motion.current.doorAngle, run.doorOpen ? -1.46 : 0, 1 - Math.exp(-dt * 6))
@@ -338,11 +360,13 @@ function Level({ run, paused, onInteract, onPrompt, onPosition, onReady, voiceSt
         enablePan={false}
         enableDamping
         dampingFactor={0.08}
-        minDistance={3.7}
-        maxDistance={9.5}
+        minDistance={3.3}
+        maxDistance={10.5}
         minPolarAngle={0.76}
         maxPolarAngle={1.34}
-        target={[-1.1, 1.55, 0.7]}
+        minAzimuthAngle={-Math.PI * 0.46}
+        maxAzimuthAngle={Math.PI * 0.46}
+        target={[-1.1, 1.08, 0.7]}
       />
     </>
   )
@@ -372,6 +396,9 @@ function WorldLighting() {
       <pointLight color="#ffc17b" intensity={14} distance={6.5} decay={2} position={[-0.2, 1.45, 2.5]} />
       <spotLight color="#ffd0a0" intensity={29} distance={13} decay={2} angle={0.72} penumbra={0.82} position={[-2.1, 3.6, -0.2]} />
       <pointLight color="#ff9c45" intensity={19} distance={9} decay={2} position={[2.2, 3.3, -3.5]} />
+      <pointLight color="#bfd3d8" intensity={5} distance={4.8} decay={2} position={[5.35, 2.25, 0.35]} />
+      <pointLight color="#ffd09a" intensity={13} distance={5.5} decay={2} position={[7.65, 2.12, -1.30]} />
+      <pointLight color="#ffbb72" intensity={13} distance={5.5} decay={2} position={[10.35, 2.12, 1.30]} />
       <pointLight color="#ffad55" intensity={24} distance={12} decay={2} position={[12, 3.0, 0]} />
       <pointLight color="#ff923c" intensity={30} distance={14} decay={2} position={[23, 3.0, 5]} />
       <pointLight color="#5cb9da" intensity={14} distance={16} decay={2} position={[0, 2.5, -3.5]} />
@@ -387,7 +414,7 @@ export default function RealtimeWorld(props) {
         shadows={SHADOW_OPTIONS}
         frameloop={props.paused && !props.voiceActive ? 'demand' : 'always'}
         dpr={[0.9, 1.35]}
-        camera={{ fov: 48, near: 0.08, far: 110, position: [0, 3.0, 6.5] }}
+        camera={{ fov: 48, near: 0.08, far: 110, position: [0, 2.45, 7.2] }}
         gl={{ antialias: true, powerPreference: 'high-performance', alpha: false }}
         onCreated={({ gl }) => {
           gl.toneMapping = ACESFilmicToneMapping

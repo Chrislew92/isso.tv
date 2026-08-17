@@ -28,7 +28,7 @@ def material(name, color, metallic=0.0, roughness=0.65, emission=None):
     return mat
 
 
-def image_material(name, image_path, roughness=0.72):
+def image_material(name, image_path, roughness=0.72, uv_scale=None):
     mat = bpy.data.materials.new(name)
     mat.use_nodes = True
     nodes = mat.node_tree.nodes
@@ -39,6 +39,14 @@ def image_material(name, image_path, roughness=0.72):
     texture = nodes.new('ShaderNodeTexImage')
     texture.image = bpy.data.images.load(str(image_path), check_existing=True)
     texture.interpolation = 'Linear'
+    texture.extension = 'REPEAT'
+    if uv_scale:
+        coordinates = nodes.new('ShaderNodeTexCoord')
+        mapping = nodes.new('ShaderNodeMapping')
+        mapping.vector_type = 'POINT'
+        mapping.inputs['Scale'].default_value = (*uv_scale, 1.0)
+        links.new(coordinates.outputs['UV'], mapping.inputs['Vector'])
+        links.new(mapping.outputs['Vector'], texture.inputs['Vector'])
     links.new(texture.outputs['Color'], bsdf.inputs['Base Color'])
     return mat
 
@@ -207,75 +215,109 @@ def build_character(mats):
 def build_level(mats):
     world = empty('WORLD_ROOT')
 
-    # Apartment: a clean, lived-in room. The camera-facing wall stays open for gameplay.
-    box('room_floor', (0, 0, -0.11), (9.0, 8.0, 0.22), mats['wood'], world, 0.03)
-    box('room_wall_back', (0, 4.0, 2.0), (9.0, 0.22, 4.0), mats['plaster'], world, 0.04)
-    box('room_wall_left', (-4.5, 0, 2.0), (0.22, 8.0, 4.0), mats['plaster'], world, 0.04)
-    box('room_wall_front_a', (-2.7, -4.0, 2.0), (3.6, 0.18, 4.0), mats['plaster_dark'], world, 0.03)
-    box('room_wall_front_b', (2.8, -4.0, 2.0), (3.4, 0.18, 4.0), mats['plaster_dark'], world, 0.03)
-    box('room_wall_door_a', (4.45, 2.55, 2.0), (0.2, 2.9, 4.0), mats['plaster'], world, 0.03)
-    box('room_wall_door_b', (4.45, -2.55, 2.0), (0.2, 2.9, 4.0), mats['plaster'], world, 0.03)
+    # Apartment: a generous but believable first flat. The camera-facing wall stays open.
+    # The right-hand door remains at x=4.45 so the connected world and triggers stay stable.
+    box('room_floor', (-0.65, 0, -0.11), (10.3, 9.6, 0.22), mats['wood'], world, 0.03)
+    box('room_wall_back', (-0.65, 4.8, 2.0), (10.3, 0.22, 4.0), mats['plaster'], world, 0.04)
+    box('room_wall_left', (-5.8, 0, 2.0), (0.22, 9.6, 4.0), mats['plaster'], world, 0.04)
+    # The fourth wall is intentionally open: this is a playable cinematic set, and a solid
+    # camera-side wall would cut between 353L and the player while crossing the room.
+    box('room_wall_door_a', (4.45, 2.82, 2.0), (0.2, 3.96, 4.0), mats['plaster'], world, 0.03)
+    box('room_wall_door_b', (4.45, -2.82, 2.0), (0.2, 3.96, 4.0), mats['plaster'], world, 0.03)
 
     # Narrow floorboards, skirting and a quiet rug replace the large blockout floor plane.
-    for index, x in enumerate((-4.08, -3.34, -2.60, -1.86, -1.12, -0.38, 0.36, 1.10, 1.84, 2.58, 3.32, 4.06)):
-        box(f'room_floorboard_{index}', (x, 0, 0.018), (0.70, 7.78, 0.036), mats['wood_alt' if index % 3 == 1 else 'wood'], world, 0.012)
-    box('room_skirting_back', (0, 3.82, 0.13), (8.75, 0.13, 0.25), mats['paint'], world, 0.018)
-    box('room_skirting_left', (-4.33, 0, 0.13), (0.13, 7.65, 0.25), mats['paint'], world, 0.018)
-    box('room_rug', (-2.18, -1.42, 0.055), (3.22, 3.78, 0.07), mats['rug'], world, 0.035, rotation=(0, 0, math.radians(-2)))
+    for index, x in enumerate((-5.40, -4.66, -3.92, -3.18, -2.44, -1.70, -0.96, -0.22, 0.52, 1.26, 2.00, 2.74, 3.48, 4.22)):
+        box(f'room_floorboard_{index}', (x, 0, 0.018), (0.70, 9.38, 0.036), mats['wood_alt' if index % 3 == 1 else 'wood'], world, 0.012)
+    box('room_skirting_back', (-0.65, 4.62, 0.13), (10.05, 0.13, 0.25), mats['paint'], world, 0.018)
+    box('room_skirting_left', (-5.63, 0, 0.13), (0.13, 9.25, 0.25), mats['paint'], world, 0.018)
+    box('room_rug', (-3.00, -1.35, 0.055), (4.15, 4.35, 0.07), mats['rug'], world, 0.035, rotation=(0, 0, math.radians(-2)))
 
-    box('bed_platform', (-2.25, -1.5, 0.18), (2.74, 3.48, 0.28), mats['bed_frame'], world, 0.08)
-    box('mattress', (-2.25, -1.5, 0.43), (2.54, 3.28, 0.34), mats['linen'], world, 0.14)
-    box('blanket', (-2.2, -1.32, 0.64), (2.36, 2.18, 0.14), mats['blanket'], world, 0.075, rotation=(0, 0, math.radians(2)))
-    box('blanket_fold', (-2.2, -0.40, 0.75), (2.36, 0.34, 0.12), mats['blanket_alt'], world, 0.055, rotation=(0, 0, math.radians(2)))
-    box('pillow', (-2.2, -2.58, 0.70), (1.42, 0.73, 0.23), mats['pillow'], world, 0.12)
+    box('bed_platform', (-3.10, -1.55, 0.18), (2.74, 3.48, 0.28), mats['bed_frame'], world, 0.08)
+    box('mattress', (-3.10, -1.55, 0.43), (2.54, 3.28, 0.34), mats['linen'], world, 0.14)
+    box('blanket', (-3.05, -1.37, 0.64), (2.36, 2.18, 0.14), mats['blanket'], world, 0.075, rotation=(0, 0, math.radians(2)))
+    box('blanket_fold', (-3.05, -0.45, 0.75), (2.36, 0.34, 0.12), mats['blanket_alt'], world, 0.055, rotation=(0, 0, math.radians(2)))
+    box('pillow', (-3.05, -2.63, 0.70), (1.42, 0.73, 0.23), mats['pillow'], world, 0.12)
 
     # One small bedside piece, one lamp and a book: readable, but not cluttered.
-    box('bedside_body', (-0.18, -2.50, 0.39), (0.82, 0.72, 0.76), mats['bed_frame'], world, 0.07)
-    box('bedside_drawer', (-0.18, -2.87, 0.49), (0.66, 0.035, 0.25), mats['desk'], world, 0.018)
-    cylinder('bedside_lamp_stem', (-0.18, -2.50, 1.02), 0.035, 0.52, mats['metal'], world, 16)
-    cylinder('bedside_lamp_shade', (-0.18, -2.50, 1.34), 0.25, 0.34, mats['lamp_shade'], world, 28, radius_top=0.13)
-    box('bedside_book', (0.05, -2.45, 0.83), (0.34, 0.46, 0.055), mats['orange'], world, 0.016, rotation=(0, 0, math.radians(-8)))
+    box('bedside_body', (-1.02, -2.55, 0.39), (0.82, 0.72, 0.76), mats['bed_frame'], world, 0.07)
+    box('bedside_drawer', (-1.02, -2.92, 0.49), (0.66, 0.035, 0.25), mats['desk'], world, 0.018)
+    cylinder('bedside_lamp_stem', (-1.02, -2.55, 1.02), 0.035, 0.52, mats['metal'], world, 16)
+    cylinder('bedside_lamp_shade', (-1.02, -2.55, 1.34), 0.25, 0.34, mats['lamp_shade'], world, 28, radius_top=0.13)
+    box('bedside_book', (-0.79, -2.50, 0.83), (0.34, 0.46, 0.055), mats['orange'], world, 0.016, rotation=(0, 0, math.radians(-8)))
 
-    box('desk_top', (-2.2, 2.65, 1.04), (2.45, 1.05, 0.16), mats['desk'], world, 0.05)
-    for x in (-3.18, -1.22):
-        for y in (2.28, 3.02):
+    box('desk_top', (-3.15, 3.36, 1.04), (2.45, 1.05, 0.16), mats['desk'], world, 0.05)
+    for x in (-4.13, -2.17):
+        for y in (2.99, 3.73):
             box(f'desk_leg_{x}_{y}', (x, y, 0.52), (0.12, 0.12, 1.04), mats['desk'], world, 0.025)
-    box('connection_base', (-2.2, 2.58, 1.18), (1.08, 0.72, 0.1), mats['device'], world, 0.04)
-    screen = box('connection_screen', (-2.2, 2.91, 1.55), (1.08, 0.08, 0.66), mats['screen'], world, 0.04, rotation=(math.radians(-8), 0, 0))
+    box('connection_base', (-3.15, 3.29, 1.18), (1.08, 0.72, 0.1), mats['device'], world, 0.04)
+    screen = box('connection_screen', (-3.15, 3.62, 1.55), (1.08, 0.08, 0.66), mats['screen'], world, 0.04, rotation=(math.radians(-8), 0, 0))
     screen['interaction'] = 'connection'
-    cylinder('hoof_button', (-1.46, 2.27, 1.2), 0.24, 0.12, mats['orange'], world, 28, rotation=(math.radians(90), 0, 0))
-    box('rain_window', (0.2, 3.88, 2.25), (2.5, 0.06, 1.72), mats['window'], world, 0.03)
+    cylinder('hoof_button', (-2.41, 2.98, 1.2), 0.24, 0.12, mats['orange'], world, 28, rotation=(math.radians(90), 0, 0))
+    box('rain_window', (0.65, 4.68, 2.25), (3.2, 0.06, 1.72), mats['window'], world, 0.03)
 
     # Proper window casing, sill and radiator make the apartment feel constructed.
-    box('window_frame_left', (-1.10, 3.73, 2.25), (0.12, 0.18, 1.96), mats['paint'], world, 0.018)
-    box('window_frame_right', (1.50, 3.73, 2.25), (0.12, 0.18, 1.96), mats['paint'], world, 0.018)
-    box('window_frame_top', (0.20, 3.73, 3.20), (2.72, 0.18, 0.12), mats['paint'], world, 0.018)
-    box('window_frame_bottom', (0.20, 3.73, 1.31), (2.72, 0.18, 0.12), mats['paint'], world, 0.018)
-    box('window_mullion', (0.20, 3.70, 2.25), (0.075, 0.16, 1.80), mats['paint'], world, 0.014)
-    box('window_sill', (0.20, 3.55, 1.25), (2.92, 0.42, 0.13), mats['paint'], world, 0.025)
-    for index, x in enumerate((-0.72, -0.42, -0.12, 0.18, 0.48, 0.78, 1.08)):
-        box(f'radiator_fin_{index}', (x, 3.55, 0.66), (0.18, 0.18, 0.78), mats['radiator'], world, 0.045)
-    box('radiator_pipe', (1.35, 3.55, 0.34), (0.10, 0.10, 0.62), mats['radiator'], world, 0.03)
+    box('window_frame_left', (-1.02, 4.53, 2.25), (0.12, 0.18, 1.96), mats['paint'], world, 0.018)
+    box('window_frame_right', (2.32, 4.53, 2.25), (0.12, 0.18, 1.96), mats['paint'], world, 0.018)
+    box('window_frame_top', (0.65, 4.53, 3.20), (3.46, 0.18, 0.12), mats['paint'], world, 0.018)
+    box('window_frame_bottom', (0.65, 4.53, 1.31), (3.46, 0.18, 0.12), mats['paint'], world, 0.018)
+    box('window_mullion', (0.65, 4.50, 2.25), (0.075, 0.16, 1.80), mats['paint'], world, 0.014)
+    box('window_sill', (0.65, 4.35, 1.25), (3.66, 0.42, 0.13), mats['paint'], world, 0.025)
+    for index, x in enumerate((-0.72, -0.38, -0.04, 0.30, 0.64, 0.98, 1.32, 1.66, 2.00)):
+        box(f'radiator_fin_{index}', (x, 4.35, 0.66), (0.18, 0.18, 0.78), mats['radiator'], world, 0.045)
+    box('radiator_pipe', (2.28, 4.35, 0.34), (0.10, 0.10, 0.62), mats['radiator'], world, 0.03)
 
     # Minimal wall graphic and closed storage keep the room intentional and clean.
-    box('wall_print_frame', (-4.34, 1.10, 2.32), (0.08, 1.42, 1.08), mats['metal_dark'], world, 0.025)
-    box('wall_print_paper', (-4.28, 1.10, 2.32), (0.025, 1.24, 0.90), mats['paper'], world, 0.008)
-    box('wall_print_signal', (-4.255, 1.10, 2.32), (0.018, 0.16, 0.62), mats['orange'], world, 0.004, rotation=(math.radians(18), 0, 0))
-    box('storage_body', (3.45, 2.72, 0.92), (1.38, 1.02, 1.84), mats['storage'], world, 0.075)
-    box('storage_door_l', (3.10, 2.19, 0.94), (0.56, 0.035, 1.54), mats['storage_front'], world, 0.022)
-    box('storage_door_r', (3.80, 2.19, 0.94), (0.56, 0.035, 1.54), mats['storage_front'], world, 0.022)
-    cylinder('storage_handle_l', (3.32, 2.15, 0.96), 0.025, 0.18, mats['metal'], world, 12, rotation=(math.radians(90), 0, 0))
-    cylinder('storage_handle_r', (3.58, 2.15, 0.96), 0.025, 0.18, mats['metal'], world, 12, rotation=(math.radians(90), 0, 0))
+    box('wall_print_frame', (-5.64, 1.25, 2.32), (0.08, 1.42, 1.08), mats['metal_dark'], world, 0.025)
+    box('wall_print_paper', (-5.58, 1.25, 2.32), (0.025, 1.24, 0.90), mats['paper'], world, 0.008)
+    box('wall_print_signal', (-5.555, 1.25, 2.32), (0.018, 0.16, 0.62), mats['orange'], world, 0.004, rotation=(math.radians(18), 0, 0))
+    box('storage_body', (3.45, 3.50, 0.92), (1.38, 1.02, 1.84), mats['storage'], world, 0.075)
+    box('storage_door_l', (3.10, 2.97, 0.94), (0.56, 0.035, 1.54), mats['storage_front'], world, 0.022)
+    box('storage_door_r', (3.80, 2.97, 0.94), (0.56, 0.035, 1.54), mats['storage_front'], world, 0.022)
+    cylinder('storage_handle_l', (3.32, 2.93, 0.96), 0.025, 0.18, mats['metal'], world, 12, rotation=(math.radians(90), 0, 0))
+    cylinder('storage_handle_r', (3.58, 2.93, 0.96), 0.025, 0.18, mats['metal'], world, 12, rotation=(math.radians(90), 0, 0))
 
     door_pivot = empty('door_pivot', (4.42, -0.82, 0), world)
     door = box('apartment_door', (4.32, 0, 1.38), (0.18, 1.65, 2.76), mats['door'], door_pivot, 0.05)
     door['interaction'] = 'door'
     box('door_handle', (4.15, -0.55, 1.32), (0.18, 0.38, 0.10), mats['metal'], door_pivot, 0.035)
+    box('apartment_door_frame_top', (4.24, 0, 2.86), (0.26, 2.06, 0.18), mats['hall_trim'], world, 0.025)
+    box('apartment_door_frame_a', (4.24, 0.96, 1.46), (0.26, 0.16, 2.98), mats['hall_trim'], world, 0.025)
+    box('apartment_door_frame_b', (4.24, -0.96, 1.46), (0.26, 0.16, 2.98), mats['hall_trim'], world, 0.025)
 
     # Connected hall and exterior: no loading cut or fake background.
-    box('hall_floor', (8.0, 0, -0.10), (7.0, 3.2, 0.2), mats['stone'], world, 0.02)
+    box('hall_floor', (8.0, 0, -0.10), (7.0, 3.2, 0.2), mats['hall_floor'], world, 0.02)
     box('hall_wall_a', (8.0, 1.62, 1.65), (7.0, 0.18, 3.3), mats['plaster_dark'], world, 0.03)
     box('hall_wall_b', (8.0, -1.62, 1.65), (7.0, 0.18, 3.3), mats['plaster_dark'], world, 0.03)
+    for side, y in (('a', 1.49), ('b', -1.49)):
+        box(f'hall_wainscot_{side}', (8.0, y, 0.72), (7.0, 0.12, 1.42), mats['hall_wainscot'], world, 0.025)
+        box(f'hall_dado_{side}', (8.0, y - (0.04 if y > 0 else -0.04), 1.47), (7.0, 0.13, 0.11), mats['hall_trim'], world, 0.02)
+        box(f'hall_baseboard_{side}', (8.0, y - (0.05 if y > 0 else -0.05), 0.13), (7.0, 0.14, 0.24), mats['hall_trim'], world, 0.025)
+        for door_index, x in enumerate((6.25, 9.25)):
+            inset = 0.07 if y > 0 else -0.07
+            facing = 0.13 if y > 0 else -0.13
+            box(f'hall_door_{side}_{door_index}', (x, y - inset, 1.18), (1.02, 0.10, 2.30), mats['hall_door'], world, 0.055)
+            box(f'hall_door_panel_{side}_{door_index}', (x, y - facing, 1.20), (0.72, 0.035, 1.58), mats['hall_door_panel'], world, 0.035)
+            box(f'hall_frame_top_{side}_{door_index}', (x, y - facing, 2.44), (1.26, 0.12, 0.14), mats['hall_trim'], world, 0.022)
+            for frame_side, dx in (('l', -0.58), ('r', 0.58)):
+                box(f'hall_frame_{frame_side}_{side}_{door_index}', (x + dx, y - facing, 1.22), (0.14, 0.12, 2.58), mats['hall_trim'], world, 0.022)
+            sphere(f'hall_knob_{side}_{door_index}', (x + 0.34, y - (0.22 if y > 0 else -0.22), 1.12), (0.065, 0.055, 0.065), mats['brass'], world, 18, 10)
+            box(f'hall_light_slit_{side}_{door_index}', (x, y - (0.205 if y > 0 else -0.205), 0.055), (0.78, 0.025, 0.025), mats['light_slit'], world, 0.006)
+
+    for row in range(2):
+        for col in range(3):
+            x = 4.95 + col * 0.46
+            z = 1.12 + row * 0.42
+            box(f'hall_mailbox_{row}_{col}', (x, 1.37, z), (0.40, 0.18, 0.34), mats['mailbox'], world, 0.035)
+            box(f'hall_mail_slot_{row}_{col}', (x, 1.265, z + 0.07), (0.25, 0.015, 0.025), mats['brass'], world, 0.004)
+
+    for index, x in enumerate((5.35, 7.25, 9.15, 11.05)):
+        box(f'hall_ceiling_rib_{index}', (x, 0, 3.10), (0.14, 3.02, 0.14), mats['hall_trim'], world, 0.025)
+    for index, (x, y) in enumerate(((7.65, 1.36), (10.35, -1.36))):
+        box(f'hall_sconce_plate_{index}', (x, y, 2.08), (0.32, 0.10, 0.42), mats['brass'], world, 0.04)
+        sphere(f'hall_sconce_bulb_{index}', (x, y - (0.16 if y > 0 else -0.16), 2.12), (0.14, 0.12, 0.18), mats['lamp'], world, 20, 12)
+    box('hall_threshold_top', (11.42, 0, 3.00), (0.30, 3.12, 0.24), mats['hall_trim'], world, 0.035)
+    box('hall_threshold_a', (11.42, 1.48, 1.48), (0.30, 0.24, 3.00), mats['hall_trim'], world, 0.035)
+    box('hall_threshold_b', (11.42, -1.48, 1.48), (0.30, 0.24, 3.00), mats['hall_trim'], world, 0.035)
     box('harbor_ground', (30, 0, -0.16), (42, 30, 0.28), mats['asphalt'], world, 0.02)
     box('awning', (12.0, 0, 3.2), (5.2, 5.2, 0.18), mats['metal_dark'], world, 0.04)
     for x in (10.0, 14.0):
@@ -367,6 +409,12 @@ def main():
     repo_root = Path(sys.argv[sys.argv.index('--') + 1]).resolve() if '--' in sys.argv else Path.cwd()
     clean_scene()
     oak = image_material('floor_oak_hd', repo_root / 'assets' / 'textures' / 'room-oak-hd-v1.png', 0.70)
+    terrazzo = image_material(
+        'hall_terrazzo_hd',
+        repo_root / 'assets' / 'textures' / 'hall-terrazzo-hd-v1.png',
+        0.82,
+        (12.0, 6.0),
+    )
     mats = {
         'fur': material('fur_warm_grey_brown', (0.20, 0.155, 0.12), 0.0, 0.9),
         'fur_dark': material('fur_dark', (0.075, 0.052, 0.038), 0.0, 0.95),
@@ -407,6 +455,14 @@ def main():
         'door': material('apartment_door', (0.065, 0.043, 0.026), 0.0, 0.78),
         'window': material('rain_glass', (0.08, 0.24, 0.32), 0.18, 0.12),
         'stone': material('hall_stone', (0.095, 0.095, 0.09), 0.0, 0.88),
+        'hall_floor': terrazzo,
+        'hall_wainscot': material('hall_wainscot_petrol', (0.028, 0.095, 0.095), 0.0, 0.84),
+        'hall_door': material('hall_door_smoked_oak', (0.095, 0.050, 0.027), 0.0, 0.76),
+        'hall_door_panel': material('hall_door_inset', (0.055, 0.030, 0.019), 0.0, 0.82),
+        'hall_trim': material('hall_trim_dark', (0.075, 0.086, 0.083), 0.24, 0.54),
+        'mailbox': material('mailbox_painted_steel', (0.10, 0.12, 0.12), 0.55, 0.46),
+        'brass': material('hall_brass', (0.42, 0.245, 0.075), 0.78, 0.31),
+        'light_slit': material('hall_door_light', (0.45, 0.19, 0.045), 0.0, 0.25, (0.72, 0.24, 0.045)),
         'asphalt': material('wet_asphalt', (0.025, 0.038, 0.044), 0.22, 0.23),
         'brick': material('brick_old', (0.16, 0.055, 0.028), 0.0, 0.9),
         'brick_alt': material('brick_old_alt', (0.105, 0.032, 0.018), 0.0, 0.94),
