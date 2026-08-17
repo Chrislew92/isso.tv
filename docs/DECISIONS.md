@@ -87,6 +87,13 @@ Dieses Protokoll hält dauerhafte Produkt-/Architekturentscheidungen fest. Neue 
 - Grund: Die Gabe erhält persönliche Tiefe und verbindet freien Alltag mit einem größeren Mysterium, ohne Figuren auf vorbestimmte Missionen zu reduzieren.
 - Folge: Zweck erscheint nur als mögliche Spur, Muster und Nachhall. Es gibt keinen Zweckwert, Questmarker, Klassenbonus oder göttliche Rechtfertigung. Die Tiergewissheit macht Menschen nicht zwecklos oder minderwertig. Kein Agent darf 353Ls Zweck ohne spätere ausdrückliche Nutzerentscheidung kanonisch auflösen.
 
+## D-013 — Hoffnung verändert Eitelstedt lokal, nicht als Balken
+
+- Datum: 17.08.2026
+- Entscheidung: Eitelstedt beginnt grau, nass und erschöpft. Hoffnung wird durch kleine sichtbare Weltspuren dargestellt — warme Fenster, Licht, Grüße, Reparaturen, Pflanzen und benutzte Orte — nicht durch einen numerischen Hoffnungswert oder eine göttliche Rettungsszene.
+- Grund: Die höhere Macht, der unbekannte Zweck und der verspätete Earthpeace-Plan sollen Hoffnung ermöglichen, ohne Probleme kleinzureden oder das Spiel religiös zu machen.
+- Folge: Art-, Licht-, Audio- und World-State-Arbeit nutzt eine langsame lokale Hoffnungssprache. Grau bleibt Teil der Identität; Entscheidungen schaffen einzelne warme Beweise und können späteren Figuren-/Stadtfunk-Nachhall auslösen.
+
 ## Vorlage
 
 ```text

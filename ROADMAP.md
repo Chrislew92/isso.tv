@@ -87,9 +87,9 @@ Ziel: Der Pfad **Film → Wohnung → Flur → Hafen → Bahnhof/Signalwerk → 
 | `P1-01` | P0 | Referenz- und Asset-Budgets | M0 | Desktop-Screenshots, FPS-/Frame-Baseline, GLB-/Textur-/Chunkgrößen in `docs/HANDOFF.md`; Zielbudgets in `docs/QA_RELEASE.md` bestätigt. |
 | `P1-02` | P0 | Kanonische Weltkoordinaten | P1-01 | Orte, Interaktionspunkte, Radien und Kartenpositionen stammen aus einer Datenquelle; keine Ziel-Doppelung in `RealtimeWorld.jsx`. |
 | `P1-03` | P0 | Bewegung und Kollision | P1-02 | Wände/Tür/Objekte sind nicht durchlaufbar; keine harten unsichtbaren Rechteckwechsel; Figur bleibt am Boden; Tür steuert Zugang. |
-| `P1-04` | P1 | Wohnung-Art-Pass | P1-01 | Matratze, Tisch, Donkey-Connection, Fenster, Tür, persönliche Requisiten, Materialien und Licht erzählen den Start ohne Textwand. |
-| `P1-05` | P1 | Flur-/Schwellen-Art-Pass | P1-03, P1-04 | Wohnungstür, Hausflur und Vordach bilden eine räumlich lesbare, atmosphärische Schwelle. |
-| `P1-06` | P1 | Hafen-Art-Pass | P1-03 | Pier, Kiosk-Silhouette, Wagen, Wasser, Schienenweg, Schilder und Regen besitzen eigenständige Strammburg-Qualität. |
+| `P1-04` | P1 | Wohnung-Art-Pass | P1-01 | Matratze, Tisch, Donkey-Connection, Fenster, Tür, persönliche Requisiten, Materialien und Licht erzählen den Start ohne Textwand. Kühles Grau dominiert; ein kontrolliertes warmes Licht markiert den ersten sicheren Hoffnungsort. |
+| `P1-05` | P1 | Flur-/Schwellen-Art-Pass | P1-03, P1-04 | Wohnungstür, Hausflur und Vordach bilden eine räumlich lesbare, atmosphärische Schwelle. Kleine bewohnte Details verhindern, dass Grau mit Hoffnungslosigkeit verwechselt wird. |
+| `P1-06` | P1 | Hafen-Art-Pass | P1-03 | Pier, Kiosk-Silhouette, Wagen, Wasser, Schienenweg, Schilder und Regen besitzen eigenständige Strammburg-Qualität. Warme Fenster, funktionierende Wege und einzelne Begegnungen setzen lokale Hoffnungssignale, ohne den Hafen buntzufärben. |
 | `P1-07` | P0 | Erster 353L-Animationspass | P1-03 | Idle, Walk, Run, Turn, Stop, Interact und der explosive Hufsprint werden geblendet; Füße rutschen nicht auffällig; Emote deformiert das Rig nicht. Der Hufsprint vermittelt für wenige Sekunden ungefähr doppelte Menschengeschwindigkeit, bleibt lenkbar und besitzt kontrolliertes Auslaufen. Alle vier Gliedmaßen bleiben sichtbar echte Hufe. |
 | `P1-08` | P1 | Kamera und Spielgefühl | P1-03, P1-07 | Maus/Zoom reagieren weich, Kamera clippt nicht durch Hauptwände, Sprint/Turn fühlen sich kontrolliert an, Optionen für Sensitivität vorhanden. |
 | `P1-09` | P1 | Audio- und Filmübergang | P1-04 bis P1-08 | Regen, Raumton, Schritte, Tür, Hafen und UI haben eigene Lautstärken; Filmton/Spielton überblenden; Untertitel bleiben verfügbar. |
@@ -160,7 +160,16 @@ Ziel: Eine kleine, hochwertige Stadtzone mit wiederkehrenden Menschen, Verkehr u
 | `P3-04` | P1 | 12 Kernfiguren | jede Figur hat eigenen Ort, Wunsch, Grenze, Erinnerung, Alltag und mindestens drei Folgeszenen. |
 | `P3-05` | P1 | Messenger/Anrufe | Nachrichten, Einladungen, verpasste Termine und Rückrufe; höchstens ein relevanter Impuls gleichzeitig. |
 | `P3-06` | P1 | Beziehungen | Bekanntschaft, Vertrauen, Crew, Konflikt und Distanz ohne „richtige“ Antwort oder romantischen Zwang. |
-| `P3-07` | P1 | Stadtfunk | Tageslage, Wetter, Aushänge, Satire und Konsequenzen spiegeln den Run. |
+| `P3-07` | P1 | Stadtfunk und sichtbare Hoffnung | Tageslage, Wetter, Aushänge, Satire und Konsequenzen spiegeln den Run. Verlässliche Entscheidungen verändern lokale Lichter, Grüße, Reparaturen, Pflanzen, offene Orte und kleine Stadtfunkmeldungen; kein globaler Hoffnungswert. |
+
+### Visuelle Hoffnungssprache
+
+- [ ] Eitelstedt startet überwiegend kühl, grau, nass und materialehrlich,
+- [ ] warme Lichtinseln markieren Verbindung, Schutz oder gemeinsam erhaltene Orte — nicht automatisch Reichtum,
+- [ ] Petrol/Cyan bleibt Farbe von Idee, Signal und Donkey-Connection; Orange markiert Handlung/Entscheidung,
+- [ ] Hoffnung wächst lokal und langsam durch sichtbare Weltzustände statt globaler Sättigungsfilter,
+- [ ] die Stadt darf nach Rückschlägen wieder dunkler werden, löscht aber erinnerte gute Spuren nicht grundlos,
+- [ ] keine göttliche Lichtshow bestätigt Glauben oder löst eine Aufgabe für den Spieler.
 | `P3-08` | P1 | Gruppen/Rang | Parkkreis, Signalwerk und Neonhafen erhalten Eintritt, Arbeit, Rang, Ausstieg und Ruf-Folgen. |
 | `P3-09` | P1 | Tiernetz, Zwecke und Erde-1-Fragmente | Gabenträger erkennen Zeichen und unterschiedliche Versionen der Oberen Gabe; mindestens drei Tierfiguren und zwei menschliche Perspektiven vertreten religiöse, wissenschaftliche oder zweifelnde Deutungen. Jedes Tier spürt, dass ein eigener höherer Zweck existiert, aber keine Figur erhält eine sichere Zweck-Auflösung. Der Begriff Erde-1 fällt erst nach mehreren sichtbaren Hinweisen. |
 

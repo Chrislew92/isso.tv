@@ -21,6 +21,7 @@ Arbeitspaket: Dokumentations- und Agentenfundament
 - Die älteste Tierlegende versteht die Obere Gabe als einen von Gottes Friedensplänen. **Earthpeace 2033 wurde nicht pünktlich erreicht**; EyTonLand kann später versuchen, die verspätete Aufgabe praktisch weiterzuführen.
 - Jedes aufgerichtete Tier trägt laut Tierwissen einen eigenen höheren Zweck, kennt ihn aber nicht. 353Ls Zweck bleibt ausdrücklich offen; Agenten dürfen Spuren schreiben, aber keine endgültige Antwort erfinden.
 - Menschen können ebenfalls einen unbekannten höheren Zweck besitzen; bei bewusster KI bleibt die Frage offen. Nur Tiere teilen die Gewissheit der Oberen Gabe.
+- Eitelstedt beginnt bewusst grau und nass. Hoffnung erscheint ohne Balken als lokale Weltveränderung: warme Fenster, reparierte Lichter, Grüße, Pflanzen, offene Orte und erinnerte gute Handlungen.
 
 ## Aktueller sichtbarer Stand
 

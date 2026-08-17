@@ -68,6 +68,8 @@ EyTonLand kann im späteren Spiel zu einem neuen Versuch werden, Earthpeace prak
 
 Die verpasste Frist trägt zugleich Ernst und Strammburg-Humor: Ämter diskutieren, welches Formular den Weltfrieden rückwirkend fristgerecht machen könnte; Tiere wissen, dass kein Stempel die eigentliche Arbeit ersetzt.
 
+Diese verbliebene Möglichkeit ist der Hoffnungsfaden von Erde-1. Die höhere Macht löst Probleme nicht sichtbar für den Spieler. Hoffnung zeigt sich darin, dass trotz verpasster Frist weiterhin kleine friedliche Entscheidungen möglich sind und Spuren hinterlassen.
+
 ## Wann geschah es?
 
 Der genaue Zeitpunkt wird absichtlich nicht festgelegt. Die Welt kennt mindestens drei Erzählweisen:

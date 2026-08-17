@@ -35,6 +35,14 @@ Menschen können ebenso einen höheren Zweck besitzen, und bei bewusster KI blei
 
 Die Energie darf frech, schnell und überdreht sein — eine Hommage an scharfe Animationssatire im **Gefühl**, ohne Figuren, Bildsprache, Dialoge oder Handlungen anderer Werke zu kopieren.
 
+### Hoffnung im grauen Eitelstedt
+
+Eitelstedt beginnt nass, grau, schwer und sichtbar gebraucht. Beton, stumpfe Fassaden, Regen, alte Schilder und kühles Licht bilden die Grundstimmung. Die Welt ist aber nicht hoffnungslos.
+
+Hoffnung erscheint als kleiner überprüfbarer Beweis statt als Versprechen: ein warmes Fenster, eine aufgehaltene Tür, ein wiederkehrender Gruß, eine reparierte Lampe, ein Tier, das sich in sicherer Umgebung aufrichtet, oder das erste Licht im HQ1. Die höhere Macht und der unbekannte Zweck geben dieser Hoffnung Tiefe, aber keine garantierte Belohnung.
+
+Der Spieler verändert die Stadt nicht über einen Hoffnungsbalken. Verlässliche Handlungen hinterlassen lokale Spuren: Räume werden benutzt, Menschen/Tiere erinnern sich, Licht bleibt an, Pflanzen überleben, Schilder werden lesbar und Wege fühlen sich weniger fremd an. Eitelstedt bleibt Eitelstedt; es bekommt nur nach und nach Gründe, warum 353L trotzdem bleibt.
+
 ## 3. Zentraler Konflikt: Die Große Vereinfachung
 
 Strammburg führt schrittweise die **Große Vereinfachung** ein: ein Stadtprogramm aus einem öffentlichen Amt, einer Bank-Allianz und der Plattform **Klarheit+**. Es verspricht, Wohnen, Termine, Zahlungen, Arbeit und Kontakte „mit einem Klick“ zu ordnen.
@@ -86,6 +94,7 @@ EyTonLand und das Schloss sind ein späteres Kapitel, kein Abspann. Die Frage wi
 7. **Hufwehr ist eine seltene Möglichkeit, kein vorgeschriebener Hauptloop.** Abhängig von Ort, Zeit und Entscheidungen kann 353L einen gefeierten Kneipenkampf erleben und sich später gegen einen Straßenräuber deutlich aggressiver verteidigen. Beide kurzen filmischen QTEs sind vermeidbare Verzweigungen; ein komplett gewaltfreier Run bleibt gleichwertig. Es gibt keine Blutinszenierung, Bandenwellen, wiederholbaren Belohnungen fürs Prügeln oder reale Kampfanleitung.
 8. **Glaube bleibt offen.** Die höhere Macht kann für Gott stehen, ist aber kein Questgeber, Karma-System oder Beweis für eine reale Religion. Figuren dürfen glauben, zweifeln oder nicht glauben.
 9. **Zweck bleibt ein Mysterium.** Jedes aufgerichtete Tier besitzt einen höheren Zweck, kennt ihn aber nicht. Menschen können ebenfalls einen Zweck besitzen; bei KI bleibt die Frage offen. Zweck ersetzt weder freien Willen noch Verantwortung und wird nicht als Missionsliste oder Klassenwert angezeigt.
+10. **Hoffnung wird gezeigt, nicht gezählt.** Kleine sichtbare Veränderungen, Beziehungen und wiederkehrende Gesten tragen Hoffnung. Es gibt keinen Hoffnungswert und keine plötzliche göttliche Rettung.
 
 ## 6. Wiederkehrende Figuren und Gruppen
 
