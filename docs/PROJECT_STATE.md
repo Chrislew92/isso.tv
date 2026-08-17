@@ -77,6 +77,7 @@ Die folgenden Systeme existierten teilweise als V2-Prototyp oder Konzept, sind a
 - mehrere Save-Slots, Export/Import und Save-Migrationen,
 - Controller-, Touch- und vollständige Mobile-Steuerung,
 - Audio-Landschaft, Musik-State-System und professionelle Animation-Blends,
+- Synchronsprecher, datengetriebenes Dialogsystem, vollständige Vertonung und Tier-Lippensynchronität,
 - echte Kollisions-/Physikschicht, Navigation Mesh, Treppen und Interaktionsanimationen,
 - finaler Environment-Art-Pass, LOD/Kompression und Ladefortschritt,
 - fertige Impressums-/Datenschutzseiten im aktuellen V3-Build,

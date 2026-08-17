@@ -92,11 +92,12 @@ Ziel: Der Pfad **Film → Wohnung → Flur → Hafen → Bahnhof/Signalwerk → 
 | `P1-06` | P1 | Hafen-Art-Pass | P1-03 | Pier, Kiosk-Silhouette, Wagen, Wasser, Schienenweg, Schilder und Regen besitzen eigenständige Strammburg-Qualität. Warme Fenster, funktionierende Wege und einzelne Begegnungen setzen lokale Hoffnungssignale, ohne den Hafen buntzufärben. |
 | `P1-07` | P0 | Erster 353L-Animationspass | P1-03 | Idle, Walk, Run, Turn, Stop, Interact und der explosive Hufsprint werden geblendet; Füße rutschen nicht auffällig; Emote deformiert das Rig nicht. Der Hufsprint vermittelt für wenige Sekunden ungefähr doppelte Menschengeschwindigkeit, bleibt lenkbar und besitzt kontrolliertes Auslaufen. Alle vier Gliedmaßen bleiben sichtbar echte Hufe. |
 | `P1-08` | P1 | Kamera und Spielgefühl | P1-03, P1-07 | Maus/Zoom reagieren weich, Kamera clippt nicht durch Hauptwände, Sprint/Turn fühlen sich kontrolliert an, Optionen für Sensitivität vorhanden. |
-| `P1-09` | P1 | Audio- und Filmübergang | P1-04 bis P1-08 | Regen, Raumton, Schritte, Tür, Hafen und UI haben eigene Lautstärken; Filmton/Spielton überblenden; Untertitel bleiben verfügbar. |
+| `P1-09` | P1 | Audio- und Filmübergang | P1-04 bis P1-08 | Regen, Raumton, Schritte, Tür, Hafen, UI und Sprache haben eigene Lautstärken; Filmton/Spielton überblenden; Untertitel bleiben verfügbar. |
 | `P1-10` | P1 | Ein kompletter Entscheidungsbogen | P1-02 bis P1-09 | Jede der fünf Stationen besitzt klare Interaktion, sofortige Folge und einen korrekten Nachhall ohne Duplikat. |
 | `P1-11` | P0 | Lade-/Fehlerzustände | P1-01 | Modellfortschritt ist sichtbar; fehlendes WebGL/Assetfehler führen zu verständlicher Meldung statt Weißbild. |
 | `P1-12` | P0 | Vertical-Slice-QA | alle P1 | `docs/QA_RELEASE.md` lokales Gate vollständig; frischer Save, Reload, Reset, Build, Test und Konsole geprüft. |
 | `P1-13` | P1 | Haltungstest der Oberen Gabe | P1-03, P1-07 | 353L wechselt flüssig zwischen aufrechter Stadtbewegung und Tierlauf/Hufsprint. Der Test entscheidet anhand Lesbarkeit und Rigqualität, ob der Sprint vierbeinig oder stark vorgebeugt bleibt; keine Menschenhände/-füße und keine brechende Transformation. |
+| `P1-14` | P0 | Full-Voice-/Tier-Lip-Sync-Fundament | P1-07, P1-09 | Pipeline gemäß `docs/VOICE_AND_LIPSYNC.md`: stabile Dialog-IDs, deutsche Untertitel, 353L-Castingtest, erste Donkey-Connection vollständig gesprochen, Schnauzen-Viseme plus Ohren/Blick/Atem, Skip/Reload/Fallback geprüft. |
 
 ## M1-Gate
 
@@ -157,7 +158,7 @@ Ziel: Eine kleine, hochwertige Stadtzone mit wiederkehrenden Menschen, Verkehr u
 | `P3-01` | P0 | Datengetriebene Zonen/Streaming | Bezirke laden kontrolliert; Minimap und Orte verwenden dieselben Daten. |
 | `P3-02` | P1 | Verkehr | zu Fuß, Bus, Bahn, Fähre, Nachtlinie und Taxi kosten sichtbar Zeit/Geld; mindestens Bus+Bahn spielbar. |
 | `P3-03` | P0 | NPC-Grundsystem | NPC-ID, Ort, Termin, Beziehung, Erinnerung und Agenda sind persistierbar/testbar. |
-| `P3-04` | P1 | 12 Kernfiguren | jede Figur hat eigenen Ort, Wunsch, Grenze, Erinnerung, Alltag und mindestens drei Folgeszenen. |
+| `P3-04` | P1 | 12 Kernfiguren | jede Figur hat eigenen Ort, Wunsch, Grenze, Erinnerung, Alltag und mindestens drei Folgeszenen. Für jede wiederkehrende Sprechrolle existieren Castingprofil, Aussprache und geklärter Vertonungsplan. |
 | `P3-05` | P1 | Messenger/Anrufe | Nachrichten, Einladungen, verpasste Termine und Rückrufe; höchstens ein relevanter Impuls gleichzeitig. |
 | `P3-06` | P1 | Beziehungen | Bekanntschaft, Vertrauen, Crew, Konflikt und Distanz ohne „richtige“ Antwort oder romantischen Zwang. |
 | `P3-07` | P1 | Stadtfunk und sichtbare Hoffnung | Tageslage, Wetter, Aushänge, Satire und Konsequenzen spiegeln den Run. Verlässliche Entscheidungen verändern lokale Lichter, Grüße, Reparaturen, Pflanzen, offene Orte und kleine Stadtfunkmeldungen; kein globaler Hoffnungswert. |

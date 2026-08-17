@@ -27,6 +27,8 @@ Kein Agent darf 353Ls höheren Zweck endgültig definieren, als Twist enthüllen
 
 Für Arbeiten an Weltgeschichte, Jahr 2033, höherer Macht, Gott-/Glaubensdeutung, Parallelwelt oder neuen Naturgesetzen zusätzlich `docs/EARTH_1.md` vollständig lesen. ISSO.TV bestätigt keine reale Religion als einzig wahr und benutzt Glauben nicht als Punktesystem.
 
+Für Arbeiten an Dialog, Sprecher, Aufnahme, Untertiteln, Audio, Mund-/Schnauzenanimation oder Lippensynchronität zusätzlich `docs/VOICE_AND_LIPSYNC.md` vollständig lesen. Eine provisorische oder synthetische Stimme wird nie ungefragt zur Masterstimme; Stimmrechte und synthetische Ableitungen brauchen getrennte ausdrückliche Klärung.
+
 Für den **tatsächlichen Implementierungsstand** gilt: ausführbare Tests und aktueller Code > `docs/PROJECT_STATE.md` > `ROADMAP.md` > ältere Konzepttexte. Für **Arbeits-, Sicherheits- und Deploymentregeln** bleibt `AGENTS.md` verbindlich. Ein Widerspruch wird dokumentiert und bereinigt; er wird nicht stillschweigend geraten.
 
 ## 3. Nicht verhandelbare Regeln

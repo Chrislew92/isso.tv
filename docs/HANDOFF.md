@@ -22,6 +22,7 @@ Arbeitspaket: Dokumentations- und Agentenfundament
 - Jedes aufgerichtete Tier trägt laut Tierwissen einen eigenen höheren Zweck, kennt ihn aber nicht. 353Ls Zweck bleibt ausdrücklich offen; Agenten dürfen Spuren schreiben, aber keine endgültige Antwort erfinden.
 - Menschen können ebenfalls einen unbekannten höheren Zweck besitzen; bei bewusster KI bleibt die Frage offen. Nur Tiere teilen die Gewissheit der Oberen Gabe.
 - Eitelstedt beginnt bewusst grau und nass. Hoffnung erscheint ohne Balken als lokale Weltveränderung: warme Fenster, reparierte Lichter, Grüße, Pflanzen, offene Orte und erinnerte gute Handlungen.
+- `docs/VOICE_AND_LIPSYNC.md` definiert Full Voice: 353L braucht einen festen Synchronsprecher, relevante Dialoge werden gesprochen/untertitelt und Tierfiguren erhalten artspezifische Viseme plus Ohren-/Blick-/Atemperformance. Casting und Rechte sind noch offen; noch nicht implementiert.
 
 ## Aktueller sichtbarer Stand
 

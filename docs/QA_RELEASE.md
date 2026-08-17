@@ -9,6 +9,7 @@
 - [ ] Reload lädt den Run ohne Crash,
 - [ ] Reset fragt nach und betrifft nur den lokalen V3-Save,
 - [ ] Browserkonsole enthält keine neuen Fehler/Warnschleifen,
+- [ ] Sprache, Untertitel, Skip und fehlendes-Audio-Fallback lösen keine Szene doppelt aus,
 - [ ] `npm run test` erfolgreich,
 - [ ] `npm run build` erfolgreich,
 - [ ] `npm audit` ohne ungeklärte relevante Lücke,
@@ -24,6 +25,7 @@
 | Mobile | 390×844, Touch | Einstieg, Untertitel, UI und Pause bedienbar |
 | Reduced Motion | OS/Browser-Einstellung | keine erzwungenen starken UI-Bewegungen |
 | Tastatur | ohne Maus | Menüs, Fokus, Dialoge und Reset erreichbar |
+| Stumm/Untertitel | Ton 0 | kompletter Storypfad verständlich und bedienbar |
 
 ## Performance-Budgets für Phase 1
 
@@ -33,6 +35,7 @@
 - Runtime-Modelle erhalten dokumentierte Polygon-/Texturkosten.
 - Initiales Laden zeigt Fortschritt/Fehlerzustand und friert die UI nicht ein.
 - Neue Assets werden erst nach Sicht- und Laufzeittest in `public/` übernommen.
+- Sprachdateien werden szenenweise geladen; Viseme dürfen die Bildrate nicht sichtbar destabilisieren.
 
 ## Release-Gate für die einzige Live-Version
 

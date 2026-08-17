@@ -95,6 +95,7 @@ EyTonLand und das Schloss sind ein späteres Kapitel, kein Abspann. Die Frage wi
 8. **Glaube bleibt offen.** Die höhere Macht kann für Gott stehen, ist aber kein Questgeber, Karma-System oder Beweis für eine reale Religion. Figuren dürfen glauben, zweifeln oder nicht glauben.
 9. **Zweck bleibt ein Mysterium.** Jedes aufgerichtete Tier besitzt einen höheren Zweck, kennt ihn aber nicht. Menschen können ebenfalls einen Zweck besitzen; bei KI bleibt die Frage offen. Zweck ersetzt weder freien Willen noch Verantwortung und wird nicht als Missionsliste oder Klassenwert angezeigt.
 10. **Hoffnung wird gezeigt, nicht gezählt.** Kleine sichtbare Veränderungen, Beziehungen und wiederkehrende Gesten tragen Hoffnung. Es gibt keinen Hoffnungswert und keine plötzliche göttliche Rettung.
+11. **Figuren haben hörbare Identität.** Relevante Dialoge werden gesprochen und untertitelt. 353L besitzt eine feste Stimme; Schnauze, Ohren, Blick, Atem und Körper spielen gemeinsam. Tierfiguren erhalten niemals menschliche Lippen als Animationsabkürzung.
 
 ## 6. Wiederkehrende Figuren und Gruppen
 

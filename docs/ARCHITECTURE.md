@@ -113,6 +113,17 @@ Vor einem Asset-Commit prüfen:
 - Online-Kurse erhalten Cache, Timeout und Offline-Fallback; Saves speichern keine externen Rohantworten.
 - Audio, Untertitel, Controller und Touch gelten als Teil des Features, nicht als spätere Dekoration.
 
+## Dialog-, Voice- und Lip-Sync-Pipeline
+
+Die verbindliche Spezifikation steht in `docs/VOICE_AND_LIPSYNC.md`.
+
+- Dialogzustand speichert stabile IDs statt lokalisierter Sätze.
+- Langfristige Inhalte liegen datengetrieben unter `src/content/dialogue/`.
+- Audio, Untertitel und Viseme referenzieren dieselbe ID.
+- Tier-Viseme werden auf artspezifische Shape Keys/Bones gemappt; Performance-Layer für Ohren/Blick/Gesten bleibt getrennt.
+- Fehlendes Audio/Viseme fällt auf Untertitel bzw. ruhige Kieferbewegung zurück und blockiert den Run nicht.
+- Sprachassets werden szenenweise lazy geladen und getrennt von Musik/Effekten geregelt.
+
 ## Architekturentscheidungen
 
 Neue dauerhafte Entscheidungen in `docs/DECISIONS.md` eintragen: Datum, Entscheidung, Grund, Alternativen, Folgen. Große Framework-Wechsel brauchen vor Implementierung eine eigene Entscheidung und einen messbaren Nutzen.

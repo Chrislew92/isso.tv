@@ -94,6 +94,13 @@ Dieses Protokoll hält dauerhafte Produkt-/Architekturentscheidungen fest. Neue 
 - Grund: Die höhere Macht, der unbekannte Zweck und der verspätete Earthpeace-Plan sollen Hoffnung ermöglichen, ohne Probleme kleinzureden oder das Spiel religiös zu machen.
 - Folge: Art-, Licht-, Audio- und World-State-Arbeit nutzt eine langsame lokale Hoffnungssprache. Grau bleibt Teil der Identität; Entscheidungen schaffen einzelne warme Beweise und können späteren Figuren-/Stadtfunk-Nachhall auslösen.
 
+## D-014 — ISSO.TV erhält Full Voice und tiergerechte Lippensynchronität
+
+- Datum: 17.08.2026
+- Entscheidung: 353L erhält einen festen Synchronsprecher; relevante Storydialoge, gewählte Antworten, Gedanken, Telefonate und NPC-Szenen werden gesprochen und untertitelt. Tierfiguren synchronisieren Sprache über artspezifische Schnauzen-/Schnabel-Viseme sowie getrennte Ohren-, Blick-, Atem- und Körperperformance.
+- Grund: Das Spiel soll sich wie ein durchgehender interaktiver 3D-Film anfühlen und Figuren über Stimme ebenso unverwechselbar machen wie über Körper und Entscheidungen.
+- Folge: Dialoge werden datengetrieben über stabile IDs produziert. Der erste Slice vertont 353L/Lotte vollständig. Dynamische Zahlen bleiben semantischer Text statt Sprachschnipsel. Die finale Stimme braucht ausdrückliche Besetzungsfreigabe und geklärte Rechte; synthetische Ableitung ist niemals automatisch erlaubt. Untertitel-only und stummes Spielen bleiben vollständig möglich.
+
 ## Vorlage
 
 ```text
