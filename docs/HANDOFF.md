@@ -36,6 +36,8 @@ Arbeitspaket: HD-Hafenpass, sichere Außenkamera, animierte Wasser-/Nassflächen
 - Die geöffnete Tür ist wirklich passierbar. Im Flur bleibt die Linse näher an der Korridormitte; am Hafen bleibt sie hinter 353L und wechselt die Laufrichtung bei gedrücktem W nicht mehr um.
 - 353L besitzt einen deformierenden Kiefer; 353L/Lotte/Bahnhof sprechen elf lokale deutsche KI-Vorschauzeilen mit Untertitel- und Autoplay-Fallback.
 - Untertitel blenden selbst dann aus, wenn ein Browseraudio weder `ended` noch einen Fehler meldet.
+- 353L besitzt jetzt einen ersten geglätteten Walk/Run/Turn/Stop-Gait mit Knie-/Hufarbeit, Gegenschwung, Hüftgewicht, Oberkörperneigung und Idle-Atmung.
+- Wiederholte statische Details werden nach Bevel-Anwendung gebatcht; Blender meldet 277 Objekte / 272 Meshes. Wohnung, Flur und Hafen wurden danach erneut visuell geprüft.
 - Die lokale Vorschau ist noch kein freigegebener Release.
 
 ## Zuletzt geprüft
@@ -44,13 +46,13 @@ Arbeitspaket: HD-Hafenpass, sichere Außenkamera, animierte Wasser-/Nassflächen
 - `npm run build`: erfolgreich.
 - `npm audit`: 0 bekannte Sicherheitslücken.
 - Browser-Abnahme: automatischer Filmstart, Wohnung, echter Tür-/Flur-/Vordach-/Hafenlauf, kamerarelative Steuerung, Rollwagenprompt, Auswahl „Direkt helfen“, sichtbare Wagenfolge und Nachhall 3 → 4 geprüft. Untertitel-Failsafe geprüft; keine Konsolenwarnungen oder -fehler.
-- Produktionsbuild: Runtime-Chunk rund 978,78 kB / 267,13 kB gzip; Level-GLB 7.920.276 Byte. Die aktuelle FPS-/Core-Web-Vitals-Messung bleibt offen, weil in dieser Umgebung kein Chrome-Trace-Werkzeug verfügbar ist.
+- Produktionsbuild: Runtime-Chunk rund 981,10 kB / 267,66 kB gzip; Level-GLB 8.013.760 Byte. Die aktuelle FPS-/Core-Web-Vitals-Messung bleibt offen, weil in dieser Umgebung kein Chrome-Trace-Werkzeug verfügbar ist.
 
 ## Bekannte Risiken
 
 - Wohnung, Flur, Vordach und Hafen besitzen einen ersten zusammenhängenden Art-Pass; Bahnhof/Signalwerk brauchen weitere Innenräume, Beschilderung, Props und NPCs.
 - Harte Bewegungsgrenzen statt echter Kollision/Navmesh.
-- Level-GLB jetzt rund 7,92 MB trotz größerer Welt; Laufzeit-JPEGs sind eingebettet, Produktions-LOD/KTX2 fehlen weiterhin.
+- Level-GLB jetzt rund 8,01 MB trotz größerer Welt; Laufzeit-JPEGs und statische Detailbatches sind eingebettet, Produktions-LOD/KTX2 fehlen weiterhin.
 - V2-Systeme sind noch nicht in V3 integriert.
 - Rechtstext-Links führen im lokalen V3-Build noch nicht zu fertigen Dateien.
 

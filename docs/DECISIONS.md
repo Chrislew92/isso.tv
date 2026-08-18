@@ -114,7 +114,7 @@ Dieses Protokoll hält dauerhafte Produkt-/Architekturentscheidungen fest. Neue 
 - Entscheidung: Jede extern erzeugte HD-Oberfläche bleibt als verlustfreier PNG-Master im Projekt. Das GLB bettet eine visuell geprüfte JPEG-Laufzeitfassung ein; Dateiname und Einsatz sind ausdrücklich getrennt.
 - Grund: Die Masterquelle soll für spätere Material-/KTX2-Arbeit erhalten bleiben, ohne Startzeit und GLB durch mehrere unkomprimierte 2K-Oberflächen unnötig zu belasten.
 - Erwogene Alternative: Nur PNG ausliefern; verworfen, weil der erste Hafenexport das Level-GLB auf rund 15,1 MB vergrößerte. Nur JPEG behalten; verworfen, weil wiederholte Bearbeitung dann auf einer verlustbehafteten Quelle aufbauen würde.
-- Folge: Der erweiterte Weltstand liegt mit drei Laufzeittexturen bei rund 7,92 MB. Vor späterem Release werden KTX2, Mipmaps, LOD und sichtbarer Qualitätsvergleich erneut geprüft; PNG-Master werden nicht automatisch an den Browser ausgeliefert.
+- Folge: Der erweiterte und statisch gebatchte Weltstand liegt mit drei Laufzeittexturen bei rund 8,01 MB. Vor späterem Release werden KTX2, Mipmaps, LOD und sichtbarer Qualitätsvergleich erneut geprüft; PNG-Master werden nicht automatisch an den Browser ausgeliefert.
 
 ## Vorlage
 

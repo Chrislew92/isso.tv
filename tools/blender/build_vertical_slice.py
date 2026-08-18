@@ -130,6 +130,31 @@ def empty(name, location=(0, 0, 0), parent=None):
     return obj
 
 
+def merge_static(prefix, merged_name):
+    """Bake modifiers and batch repeated non-interactive detail meshes."""
+    objects = [
+        obj for obj in bpy.context.scene.objects
+        if obj.type == 'MESH' and obj.name.startswith(prefix)
+    ]
+    if len(objects) < 2:
+        return objects[0] if objects else None
+
+    for obj in objects:
+        bpy.ops.object.select_all(action='DESELECT')
+        obj.select_set(True)
+        bpy.context.view_layer.objects.active = obj
+        for modifier in list(obj.modifiers):
+            bpy.ops.object.modifier_apply(modifier=modifier.name)
+
+    bpy.ops.object.select_all(action='DESELECT')
+    for obj in objects:
+        obj.select_set(True)
+    bpy.context.view_layer.objects.active = objects[0]
+    bpy.ops.object.join()
+    objects[0].name = merged_name
+    return objects[0]
+
+
 def ear_mesh(name, location, side, mat, parent):
     width = 0.2
     depth = 0.13
@@ -594,6 +619,18 @@ def main():
         'lamp': material('lamp_warm', (1.0, 0.45, 0.12), 0.0, 0.22, (1.0, 0.24, 0.025)),
     }
     build_level(mats)
+    for prefix, merged_name in (
+        ('brick_', 'facade_masonry_details'),
+        ('awning_roof_rib_', 'awning_roof_ribs'),
+        ('harbor_drain_grate_', 'harbor_drain_grates'),
+        ('container_rib_', 'container_ribs'),
+        ('room_floorboard_', 'room_floorboards'),
+        ('radiator_fin_', 'radiator_fins'),
+        ('hall_ceiling_rib_', 'hall_ceiling_ribs'),
+        ('station_cladding_band_', 'station_cladding_bands'),
+        ('kiosk_paper_', 'kiosk_papers'),
+    ):
+        merge_static(prefix, merged_name)
     add_metadata()
     export_project(repo_root)
 

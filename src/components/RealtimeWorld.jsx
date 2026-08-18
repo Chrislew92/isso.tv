@@ -240,6 +240,10 @@ function Level({ run, paused, onInteract, onPrompt, onPosition, onReady, voiceSt
   const motion = useRef({
     moving: false,
     time: 0,
+    pace: 0,
+    stridePhase: 0,
+    turnLean: 0,
+    baseY: 0,
     emoteUntil: 0,
     doorAngle: 0,
     cartShift: 0,
@@ -259,10 +263,19 @@ function Level({ run, paused, onInteract, onPrompt, onPosition, onReady, voiceSt
   const { camera, gl } = useThree()
 
   const rigs = useMemo(() => ({
+    hips: characterModel.getObjectByName('rig_hips'),
+    spine: characterModel.getObjectByName('rig_spine'),
+    neck: characterModel.getObjectByName('rig_neck'),
     armL: characterModel.getObjectByName('rig_arm_l'),
     armR: characterModel.getObjectByName('rig_arm_r'),
+    forearmL: characterModel.getObjectByName('rig_forearm_l'),
+    forearmR: characterModel.getObjectByName('rig_forearm_r'),
     legL: characterModel.getObjectByName('rig_leg_l'),
     legR: characterModel.getObjectByName('rig_leg_r'),
+    shinL: characterModel.getObjectByName('rig_shin_l'),
+    shinR: characterModel.getObjectByName('rig_shin_r'),
+    footL: characterModel.getObjectByName('rig_foot_l'),
+    footR: characterModel.getObjectByName('rig_foot_r'),
     head: characterModel.getObjectByName('rig_head'),
     earL: characterModel.getObjectByName('rig_ear_l'),
     earR: characterModel.getObjectByName('rig_ear_r'),
@@ -286,6 +299,7 @@ function Level({ run, paused, onInteract, onPrompt, onPosition, onReady, voiceSt
     character.current.scale.setScalar(2.15 / initialHeight)
     character.current.updateMatrixWorld(true)
     const groundedBounds = new Box3().setFromObject(character.current)
+    motion.current.baseY = -groundedBounds.min.y
     const previewZone = import.meta.env.DEV ? new URLSearchParams(window.location.search).get('preview') : null
     const previewHallway = previewZone === 'hall'
     const previewThreshold = previewZone === 'threshold'
@@ -293,7 +307,7 @@ function Level({ run, paused, onInteract, onPrompt, onPosition, onReady, voiceSt
     const previewHarbor = previewZone === 'harbor'
     character.current.position.set(
       previewHallway ? 7.35 : previewThreshold ? 3.48 : previewAwning ? 13.8 : previewHarbor ? 17.1 : -1.1,
-      -groundedBounds.min.y,
+      motion.current.baseY,
       previewHallway || previewThreshold || previewAwning ? 0 : previewHarbor ? 3.1 : 0.7,
     )
     if (previewHarbor) character.current.rotation.y = Math.PI
@@ -412,22 +426,62 @@ function Level({ run, paused, onInteract, onPrompt, onPosition, onReady, voiceSt
 
     if (moving) {
       direction.normalize()
-      const speed = activeKeys.has('shift') ? 4.25 : 3.05
-      next.copy(root.position).addScaledVector(direction, dt * speed)
+      const desiredSpeed = activeKeys.has('shift') ? 4.25 : 3.05
+      motion.current.travelSpeed = MathUtils.lerp(
+        motion.current.travelSpeed ?? 0,
+        desiredSpeed,
+        1 - Math.exp(-dt * 8.5),
+      )
+      next.copy(root.position).addScaledVector(direction, dt * motion.current.travelSpeed)
       root.position.copy(clampMovement(root.position, next, run.doorOpen))
       const desiredRotation = Math.atan2(direction.x, direction.z)
-      root.rotation.y = MathUtils.lerp(root.rotation.y, desiredRotation, 1 - Math.exp(-dt * 12))
+      const turnDelta = MathUtils.euclideanModulo(desiredRotation - root.rotation.y + Math.PI, Math.PI * 2) - Math.PI
+      root.rotation.y += turnDelta * (1 - Math.exp(-dt * 12))
+      motion.current.turnLean = MathUtils.lerp(motion.current.turnLean, MathUtils.clamp(turnDelta * 0.46, -0.22, 0.22), 1 - Math.exp(-dt * 9))
+    } else {
+      motion.current.travelSpeed = MathUtils.lerp(motion.current.travelSpeed ?? 0, 0, 1 - Math.exp(-dt * 13))
+      motion.current.turnLean = MathUtils.lerp(motion.current.turnLean, 0, 1 - Math.exp(-dt * 7))
     }
 
-    const step = moving ? Math.sin(motion.current.time * (activeKeys.has('shift') ? 11 : 8.5)) * 0.45 : 0
+    const targetPace = moving ? (activeKeys.has('shift') ? 1 : 0.62) : 0
+    motion.current.pace = MathUtils.lerp(
+      motion.current.pace,
+      targetPace,
+      1 - Math.exp(-dt * (moving ? 9 : 11)),
+    )
+    motion.current.stridePhase += dt * MathUtils.lerp(3.8, 10.8, motion.current.pace)
+    const stride = Math.sin(motion.current.stridePhase)
+    const strideOpposite = -stride
+    const step = stride * 0.62 * motion.current.pace
+    const leftKnee = Math.max(0, -stride) * 0.42 * motion.current.pace
+    const rightKnee = Math.max(0, stride) * 0.42 * motion.current.pace
+    const breathing = Math.sin(motion.current.time * 1.55) * 0.012
+    const bodyBob = moving
+      ? (Math.abs(Math.sin(motion.current.stridePhase * 2)) - 0.5) * (0.025 + motion.current.pace * 0.025)
+      : breathing * 0.35
+    root.position.y = motion.current.baseY + bodyBob
     const emote = performance.now() < motion.current.emoteUntil
     const voice = voiceState?.current
     const voiceLevel = voice?.active && voice.speaker === '353L' ? voice.level : 0
     const mouthLevel = voice?.active ? voice.mouth : 0
-    if (rigs.legL) rigs.legL.rotation.x = MathUtils.lerp(rigs.legL.rotation.x, rigRest.legL.x + step, dt * 12)
-    if (rigs.legR) rigs.legR.rotation.x = MathUtils.lerp(rigs.legR.rotation.x, rigRest.legR.x - step, dt * 12)
-    if (rigs.armL) rigs.armL.rotation.x = MathUtils.lerp(rigs.armL.rotation.x, rigRest.armL.x - step * 0.62 - (emote ? 0.75 : 0), dt * 12)
-    if (rigs.armR) rigs.armR.rotation.x = MathUtils.lerp(rigs.armR.rotation.x, rigRest.armR.x + step * 0.62 + (emote ? 0.22 : 0), dt * 12)
+    if (rigs.legL) rigs.legL.rotation.x = MathUtils.lerp(rigs.legL.rotation.x, rigRest.legL.x + step, 1 - Math.exp(-dt * 14))
+    if (rigs.legR) rigs.legR.rotation.x = MathUtils.lerp(rigs.legR.rotation.x, rigRest.legR.x + strideOpposite * 0.62 * motion.current.pace, 1 - Math.exp(-dt * 14))
+    if (rigs.shinL) rigs.shinL.rotation.x = MathUtils.lerp(rigs.shinL.rotation.x, rigRest.shinL.x + leftKnee, 1 - Math.exp(-dt * 15))
+    if (rigs.shinR) rigs.shinR.rotation.x = MathUtils.lerp(rigs.shinR.rotation.x, rigRest.shinR.x + rightKnee, 1 - Math.exp(-dt * 15))
+    if (rigs.footL) rigs.footL.rotation.x = MathUtils.lerp(rigs.footL.rotation.x, rigRest.footL.x - step * 0.22 - leftKnee * 0.28, 1 - Math.exp(-dt * 17))
+    if (rigs.footR) rigs.footR.rotation.x = MathUtils.lerp(rigs.footR.rotation.x, rigRest.footR.x + step * 0.22 - rightKnee * 0.28, 1 - Math.exp(-dt * 17))
+    if (rigs.armL) rigs.armL.rotation.x = MathUtils.lerp(rigs.armL.rotation.x, rigRest.armL.x - step * 0.70 - (emote ? 0.75 : 0), 1 - Math.exp(-dt * 12))
+    if (rigs.armR) rigs.armR.rotation.x = MathUtils.lerp(rigs.armR.rotation.x, rigRest.armR.x + step * 0.70 + (emote ? 0.22 : 0), 1 - Math.exp(-dt * 12))
+    if (rigs.forearmL) rigs.forearmL.rotation.x = MathUtils.lerp(rigs.forearmL.rotation.x, rigRest.forearmL.x - Math.max(0, step) * 0.18, 1 - Math.exp(-dt * 13))
+    if (rigs.forearmR) rigs.forearmR.rotation.x = MathUtils.lerp(rigs.forearmR.rotation.x, rigRest.forearmR.x + Math.min(0, step) * 0.18, 1 - Math.exp(-dt * 13))
+    if (rigs.hips) {
+      rigs.hips.rotation.z = MathUtils.lerp(rigs.hips.rotation.z, rigRest.hips.z + stride * 0.035 * motion.current.pace - motion.current.turnLean * 0.32, 1 - Math.exp(-dt * 10))
+      rigs.hips.rotation.y = MathUtils.lerp(rigs.hips.rotation.y, rigRest.hips.y + stride * 0.025 * motion.current.pace, 1 - Math.exp(-dt * 10))
+    }
+    if (rigs.spine) {
+      rigs.spine.rotation.x = MathUtils.lerp(rigs.spine.rotation.x, rigRest.spine.x - motion.current.pace * 0.045 + breathing, 1 - Math.exp(-dt * 9))
+      rigs.spine.rotation.z = MathUtils.lerp(rigs.spine.rotation.z, rigRest.spine.z + motion.current.turnLean * 0.42 - stride * 0.018 * motion.current.pace, 1 - Math.exp(-dt * 9))
+    }
     if (rigs.head) {
       rigs.head.rotation.z = rigRest.head.z + Math.sin(motion.current.time * 1.1) * 0.018 + voiceLevel * 0.025
       rigs.head.rotation.x = MathUtils.lerp(rigs.head.rotation.x, rigRest.head.x - voiceLevel * 0.035, dt * 10)
