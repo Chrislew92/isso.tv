@@ -2,7 +2,7 @@
 
 Datum / Agent: 18.08.2026 / Codex
 
-Ausgangs-Commit: `d8e597f`
+Ausgangs-Commit: `06d4322`
 
 Arbeitspaket: HD-Hafenpass, sichere Außenkamera, 353L-Gait, lesbare 3D-Beschilderung und vollständiger Browser-Kernlauf
 
@@ -40,6 +40,7 @@ Arbeitspaket: HD-Hafenpass, sichere Außenkamera, 353L-Gait, lesbare 3D-Beschild
 - Untertitel blenden selbst dann aus, wenn ein Browseraudio weder `ended` noch einen Fehler meldet.
 - 353L besitzt jetzt einen ersten geglätteten Walk/Run/Turn/Stop-Gait mit Knie-/Hufarbeit, Gegenschwung, Hüftgewicht, Oberkörperneigung und Idle-Atmung.
 - Gehaltenes Shift aktiviert den sichtbaren `⇧ HUFSPRINT`: Zielgeschwindigkeit 6,15 statt 3,05 Welteinheiten/Sekunde, weiches Anlaufen/Ausrollen, stärkere Körpervorlage und eine kontrollierte FOV-Erweiterung.
+- Der 3D-Lader zeigt Prozent, Bausteinzähler und Fortschrittsleiste. Ein Error Boundary ersetzt Asset-/Runtime-Weißbilder durch einen verständlichen Vollbild-Fallback mit erhaltenem Save und Ein-Klick-Neuladen.
 - Wiederholte statische Details werden nach Bevel-Anwendung gebatcht; Blender meldet nach Schildern, Pendelleuchten, Schiff und ferner Speicherstadt 317 Objekte / 312 Meshes. Wohnung, Flur und Hafen wurden danach erneut visuell geprüft.
 - Die lokale Vorschau ist noch kein freigegebener Release.
 
@@ -48,8 +49,8 @@ Arbeitspaket: HD-Hafenpass, sichere Außenkamera, 353L-Gait, lesbare 3D-Beschild
 - `npm run test`: 16 Tests bestanden.
 - `npm run build`: erfolgreich.
 - `npm audit`: 0 bekannte Sicherheitslücken.
-- Browser-Abnahme: automatischer Filmstart, Wohnung, echter Tür-/Flur-/Vordach-/Hafenlauf, kamerarelative Steuerung, Rollwagenprompt, Auswahl „Direkt helfen“, sichtbare Wagenfolge und Nachhall 3 → 4 geprüft. Untertitel-Failsafe geprüft; keine Konsolenwarnungen oder -fehler.
-- Produktionsbuild: Runtime-Chunk rund 981,41 kB / 267,77 kB gzip; Level-GLB 8.675.592 Byte. Die aktuelle FPS-/Core-Web-Vitals-Messung bleibt offen, weil in dieser Umgebung kein Chrome-Trace-Werkzeug verfügbar ist.
+- Browser-Abnahme: automatischer Filmstart, Wohnung, echter Tür-/Flur-/Vordach-/Hafenlauf, kamerarelative Steuerung, Rollwagenprompt, Auswahl „Direkt helfen“, sichtbare Wagenfolge und Nachhall 3 → 4 geprüft. Untertitel-Failsafe und absichtlich ausgelöster 3D-Fehlerfallback geprüft; im normalen Lauf keine Konsolenwarnungen oder -fehler.
+- Produktionsbuild: Runtime-Chunk rund 983,18 kB / 268,55 kB gzip; Level-GLB 8.675.592 Byte. Die aktuelle FPS-/Core-Web-Vitals-Messung bleibt offen, weil in dieser Umgebung kein Chrome-Trace-Werkzeug verfügbar ist.
 
 ## Bekannte Risiken
 

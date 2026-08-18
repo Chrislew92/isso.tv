@@ -4,7 +4,7 @@ Stand: 18.08.2026
 
 Aktiver Branch: `master`
 
-Verifizierte Basis: `d8e597f` (`Give 353L a cinematic hoof sprint`).
+Verifizierte Basis: `06d4322` (`Replace 3D white screens with recoverable loading states`).
 
 Freigabe: **nur lokal; kein Deploy**
 
@@ -108,6 +108,7 @@ Teilstand 18.08.2026:
 - `P1-07`: erster Laufzeit-Gait-Pass blendet Anlaufen/Stoppen, Walk/Run-Pace, Oberschenkel, Knie, Hufe, Gegenschwung der Arme, Hüftgewicht, Oberkörperneigung, Kurvenlage und ruhige Atmung. Gehaltenes Shift erzeugt jetzt einen kontrolliert anlaufenden Hufsprint mit ungefähr doppelter Gehgeschwindigkeit, stärkerer Körpervorlage und leicht erweitertem Kamerablick. Authored AnimationClips, Foot-Lock, Sprintlimit und endgültige Hufsprint-Abnahme bleiben offen.
 - `P1-08`: der zonenabhängige Kamerapass hält die Linse im Flur zur Korridormitte, verhindert den alten schwarzen Wandclip und führt hinter 353L stabil ins Hafengelände. Freie geometrische Kamera-Kollision und Sensitivitätsoptionen bleiben offen.
 - `P1-09`: blockiertes oder festhängendes Browseraudio kann Untertitel nicht mehr dauerhaft als HUD stehen lassen; ein 6,8-Sekunden-Failsafe räumt die Zeile auf. Raum-, Regen-, Schritt- und Hafensound bleiben offen.
+- `P1-11`: der 3D-Suspensezustand zeigt Prozent, geladene Bausteine und eine sichtbare Fortschrittsleiste. Runtime-/Assetfehler landen in einem bildschirmfüllenden Strammburg-Fallback mit Hinweis auf den erhaltenen Spielstand und Ein-Klick-Neuladen; der Zustand wurde über den ausschließlich lokalen Testparameter `?force3dError=1` sichtbar abgenommen. Hardware-/Low-Memory-Varianten bleiben offen.
 - `P1-14`: elf deutsche KI-Vorschauzeilen, stabile Dialog-IDs, Untertitel, Audiofallback, deformierender Kiefer und Pegelperformance sind implementiert; finale Lizenz-/Castingentscheidung und echte Phonemviseme bleiben offen.
 
 ## M1-Gate

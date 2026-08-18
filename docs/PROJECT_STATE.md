@@ -2,7 +2,7 @@
 
 Stand: 18.08.2026
 
-Verifizierte Basis: `d8e597f` (`Give 353L a cinematic hoof sprint`).
+Verifizierte Basis: `06d4322` (`Replace 3D white screens with recoverable loading states`).
 
 Produktstatus: **lokaler technischer 3D-Vertical-Slice, nicht releasefähig und nicht zur Veröffentlichung freigegeben**
 
@@ -39,7 +39,8 @@ Dieses Dokument beschreibt ausschließlich Funktionen, die im aktuellen V3-Code 
 - getestete harte Bewegungszonen mit passierbarer geöffneter Wohnungstür, ohne vollständige Physik/Kollision,
 - zonenabhängige Kameraführung: offener Filmset-Blick im Zimmer, zur Korridormitte geführte Perspektive im schmalen Flur und ein hinter 353L bleibender Übergang ins Hafengelände,
 - GPU-Regen, Fog, Schatten, mehrere Lichtquellen und adaptive Auflösung,
-- Renderloop pausiert während Film und Dialogen.
+- Renderloop pausiert während Film und Dialogen,
+- 3D-Suspenseanzeige mit Prozent, Bausteinzähler und Fortschrittsleiste sowie ein Runtime-Error-Boundary mit verständlichem Wiederladen statt Weißbild.
 
 ### Lokaler HD-/Voice-Vertical-Slice
 
@@ -97,7 +98,7 @@ Die folgenden Systeme existierten teilweise als V2-Prototyp oder Konzept, sind a
 - vollständige Audio-Landschaft, Musik-State-System und professionelle Animation-Blends,
 - finale rechtlich geprüfte Masterstimmen, vollständige Vertonung, Offline-Phonem-/Visem-Timing und alle artspezifischen Mundformen,
 - echte Kollisions-/Physikschicht, Navigation Mesh, Treppen und Interaktionsanimationen,
-- finaler Environment-Art-Pass, LOD/Kompression und Ladefortschritt,
+- finaler Environment-Art-Pass, LOD/Kompression und Asset-Streaming,
 - fertige Impressums-/Datenschutzseiten im aktuellen V3-Build,
 - Deployment-Workflow oder Freigabe zum Live-Austausch.
 
@@ -137,6 +138,7 @@ Die folgenden Systeme existierten teilweise als V2-Prototyp oder Konzept, sind a
 10. Der erste Kieferpass ist amplitudenbasiert; echte Phonem-/Visem-Blends fehlen noch.
 11. Drei eingebettete JPEG-Laufzeittexturen halten das erweiterte, gebatchte Level-GLB bei rund 8,68 MB; die verlustfreien PNG-Master werden nicht eingebettet. KTX2/Streaming fehlen.
 12. Der zonenabhängige Kamerapass löst Hauptverdeckungen an Schwelle und Vordach, ersetzt aber noch keine geometrische Kamera-Kollision.
+13. Der neue 3D-Fehlerfallback schützt Runtime-/Assetfehler, besitzt aber noch keine differenzierte Offline-, WebGL-Kompatibilitäts- oder Low-Memory-Diagnose.
 
 ## Nächster freigegebener Arbeitsbereich
 
