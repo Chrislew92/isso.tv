@@ -2,7 +2,7 @@
 
 Stand: 18.08.2026
 
-Verifizierte Basis: `06d4322` (`Replace 3D white screens with recoverable loading states`).
+Verifizierte Basis: `9b9f70d` (`Add zone-aware procedural Strammburg ambience`).
 
 Produktstatus: **lokaler technischer 3D-Vertical-Slice, nicht releasefähig und nicht zur Veröffentlichung freigegeben**
 
@@ -54,6 +54,7 @@ Dieses Dokument beschreibt ausschließlich Funktionen, die im aktuellen V3-Code 
 - 353L-Material mit höherer Anisotropie, ruhigerer Rauheit und neuem deformierendem `rig_jaw`,
 - elf lokale deutsche KI-Sprachzeilen für 353L, Lotte und Bahnhof,
 - stabile Dialog-IDs, MP3-Dateien, Wortzeitmarken, Untertiteloverlay, Stimme-an/aus und Autoplay-Fallback; ein 6,8-Sekunden-Failsafe verhindert dauerhaft festhängende Untertitel,
+- lokal prozedural erzeugtes Regen-/Tiefton-Ambientebett mit sanften zonenabhängigen Mischungen für Wohnung, Flur, Vordach und Hafen; der gemeinsame Ton-Schalter mutet Atmosphäre und Stimme,
 - Kiefer-, Kopf- und Ohrperformance reagieren in Echtzeit auf den Sprachpegel.
 - erster prozeduraler Gait-Pass mit beschleunigendem Walk/Run-Blend, Knie-/Hufgegenbewegung, Armgegenswing, Hüftgewicht, Oberkörperneigung, Kurvenlage, Körperhub und ruhiger Idle-Atmung,
 - kontrolliert anlaufender Hufsprint mit ungefähr doppelter Gehgeschwindigkeit, verstärkter Körpervorlage, leichter FOV-Dynamik und sichtbarer `⇧ HUFSPRINT`-Steuerhilfe,
@@ -95,7 +96,7 @@ Die folgenden Systeme existierten teilweise als V2-Prototyp oder Konzept, sind a
 - Behandlung, Krise, Haft und Rückkehrpfade als spielbare 3D-Kapitel,
 - mehrere Save-Slots, Export/Import und Save-Migrationen,
 - Controller-, Touch- und vollständige Mobile-Steuerung,
-- vollständige Audio-Landschaft, Musik-State-System und professionelle Animation-Blends,
+- vollständige Audio-Landschaft mit Schritten, Türen, konkreten Hafenquellen, Musik-State-System und professionellen Animation-Blends,
 - finale rechtlich geprüfte Masterstimmen, vollständige Vertonung, Offline-Phonem-/Visem-Timing und alle artspezifischen Mundformen,
 - echte Kollisions-/Physikschicht, Navigation Mesh, Treppen und Interaktionsanimationen,
 - finaler Environment-Art-Pass, LOD/Kompression und Asset-Streaming,
