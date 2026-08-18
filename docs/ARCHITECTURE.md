@@ -65,7 +65,7 @@ Aktuelle Bewegungszonen:
 
 Diese Werte sind Übergangscode. Phase 1 ersetzt sie durch nachvollziehbare Collider/Nav-Daten.
 
-Die Kamera benutzt Zonenpresets: Im offenen Zimmer bleibt sie auf der Filmset-Seite; im Flur folgt das Ziel 353L, während die Linse zur Korridormitte gezogen wird; hinter dem Vordach wechselt sie in einen stabilen Hafenversatz hinter der Figur, ohne die kamerarelative Vorwärtsrichtung umzukehren. Für lokale Sichtprüfung existieren ausschließlich im Vite-Entwicklungsmodus `?preview=hall`, `?preview=threshold`, `?preview=awning` und `?preview=harbor`; Produktionsstarts ignorieren diese Parameter.
+Die Kamera benutzt Zonenpresets: Im offenen Zimmer bleibt sie auf der Filmset-Seite; im Flur folgt das Ziel 353L, während die Linse zur Korridormitte gezogen wird; hinter dem Vordach wechselt sie in einen stabilen Hafenversatz hinter der Figur, ohne die kamerarelative Vorwärtsrichtung umzukehren. Für lokale Sichtprüfung existieren ausschließlich im Vite-Entwicklungsmodus `?preview=hall`, `?preview=threshold`, `?preview=awning`, `?preview=harbor` und `?preview=kiosk`; Produktionsstarts ignorieren diese Parameter.
 
 ## Kanonische Daten
 
@@ -126,6 +126,8 @@ Vor einem Asset-Commit prüfen:
 Der Hafen nutzt zusätzlich zwei kleine Runtime-Shader in `RealtimeWorld.jsx`: `HarborWater` animiert die Wasserfläche ohne Texturdownload, `WetPatches` ersetzt opake Pfützengeometrie durch weich auslaufende Reflexionsflächen. Die Blender-Objekte `harbor_water` und `puddle_*` bleiben als editierbare Platzhalter/Koordinatenanker im Level, werden zur Laufzeit aber ausgeblendet.
 
 `merge_static()` im Welt-Builder darf ausschließlich wiederholte, nicht interaktive Details zusammenführen. Vor dem Join werden Bevel-Modifier fest angewendet; Interaktionsroots, Türen, Wagen, Rigobjekte und semantische Ortsanker bleiben einzeln und namentlich stabil. Der aktuelle Build batcht unter anderem Ziegel, Dielen, Abflussgitter, Container-/Vordachrippen und Heizkörperlamellen.
+
+`text_mesh()` erzeugt Weg- und Gebäudeschrift als konvertierte Mesh-Geometrie. Die lokale X-Spiegelung vor dem Export kompensiert die glTF-Achsentransformation, damit die Frontseite im Browser nicht spiegelverkehrt erscheint. Schilder bleiben bewusst einzeln benannt und werden nicht mit statischen Fassadenbatches zusammengeführt.
 
 ## Erweiterungsstrategie
 
