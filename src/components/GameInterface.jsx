@@ -60,6 +60,7 @@ export default function GameInterface({ run, position, prompt, voice, onAction }
 
       <div className="control-strip" aria-label="Steuerung">
         <span><b>WASD</b> GEHEN</span>
+        <span><b>⇧</b> HUFSPRINT</span>
         <span><b>MAUS</b> BLICK</span>
         <span><b>RAD</b> ZOOM</span>
         <span><b>LEER</b> ZEICHEN</span>

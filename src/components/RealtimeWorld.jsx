@@ -241,6 +241,7 @@ function Level({ run, paused, onInteract, onPrompt, onPosition, onReady, voiceSt
     moving: false,
     time: 0,
     pace: 0,
+    sprint: 0,
     stridePhase: 0,
     turnLean: 0,
     baseY: 0,
@@ -424,10 +425,11 @@ function Level({ run, paused, onInteract, onPrompt, onPosition, onReady, voiceSt
     if (activeKeys.has('d') || activeKeys.has('arrowright')) direction.add(right)
     if (activeKeys.has('a') || activeKeys.has('arrowleft')) direction.sub(right)
     const moving = !paused && direction.lengthSq() > 0.01
+    const sprinting = moving && activeKeys.has('shift')
 
     if (moving) {
       direction.normalize()
-      const desiredSpeed = activeKeys.has('shift') ? 4.25 : 3.05
+      const desiredSpeed = sprinting ? 6.15 : 3.05
       motion.current.travelSpeed = MathUtils.lerp(
         motion.current.travelSpeed ?? 0,
         desiredSpeed,
@@ -444,7 +446,12 @@ function Level({ run, paused, onInteract, onPrompt, onPosition, onReady, voiceSt
       motion.current.turnLean = MathUtils.lerp(motion.current.turnLean, 0, 1 - Math.exp(-dt * 7))
     }
 
-    const targetPace = moving ? (activeKeys.has('shift') ? 1 : 0.62) : 0
+    motion.current.sprint = MathUtils.lerp(
+      motion.current.sprint,
+      sprinting ? 1 : 0,
+      1 - Math.exp(-dt * (sprinting ? 5.5 : 7.5)),
+    )
+    const targetPace = moving ? (sprinting ? 1.12 : 0.62) : 0
     motion.current.pace = MathUtils.lerp(
       motion.current.pace,
       targetPace,
@@ -461,6 +468,10 @@ function Level({ run, paused, onInteract, onPrompt, onPosition, onReady, voiceSt
       ? (Math.abs(Math.sin(motion.current.stridePhase * 2)) - 0.5) * (0.025 + motion.current.pace * 0.025)
       : breathing * 0.35
     root.position.y = motion.current.baseY + bodyBob
+    if (camera.isPerspectiveCamera) {
+      camera.fov = MathUtils.lerp(camera.fov, 48 + motion.current.sprint * 4.5, 1 - Math.exp(-dt * 5.5))
+      camera.updateProjectionMatrix()
+    }
     const emote = performance.now() < motion.current.emoteUntil
     const voice = voiceState?.current
     const voiceLevel = voice?.active && voice.speaker === '353L' ? voice.level : 0
@@ -480,7 +491,11 @@ function Level({ run, paused, onInteract, onPrompt, onPosition, onReady, voiceSt
       rigs.hips.rotation.y = MathUtils.lerp(rigs.hips.rotation.y, rigRest.hips.y + stride * 0.025 * motion.current.pace, 1 - Math.exp(-dt * 10))
     }
     if (rigs.spine) {
-      rigs.spine.rotation.x = MathUtils.lerp(rigs.spine.rotation.x, rigRest.spine.x - motion.current.pace * 0.045 + breathing, 1 - Math.exp(-dt * 9))
+      rigs.spine.rotation.x = MathUtils.lerp(
+        rigs.spine.rotation.x,
+        rigRest.spine.x - motion.current.pace * 0.045 - motion.current.sprint * 0.07 + breathing,
+        1 - Math.exp(-dt * 9),
+      )
       rigs.spine.rotation.z = MathUtils.lerp(rigs.spine.rotation.z, rigRest.spine.z + motion.current.turnLean * 0.42 - stride * 0.018 * motion.current.pace, 1 - Math.exp(-dt * 9))
     }
     if (rigs.head) {
