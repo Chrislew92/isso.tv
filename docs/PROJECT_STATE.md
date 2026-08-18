@@ -2,7 +2,7 @@
 
 Stand: 18.08.2026
 
-Verifizierte Basis: `27ea6d4` (`Place the first animated harbor worker`).
+Verifizierte Runtime-Basis: `226db03` (`Document first harbor NPC pass`).
 
 Produktstatus: **lokaler technischer 3D-Vertical-Slice, nicht releasefähig und nicht zur Veröffentlichung freigegeben**
 
@@ -45,7 +45,7 @@ Dieses Dokument beschreibt ausschließlich Funktionen, die im aktuellen V3-Code 
 
 ### Lokaler HD-/Voice-Vertical-Slice
 
-- Wohnung mit rund 10,3 × 9,6 m Grundfläche, glaubwürdig skaliertem 2,15-m-353L, HD-Eichenbodentextur, einzelnen Dielen, sauberem Bettaufbau, Teppich, Nachttisch, Lampe, Fensterrahmen, Fensterbank, Heizkörper, geschlossenem Stauraum und klarerer Lichtführung,
+- Wohnung mit rund 10,3 × 9,6 m Grundfläche, glaubwürdig skaliertem 2,15-m-353L und einem technisch funktionierenden ersten HD-Pass. Dieser sichtbare Pass ist ausdrücklich **nicht art-direktionell abgenommen**: Bettgestell, Teppich, Nachttisch, Stauraum, helle Materialien und Licht erzeugen derzeit ein zu gepflegtes Standard-Apartment statt der kanonischen Fährbude,
 - Hausflur mit eigenem gekacheltem Terrazzo, Vertäfelung, vier Wohnungstüren, Rahmen, Briefkästen, Messingdetails, Lichtspalten und Leuchten,
 - verlustfreie Raum-, Flur- und Hafen-Texturmaster unter `assets/textures/` sowie visuell hochwertige JPEG-Laufzeitderivate im GLB,
 - ausgebautes Vordach mit Dachrippen, Trägern, Regenrinne, Ablauf, Pfostenbasen, Leuchten, Pflastervorplatz, Entwässerungsrinne und sicher lesbarem Weg,
@@ -146,7 +146,10 @@ Die folgenden Systeme existierten teilweise als V2-Prototyp oder Konzept, sind a
 11. Drei eingebettete JPEG-Laufzeittexturen halten das erweiterte, gebatchte Level-GLB bei rund 8,73 MB; die verlustfreien PNG-Master werden nicht eingebettet. KTX2/Streaming fehlen.
 12. Der zonenabhängige Kamerapass löst Hauptverdeckungen an Schwelle und Vordach, ersetzt aber noch keine geometrische Kamera-Kollision.
 13. Der neue 3D-Fehlerfallback schützt Runtime-/Assetfehler, besitzt aber noch keine differenzierte Offline-, WebGL-Kompatibilitäts- oder Low-Memory-Diagnose.
+14. Der Zimmerpass widerspricht den verbindlichen Bildreferenzen. Ziel ist eine etwas großzügigere, aber sichtbar abgewohnte Fährbude mit Matratze direkt auf dem Boden und nur einem alten Tisch samt Laptop; vier neue verlustfreie/Laufzeit-Texturen liegen als vorbereitete, noch nicht integrierte Materialquellen vor.
+15. Die Raumkamera besitzt noch keine geometrische Wandkollision und stoppt wegen ihrer Azimutgrenzen beim Umschauen. Freier Rundumblick und kollisionssichere Innenkamera sind offen.
+16. Film und Spiel teilen Motiv und Ort, aber noch keinen nahtlosen Bewegungsübergang: Nach dem Schlafbild erscheint 353L zu abrupt stehend. Die Übergabe muss Matratze, Aufrichten und Freigabe der Steuerung als eine 3D-Sequenz verbinden.
 
 ## Nächster freigegebener Arbeitsbereich
 
-`ROADMAP.md` Phase 1: den bestehenden Morgen zu einem hochwertigen, stabilen 3D-Vertical-Slice ausbauen. Wirtschaft, Vollstadt und Langzeitspiel werden erst danach integriert.
+`ROADMAP.md` Phase 1: zuerst Fährbuden-Art-Direction, freie kollisionssichere Raumkamera und den nahtlosen Film-zu-Aufstehen-Übergang gemeinsam lösen. Wirtschaft, Vollstadt und Langzeitspiel werden erst danach integriert.

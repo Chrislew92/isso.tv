@@ -2,7 +2,7 @@
 
 Datum / Agent: 18.08.2026 / Codex
 
-Ausgangs-Commit: `27ea6d4`
+Ausgangs-Commit: `226db03`
 
 Arbeitspaket: HD-Hafenpass, sichere Außenkamera, 353L-Gait, lesbare 3D-Beschilderung und vollständiger Browser-Kernlauf
 
@@ -67,7 +67,7 @@ Arbeitspaket: HD-Hafenpass, sichere Außenkamera, 353L-Gait, lesbare 3D-Beschild
 
 ## Nächster kleinster Produktionsschritt
 
-`P1-01` mit einer echten Chrome-Trace-/Core-Web-Vitals-Messung abschließen. Danach `P1-07` um Foot-Lock, Hufsprint und authored Clips erweitern und parallel `P1-06` um Hafensound, Wegweisung, einen ersten NPC sowie reduzierte Draw-Calls/LOD ausbauen.
+Die vom Nutzer am 18.08.2026 zuletzt sichtbaren Brüche gemeinsam als einen Szenenpass lösen: (1) Fährbude nach den Bildreferenzen mit Bodenmatratze und Tisch/Laptop statt sauberem Standard-Apartment, (2) freie seitliche/360-Grad-Sicht ohne Azimutstopp bei gleichzeitig echter Wandbegrenzung, (3) Filmende auf der Matratze nahtlos über eine sichtbare 3D-Aufstehbewegung in die Steuerung überführen. 353Ls überhelles Erscheinungsbild dabei über Licht, Exposure und nicht-emissive Materialwerte korrigieren. Die vier neuen `room-*-worn-hd-v2`-Dateien sind nur vorbereitete Quellen und noch nicht in GLB/Runtime integriert.
 
 Live verändert: **NEIN**
 
