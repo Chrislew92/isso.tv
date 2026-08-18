@@ -20,7 +20,7 @@ export default function GameInterface({ run, position, prompt, voice, onAction }
         <nav aria-label="Spielmenü">
           <button onClick={() => onAction('film')}>▶ FILM</button>
           <button onClick={() => onAction('memory')}>◫ NACHHALL <i>{run.events.length}</i></button>
-          <button onClick={() => onAction('voice-toggle')} title="Gesprochene Dialoge ein- oder ausschalten">{voice.enabled ? '◖ STIMME AN' : '○ STIMME AUS'}</button>
+          <button onClick={() => onAction('voice-toggle')} title="Stimmen und Atmosphäre ein- oder ausschalten">{voice.enabled ? '◖ TON AN' : '○ TON AUS'}</button>
           <button onClick={() => onAction('reset')}>↻ RESET</button>
         </nav>
       </header>

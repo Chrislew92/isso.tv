@@ -9,6 +9,13 @@ const SILENT_VOICE = {
   mouth: 0,
 }
 
+const AMBIENCE_MIX = {
+  room: { rain: 0.008, hum: 0.014 },
+  hallway: { rain: 0.014, hum: 0.018 },
+  awning: { rain: 0.050, hum: 0.008 },
+  harbor: { rain: 0.072, hum: 0.006 },
+}
+
 export default function useVoicePlayer() {
   const [caption, setCaption] = useState(null)
   const [active, setActive] = useState(false)
@@ -22,6 +29,8 @@ export default function useVoicePlayer() {
   const animationFrame = useRef(0)
   const captionTimer = useRef(0)
   const finishCurrent = useRef(null)
+  const ambienceZone = useRef('room')
+  const ambience = useRef({ started: false, master: null, rain: null, hum: null, sources: [] })
 
   const settleCurrent = useCallback((played) => {
     if (finishCurrent.current) {
@@ -51,6 +60,70 @@ export default function useVoicePlayer() {
     settleCurrent(false)
   }, [settleCurrent])
 
+  const applyAmbienceMix = useCallback((zone = ambienceZone.current, audible = true) => {
+    const graph = context.current
+    const bed = ambience.current
+    if (!graph || !bed.started) return
+    const mix = AMBIENCE_MIX[zone] ?? AMBIENCE_MIX.harbor
+    const now = graph.currentTime
+    bed.master.gain.setTargetAtTime(audible ? 1 : 0, now, 0.12)
+    bed.rain.gain.setTargetAtTime(mix.rain, now, 0.75)
+    bed.hum.gain.setTargetAtTime(mix.hum, now, 0.9)
+  }, [])
+
+  const startAmbience = useCallback((graph) => {
+    if (ambience.current.started) return
+    const master = graph.createGain()
+    const rainGain = graph.createGain()
+    const humGain = graph.createGain()
+    const highpass = graph.createBiquadFilter()
+    const lowpass = graph.createBiquadFilter()
+    const hum = graph.createOscillator()
+    const noise = graph.createBufferSource()
+
+    master.gain.value = 0
+    rainGain.gain.value = 0
+    humGain.gain.value = 0
+    highpass.type = 'highpass'
+    highpass.frequency.value = 520
+    highpass.Q.value = 0.22
+    lowpass.type = 'lowpass'
+    lowpass.frequency.value = 4800
+    lowpass.Q.value = 0.15
+    hum.type = 'sine'
+    hum.frequency.value = 48
+
+    const buffer = graph.createBuffer(1, graph.sampleRate * 3, graph.sampleRate)
+    const samples = buffer.getChannelData(0)
+    let brown = 0
+    for (let index = 0; index < samples.length; index += 1) {
+      const white = Math.random() * 2 - 1
+      brown = (brown + white * 0.022) / 1.022
+      samples[index] = brown * 3.2
+    }
+    noise.buffer = buffer
+    noise.loop = true
+
+    noise.connect(highpass)
+    highpass.connect(lowpass)
+    lowpass.connect(rainGain)
+    rainGain.connect(master)
+    hum.connect(humGain)
+    humGain.connect(master)
+    master.connect(graph.destination)
+    noise.start()
+    hum.start()
+
+    ambience.current = {
+      started: true,
+      master,
+      rain: rainGain,
+      hum: humGain,
+      sources: [noise, hum],
+    }
+    applyAmbienceMix(ambienceZone.current, voiceState.current.enabled !== false)
+  }, [applyAmbienceMix])
+
   const ensureAudioGraph = useCallback(async () => {
     const AudioContext = window.AudioContext || window.webkitAudioContext
     if (!AudioContext) return null
@@ -61,22 +134,29 @@ export default function useVoicePlayer() {
       analyser.current.smoothingTimeConstant = 0.68
       analyser.current.connect(context.current.destination)
     }
+    startAmbience(context.current)
     if (context.current.state === 'suspended') await context.current.resume()
     return context.current
-  }, [])
+  }, [startAmbience])
 
   const unlock = useCallback(async () => {
     setEnabled(true)
     voiceState.current.enabled = true
     try {
       await ensureAudioGraph()
+      applyAmbienceMix(ambienceZone.current, true)
       setNeedsGesture(false)
       return true
     } catch {
       setNeedsGesture(true)
       return false
     }
-  }, [ensureAudioGraph])
+  }, [applyAmbienceMix, ensureAudioGraph])
+
+  const setAmbienceZone = useCallback((zone) => {
+    ambienceZone.current = zone
+    applyAmbienceMix(zone, voiceState.current.enabled !== false)
+  }, [applyAmbienceMix])
 
   const play = useCallback(async (id) => {
     const line = getDialogue(id)
@@ -168,11 +248,12 @@ export default function useVoicePlayer() {
     if (enabled) {
       setEnabled(false)
       voiceState.current.enabled = false
+      applyAmbienceMix(ambienceZone.current, false)
       stop()
       return false
     }
     return unlock()
-  }, [enabled, stop, unlock])
+  }, [applyAmbienceMix, enabled, stop, unlock])
 
   useEffect(() => {
     voiceState.current.enabled = enabled
@@ -180,6 +261,9 @@ export default function useVoicePlayer() {
 
   useEffect(() => () => {
     stop()
+    for (const sourceNode of ambience.current.sources) {
+      try { sourceNode.stop() } catch { /* already stopped */ }
+    }
     context.current?.close()
   }, [stop])
 
@@ -192,6 +276,7 @@ export default function useVoicePlayer() {
     play,
     replay,
     stop,
+    setAmbienceZone,
     toggle,
     unlock,
   }

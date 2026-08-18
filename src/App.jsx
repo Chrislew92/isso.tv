@@ -64,6 +64,10 @@ export default function App() {
   useEffect(() => saveRun(run), [run])
 
   useEffect(() => {
+    voice.setAmbienceZone(position.location)
+  }, [position.location, voice.setAmbienceZone])
+
+  useEffect(() => {
     const onKeyDown = (event) => {
       if (event.key === 'Escape') setModal(null)
       if (modal === 'connection') {
