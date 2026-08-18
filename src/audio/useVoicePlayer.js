@@ -83,6 +83,9 @@ export default function useVoicePlayer() {
     if (!line || !voiceState.current.enabled && !enabled) return false
     stop()
     setCaption(line)
+    // A media element can resolve play() yet never emit ended (device handoff,
+    // suspended tab, broken decoder). Never let a subtitle become permanent HUD.
+    captionTimer.current = window.setTimeout(() => setCaption(null), 6800)
 
     const element = new Audio(line.audio)
     element.preload = 'auto'
@@ -103,12 +106,14 @@ export default function useVoicePlayer() {
         cancelAnimationFrame(animationFrame.current)
         voiceState.current = { ...SILENT_VOICE, enabled: true }
         setActive(false)
+        clearTimeout(captionTimer.current)
         captionTimer.current = window.setTimeout(() => setCaption(null), 520)
         settleCurrent(true)
       }
       element.onerror = () => {
         setNeedsGesture(false)
         stop(true)
+        captionTimer.current = window.setTimeout(() => setCaption(null), 5200)
       }
 
       await element.play()
@@ -148,6 +153,7 @@ export default function useVoicePlayer() {
       console.warn('[ISSO.TV voice] Playback needs a user gesture or failed.', error)
       setNeedsGesture(error?.name === 'NotAllowedError')
       stop(true)
+      captionTimer.current = window.setTimeout(() => setCaption(null), 5200)
       return false
     }
   }, [enabled, ensureAudioGraph, settleCurrent, stop])

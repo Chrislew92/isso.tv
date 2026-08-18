@@ -318,50 +318,144 @@ def build_level(mats):
     box('hall_threshold_top', (11.42, 0, 3.00), (0.30, 3.12, 0.24), mats['hall_trim'], world, 0.035)
     box('hall_threshold_a', (11.42, 1.48, 1.48), (0.30, 0.24, 3.00), mats['hall_trim'], world, 0.035)
     box('hall_threshold_b', (11.42, -1.48, 1.48), (0.30, 0.24, 3.00), mats['hall_trim'], world, 0.035)
+    # The first exterior beat: a sheltered, constructed threshold instead of an empty slab.
     box('harbor_ground', (30, 0, -0.16), (42, 30, 0.28), mats['asphalt'], world, 0.02)
-    box('awning', (12.0, 0, 3.2), (5.2, 5.2, 0.18), mats['metal_dark'], world, 0.04)
+    box('awning_apron', (13.2, -0.25, 0.015), (7.2, 5.5, 0.07), mats['paver'], world, 0.025)
+    box('awning', (12.0, 0, 3.2), (5.2, 5.2, 0.18), mats['awning_roof'], world, 0.04)
+    box('awning_underside', (12.0, 0, 3.08), (4.92, 4.92, 0.08), mats['awning_underside'], world, 0.025)
+    for index, y in enumerate((-2.38, -2.04, -1.70, -1.36, -1.02, -0.68, -0.34, 0, 0.34, 0.68, 1.02, 1.36, 1.70, 2.04, 2.38)):
+        box(f'awning_roof_rib_{index}', (12.0, y, 3.33), (5.0, 0.055, 0.075), mats['awning_trim'], world, 0.014)
+    box('awning_beam_front', (12.0, -2.22, 2.94), (5.0, 0.16, 0.22), mats['awning_trim'], world, 0.03)
+    box('awning_beam_back', (12.0, 2.22, 2.94), (5.0, 0.16, 0.22), mats['awning_trim'], world, 0.03)
+    box('awning_gutter', (12.0, -2.58, 3.14), (5.25, 0.16, 0.20), mats['drain'], world, 0.045)
+    cylinder('awning_downpipe', (14.48, -2.58, 1.55), 0.075, 3.10, mats['drain'], world, 18)
     for x in (10.0, 14.0):
         for y in (-2.0, 2.0):
-            cylinder(f'awning_post_{x}_{y}', (x, y, 1.55), 0.085, 3.1, mats['metal'], world, 16)
+            cylinder(f'awning_post_{x}_{y}', (x, y, 1.55), 0.12, 3.1, mats['awning_trim'], world, 18)
+            cylinder(f'awning_post_base_{x}_{y}', (x, y, 0.10), 0.23, 0.20, mats['metal_dark'], world, 20)
+    for index, x in enumerate((10.85, 13.15)):
+        cylinder(f'awning_lamp_mount_{index}', (x, 0, 2.88), 0.035, 0.32, mats['metal_dark'], world, 14)
+        sphere(f'awning_lamp_{index}', (x, 0, 2.70), (0.16, 0.16, 0.19), mats['lamp'], world, 20, 12)
+
+    # Drainage and curb language visually explain where the dry route continues.
+    box('harbor_drain_channel', (17.2, 2.42, 0.018), (10.4, 0.34, 0.055), mats['drain'], world, 0.018)
+    for index, x in enumerate((12.4, 13.2, 14.0, 14.8, 15.6, 16.4, 17.2, 18.0, 18.8, 19.6, 20.4, 21.2)):
+        box(f'harbor_drain_grate_{index}', (x, 2.42, 0.055), (0.055, 0.27, 0.035), mats['metal'], world, 0.008)
+    box('harbor_walkway_curb', (17.2, 2.72, 0.13), (10.4, 0.22, 0.26), mats['curb'], world, 0.035)
 
     # Brick facade with readable depth and a warm exit.
     box('facade', (11.0, 5.0, 3.5), (7.5, 0.5, 7.0), mats['brick'], world, 0.05)
-    for row in range(8):
-        for col in range(9):
-            offset = 0.38 if row % 2 else 0
-            x = 7.6 + col * 0.82 + offset
-            box(f'brick_{row}_{col}', (x, 4.72, 0.42 + row * 0.78), (0.72, 0.08, 0.32), mats['brick_alt' if (row + col) % 3 else 'brick'], world, 0.018)
+    for row in range(13):
+        for col in range(11):
+            offset = 0.31 if row % 2 else 0
+            x = 7.45 + col * 0.66 + offset
+            box(f'brick_{row}_{col}', (x, 4.72, 0.24 + row * 0.51), (0.58, 0.08, 0.27), mats['brick_alt' if (row + col) % 3 else 'brick'], world, 0.014)
+
+    # A maintenance door and warm workshop windows give the building a lived-in face.
+    box('facade_service_door', (9.0, 4.58, 1.37), (1.22, 0.15, 2.74), mats['hall_door'], world, 0.055)
+    box('facade_service_frame_top', (9.0, 4.48, 2.82), (1.52, 0.14, 0.17), mats['hall_trim'], world, 0.025)
+    box('facade_service_frame_l', (8.32, 4.48, 1.42), (0.16, 0.14, 2.94), mats['hall_trim'], world, 0.025)
+    box('facade_service_frame_r', (9.68, 4.48, 1.42), (0.16, 0.14, 2.94), mats['hall_trim'], world, 0.025)
+    sphere('facade_service_knob', (9.38, 4.38, 1.25), (0.07, 0.055, 0.07), mats['brass'], world, 18, 10)
+    for window_index, x in enumerate((11.35, 13.35)):
+        box(f'facade_window_{window_index}', (x, 4.57, 1.92), (1.52, 0.12, 1.68), mats['warm_glass'], world, 0.035)
+        box(f'facade_window_top_{window_index}', (x, 4.45, 2.82), (1.78, 0.14, 0.15), mats['hall_trim'], world, 0.022)
+        box(f'facade_window_bottom_{window_index}', (x, 4.39, 1.04), (1.82, 0.32, 0.16), mats['curb'], world, 0.028)
+        box(f'facade_window_l_{window_index}', (x - 0.84, 4.45, 1.92), (0.14, 0.14, 1.88), mats['hall_trim'], world, 0.022)
+        box(f'facade_window_r_{window_index}', (x + 0.84, 4.45, 1.92), (0.14, 0.14, 1.88), mats['hall_trim'], world, 0.022)
+        box(f'facade_window_mullion_{window_index}', (x, 4.42, 1.92), (0.09, 0.12, 1.68), mats['hall_trim'], world, 0.016)
 
     # Kiosk, cart and working harbor.
     box('kiosk_body', (23, -7.2, 1.65), (5.2, 4.2, 3.3), mats['kiosk'], world, 0.12)
-    box('kiosk_roof', (23, -7.2, 3.45), (5.8, 4.8, 0.22), mats['metal_dark'], world, 0.08)
-    box('kiosk_window', (23, -5.06, 2.0), (2.8, 0.08, 1.45), mats['warm_glass'], world, 0.025)
+    box('kiosk_roof', (23, -7.2, 3.45), (5.8, 4.8, 0.22), mats['awning_roof'], world, 0.08)
+    box('kiosk_roof_fascia', (23, -4.76, 3.40), (5.82, 0.18, 0.44), mats['kiosk_frame'], world, 0.035)
+    box('kiosk_window', (23, -5.06, 2.0), (3.15, 0.08, 1.45), mats['warm_glass'], world, 0.025)
+    box('kiosk_window_top', (23, -4.92, 2.82), (3.52, 0.18, 0.16), mats['kiosk_frame'], world, 0.025)
+    box('kiosk_window_bottom', (23, -4.78, 1.18), (3.62, 0.54, 0.18), mats['kiosk_counter'], world, 0.045)
+    box('kiosk_window_l', (21.36, -4.92, 2.0), (0.16, 0.18, 1.70), mats['kiosk_frame'], world, 0.025)
+    box('kiosk_window_r', (24.64, -4.92, 2.0), (0.16, 0.18, 1.70), mats['kiosk_frame'], world, 0.025)
+    box('kiosk_window_mullion', (23, -4.88, 2.0), (0.10, 0.15, 1.45), mats['kiosk_frame'], world, 0.018)
+    box('kiosk_lightbox', (23, -4.66, 3.15), (2.62, 0.10, 0.32), mats['kiosk_lightbox'], world, 0.045)
+    for paper_index, x in enumerate((21.92, 22.28, 23.72, 24.08)):
+        box(f'kiosk_paper_{paper_index}', (x, -4.69, 1.76 + (paper_index % 2) * 0.38), (0.25, 0.035, 0.30), mats['paper' if paper_index % 2 else 'orange'], world, 0.012, rotation=(0, 0, math.radians(-3 + paper_index * 2)))
+    box('kiosk_side_door', (25.62, -7.55, 1.38), (0.12, 1.22, 2.76), mats['hall_door'], world, 0.05)
+    box('kiosk_side_handle', (25.72, -7.16, 1.28), (0.12, 0.28, 0.09), mats['brass'], world, 0.025)
+
+    # Newspaper rack and waste sorting make the kiosk foreground readable from gameplay distance.
+    box('kiosk_rack_body', (20.65, -4.82, 0.78), (0.90, 0.50, 1.50), mats['kiosk_frame'], world, 0.055)
+    for shelf_index, z in enumerate((0.45, 0.78, 1.11)):
+        box(f'kiosk_rack_shelf_{shelf_index}', (20.65, -4.53, z), (0.76, 0.08, 0.24), mats['paper' if shelf_index != 1 else 'orange'], world, 0.015, rotation=(math.radians(9), 0, 0))
+    for bin_index, (x, color) in enumerate(((25.35, 'container_blue'), (26.05, 'container_orange'))):
+        box(f'kiosk_bin_{bin_index}', (x, -4.90, 0.57), (0.58, 0.66, 1.12), mats[color], world, 0.09)
+        box(f'kiosk_bin_lid_{bin_index}', (x, -4.90, 1.16), (0.62, 0.70, 0.14), mats['metal_dark'], world, 0.045)
     cart_root = empty('cart_root', (19, -3.1, 0), world)
     cart = box('return_cart', (19, -3.1, 0.62), (1.65, 0.9, 0.18), mats['metal'], cart_root, 0.04)
     cart['interaction'] = 'cart'
-    box('return_crates', (19, -3.1, 1.15), (1.38, 0.78, 0.85), mats['orange'], cart_root, 0.07)
+    for crate_index, (x, z) in enumerate(((18.68, 0.96), (19.12, 0.96), (18.90, 1.34))):
+        box(f'return_crate_{crate_index}', (x, -3.1, z), (0.40, 0.68, 0.36), mats['crate_wood' if crate_index != 2 else 'orange'], cart_root, 0.05)
+    for rail_index, x in enumerate((18.18, 19.82)):
+        cylinder(f'cart_side_rail_{rail_index}', (x, -3.1, 1.10), 0.035, 1.18, mats['metal'], cart_root, 12)
+    cylinder('cart_handle', (18.10, -3.1, 1.55), 0.045, 0.82, mats['metal'], cart_root, 14, rotation=(0, math.radians(90), 0))
     for x in (-0.62, 0.62):
         for y in (-0.34, 0.34):
             cylinder(f'cart_wheel_{x}_{y}', (19 + x, -3.1 + y, 0.38), 0.19, 0.13, mats['rubber'], cart_root, 18, rotation=(math.radians(90), 0, 0))
 
     # Station and Signalwerk are already real geometry in the same navigable world.
     box('station_shell', (39, 4.5, 2.25), (6.0, 8.5, 4.5), mats['station'], world, 0.15)
+    box('station_roof_cap', (39, 4.5, 4.64), (6.55, 9.02, 0.28), mats['awning_roof'], world, 0.08)
     box('station_entry', (35.92, 4.5, 1.5), (0.10, 2.2, 2.5), mats['window'], world, 0.03)
+    box('station_entry_canopy', (35.45, 4.5, 3.02), (1.08, 3.45, 0.20), mats['awning_roof'], world, 0.055)
+    box('station_entry_lightbox', (35.34, 4.5, 3.48), (0.10, 2.28, 0.42), mats['kiosk_lightbox'], world, 0.035)
+    for post_index, y in enumerate((3.15, 5.85)):
+        cylinder(f'station_canopy_post_{post_index}', (35.18, y, 1.48), 0.075, 2.96, mats['awning_trim'], world, 16)
+    for mullion_index, y in enumerate((3.58, 4.50, 5.42)):
+        box(f'station_glass_mullion_{mullion_index}', (35.82, y, 1.53), (0.12, 0.09, 2.62), mats['station_trim'], world, 0.018)
+    for panel_index, z in enumerate((0.46, 1.38, 2.30, 3.22, 4.14)):
+        box(f'station_cladding_band_{panel_index}', (36.02, 1.10, z), (0.12, 2.30, 0.12), mats['station_trim'], world, 0.018)
     station_marker = empty('interaction_station', (35.5, 4.5, 0), world)
     station_marker['interaction'] = 'station'
     box('signalwerk_shell', (31.5, 11.0, 2.25), (8.0, 6.5, 4.5), mats['signalwerk'], world, 0.15)
+    box('signalwerk_roof_cap', (31.5, 11.0, 4.64), (8.50, 7.02, 0.28), mats['station_trim'], world, 0.08)
     box('signalwerk_entry', (27.42, 11.0, 1.55), (0.10, 2.1, 2.6), mats['warm_glass'], world, 0.03)
+    box('signalwerk_entry_frame_top', (27.32, 11.0, 3.03), (0.13, 2.48, 0.18), mats['awning_trim'], world, 0.025)
+    for frame_index, y in enumerate((9.86, 12.14)):
+        box(f'signalwerk_entry_frame_{frame_index}', (27.32, y, 1.54), (0.13, 0.16, 3.10), mats['awning_trim'], world, 0.025)
+    for strip_index, y in enumerate((8.25, 9.15, 12.85, 13.75)):
+        box(f'signalwerk_vertical_strip_{strip_index}', (27.38, y, 2.25), (0.14, 0.16, 4.05), mats['station_trim'], world, 0.024)
+    box('signalwerk_signal_panel', (27.30, 8.95, 3.42), (0.12, 1.16, 0.58), mats['screen'], world, 0.025)
     signal_marker = empty('interaction_signalwerk', (27.0, 11.0, 0), world)
     signal_marker['interaction'] = 'signalwerk'
 
+    # Tall practical lights establish human scale and pull the eye through the wet yard.
+    for light_index, (x, y) in enumerate(((15.0, -1.2), (24.5, 2.8), (31.0, -4.0))):
+        cylinder(f'harbor_light_post_{light_index}', (x, y, 2.55), 0.065, 5.10, mats['metal_dark'], world, 16)
+        box(f'harbor_light_arm_{light_index}', (x + 0.28, y, 5.04), (0.62, 0.10, 0.10), mats['metal_dark'], world, 0.025)
+        box(f'harbor_light_head_{light_index}', (x + 0.57, y, 4.94), (0.42, 0.24, 0.18), mats['lamp_shade'], world, 0.045)
+
     # Harbor water, bollards and two sculptural cranes.
     box('harbor_water', (30, -18.0, -0.28), (52, 8.0, 0.18), mats['water'], world, 0.01)
+    box('dock_edge_curb', (30, -13.72, 0.16), (42, 0.38, 0.32), mats['curb'], world, 0.045)
+    box('dock_safety_line', (30, -13.35, 0.025), (42, 0.10, 0.035), mats['marking'], world, 0.008)
     for x in range(15, 48, 4):
         cylinder(f'bollard_{x}', (x, -13.0, 0.32), 0.16, 0.64, mats['metal_dark'], world, 18)
-    for index, x in enumerate((26, 38)):
-        cylinder(f'crane_tower_{index}', (x, -16.0, 5.0), 0.28, 10.0, mats['metal_dark'], world, 18)
-        arm = box(f'crane_arm_{index}', (x + 2.4, -16.0, 9.1), (5.2, 0.28, 0.28), mats['metal_dark'], world, 0.06, rotation=(0, math.radians(-18), 0))
+        cylinder(f'bollard_cap_{x}', (x, -13.0, 0.68), 0.21, 0.14, mats['metal_dark'], world, 18)
+    for index, x in enumerate((24, 34)):
+        for leg_index, (dx, dy) in enumerate(((-0.72, -0.62), (0.72, -0.62), (-0.72, 0.62), (0.72, 0.62))):
+            cylinder(f'crane_leg_{index}_{leg_index}', (x + dx, -16.0 + dy, 4.35), 0.16, 8.7, mats['crane'], world, 16)
+        for brace_index, z in enumerate((1.8, 3.5, 5.2, 6.9)):
+            box(f'crane_crossbar_{index}_{brace_index}', (x, -16.0, z), (1.72, 1.55, 0.14), mats['crane'], world, 0.035)
+        box(f'crane_cab_{index}', (x + 0.48, -16.0, 7.65), (1.35, 1.18, 1.25), mats['crane_cab'], world, 0.10)
+        box(f'crane_cab_window_{index}', (x + 1.18, -16.0, 7.78), (0.05, 0.88, 0.68), mats['window'], world, 0.02)
+        arm = box(f'crane_arm_{index}', (x + 2.4, -16.0, 9.1), (5.2, 0.28, 0.28), mats['crane'], world, 0.06, rotation=(0, math.radians(-18), 0))
+        box(f'crane_counterweight_{index}', (x - 1.45, -16.0, 8.62), (1.35, 1.0, 0.90), mats['crane_counterweight'], world, 0.10)
         cylinder(f'crane_cable_{index}', (x + 4.2, -16.0, 6.3), 0.025, 4.3, mats['metal'], world, 10)
+
+    # Stacked containers anchor the horizon without filling the playable foreground.
+    for container_index, (x, y, z, color) in enumerate(((30, -10.8, 1.25, 'container_blue'), (36.5, -11.0, 1.25, 'container_teal'), (33.2, -11.2, 3.72, 'container_orange'))):
+        box(f'container_{container_index}', (x, y, z), (5.8, 2.35, 2.40), mats[color], world, 0.10)
+        for rib_index in range(9):
+            rib_x = x - 2.5 + rib_index * 0.62
+            box(f'container_rib_{container_index}_{rib_index}', (rib_x, y - 1.20, z), (0.07, 0.06, 2.08), mats['container_rib'], world, 0.014)
 
     for i, (x, y, sx, sy) in enumerate(((17, 2, 3, 1.2), (22, 4, 4, 1.4), (28, -2, 3.5, 1.0), (33, -7, 4.2, 1.3))):
         sphere(f'puddle_{i}', (x, y, 0.005), (sx, sy, 0.018), mats['puddle'], world, 28, 10)
@@ -408,12 +502,18 @@ def export_project(repo_root):
 def main():
     repo_root = Path(sys.argv[sys.argv.index('--') + 1]).resolve() if '--' in sys.argv else Path.cwd()
     clean_scene()
-    oak = image_material('floor_oak_hd', repo_root / 'assets' / 'textures' / 'room-oak-hd-v1.png', 0.70)
+    oak = image_material('floor_oak_hd', repo_root / 'assets' / 'textures' / 'room-oak-hd-v1-runtime.jpg', 0.70)
     terrazzo = image_material(
         'hall_terrazzo_hd',
-        repo_root / 'assets' / 'textures' / 'hall-terrazzo-hd-v1.png',
+        repo_root / 'assets' / 'textures' / 'hall-terrazzo-hd-v1-runtime.jpg',
         0.82,
         (12.0, 6.0),
+    )
+    harbor_asphalt = image_material(
+        'harbor_asphalt_hd',
+        repo_root / 'assets' / 'textures' / 'harbor-asphalt-hd-v1-runtime.jpg',
+        0.42,
+        (18.0, 12.0),
     )
     mats = {
         'fur': material('fur_warm_grey_brown', (0.20, 0.155, 0.12), 0.0, 0.9),
@@ -463,12 +563,31 @@ def main():
         'mailbox': material('mailbox_painted_steel', (0.10, 0.12, 0.12), 0.55, 0.46),
         'brass': material('hall_brass', (0.42, 0.245, 0.075), 0.78, 0.31),
         'light_slit': material('hall_door_light', (0.45, 0.19, 0.045), 0.0, 0.25, (0.72, 0.24, 0.045)),
-        'asphalt': material('wet_asphalt', (0.025, 0.038, 0.044), 0.22, 0.23),
+        'asphalt': harbor_asphalt,
+        'paver': material('awning_paver', (0.11, 0.115, 0.11), 0.0, 0.70),
+        'curb': material('harbor_curb', (0.23, 0.24, 0.23), 0.0, 0.72),
+        'drain': material('harbor_drain', (0.055, 0.068, 0.07), 0.72, 0.38),
+        'marking': material('dock_marking_aged', (0.58, 0.33, 0.055), 0.0, 0.64),
+        'awning_roof': material('awning_roof_petrol_metal', (0.025, 0.095, 0.105), 0.62, 0.35),
+        'awning_underside': material('awning_underside', (0.105, 0.115, 0.11), 0.22, 0.66),
+        'awning_trim': material('awning_structure', (0.08, 0.095, 0.095), 0.72, 0.32),
         'brick': material('brick_old', (0.16, 0.055, 0.028), 0.0, 0.9),
         'brick_alt': material('brick_old_alt', (0.105, 0.032, 0.018), 0.0, 0.94),
         'kiosk': material('kiosk_petrol', (0.025, 0.12, 0.13), 0.0, 0.76),
+        'kiosk_frame': material('kiosk_frame', (0.055, 0.072, 0.075), 0.68, 0.36),
+        'kiosk_counter': material('kiosk_counter', (0.19, 0.10, 0.045), 0.0, 0.58),
+        'kiosk_lightbox': material('kiosk_lightbox', (0.44, 0.25, 0.065), 0.08, 0.28, (0.48, 0.15, 0.018)),
+        'crate_wood': material('crate_wood', (0.22, 0.12, 0.052), 0.0, 0.82),
+        'container_blue': material('container_blue', (0.045, 0.12, 0.16), 0.58, 0.46),
+        'container_teal': material('container_teal', (0.025, 0.16, 0.16), 0.58, 0.45),
+        'container_orange': material('container_orange', (0.42, 0.10, 0.025), 0.48, 0.50),
+        'container_rib': material('container_rib', (0.035, 0.045, 0.045), 0.68, 0.38),
+        'crane': material('crane_weathered', (0.37, 0.17, 0.035), 0.62, 0.48),
+        'crane_cab': material('crane_cab', (0.075, 0.085, 0.08), 0.48, 0.50),
+        'crane_counterweight': material('crane_counterweight', (0.09, 0.095, 0.09), 0.18, 0.76),
         'warm_glass': material('warm_glass', (0.42, 0.17, 0.035), 0.08, 0.18, (0.55, 0.15, 0.02)),
         'station': material('station_steel', (0.09, 0.115, 0.13), 0.35, 0.48),
+        'station_trim': material('station_trim', (0.035, 0.052, 0.058), 0.68, 0.34),
         'signalwerk': material('signalwerk_blue', (0.04, 0.11, 0.15), 0.18, 0.48),
         'water': material('harbor_water', (0.018, 0.075, 0.105), 0.38, 0.12),
         'puddle': material('puddle', (0.035, 0.085, 0.11), 0.3, 0.08),

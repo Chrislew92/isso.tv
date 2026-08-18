@@ -6,6 +6,7 @@ import {
   ACESFilmicToneMapping,
   Box3,
   Color,
+  DoubleSide,
   MathUtils,
   PCFShadowMap,
   SRGBColorSpace,
@@ -97,6 +98,133 @@ function Rain() {
   )
 }
 
+function HarborWater() {
+  const material = useRef()
+  const uniforms = useMemo(() => ({
+    uTime: { value: 0 },
+    uDeep: { value: new Color('#061d2b') },
+    uShallow: { value: new Color('#176276') },
+    uLamp: { value: new Color('#ef9e48') },
+  }), [])
+
+  useFrame((state) => {
+    if (material.current) material.current.uniforms.uTime.value = state.clock.elapsedTime
+  })
+
+  return (
+    <mesh position={[30, -0.18, 18]} rotation={[-Math.PI / 2, 0, 0]} receiveShadow>
+      <planeGeometry args={[52, 8, 96, 24]} />
+      <shaderMaterial
+        ref={material}
+        uniforms={uniforms}
+        side={DoubleSide}
+        transparent
+        depthWrite={false}
+        vertexShader={`
+          uniform float uTime;
+          varying vec2 vUv;
+          varying float vWave;
+          void main() {
+            vUv = uv;
+            vec3 p = position;
+            float broad = sin(p.x * 0.44 + uTime * 0.72) * 0.045;
+            float cross = sin(p.y * 1.55 - uTime * 1.18 + p.x * 0.13) * 0.026;
+            float detail = sin((p.x + p.y) * 2.7 + uTime * 1.55) * 0.011;
+            vWave = broad + cross + detail;
+            p.z += vWave;
+            gl_Position = projectionMatrix * modelViewMatrix * vec4(p, 1.0);
+          }
+        `}
+        fragmentShader={`
+          uniform float uTime;
+          uniform vec3 uDeep;
+          uniform vec3 uShallow;
+          uniform vec3 uLamp;
+          varying vec2 vUv;
+          varying float vWave;
+          void main() {
+            float bands = sin(vUv.x * 86.0 + vUv.y * 23.0 - uTime * 1.25);
+            float fine = sin(vUv.x * 171.0 - vUv.y * 49.0 + uTime * 0.76);
+            float gleam = smoothstep(0.90, 1.0, bands * 0.72 + fine * 0.28);
+            float depthMix = clamp(0.32 + vUv.y * 0.52 + vWave * 2.2, 0.0, 1.0);
+            vec3 color = mix(uDeep, uShallow, depthMix);
+            color += vec3(0.28, 0.42, 0.46) * gleam * 0.18;
+            float lampReflection = exp(-pow((vUv.x - 0.38) * 9.0, 2.0)) * (0.5 + 0.5 * sin(vUv.y * 95.0 + uTime));
+            color = mix(color, uLamp, lampReflection * 0.035);
+            gl_FragColor = vec4(color, 0.94);
+          }
+        `}
+      />
+    </mesh>
+  )
+}
+
+const wetPatches = [
+  { position: [17, 0.026, -2], scale: [3, 1.2, 1] },
+  { position: [22, 0.026, -4], scale: [4, 1.4, 1] },
+  { position: [28, 0.026, 2], scale: [3.5, 1, 1] },
+  { position: [33, 0.026, 7], scale: [4.2, 1.3, 1] },
+]
+
+function WetPatches() {
+  const material = useRef()
+  const uniforms = useMemo(() => ({
+    uTime: { value: 0 },
+    uDeep: { value: new Color('#07191f') },
+    uSky: { value: new Color('#63909a') },
+  }), [])
+
+  useFrame((state) => {
+    if (material.current) material.current.uniforms.uTime.value = state.clock.elapsedTime
+  })
+
+  return (
+    <group>
+      {wetPatches.map((patch, index) => (
+        <mesh
+          key={index}
+          position={patch.position}
+          rotation={[-Math.PI / 2, 0, 0]}
+          scale={patch.scale}
+          renderOrder={1}
+        >
+          <circleGeometry args={[1, 64]} />
+          <shaderMaterial
+            ref={index === 0 ? material : undefined}
+            uniforms={uniforms}
+            transparent
+            depthWrite={false}
+            side={DoubleSide}
+            vertexShader={`
+              varying vec2 vUv;
+              void main() {
+                vUv = uv;
+                gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
+              }
+            `}
+            fragmentShader={`
+              uniform float uTime;
+              uniform vec3 uDeep;
+              uniform vec3 uSky;
+              varying vec2 vUv;
+              void main() {
+                vec2 p = (vUv - 0.5) * 2.0;
+                float radius = length(p);
+                float brokenEdge = 0.82 + sin(atan(p.y, p.x) * 11.0 + uTime * 0.02) * 0.035;
+                float edge = 1.0 - smoothstep(brokenEdge - 0.16, brokenEdge, radius);
+                float grain = sin(vUv.x * 43.0 + vUv.y * 31.0) * 0.5 + 0.5;
+                float glint = smoothstep(0.88, 1.0, sin((vUv.x + vUv.y) * 51.0) * 0.5 + 0.5);
+                vec3 color = mix(uDeep, uSky, 0.20 + glint * 0.08);
+                gl_FragColor = vec4(color, edge * (0.19 + grain * 0.045));
+              }
+            `}
+          />
+        </mesh>
+      ))}
+    </group>
+  )
+}
+
 function Level({ run, paused, onInteract, onPrompt, onPosition, onReady, voiceState }) {
   const gltf = useGLTF(MODEL_URL)
   const characterGltf = useGLTF(CHARACTER_MODEL_URL)
@@ -161,15 +289,23 @@ function Level({ run, paused, onInteract, onPrompt, onPosition, onReady, voiceSt
     const previewZone = import.meta.env.DEV ? new URLSearchParams(window.location.search).get('preview') : null
     const previewHallway = previewZone === 'hall'
     const previewThreshold = previewZone === 'threshold'
-    character.current.position.set(previewHallway ? 7.35 : previewThreshold ? 3.48 : -1.1, -groundedBounds.min.y, previewHallway || previewThreshold ? 0 : 0.7)
-    motion.current.zone = previewHallway ? 'hallway' : 'room'
+    const previewAwning = previewZone === 'awning'
+    const previewHarbor = previewZone === 'harbor'
+    character.current.position.set(
+      previewHallway ? 7.35 : previewThreshold ? 3.48 : previewAwning ? 13.8 : previewHarbor ? 17.1 : -1.1,
+      -groundedBounds.min.y,
+      previewHallway || previewThreshold || previewAwning ? 0 : previewHarbor ? 3.1 : 0.7,
+    )
+    if (previewHarbor) character.current.rotation.y = Math.PI
+    motion.current.zone = previewHallway ? 'hallway' : previewAwning ? 'awning' : previewHarbor ? 'harbor' : 'room'
     door.current = level.getObjectByName('door_pivot')
     cart.current = level.getObjectByName('cart_root')
     if (cart.current) motion.current.cartBaseZ = cart.current.position.z
     const maxAnisotropy = Math.min(8, gl.capabilities.getMaxAnisotropy())
-    const detailedCaster = /(door|frame|cart|mattress|blanket|pillow|bed_|bedside|desk_|connection_|storage_|window_frame|radiator|lamp_|kiosk|awning|hall_|mailbox)/
+    const detailedCaster = /(door|frame|cart|mattress|blanket|pillow|bed_|bedside|desk_|connection_|storage_|window_frame|radiator|lamp_|kiosk|awning|hall_|mailbox|facade|station_|signalwerk_|container_|crane_|bollard_)/
     level.traverse((object) => {
       if (!object.isMesh) return
+      if (object.name === 'harbor_water' || object.name.startsWith('puddle_')) object.visible = false
       object.castShadow = detailedCaster.test(object.name)
       object.receiveShadow = !object.name.startsWith('char_eye')
       object.frustumCulled = true
@@ -200,7 +336,9 @@ function Level({ run, paused, onInteract, onPrompt, onPosition, onReady, voiceSt
           material.map.needsUpdate = true
         }
         if (material) {
-          material.color?.set('#c4ad96')
+          // Keep the authored albedo neutral. A global beige tint washed the fur,
+          // jacket and boots into one flat surface under the warm apartment lights.
+          material.color?.set('#ffffff')
           material.roughness = Math.max(material.roughness ?? 0.72, 0.78)
           material.needsUpdate = true
         }
@@ -209,10 +347,12 @@ function Level({ run, paused, onInteract, onPrompt, onPosition, onReady, voiceSt
 
     const root = character.current
     if (root) {
-      if (previewHallway) camera.position.set(root.position.x - 4.8, 2.35, root.position.z)
+      if (previewHallway) camera.position.set(root.position.x - 4.8, 2.35, root.position.z * 0.22)
+      if (previewAwning) camera.position.set(root.position.x - 4.8, 2.55, root.position.z)
+      if (previewHarbor) camera.position.set(root.position.x + 3.3, 2.85, root.position.z - 7.8)
       if (controls.current) {
-        controls.current.minAzimuthAngle = previewHallway ? -Math.PI * 0.78 : -Math.PI * 0.46
-        controls.current.maxAzimuthAngle = previewHallway ? -Math.PI * 0.22 : Math.PI * 0.46
+        controls.current.minAzimuthAngle = previewHallway ? -Math.PI * 0.78 : previewHarbor ? -Math.PI : -Math.PI * 0.46
+        controls.current.maxAzimuthAngle = previewHallway ? -Math.PI * 0.22 : previewHarbor ? Math.PI : Math.PI * 0.46
       }
       controls.current?.target.copy(root.position).add(new Vector3(0, 1.08, 0))
       controls.current?.update()
@@ -300,7 +440,11 @@ function Level({ run, paused, onInteract, onPrompt, onPosition, onReady, voiceSt
     const zone = placeFor(root.position)
     if (zone !== motion.current.zone) {
       motion.current.zone = zone
-      motion.current.cameraTransition = zone === 'hallway' || zone === 'room' ? 1.35 : 0
+      motion.current.cameraTransition = zone === 'hallway' || zone === 'room'
+        ? 1.35
+        : zone === 'harbor'
+          ? 1.7
+          : 0
       if (controls.current) {
         if (zone === 'hallway') {
           controls.current.minAzimuthAngle = -Math.PI * 0.78
@@ -321,11 +465,25 @@ function Level({ run, paused, onInteract, onPrompt, onPosition, onReady, voiceSt
       followDelta.copy(target).sub(controls.current.target).multiplyScalar(1 - Math.exp(-dt * 9))
       controls.current.target.add(followDelta)
       camera.position.add(followDelta)
+      if (zone === 'hallway') {
+        // Keep the lens near the corridor centre even when 353L walks along a wall.
+        // The target still follows him, so the shot stays responsive without letting
+        // the apartment doorway or the wainscot swallow the camera.
+        camera.position.z = MathUtils.lerp(camera.position.z, root.position.z * 0.22, 1 - Math.exp(-dt * 8))
+      }
       controls.current.update()
     }
 
     if (motion.current.cameraTransition > 0 && controls.current) {
-      if (zone === 'hallway') cameraGoal.set(root.position.x - 4.8, root.position.y + 2.35, root.position.z)
+      if (zone === 'hallway') cameraGoal.set(root.position.x - 4.8, root.position.y + 2.35, root.position.z * 0.22)
+      else if (zone === 'harbor') {
+        const cameraOutsideHall = camera.position.x > 11.65
+        cameraGoal.set(
+          root.position.x - 3.2,
+          root.position.y + 2.85,
+          cameraOutsideHall ? root.position.z - 2.7 : camera.position.z,
+        )
+      }
       else cameraGoal.set(root.position.x, root.position.y + 2.2, root.position.z + 6.2)
       camera.position.lerp(cameraGoal, 1 - Math.exp(-dt * 5.5))
       controls.current.update()
@@ -399,8 +557,11 @@ function WorldLighting() {
       <pointLight color="#bfd3d8" intensity={5} distance={4.8} decay={2} position={[5.35, 2.25, 0.35]} />
       <pointLight color="#ffd09a" intensity={13} distance={5.5} decay={2} position={[7.65, 2.12, -1.30]} />
       <pointLight color="#ffbb72" intensity={13} distance={5.5} decay={2} position={[10.35, 2.12, 1.30]} />
-      <pointLight color="#ffad55" intensity={24} distance={12} decay={2} position={[12, 3.0, 0]} />
+      <pointLight color="#ffad55" intensity={22} distance={11} decay={2} position={[12, 2.75, 0]} />
+      <pointLight color="#ffd19a" intensity={24} distance={10} decay={2} position={[17.5, 3.8, 0]} />
+      <pointLight color="#8fc6d4" intensity={12} distance={9} decay={2} position={[19.5, 3.6, 7]} />
       <pointLight color="#ff923c" intensity={30} distance={14} decay={2} position={[23, 3.0, 5]} />
+      <pointLight color="#5e9daf" intensity={17} distance={20} decay={2} position={[31, 5.5, 12]} />
       <pointLight color="#5cb9da" intensity={14} distance={16} decay={2} position={[0, 2.5, -3.5]} />
     </>
   )
@@ -428,6 +589,8 @@ export default function RealtimeWorld(props) {
         <fog attach="fog" args={['#12232b', 16, 78]} />
         <WorldLighting />
         <Rain />
+        <HarborWater />
+        <WetPatches />
         <Suspense fallback={<LoadingModel />}>
           <Level {...props} />
         </Suspense>
