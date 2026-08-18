@@ -139,6 +139,8 @@ Der aktuelle Hufsprint bleibt Teil der prozeduralen Runtime: Shift hebt die Ziel
 
 `merge_static()` im Welt-Builder darf ausschließlich wiederholte, nicht interaktive Details zusammenführen. Vor dem Join werden Bevel-Modifier fest angewendet; Interaktionsroots, Türen, Wagen, Rigobjekte und semantische Ortsanker bleiben einzeln und namentlich stabil. Der aktuelle Build batcht unter anderem Ziegel, Dielen, Abflussgitter, Container-/Vordachrippen und Heizkörperlamellen.
 
+Der zweite statische Pass bündelt zusätzlich ferne Speicherblöcke, Dachlinien, Schornsteine, Schiffreling, Hafenleuchten, Bollards sowie Kranbeine/-querträger/-seile. In der Runtime ist `detailedCaster` absichtlich auf den spielnahen Vordergrund begrenzt; entfernte Skyline-, Schiff-, Kran- und Containerobjekte empfangen weiterhin Licht und Nebel, vervielfachen aber nicht den Directional-Shadow-Pass.
+
 `text_mesh()` erzeugt Weg- und Gebäudeschrift als konvertierte Mesh-Geometrie. Die lokale X-Spiegelung vor dem Export kompensiert die glTF-Achsentransformation, damit die Frontseite im Browser nicht spiegelverkehrt erscheint. Schilder bleiben bewusst einzeln benannt und werden nicht mit statischen Fassadenbatches zusammengeführt.
 
 ## Erweiterungsstrategie

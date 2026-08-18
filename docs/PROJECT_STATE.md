@@ -2,7 +2,7 @@
 
 Stand: 18.08.2026
 
-Verifizierte Basis: `0e1d9c6` (`Give key world interactions distinct audio cues`).
+Verifizierte Basis: `bed2a5f` (`Batch distant harbor geometry and trim shadow work`).
 
 Produktstatus: **lokaler technischer 3D-Vertical-Slice, nicht releasefähig und nicht zur Veröffentlichung freigegeben**
 
@@ -60,7 +60,8 @@ Dieses Dokument beschreibt ausschließlich Funktionen, die im aktuellen V3-Code 
 - Kiefer-, Kopf- und Ohrperformance reagieren in Echtzeit auf den Sprachpegel.
 - erster prozeduraler Gait-Pass mit beschleunigendem Walk/Run-Blend, Knie-/Hufgegenbewegung, Armgegenswing, Hüftgewicht, Oberkörperneigung, Kurvenlage, Körperhub und ruhiger Idle-Atmung,
 - kontrolliert anlaufender Hufsprint mit ungefähr doppelter Gehgeschwindigkeit, verstärkter Körpervorlage, leichter FOV-Dynamik und sichtbarer `⇧ HUFSPRINT`-Steuerhilfe,
-- statische Seriendetails wie Ziegel, Dielen, Gitter, Rippen und Papiere werden im reproduzierbaren Blender-Build nach Anwendung ihrer Bevels gebatcht; der aktuelle Weltstand enthält einschließlich 3D-Schildern, Schiff und ferner Speicherstadt 317 Objekte / 312 Meshes statt hunderter einzelner Detailknoten.
+- statische Seriendetails wie Ziegel, Dielen, Gitter, Rippen, Papiere, Speicherbauten, Hafenleuchten, Bollards und Kranbauteile werden im reproduzierbaren Blender-Build nach Anwendung ihrer Bevels gebatcht; der aktuelle Weltstand enthält einschließlich 3D-Schildern, Schiff und ferner Speicherstadt 263 Objekte / 258 Meshes statt 317 / 312 vor dem zweiten Batchpass,
+- der Echtzeitschattenpass ist auf spielnahe Wohnung-/Flur-/Vordach-/Kiosk-/Fassadenobjekte begrenzt; ferne Hafenobjekte bleiben beleuchtet und im Nebel sichtbar.
 
 ### Aktueller spielbarer Morgen
 
@@ -139,7 +140,7 @@ Die folgenden Systeme existierten teilweise als V2-Prototyp oder Konzept, sind a
 8. Save-Schema akzeptiert nur exakt Version `2`; echte Migrationsketten fehlen.
 9. Die lokalen KI-Stimmen sind noch nicht zur öffentlichen Veröffentlichung lizenzgeprüft.
 10. Der erste Kieferpass ist amplitudenbasiert; echte Phonem-/Visem-Blends fehlen noch.
-11. Drei eingebettete JPEG-Laufzeittexturen halten das erweiterte, gebatchte Level-GLB bei rund 8,68 MB; die verlustfreien PNG-Master werden nicht eingebettet. KTX2/Streaming fehlen.
+11. Drei eingebettete JPEG-Laufzeittexturen halten das erweiterte, gebatchte Level-GLB bei rund 8,73 MB; die verlustfreien PNG-Master werden nicht eingebettet. KTX2/Streaming fehlen.
 12. Der zonenabhängige Kamerapass löst Hauptverdeckungen an Schwelle und Vordach, ersetzt aber noch keine geometrische Kamera-Kollision.
 13. Der neue 3D-Fehlerfallback schützt Runtime-/Assetfehler, besitzt aber noch keine differenzierte Offline-, WebGL-Kompatibilitäts- oder Low-Memory-Diagnose.
 
