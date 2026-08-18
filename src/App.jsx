@@ -5,6 +5,7 @@ import Modal from './components/Modal.jsx'
 import OpeningFilm from './components/OpeningFilm.jsx'
 import { CART_STANCES, CONNECTION_CHOICES } from './game/canon.js'
 import { clearRun, loadRun, saveRun } from './game/save.js'
+import { loadSettings, saveSettings } from './game/settings.js'
 import { createRun, runReducer } from './game/state.js'
 
 const CART_AFTERMATH = {
@@ -37,6 +38,7 @@ export default function App() {
   const [prompt, setPrompt] = useState(null)
   const [ready, setReady] = useState(false)
   const [position, setPosition] = useState({ x: -0.8, z: -0.7, location: 'room' })
+  const [settings, setSettings] = useState(loadSettings)
   const voice = useVoicePlayer()
 
   const paused = opening || run.phase !== 'free' || Boolean(modal)
@@ -64,6 +66,7 @@ export default function App() {
   }, [voice.playWorldCue])
 
   useEffect(() => saveRun(run), [run])
+  useEffect(() => { saveSettings(settings) }, [settings])
 
   useEffect(() => {
     voice.setAmbienceZone(position.location)
@@ -82,7 +85,7 @@ export default function App() {
   }, [modal])
 
   const handleInteract = useCallback((action) => {
-    if (action === 'film' || action === 'memory' || action === 'reset') {
+    if (action === 'film' || action === 'memory' || action === 'settings' || action === 'reset') {
       setModal(action)
       return
     }
@@ -161,6 +164,8 @@ export default function App() {
           onPosition={setPosition}
           onReady={handleWorldReady}
           onFootstep={voice.playFootstep}
+          cameraSensitivity={settings.cameraSensitivity}
+          renderQuality={settings.renderQuality}
           voiceState={voice.voiceState}
           voiceActive={voice.active}
         />
@@ -239,6 +244,57 @@ export default function App() {
             </ol>
           )}
           <button className="secondary-action" onClick={() => setModal('film')}>▶ PROLOG NOCH EINMAL SEHEN</button>
+        </Modal>
+      )}
+
+      {modal === 'settings' && (
+        <Modal title="Optionen" kicker="BLICK / BILD / LOKAL" onClose={() => setModal(null)}>
+          <div className="settings-list">
+            <div className="settings-camera">
+              <span><b>↔ Kameratempo</b><small>Wie schnell sich dein Blick mit der Maus dreht.</small></span>
+              <output>{Math.round(settings.cameraSensitivity * 100)}%</output>
+              <div className="settings-camera__control">
+                <button
+                  type="button"
+                  aria-label="Kameratempo langsamer"
+                  onClick={() => setSettings((current) => ({ ...current, cameraSensitivity: Math.max(0.35, current.cameraSensitivity - 0.05) }))}
+                >−</button>
+                <input
+                  aria-label="Kameratempo"
+                  type="range"
+                  min="0.35"
+                  max="1.4"
+                  step="0.05"
+                  value={settings.cameraSensitivity}
+                  onChange={(event) => setSettings((current) => ({ ...current, cameraSensitivity: Number(event.target.value) }))}
+                />
+                <button
+                  type="button"
+                  aria-label="Kameratempo schneller"
+                  onClick={() => setSettings((current) => ({ ...current, cameraSensitivity: Math.min(1.4, current.cameraSensitivity + 0.05) }))}
+                >+</button>
+              </div>
+            </div>
+            <fieldset>
+              <legend><b>◇ Grafikmodus</b><small>Auto passt die Auflösung während des Spiels an.</small></legend>
+              <div className="settings-options">
+                {[
+                  ['auto', '◎ AUTO', 'passt sich an'],
+                  ['high', '◆ HOCH', 'schärferes Bild'],
+                  ['efficient', '◌ SPARSAM', 'ruhiger auf älteren PCs'],
+                ].map(([id, label, copy]) => (
+                  <button
+                    key={id}
+                    type="button"
+                    className={settings.renderQuality === id ? 'is-active' : ''}
+                    onClick={() => setSettings((current) => ({ ...current, renderQuality: id }))}
+                  >
+                    <b>{label}</b><small>{copy}</small>
+                  </button>
+                ))}
+              </div>
+            </fieldset>
+          </div>
         </Modal>
       )}
 

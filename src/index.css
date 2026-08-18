@@ -64,6 +64,23 @@ button:focus-visible, a:focus-visible, canvas:focus-visible { outline: 2px solid
 .world-error button { margin-top: 24px; padding: 11px 14px; border: 1px solid var(--amber); color: var(--amber); background: transparent; cursor: pointer; font-size: .62rem; font-weight: 900; letter-spacing: .12em; }
 .world-error button:hover { background: rgba(255,179,71,.10); }
 
+.settings-list { display: grid; gap: 24px; padding: 24px 28px 28px; }
+.settings-camera { display: grid; grid-template-columns: 1fr auto; gap: 14px; align-items: center; }
+.settings-camera > span, .settings-list legend { display: grid; gap: 4px; }
+.settings-list b { font-size: .72rem; letter-spacing: .04em; text-transform: uppercase; }
+.settings-list small { color: var(--muted); font-size: .62rem; line-height: 1.45; }
+.settings-list output { color: var(--amber); font-size: .72rem; font-weight: 900; }
+.settings-camera__control { grid-column: 1 / -1; display: grid; grid-template-columns: 34px 1fr 34px; gap: 8px; align-items: center; }
+.settings-camera__control input[type="range"] { width: 100%; accent-color: var(--orange); }
+.settings-camera__control button { width: 34px; height: 30px; border: 1px solid var(--line); color: var(--ink); background: rgba(255,255,255,.025); cursor: pointer; font-size: 1rem; }
+.settings-camera__control button:hover { border-color: var(--amber); color: var(--amber); }
+.settings-list fieldset { min-width: 0; margin: 0; padding: 0; border: 0; }
+.settings-list legend { width: 100%; margin-bottom: 12px; }
+.settings-options { display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px; }
+.settings-options button { display: grid; gap: 4px; padding: 13px 10px; border: 1px solid var(--line); color: var(--muted); background: rgba(255,255,255,.025); cursor: pointer; text-align: left; }
+.settings-options button:hover { color: var(--ink); border-color: rgba(255,179,71,.38); }
+.settings-options button.is-active { color: var(--amber); border-color: var(--amber); background: rgba(255,179,71,.08); }
+
 /* In-game frame */
 .game-interface { position: absolute; inset: 0; z-index: 10; pointer-events: none; }
 .game-interface button, .game-interface a { pointer-events: auto; }
@@ -197,6 +214,8 @@ button:focus-visible, a:focus-visible, canvas:focus-visible { outline: 2px solid
   .modal-card > header, .modal-intro, .modal-note { padding-left: 18px; padding-right: 18px; }
   .choice-list { padding-left: 18px; padding-right: 18px; }
   .dialog-line { margin-left: 18px; margin-right: 18px; }
+  .settings-list { padding-left: 18px; padding-right: 18px; }
+  .settings-options { grid-template-columns: 1fr; }
 }
 
 @media (prefers-reduced-motion: reduce) {

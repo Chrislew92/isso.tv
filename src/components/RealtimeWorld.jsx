@@ -264,7 +264,7 @@ function WetPatches() {
   )
 }
 
-function Level({ run, paused, onInteract, onPrompt, onPosition, onReady, onFootstep, voiceState }) {
+function Level({ run, paused, onInteract, onPrompt, onPosition, onReady, onFootstep, cameraSensitivity = 0.75, voiceState }) {
   const gltf = useGLTF(MODEL_URL)
   const characterGltf = useGLTF(CHARACTER_MODEL_URL)
   const level = useMemo(() => clone(gltf.scene), [gltf.scene])
@@ -636,6 +636,7 @@ function Level({ run, paused, onInteract, onPrompt, onPosition, onReady, onFoots
         enablePan={false}
         enableDamping
         dampingFactor={0.08}
+        rotateSpeed={cameraSensitivity}
         minDistance={3.3}
         maxDistance={10.5}
         minPolarAngle={0.76}
@@ -696,7 +697,7 @@ function WorldScene(props) {
       <Canvas
         shadows={SHADOW_OPTIONS}
         frameloop={props.paused && !props.voiceActive ? 'demand' : 'always'}
-        dpr={[0.9, 1.35]}
+        dpr={props.renderQuality === 'high' ? [1, 1.6] : props.renderQuality === 'efficient' ? [0.72, 1] : [0.9, 1.35]}
         camera={{ fov: 48, near: 0.08, far: 110, position: [0, 2.45, 7.2] }}
         gl={{ antialias: true, powerPreference: 'high-performance', alpha: false }}
         onCreated={({ gl }) => {
@@ -716,7 +717,7 @@ function WorldScene(props) {
         <Suspense fallback={<LoadingModel />}>
           <Level {...props} />
         </Suspense>
-        <AdaptiveDpr />
+        {props.renderQuality === 'auto' && <AdaptiveDpr />}
       </Canvas>
       {lost && <div className="webgl-warning">Die 3D-Verbindung wurde unterbrochen. Bitte einmal neu laden.</div>}
     </section>
