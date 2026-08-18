@@ -539,6 +539,52 @@ def build_level(mats):
         box(f'crane_counterweight_{index}', (x - 1.45, -16.0, 8.62), (1.35, 1.0, 0.90), mats['crane_counterweight'], world, 0.10)
         cylinder(f'crane_cable_{index}', (x + 4.2, -16.0, 6.3), 0.025, 4.3, mats['metal'], world, 10)
 
+    # A working harbor needs parallax and a readable far bank. The compact
+    # service vessel sits inside the water strip; the warehouses remain beyond
+    # the playable edge and dissolve naturally into the runtime fog.
+    box('workboat_hull', (16.8, -18.55, 0.34), (8.8, 1.78, 0.86), mats['ship_hull'], world, 0.16)
+    cylinder(
+        'workboat_bow',
+        (22.05, -18.55, 0.34),
+        0.88,
+        1.72,
+        mats['ship_hull'],
+        world,
+        8,
+        rotation=(0, math.radians(90), 0),
+        radius_top=0.08,
+    )
+    box('workboat_rubrail', (17.1, -17.62, 0.63), (9.45, 0.10, 0.18), mats['rubber'], world, 0.025)
+    box('workboat_signal_stripe', (17.25, -17.555, 0.46), (8.85, 0.045, 0.09), mats['marking'], world, 0.012)
+    box('workboat_deck', (17.1, -18.55, 0.91), (7.3, 1.50, 0.24), mats['ship_deck'], world, 0.055)
+    box('workboat_cabin', (15.4, -18.55, 1.74), (2.75, 1.42, 1.54), mats['ship_cabin'], world, 0.11)
+    box('workboat_cabin_roof', (15.4, -18.55, 2.58), (3.05, 1.66, 0.18), mats['ship_hull'], world, 0.065)
+    for window_index, x in enumerate((14.65, 15.40, 16.15)):
+        box(f'ship_window_{window_index}', (x, -17.815, 1.88), (0.48, 0.055, 0.50), mats['ship_window'], world, 0.025)
+    cylinder('workboat_mast', (15.05, -18.55, 3.55), 0.055, 2.0, mats['metal_dark'], world, 14)
+    box('workboat_mast_arm', (15.35, -18.55, 4.22), (0.72, 0.08, 0.08), mats['metal_dark'], world, 0.018)
+    sphere('workboat_marker_light', (15.70, -18.55, 4.22), (0.075, 0.075, 0.075), mats['signal_light'], world, 14, 8)
+    cylinder('workboat_exhaust', (13.72, -18.55, 2.92), 0.10, 0.72, mats['metal_dark'], world, 16)
+    for rail_index, x in enumerate((13.6, 14.8, 18.6, 19.8, 21.0)):
+        cylinder(f'workboat_rail_post_{rail_index}', (x, -17.70, 1.35), 0.025, 0.68, mats['metal'], world, 10)
+    box('workboat_rail_top', (17.3, -17.70, 1.68), (7.95, 0.045, 0.045), mats['metal'], world, 0.008)
+    box('workboat_rescue_case', (18.65, -17.66, 1.18), (0.58, 0.10, 0.38), mats['orange'], world, 0.035)
+
+    far_bank = (
+        (7.0, -23.0, 2.0, 11.0, 4.0, 'skyline'),
+        (18.5, -23.4, 2.65, 9.5, 5.3, 'skyline_alt'),
+        (29.0, -23.2, 1.75, 10.0, 3.5, 'skyline'),
+        (39.0, -23.6, 3.35, 7.2, 6.7, 'skyline_alt'),
+        (47.0, -23.1, 2.15, 7.8, 4.3, 'skyline'),
+    )
+    for bank_index, (x, y, z, width, height, material_name) in enumerate(far_bank):
+        box(f'skyline_block_{bank_index}', (x, y, z), (width, 1.45, height), mats[material_name], world, 0.08)
+        box(f'skyline_roofline_{bank_index}', (x, y + 0.02, height + 0.12), (width + 0.25, 1.58, 0.24), mats['skyline_roof'], world, 0.035)
+    for chimney_index, (x, height) in enumerate(((3.4, 6.2), (22.2, 7.0), (36.8, 8.2), (42.1, 8.9), (49.2, 6.4))):
+        cylinder(f'skyline_chimney_{chimney_index}', (x, -23.25, height * 0.5), 0.14, height, mats['skyline_roof'], world, 12)
+    for window_index, (x, z) in enumerate(((3.8, 2.4), (6.4, 2.4), (15.8, 3.3), (18.0, 3.3), (20.2, 3.3), (27.3, 2.0), (31.0, 2.0), (37.4, 4.3), (39.2, 4.3), (41.0, 4.3), (45.6, 2.6), (48.0, 2.6))):
+        box(f'skyline_window_{window_index}', (x, -22.64, z), (0.50, 0.055, 0.24), mats['skyline_window'], world, 0.014)
+
     # Stacked containers anchor the horizon without filling the playable foreground.
     for container_index, (x, y, z, color) in enumerate(((30, -10.8, 1.25, 'container_blue'), (36.5, -11.0, 1.25, 'container_teal'), (33.2, -11.2, 3.72, 'container_orange'))):
         box(f'container_{container_index}', (x, y, z), (5.8, 2.35, 2.40), mats[color], world, 0.10)
@@ -674,6 +720,15 @@ def main():
         'crane': material('crane_weathered', (0.37, 0.17, 0.035), 0.62, 0.48),
         'crane_cab': material('crane_cab', (0.075, 0.085, 0.08), 0.48, 0.50),
         'crane_counterweight': material('crane_counterweight', (0.09, 0.095, 0.09), 0.18, 0.76),
+        'ship_hull': material('workboat_hull_weathered', (0.025, 0.07, 0.09), 0.62, 0.40),
+        'ship_deck': material('workboat_deck', (0.16, 0.095, 0.045), 0.48, 0.58),
+        'ship_cabin': material('workboat_cabin', (0.27, 0.29, 0.27), 0.16, 0.68),
+        'ship_window': material('workboat_window', (0.25, 0.12, 0.035), 0.12, 0.20, (0.34, 0.09, 0.015)),
+        'signal_light': material('workboat_marker_light', (0.75, 0.055, 0.018), 0.08, 0.18, (0.7, 0.025, 0.006)),
+        'skyline': material('far_bank_blueblack', (0.018, 0.038, 0.047), 0.16, 0.86),
+        'skyline_alt': material('far_bank_slate', (0.03, 0.05, 0.057), 0.18, 0.82),
+        'skyline_roof': material('far_bank_roof', (0.012, 0.022, 0.026), 0.42, 0.70),
+        'skyline_window': material('far_bank_window', (0.30, 0.13, 0.035), 0.0, 0.32, (0.24, 0.055, 0.008)),
         'warm_glass': material('warm_glass', (0.42, 0.17, 0.035), 0.08, 0.18, (0.55, 0.15, 0.02)),
         'station': material('station_steel', (0.09, 0.115, 0.13), 0.35, 0.48),
         'station_trim': material('station_trim', (0.035, 0.052, 0.058), 0.68, 0.34),
@@ -693,6 +748,8 @@ def main():
         ('hall_ceiling_rib_', 'hall_ceiling_ribs'),
         ('station_cladding_band_', 'station_cladding_bands'),
         ('kiosk_paper_', 'kiosk_papers'),
+        ('ship_window_', 'workboat_windows'),
+        ('skyline_window_', 'far_bank_windows'),
     ):
         merge_static(prefix, merged_name)
     add_metadata()

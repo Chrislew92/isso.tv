@@ -617,6 +617,7 @@ function WorldLighting() {
       <pointLight color="#8fc6d4" intensity={12} distance={9} decay={2} position={[19.5, 3.6, 7]} />
       <pointLight color="#ff923c" intensity={30} distance={14} decay={2} position={[23, 3.0, 5]} />
       <pointLight color="#5e9daf" intensity={17} distance={20} decay={2} position={[31, 5.5, 12]} />
+      <pointLight color="#ffc882" intensity={7} distance={13} decay={2} position={[16.5, 3.4, 17.5]} />
       <pointLight color="#5cb9da" intensity={14} distance={16} decay={2} position={[0, 2.5, -3.5]} />
     </>
   )
