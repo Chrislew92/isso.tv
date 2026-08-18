@@ -4,7 +4,7 @@ Stand: 18.08.2026
 
 Aktiver Branch: `master`
 
-Verifizierte Basis: `b4f0bc4` (`Add readable 3D harbor signage`).
+Verifizierte Basis: `d8e597f` (`Give 353L a cinematic hoof sprint`).
 
 Freigabe: **nur lokal; kein Deploy**
 
@@ -104,8 +104,8 @@ Teilstand 18.08.2026:
 - `P1-03`: der zuvor unpassierbare Übergang durch die geöffnete Wohnungstür ist repariert und mit fünf Bewegungsregressionstests gesichert; echte Objektkollision/Nav-Daten bleiben offen.
 - `P1-04`: Wohnung auf rund 10,3 × 9,6 m erweitert, 353L von irrtümlichen 3,35 m auf kanonische 2,15 m gesetzt, Möbel neu gruppiert und die Kamera-Vierwand als spielbare Filmkulisse geöffnet. Der Eichenboden-, Bett-, Lampen-, Fenster-, Heizkörper-, Stauraum-, Material- und Lichtpass ist im Browser sichtbar.
 - `P1-05`: erster HD-Flur-/Schwellenpass mit Terrazzo, Vertäfelung, Wohnungstüren, Briefkästen, Messing, Lichtspalten, Leuchten sowie konstruiertem Vordach, Dachrippen, Trägern, Rinne, Ablauf, Pfosten und beleuchtetem Vorplatz ist sichtbar. Die endgültige Detailabnahme bleibt offen.
-- `P1-06`: erster Hafen-Art-Pass mit eigener Asphalt-HD-Quelle, Laufzeittextur, Entwässerung, Bordstein, Kiosk-/Rollwagendetails, Werkstattfassade, Bahnhof-/Signalwerkfassaden, Leuchten, Containern, Kränen, animiertem Wasser und weich auslaufenden Nassstellen ist sichtbar. `PIER 17` und `NACHTKIOSK` sind echte lesbare 3D-Schilder; kleinere Industriependeleuchten halten das Vordach materiallesbar. NPCs, Soundscape und finaler Horizon-/LOD-Pass bleiben offen.
-- `P1-07`: erster Laufzeit-Gait-Pass blendet Anlaufen/Stoppen, Walk/Run-Pace, Oberschenkel, Knie, Hufe, Gegenschwung der Arme, Hüftgewicht, Oberkörperneigung, Kurvenlage und ruhige Atmung. Authored AnimationClips, Foot-Lock, Sprintlimit und endgültige Hufsprint-Abnahme bleiben offen.
+- `P1-06`: erster Hafen-Art-Pass mit eigener Asphalt-HD-Quelle, Laufzeittextur, Entwässerung, Bordstein, Kiosk-/Rollwagendetails, Werkstattfassade, Bahnhof-/Signalwerkfassaden, Leuchten, Containern, Kränen, animiertem Wasser und weich auslaufenden Nassstellen ist sichtbar. `PIER 17` und `NACHTKIOSK` sind echte lesbare 3D-Schilder; kleinere Industriependeleuchten halten das Vordach materiallesbar. Ein detailliertes Arbeitsschiff, gestaffelte Speicherhäuser, Schornsteine und ferne Fensterlichter schließen die zuvor leere Hafenweite. NPCs, Soundscape und finaler LOD-Pass bleiben offen.
+- `P1-07`: erster Laufzeit-Gait-Pass blendet Anlaufen/Stoppen, Walk/Run-Pace, Oberschenkel, Knie, Hufe, Gegenschwung der Arme, Hüftgewicht, Oberkörperneigung, Kurvenlage und ruhige Atmung. Gehaltenes Shift erzeugt jetzt einen kontrolliert anlaufenden Hufsprint mit ungefähr doppelter Gehgeschwindigkeit, stärkerer Körpervorlage und leicht erweitertem Kamerablick. Authored AnimationClips, Foot-Lock, Sprintlimit und endgültige Hufsprint-Abnahme bleiben offen.
 - `P1-08`: der zonenabhängige Kamerapass hält die Linse im Flur zur Korridormitte, verhindert den alten schwarzen Wandclip und führt hinter 353L stabil ins Hafengelände. Freie geometrische Kamera-Kollision und Sensitivitätsoptionen bleiben offen.
 - `P1-09`: blockiertes oder festhängendes Browseraudio kann Untertitel nicht mehr dauerhaft als HUD stehen lassen; ein 6,8-Sekunden-Failsafe räumt die Zeile auf. Raum-, Regen-, Schritt- und Hafensound bleiben offen.
 - `P1-14`: elf deutsche KI-Vorschauzeilen, stabile Dialog-IDs, Untertitel, Audiofallback, deformierender Kiefer und Pegelperformance sind implementiert; finale Lizenz-/Castingentscheidung und echte Phonemviseme bleiben offen.

@@ -2,7 +2,7 @@
 
 Datum / Agent: 18.08.2026 / Codex
 
-Ausgangs-Commit: `b4f0bc4`
+Ausgangs-Commit: `d8e597f`
 
 Arbeitspaket: HD-Hafenpass, sichere Außenkamera, 353L-Gait, lesbare 3D-Beschilderung und vollständiger Browser-Kernlauf
 
@@ -34,11 +34,13 @@ Arbeitspaket: HD-Hafenpass, sichere Außenkamera, 353L-Gait, lesbare 3D-Beschild
 - Der Hausflur besitzt Terrazzo, Petrol-Vertäfelung, vier Türen, Rahmen, Briefkästen, Messingdetails, Lichtspalten und warme Leuchten.
 - Vordach und Pier besitzen jetzt eine konstruierte Schwelle, eigene Hafen-Asphaltoberfläche, Entwässerung, Kiosk-/Wagen-/Fassadendetails, kontrollierte Industrieleuchten, Container-/Kran-Silhouetten, animiertes Wasser und weich auslaufende Nassstellen.
 - `PIER 17` und `NACHTKIOSK` sind physische, korrekt ausgerichtete 3D-Schilder. Der Nachtkiosk wurde nach dem Export im Browser aus Spielperspektive geprüft.
+- Ein Arbeitsschiff mit Kabine, Fenstern, Mast, Markierungsstreifen, Reling und Rettungskasten sowie eine gestaffelte ferne Speicherstadt ersetzen die zuvor leere schwarze Hafenweite.
 - Die geöffnete Tür ist wirklich passierbar. Im Flur bleibt die Linse näher an der Korridormitte; am Hafen bleibt sie hinter 353L und wechselt die Laufrichtung bei gedrücktem W nicht mehr um.
 - 353L besitzt einen deformierenden Kiefer; 353L/Lotte/Bahnhof sprechen elf lokale deutsche KI-Vorschauzeilen mit Untertitel- und Autoplay-Fallback.
 - Untertitel blenden selbst dann aus, wenn ein Browseraudio weder `ended` noch einen Fehler meldet.
 - 353L besitzt jetzt einen ersten geglätteten Walk/Run/Turn/Stop-Gait mit Knie-/Hufarbeit, Gegenschwung, Hüftgewicht, Oberkörperneigung und Idle-Atmung.
-- Wiederholte statische Details werden nach Bevel-Anwendung gebatcht; Blender meldet nach Schildern und Pendelleuchten 282 Objekte / 277 Meshes. Wohnung, Flur und Hafen wurden danach erneut visuell geprüft.
+- Gehaltenes Shift aktiviert den sichtbaren `⇧ HUFSPRINT`: Zielgeschwindigkeit 6,15 statt 3,05 Welteinheiten/Sekunde, weiches Anlaufen/Ausrollen, stärkere Körpervorlage und eine kontrollierte FOV-Erweiterung.
+- Wiederholte statische Details werden nach Bevel-Anwendung gebatcht; Blender meldet nach Schildern, Pendelleuchten, Schiff und ferner Speicherstadt 317 Objekte / 312 Meshes. Wohnung, Flur und Hafen wurden danach erneut visuell geprüft.
 - Die lokale Vorschau ist noch kein freigegebener Release.
 
 ## Zuletzt geprüft
@@ -47,13 +49,13 @@ Arbeitspaket: HD-Hafenpass, sichere Außenkamera, 353L-Gait, lesbare 3D-Beschild
 - `npm run build`: erfolgreich.
 - `npm audit`: 0 bekannte Sicherheitslücken.
 - Browser-Abnahme: automatischer Filmstart, Wohnung, echter Tür-/Flur-/Vordach-/Hafenlauf, kamerarelative Steuerung, Rollwagenprompt, Auswahl „Direkt helfen“, sichtbare Wagenfolge und Nachhall 3 → 4 geprüft. Untertitel-Failsafe geprüft; keine Konsolenwarnungen oder -fehler.
-- Produktionsbuild: Runtime-Chunk rund 981,10 kB / 267,66 kB gzip; Level-GLB 8.118.248 Byte. Die aktuelle FPS-/Core-Web-Vitals-Messung bleibt offen, weil in dieser Umgebung kein Chrome-Trace-Werkzeug verfügbar ist.
+- Produktionsbuild: Runtime-Chunk rund 981,41 kB / 267,77 kB gzip; Level-GLB 8.675.592 Byte. Die aktuelle FPS-/Core-Web-Vitals-Messung bleibt offen, weil in dieser Umgebung kein Chrome-Trace-Werkzeug verfügbar ist.
 
 ## Bekannte Risiken
 
 - Wohnung, Flur, Vordach und Hafen besitzen einen ersten zusammenhängenden Art-Pass; Bahnhof/Signalwerk brauchen weitere Innenräume, Props, zusätzliche Wegweisung und NPCs.
 - Harte Bewegungsgrenzen statt echter Kollision/Navmesh.
-- Level-GLB jetzt rund 8,12 MB trotz größerer Welt; Laufzeit-JPEGs und statische Detailbatches sind eingebettet, Produktions-LOD/KTX2 fehlen weiterhin.
+- Level-GLB jetzt rund 8,68 MB trotz größerer Welt; Laufzeit-JPEGs und statische Detailbatches sind eingebettet, Produktions-LOD/KTX2 fehlen weiterhin.
 - V2-Systeme sind noch nicht in V3 integriert.
 - Rechtstext-Links führen im lokalen V3-Build noch nicht zu fertigen Dateien.
 
