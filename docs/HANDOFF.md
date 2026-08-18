@@ -2,9 +2,9 @@
 
 Datum / Agent: 18.08.2026 / Codex
 
-Ausgangs-Commit: `146b92f`
+Ausgangs-Commit: `2de458e`
 
-Arbeitspaket: größerer HD-Wohnungsmaßstab, Flur-Art-Pass und spielbare Schwelle
+Arbeitspaket: HD-Hafenpass, sichere Außenkamera, animierte Wasser-/Nassflächen und vollständiger Browser-Kernlauf
 
 ## Geänderte Dokumentation
 
@@ -32,8 +32,10 @@ Arbeitspaket: größerer HD-Wohnungsmaßstab, Flur-Art-Pass und spielbare Schwel
 - Die Wohnung besitzt jetzt einen ersten HD-Art-Pass: texturierter dunkler Eichenboden, einzelne Dielen, Bettaufbau, Teppich, Nachttisch/Lampe, Fensterrahmen, Heizkörper und geschlossener Stauraum.
 - Das Zimmer misst jetzt rund 10,3 × 9,6 m; 353L besitzt statt der irrtümlichen 3,35 m einen glaubwürdigen 2,15-m-Maßstab. Die offene vierte Wand hält die Verfolgerkamera frei.
 - Der Hausflur besitzt Terrazzo, Petrol-Vertäfelung, vier Türen, Rahmen, Briefkästen, Messingdetails, Lichtspalten und warme Leuchten.
-- Die geöffnete Tür ist wirklich passierbar. Beim Übertritt dreht die Kamera weich auf die Längsachse des Flurs; der alte schwarze Wandclip ist beseitigt.
+- Vordach und Pier besitzen jetzt eine konstruierte Schwelle, eigene Hafen-Asphaltoberfläche, Entwässerung, Kiosk-/Wagen-/Fassadendetails, Leuchten, Container-/Kran-Silhouetten, animiertes Wasser und weich auslaufende Nassstellen.
+- Die geöffnete Tür ist wirklich passierbar. Im Flur bleibt die Linse näher an der Korridormitte; am Hafen bleibt sie hinter 353L und wechselt die Laufrichtung bei gedrücktem W nicht mehr um.
 - 353L besitzt einen deformierenden Kiefer; 353L/Lotte/Bahnhof sprechen elf lokale deutsche KI-Vorschauzeilen mit Untertitel- und Autoplay-Fallback.
+- Untertitel blenden selbst dann aus, wenn ein Browseraudio weder `ended` noch einen Fehler meldet.
 - Die lokale Vorschau ist noch kein freigegebener Release.
 
 ## Zuletzt geprüft
@@ -41,19 +43,20 @@ Arbeitspaket: größerer HD-Wohnungsmaßstab, Flur-Art-Pass und spielbare Schwel
 - `npm run test`: 16 Tests bestanden.
 - `npm run build`: erfolgreich.
 - `npm audit`: 0 bekannte Sicherheitslücken.
-- Browser-Abnahme nach Raum-/Flurpass: normaler Zimmerstart, direkte Flur-QA, echter Schwellenübertritt und Flurlauf geprüft; keine Konsolenwarnungen oder -fehler. Die frühere 55–56-FPS-Baseline muss nach den zwei HD-Texturen erneut mit dem Performance-Werkzeug gemessen werden.
+- Browser-Abnahme: automatischer Filmstart, Wohnung, echter Tür-/Flur-/Vordach-/Hafenlauf, kamerarelative Steuerung, Rollwagenprompt, Auswahl „Direkt helfen“, sichtbare Wagenfolge und Nachhall 3 → 4 geprüft. Untertitel-Failsafe geprüft; keine Konsolenwarnungen oder -fehler.
+- Produktionsbuild: Runtime-Chunk rund 978,78 kB / 267,13 kB gzip; Level-GLB 7.920.276 Byte. Die aktuelle FPS-/Core-Web-Vitals-Messung bleibt offen, weil in dieser Umgebung kein Chrome-Trace-Werkzeug verfügbar ist.
 
 ## Bekannte Risiken
 
-- Wohnung und Flur besitzen den ersten Art-Pass; Vordach, Hafen, Bahnhof und Signalwerk sind weiterhin Vertical-Slice-/Blockout-Qualität.
+- Wohnung, Flur, Vordach und Hafen besitzen einen ersten zusammenhängenden Art-Pass; Bahnhof/Signalwerk brauchen weitere Innenräume, Beschilderung, Props und NPCs.
 - Harte Bewegungsgrenzen statt echter Kollision/Navmesh.
-- Level-GLB jetzt ungefähr 8,74 MB; große 3D-Assets ohne Produktionskompression/LOD/KTX2.
+- Level-GLB jetzt rund 7,92 MB trotz größerer Welt; Laufzeit-JPEGs sind eingebettet, Produktions-LOD/KTX2 fehlen weiterhin.
 - V2-Systeme sind noch nicht in V3 integriert.
 - Rechtstext-Links führen im lokalen V3-Build noch nicht zu fertigen Dateien.
 
 ## Nächster kleinster Produktionsschritt
 
-`P1-01` abschließen: Wohnung/Flur mit dem Performance-Werkzeug messen und Asset-Budgets festhalten. Danach `P1-05` am Vordach abschließen und `P1-06` Hafen/Pier/Kiosk auf denselben sichtbaren Standard ziehen.
+`P1-01` mit einer echten Chrome-Trace-/Core-Web-Vitals-Messung abschließen. Danach `P1-07` Walk/Run/Turn/Stop sauber blenden und parallel `P1-06` um Hafensound, Schilder, einen ersten NPC sowie reduzierte Draw-Calls/LOD erweitern.
 
 Live verändert: **NEIN**
 

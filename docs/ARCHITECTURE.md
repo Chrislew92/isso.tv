@@ -65,7 +65,7 @@ Aktuelle Bewegungszonen:
 
 Diese Werte sind Übergangscode. Phase 1 ersetzt sie durch nachvollziehbare Collider/Nav-Daten.
 
-Die Kamera benutzt aktuell Zonenpresets: Im offenen Zimmer bleibt sie auf der Filmset-Seite, beim Übertritt in den schmalen Flur fährt sie weich auf dessen Längsachse. Für lokale Sichtprüfung existieren ausschließlich im Vite-Entwicklungsmodus `?preview=hall` und `?preview=threshold`; Produktionsstarts ignorieren diese Parameter.
+Die Kamera benutzt Zonenpresets: Im offenen Zimmer bleibt sie auf der Filmset-Seite; im Flur folgt das Ziel 353L, während die Linse zur Korridormitte gezogen wird; hinter dem Vordach wechselt sie in einen stabilen Hafenversatz hinter der Figur, ohne die kamerarelative Vorwärtsrichtung umzukehren. Für lokale Sichtprüfung existieren ausschließlich im Vite-Entwicklungsmodus `?preview=hall`, `?preview=threshold`, `?preview=awning` und `?preview=harbor`; Produktionsstarts ignorieren diese Parameter.
 
 ## Kanonische Daten
 
@@ -85,6 +85,8 @@ Neue Storytexte gehören nach Funktion:
 | Welt | `assets/source/isso-v3-vertical-slice-v1.blend` | `public/models/isso-v3-vertical-slice-v1.glb` |
 | 353L | `assets/source/353l-master-character-v3.blend` | `public/models/353l-master-character-v3.glb` |
 | Konzepte | `assets/concept/` | nicht automatisch ausgeliefert |
+| Oberflächenmaster | `assets/textures/*-hd-v1.png` | nicht in GLB eingebettet |
+| Oberflächenruntime | `assets/textures/*-runtime.jpg` | im Welt-GLB eingebettet |
 
 Welt neu erzeugen:
 
@@ -120,6 +122,8 @@ Vor einem Asset-Commit prüfen:
 - Polygon-, Material- und Texturkosten,
 - Sichtprüfung frontal, seitlich, hinten und in Bewegung,
 - Ladezeit und Browserkonsole.
+
+Der Hafen nutzt zusätzlich zwei kleine Runtime-Shader in `RealtimeWorld.jsx`: `HarborWater` animiert die Wasserfläche ohne Texturdownload, `WetPatches` ersetzt opake Pfützengeometrie durch weich auslaufende Reflexionsflächen. Die Blender-Objekte `harbor_water` und `puddle_*` bleiben als editierbare Platzhalter/Koordinatenanker im Level, werden zur Laufzeit aber ausgeblendet.
 
 ## Erweiterungsstrategie
 

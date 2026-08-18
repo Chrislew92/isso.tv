@@ -2,7 +2,7 @@
 
 Stand: 18.08.2026
 
-Verifizierter Code-Meilenstein: `146b92f` (`Expand apartment and build HD hallway`)
+Verifizierte Basis: `2de458e` (`Document apartment and hallway milestone`); der aktuelle Hafen-Meilenstein wird mit dieser Übergabe gesichert.
 
 Produktstatus: **lokaler technischer 3D-Vertical-Slice, nicht releasefähig und nicht zur Veröffentlichung freigegeben**
 
@@ -37,7 +37,7 @@ Dieses Dokument beschreibt ausschließlich Funktionen, die im aktuellen V3-Code 
 - texturiertes und geriggtes 353L-GLB statt Sprite,
 - WASD/Pfeiltasten, Sprint mit Shift, Orbit-Kamera, Zoom und Kamera-Nachführung,
 - getestete harte Bewegungszonen mit passierbarer geöffneter Wohnungstür, ohne vollständige Physik/Kollision,
-- zonenabhängige Kameraführung: offener Filmset-Blick im Zimmer, längs geführte Perspektive im schmalen Flur,
+- zonenabhängige Kameraführung: offener Filmset-Blick im Zimmer, zur Korridormitte geführte Perspektive im schmalen Flur und ein hinter 353L bleibender Übergang ins Hafengelände,
 - GPU-Regen, Fog, Schatten, mehrere Lichtquellen und adaptive Auflösung,
 - Renderloop pausiert während Film und Dialogen.
 
@@ -45,10 +45,12 @@ Dieses Dokument beschreibt ausschließlich Funktionen, die im aktuellen V3-Code 
 
 - Wohnung mit rund 10,3 × 9,6 m Grundfläche, glaubwürdig skaliertem 2,15-m-353L, HD-Eichenbodentextur, einzelnen Dielen, sauberem Bettaufbau, Teppich, Nachttisch, Lampe, Fensterrahmen, Fensterbank, Heizkörper, geschlossenem Stauraum und klarerer Lichtführung,
 - Hausflur mit eigenem gekacheltem Terrazzo, Vertäfelung, vier Wohnungstüren, Rahmen, Briefkästen, Messingdetails, Lichtspalten und Leuchten,
-- eigene Raum- und Flurtexturen unter `assets/textures/`, im GLB eingebettet,
+- verlustfreie Raum-, Flur- und Hafen-Texturmaster unter `assets/textures/` sowie visuell hochwertige JPEG-Laufzeitderivate im GLB,
+- ausgebautes Vordach mit Dachrippen, Trägern, Regenrinne, Ablauf, Pfostenbasen, Leuchten, Pflastervorplatz, Entwässerungsrinne und sicher lesbarem Weg,
+- erster Hafen-Art-Pass mit gekacheltem Regenasphalt, Werkstattfassade, Kioskdetails, Rollwagen/Transportkisten, Bahnhof-/Signalwerkfassaden, Hafenleuchten, Container-/Kran-Silhouetten, animiertem Wasser und weichen Nassreflexionen,
 - 353L-Material mit höherer Anisotropie, ruhigerer Rauheit und neuem deformierendem `rig_jaw`,
 - elf lokale deutsche KI-Sprachzeilen für 353L, Lotte und Bahnhof,
-- stabile Dialog-IDs, MP3-Dateien, Wortzeitmarken, Untertiteloverlay, Stimme-an/aus und Autoplay-Fallback,
+- stabile Dialog-IDs, MP3-Dateien, Wortzeitmarken, Untertiteloverlay, Stimme-an/aus und Autoplay-Fallback; ein 6,8-Sekunden-Failsafe verhindert dauerhaft festhängende Untertitel,
 - Kiefer-, Kopf- und Ohrperformance reagieren in Echtzeit auf den Sprachpegel.
 
 ### Aktueller spielbarer Morgen
@@ -69,7 +71,7 @@ Dieses Dokument beschreibt ausschließlich Funktionen, die im aktuellen V3-Code 
 - sechzehn Vitest-Fälle, darunter fünf Wagen-Haltungen und fünf Regressionen für Zimmer-/Tür-/Flurbewegung,
 - Produktions-Build erfolgreich,
 - npm-Audit zuletzt ohne bekannte Sicherheitslücke,
-- interner Referenzlauf nach Initialladung bei ungefähr 55–56 FPS und 20–24 ms schlechtestem Normalframe.
+- frühere interne Referenzmessung vor dem aktuellen Hafenpass dokumentiert; für den jetzigen Stand wurde mangels verfügbarem Chrome-Trace-Werkzeug bewusst keine neue FPS-/Core-Web-Vitals-Zahl behauptet.
 
 ## Ausdrücklich noch nicht implementiert
 
@@ -120,7 +122,7 @@ Die folgenden Systeme existierten teilweise als V2-Prototyp oder Konzept, sind a
 
 1. Interaktionskoordinaten stehen sowohl in `canon.js` als auch in `RealtimeWorld.jsx`; eine einzige Quelle fehlt.
 2. Bewegungsgrenzen sind hart codierte Zonen, keine echte Kollision oder Navigation.
-3. Das 3D-JavaScript-Chunk ist groß; Modelle und Texturen sind noch nicht Draco/Meshopt/KTX2-optimiert.
+3. Das 3D-JavaScript-Chunk ist mit rund 979 kB minifiziert weiterhin groß; Modelle nutzen noch kein Draco/Meshopt und Texturen kein KTX2.
 4. Animationen verändern Bones direkt und besitzen noch keinen AnimationMixer/Blend-Tree.
 5. Die Minimap benutzt eigene feste Bounds; spätere Bezirke brauchen eine datengetriebene Kartenprojektion.
 6. Footer verlinkt Rechtstexte, die im aktuellen `public/` noch nicht vorhanden sind.
@@ -128,8 +130,8 @@ Die folgenden Systeme existierten teilweise als V2-Prototyp oder Konzept, sind a
 8. Save-Schema akzeptiert nur exakt Version `2`; echte Migrationsketten fehlen.
 9. Die lokalen KI-Stimmen sind noch nicht zur öffentlichen Veröffentlichung lizenzgeprüft.
 10. Der erste Kieferpass ist amplitudenbasiert; echte Phonem-/Visem-Blends fehlen noch.
-11. Zwei eingebettete HD-Bodentexturen erhöhen das Level-GLB auf ungefähr 8,74 MB; KTX2/Streaming fehlen.
-12. Der zonenabhängige Kamerapass löst die Hauptverdeckung an der Schwelle, ersetzt aber noch keine geometrische Kamera-Kollision.
+11. Drei eingebettete JPEG-Laufzeittexturen halten das erweiterte Level-GLB bei rund 7,92 MB; die verlustfreien PNG-Master werden nicht eingebettet. KTX2/Streaming fehlen.
+12. Der zonenabhängige Kamerapass löst Hauptverdeckungen an Schwelle und Vordach, ersetzt aber noch keine geometrische Kamera-Kollision.
 
 ## Nächster freigegebener Arbeitsbereich
 

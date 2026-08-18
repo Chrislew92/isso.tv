@@ -4,7 +4,7 @@ Stand: 18.08.2026
 
 Aktiver Branch: `master`
 
-Verifizierter 3D-Meilenstein: `146b92f`
+Verifizierte Basis: `2de458e`; der aktuelle Hafen-Meilenstein wird mit dieser Übergabe gesichert.
 
 Freigabe: **nur lokal; kein Deploy**
 
@@ -70,7 +70,7 @@ Status: **abgeschlossen und lokal gesichert**
 - [x] Lokaler Run-Zustand, Nachhall, Reload und Reset.
 - [x] Blender-Quellen und reproduzierbare Exportskripte.
 - [x] Sechzehn State-, Dialog- und Bewegungs-Tests, erfolgreicher Build und Audit ohne bekannte Lücke.
-- [x] Interner stabiler Referenzlauf mit ungefähr 55–56 FPS nach Initialladung.
+- [x] Historische Referenzmessung vor dem aktuellen Hafenpass dokumentiert; der neue Stand braucht noch eine aktuelle Chrome-Trace-/Core-Web-Vitals-Messung.
 
 M0 ist ein technisches Fundament, kein fertiger Premium-Look.
 
@@ -103,8 +103,10 @@ Teilstand 18.08.2026:
 
 - `P1-03`: der zuvor unpassierbare Übergang durch die geöffnete Wohnungstür ist repariert und mit fünf Bewegungsregressionstests gesichert; echte Objektkollision/Nav-Daten bleiben offen.
 - `P1-04`: Wohnung auf rund 10,3 × 9,6 m erweitert, 353L von irrtümlichen 3,35 m auf kanonische 2,15 m gesetzt, Möbel neu gruppiert und die Kamera-Vierwand als spielbare Filmkulisse geöffnet. Der Eichenboden-, Bett-, Lampen-, Fenster-, Heizkörper-, Stauraum-, Material- und Lichtpass ist im Browser sichtbar.
-- `P1-05`: erster HD-Flurpass mit skalierter Terrazzo-Oberfläche, Vertäfelung, Wohnungstüren, Rahmen, Briefkästen, Messing, Lichtspalten und Leuchten ist sichtbar. Die Kamera wechselt an der Schwelle in eine längs geführte Flurperspektive; Vordach und endgültige Detailabnahme bleiben offen.
-- `P1-08`: erster zonenabhängiger Kamerapass verhindert die alte schwarze Wandverdeckung im Zimmer-/Flurwechsel; echte Kamera-Kollision und Sensitivitätsoptionen bleiben offen.
+- `P1-05`: erster HD-Flur-/Schwellenpass mit Terrazzo, Vertäfelung, Wohnungstüren, Briefkästen, Messing, Lichtspalten, Leuchten sowie konstruiertem Vordach, Dachrippen, Trägern, Rinne, Ablauf, Pfosten und beleuchtetem Vorplatz ist sichtbar. Die endgültige Detailabnahme bleibt offen.
+- `P1-06`: erster Hafen-Art-Pass mit eigener Asphalt-HD-Quelle, Laufzeittextur, Entwässerung, Bordstein, Kiosk-/Rollwagendetails, Werkstattfassade, Bahnhof-/Signalwerkfassaden, Leuchten, Containern, Kränen, animiertem Wasser und weich auslaufenden Nassstellen ist sichtbar. NPCs, Beschilderung, Soundscape und finaler Horizon-/LOD-Pass bleiben offen.
+- `P1-08`: der zonenabhängige Kamerapass hält die Linse im Flur zur Korridormitte, verhindert den alten schwarzen Wandclip und führt hinter 353L stabil ins Hafengelände. Freie geometrische Kamera-Kollision und Sensitivitätsoptionen bleiben offen.
+- `P1-09`: blockiertes oder festhängendes Browseraudio kann Untertitel nicht mehr dauerhaft als HUD stehen lassen; ein 6,8-Sekunden-Failsafe räumt die Zeile auf. Raum-, Regen-, Schritt- und Hafensound bleiben offen.
 - `P1-14`: elf deutsche KI-Vorschauzeilen, stabile Dialog-IDs, Untertitel, Audiofallback, deformierender Kiefer und Pegelperformance sind implementiert; finale Lizenz-/Castingentscheidung und echte Phonemviseme bleiben offen.
 
 ## M1-Gate
