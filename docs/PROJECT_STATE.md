@@ -2,7 +2,7 @@
 
 Stand: 18.08.2026
 
-Verifizierte Basis: `2b75326` (`Add persistent camera and graphics options`).
+Verifizierte Basis: `27ea6d4` (`Place the first animated harbor worker`).
 
 Produktstatus: **lokaler technischer 3D-Vertical-Slice, nicht releasefähig und nicht zur Veröffentlichung freigegeben**
 
@@ -52,6 +52,7 @@ Dieses Dokument beschreibt ausschließlich Funktionen, die im aktuellen V3-Code 
 - erster Hafen-Art-Pass mit gekacheltem Regenasphalt, Werkstattfassade, Kioskdetails, Rollwagen/Transportkisten, Bahnhof-/Signalwerkfassaden, kontrollierten Industrieleuchten, Container-/Kran-Silhouetten, animiertem Wasser und weichen Nassreflexionen,
 - physische, aus der Blender-Quelle reproduzierbare 3D-Schilder `PIER 17` und `NACHTKIOSK`,
 - räumliche Hafenweite mit detailliertem Arbeitsschiff, beleuchteter Kabine, Reling, Mast, Rettungskasten sowie ferner Speicherstadt, Schornsteinen und sparsamen Fensterlichtern,
+- erster echter 3D-Hintergrund-NPC am Rollwagen: wiederverwendetes Tier-Rig mit eigener Materialinstanz, abweichendem Maßstab, Warnweste, Reflexring, Schutzhelm und zustandsabhängigem Kopfnicken,
 - 353L-Material mit höherer Anisotropie, ruhigerer Rauheit und neuem deformierendem `rig_jaw`,
 - elf lokale deutsche KI-Sprachzeilen für 353L, Lotte und Bahnhof,
 - stabile Dialog-IDs, MP3-Dateien, Wortzeitmarken, Untertiteloverlay, Stimme-an/aus und Autoplay-Fallback; ein 6,8-Sekunden-Failsafe verhindert dauerhaft festhängende Untertitel,
@@ -95,7 +96,7 @@ Die folgenden Systeme existierten teilweise als V2-Prototyp oder Konzept, sind a
 - Hunger, Durst, Essensgutscheine, Bestellung, Schlaf und Routinen,
 - BTC/ETH/LTC/SOL/Z-Coin-Portfolio und echte/simulierte Marktwerte,
 - Spilo-Sprung mit 10/20/50/100 Euro,
-- Messenger, NPC-Beziehungen, Fraktionen, Rang und Aufträge,
+- individuelle NPC-Modelle, Messenger, NPC-Beziehungen, Fraktionen, Rang und Aufträge,
 - vollständige Stadtkarte, Verkehr und frei betretbare Stadt-Innenräume,
 - Behandlung, Krise, Haft und Rückkehrpfade als spielbare 3D-Kapitel,
 - mehrere Save-Slots, Export/Import und Save-Migrationen,

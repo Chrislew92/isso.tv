@@ -139,6 +139,8 @@ Der aktuelle Hufsprint bleibt Teil der prozeduralen Runtime: Shift hebt die Ziel
 
 `playWorldCue()` nutzt dieselbe sichere Einmal-Node-Strategie für semantische Interaktionen. Die Cue-Namen `door`, `connection`, `cart`, `station` und `signalwerk` sind die aktuelle Audio-API zwischen `App.jsx` und dem Soundgraph; unbekannte Namen bleiben lautlos. Ein Cue ändert keinen Spielzustand und darf eine Reducer-Action nie ersetzen.
 
+`DockWorker` klont vorläufig dasselbe geriggte Quellmodell wie 353L, erzeugt jedoch eigene Materialinstanzen und einen eigenen Maßstab; dadurch darf seine kühlere Tönung den Spieler niemals mitverändern. Warnweste, Reflexring und Schutzhelm sind zusätzliche echte Three-Meshes. Nur das Kopfrig reagiert derzeit auf `run.cartResolved`; ein späteres individuelles NPC-Asset kann die Komponente ersetzen, ohne die Wagenlogik zu ändern.
+
 `merge_static()` im Welt-Builder darf ausschließlich wiederholte, nicht interaktive Details zusammenführen. Vor dem Join werden Bevel-Modifier fest angewendet; Interaktionsroots, Türen, Wagen, Rigobjekte und semantische Ortsanker bleiben einzeln und namentlich stabil. Der aktuelle Build batcht unter anderem Ziegel, Dielen, Abflussgitter, Container-/Vordachrippen und Heizkörperlamellen.
 
 Der zweite statische Pass bündelt zusätzlich ferne Speicherblöcke, Dachlinien, Schornsteine, Schiffreling, Hafenleuchten, Bollards sowie Kranbeine/-querträger/-seile. In der Runtime ist `detailedCaster` absichtlich auf den spielnahen Vordergrund begrenzt; entfernte Skyline-, Schiff-, Kran- und Containerobjekte empfangen weiterhin Licht und Nebel, vervielfachen aber nicht den Directional-Shadow-Pass.
