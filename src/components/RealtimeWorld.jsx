@@ -357,7 +357,10 @@ function Level({ run, paused, onInteract, onPrompt, onPosition, onReady, onFoots
     cart.current = level.getObjectByName('cart_root')
     if (cart.current) motion.current.cartBaseZ = cart.current.position.z
     const maxAnisotropy = Math.min(8, gl.capabilities.getMaxAnisotropy())
-    const detailedCaster = /(door|frame|cart|mattress|blanket|pillow|bed_|bedside|desk_|connection_|storage_|window_frame|radiator|lamp_|kiosk|awning|hall_|mailbox|facade|station_|signalwerk_|container_|crane_|bollard_)/
+    // Only the playable foreground pays for real-time shadow casting. Distant
+    // skyline, cranes, containers and ship silhouettes receive light/fog but
+    // no longer multiply the directional shadow pass.
+    const detailedCaster = /(door|frame|cart|mattress|blanket|pillow|bed_|bedside|desk_|connection_|storage_|window_frame|radiator|lamp_|kiosk|awning|hall_|mailbox|facade)/
     level.traverse((object) => {
       if (!object.isMesh) return
       if (object.name === 'harbor_water' || object.name.startsWith('puddle_')) object.visible = false

@@ -750,6 +750,17 @@ def main():
         ('kiosk_paper_', 'kiosk_papers'),
         ('ship_window_', 'workboat_windows'),
         ('skyline_window_', 'far_bank_windows'),
+        ('skyline_block_', 'far_bank_blocks'),
+        ('skyline_roofline_', 'far_bank_rooflines'),
+        ('skyline_chimney_', 'far_bank_chimneys'),
+        ('workboat_rail_post_', 'workboat_rail_posts'),
+        ('harbor_light_post_', 'harbor_light_posts'),
+        ('harbor_light_arm_', 'harbor_light_arms'),
+        ('harbor_light_head_', 'harbor_light_heads'),
+        ('bollard_', 'harbor_bollards'),
+        ('crane_leg_', 'harbor_crane_legs'),
+        ('crane_crossbar_', 'harbor_crane_crossbars'),
+        ('crane_cable_', 'harbor_crane_cables'),
     ):
         merge_static(prefix, merged_name)
     add_metadata()
