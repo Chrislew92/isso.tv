@@ -264,6 +264,78 @@ function WetPatches() {
   )
 }
 
+function DockWorker({ source, resolved }) {
+  const model = useMemo(() => clone(source), [source])
+  const group = useRef(null)
+  const head = useMemo(() => model.getObjectByName('rig_head'), [model])
+  const armL = useMemo(() => model.getObjectByName('rig_arm_l'), [model])
+  const armR = useMemo(() => model.getObjectByName('rig_arm_r'), [model])
+  const rest = useMemo(() => ({
+    head: head?.rotation.clone(),
+    armL: armL?.rotation.clone(),
+    armR: armR?.rotation.clone(),
+  }), [armL, armR, head])
+
+  useEffect(() => {
+    const root = model.getObjectByName('CHARACTER_353L_ROOT') || model
+    root.position.set(0, 0, 0)
+    root.scale.setScalar(1)
+    root.updateMatrixWorld(true)
+    const bounds = new Box3().setFromObject(root)
+    const height = Math.max(bounds.max.y - bounds.min.y, 0.001)
+    root.scale.setScalar(1.94 / height)
+    root.updateMatrixWorld(true)
+    const grounded = new Box3().setFromObject(root)
+    root.position.y = -grounded.min.y
+    model.traverse((object) => {
+      if (!object.isMesh) return
+      const originals = Array.isArray(object.material) ? object.material : [object.material]
+      const copies = originals.map((original) => {
+        const copy = original.clone()
+        copy.color?.multiply(new Color('#bac8c4'))
+        copy.roughness = Math.max(copy.roughness ?? 0.72, 0.82)
+        return copy
+      })
+      object.material = Array.isArray(object.material) ? copies : copies[0]
+      object.castShadow = true
+      object.receiveShadow = true
+    })
+    if (armL && rest.armL) armL.rotation.x = rest.armL.x - 0.20
+    if (armR && rest.armR) armR.rotation.x = rest.armR.x + 0.16
+  }, [armL, armR, model, rest])
+
+  useFrame((state, delta) => {
+    const dt = Math.min(delta, 0.033)
+    if (group.current) group.current.position.y = Math.sin(state.clock.elapsedTime * 1.3) * 0.006
+    if (head && rest.head) {
+      const nod = resolved ? Math.sin(state.clock.elapsedTime * 2.1) * 0.055 : Math.sin(state.clock.elapsedTime * 0.75) * 0.018
+      head.rotation.x = MathUtils.lerp(head.rotation.x, rest.head.x + nod, 1 - Math.exp(-dt * 5))
+    }
+  })
+
+  return (
+    <group ref={group} position={[19.45, 0, 4.55]} rotation={[0, -0.42, 0]}>
+      <primitive object={model} />
+      <mesh castShadow position={[0, 1.23, 0]}>
+        <cylinderGeometry args={[0.225, 0.305, 0.54, 12, 1, true]} />
+        <meshStandardMaterial color="#d66a18" roughness={0.76} metalness={0.08} side={DoubleSide} />
+      </mesh>
+      <mesh castShadow position={[0, 1.22, 0]} rotation={[Math.PI / 2, 0, 0]}>
+        <torusGeometry args={[0.276, 0.018, 8, 28]} />
+        <meshStandardMaterial color="#dbe7df" roughness={0.42} metalness={0.35} />
+      </mesh>
+      <mesh castShadow position={[0, 2.075, 0.015]} scale={[1, 0.52, 1]}>
+        <sphereGeometry args={[0.245, 24, 14]} />
+        <meshStandardMaterial color="#e17a1d" roughness={0.60} metalness={0.10} emissive="#2a0b00" emissiveIntensity={0.12} />
+      </mesh>
+      <mesh castShadow position={[0, 2.015, 0.025]}>
+        <cylinderGeometry args={[0.275, 0.275, 0.04, 24]} />
+        <meshStandardMaterial color="#b95412" roughness={0.68} metalness={0.12} />
+      </mesh>
+    </group>
+  )
+}
+
 function Level({ run, paused, onInteract, onPrompt, onPosition, onReady, onFootstep, cameraSensitivity = 0.75, voiceState }) {
   const gltf = useGLTF(MODEL_URL)
   const characterGltf = useGLTF(CHARACTER_MODEL_URL)
@@ -630,6 +702,7 @@ function Level({ run, paused, onInteract, onPrompt, onPosition, onReady, onFoots
     <>
       <primitive object={level} />
       <primitive object={characterModel} />
+      <DockWorker source={characterGltf.scene} resolved={run.cartResolved} />
       <OrbitControls
         ref={controls}
         makeDefault
