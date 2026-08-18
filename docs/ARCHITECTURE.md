@@ -135,6 +135,8 @@ Der aktuelle Hufsprint bleibt Teil der prozeduralen Runtime: Shift hebt die Ziel
 
 `RealtimeWorld` zählt Gait-Halbzyklen und meldet nur neue Kontakte über `onFootstep(zone, intensity)`. `playFootstep()` erzeugt daraus zwei kurze Hüllkurven (tiefer Hufkörper plus leiser Klick), verbindet sie mit demselben Ambientemaster und trennt die Nodes nach dem Ausklang. Ohne laufenden/entsperrten `AudioContext` oder bei `TON AUS` ist der Aufruf wirkungslos.
 
+`playWorldCue()` nutzt dieselbe sichere Einmal-Node-Strategie für semantische Interaktionen. Die Cue-Namen `door`, `connection`, `cart`, `station` und `signalwerk` sind die aktuelle Audio-API zwischen `App.jsx` und dem Soundgraph; unbekannte Namen bleiben lautlos. Ein Cue ändert keinen Spielzustand und darf eine Reducer-Action nie ersetzen.
+
 `merge_static()` im Welt-Builder darf ausschließlich wiederholte, nicht interaktive Details zusammenführen. Vor dem Join werden Bevel-Modifier fest angewendet; Interaktionsroots, Türen, Wagen, Rigobjekte und semantische Ortsanker bleiben einzeln und namentlich stabil. Der aktuelle Build batcht unter anderem Ziegel, Dielen, Abflussgitter, Container-/Vordachrippen und Heizkörperlamellen.
 
 `text_mesh()` erzeugt Weg- und Gebäudeschrift als konvertierte Mesh-Geometrie. Die lokale X-Spiegelung vor dem Export kompensiert die glTF-Achsentransformation, damit die Frontseite im Browser nicht spiegelverkehrt erscheint. Schilder bleiben bewusst einzeln benannt und werden nicht mit statischen Fassadenbatches zusammengeführt.

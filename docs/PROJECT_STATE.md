@@ -2,7 +2,7 @@
 
 Stand: 18.08.2026
 
-Verifizierte Basis: `51bbe3c` (`Drive surface-aware hoofsteps from the gait`).
+Verifizierte Basis: `0e1d9c6` (`Give key world interactions distinct audio cues`).
 
 Produktstatus: **lokaler technischer 3D-Vertical-Slice, nicht releasefähig und nicht zur Veröffentlichung freigegeben**
 
@@ -56,6 +56,7 @@ Dieses Dokument beschreibt ausschließlich Funktionen, die im aktuellen V3-Code 
 - stabile Dialog-IDs, MP3-Dateien, Wortzeitmarken, Untertiteloverlay, Stimme-an/aus und Autoplay-Fallback; ein 6,8-Sekunden-Failsafe verhindert dauerhaft festhängende Untertitel,
 - lokal prozedural erzeugtes Regen-/Tiefton-Ambientebett mit sanften zonenabhängigen Mischungen für Wohnung, Flur, Vordach und Hafen; der gemeinsame Ton-Schalter mutet Atmosphäre und Stimme,
 - gait-synchrone prozedurale Hufkontakte mit bodenabhängiger Frequenz/Ausklingzeit und höherer Sprintintensität,
+- unterscheidbare kurze Weltklangmuster für Wohnungstür, Donkey-Connection, Rollwagen, Bahnhof und Signalwerk,
 - Kiefer-, Kopf- und Ohrperformance reagieren in Echtzeit auf den Sprachpegel.
 - erster prozeduraler Gait-Pass mit beschleunigendem Walk/Run-Blend, Knie-/Hufgegenbewegung, Armgegenswing, Hüftgewicht, Oberkörperneigung, Kurvenlage, Körperhub und ruhiger Idle-Atmung,
 - kontrolliert anlaufender Hufsprint mit ungefähr doppelter Gehgeschwindigkeit, verstärkter Körpervorlage, leichter FOV-Dynamik und sichtbarer `⇧ HUFSPRINT`-Steuerhilfe,
