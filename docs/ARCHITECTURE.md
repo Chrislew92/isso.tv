@@ -133,6 +133,8 @@ Der aktuelle Hufsprint bleibt Teil der prozeduralen Runtime: Shift hebt die Ziel
 
 `useVoicePlayer()` besitzt neben Sprachwiedergabe und Analyser jetzt ein einziges prozedurales Ambientebett im selben `AudioContext`: gelooptes gefiltertes Brown-Noise für Regen sowie einen sehr leisen 48-Hz-Raumton. `setAmbienceZone()` fährt Gain-Ziele weich für `room`, `hallway`, `awning` und `harbor`; der zentrale Ton-Schalter blendet den Master-Gain und stoppt weiterhin laufende Sprache. Die Quellen werden genau einmal gestartet und beim Unmount beendet.
 
+`RealtimeWorld` zählt Gait-Halbzyklen und meldet nur neue Kontakte über `onFootstep(zone, intensity)`. `playFootstep()` erzeugt daraus zwei kurze Hüllkurven (tiefer Hufkörper plus leiser Klick), verbindet sie mit demselben Ambientemaster und trennt die Nodes nach dem Ausklang. Ohne laufenden/entsperrten `AudioContext` oder bei `TON AUS` ist der Aufruf wirkungslos.
+
 `merge_static()` im Welt-Builder darf ausschließlich wiederholte, nicht interaktive Details zusammenführen. Vor dem Join werden Bevel-Modifier fest angewendet; Interaktionsroots, Türen, Wagen, Rigobjekte und semantische Ortsanker bleiben einzeln und namentlich stabil. Der aktuelle Build batcht unter anderem Ziegel, Dielen, Abflussgitter, Container-/Vordachrippen und Heizkörperlamellen.
 
 `text_mesh()` erzeugt Weg- und Gebäudeschrift als konvertierte Mesh-Geometrie. Die lokale X-Spiegelung vor dem Export kompensiert die glTF-Achsentransformation, damit die Frontseite im Browser nicht spiegelverkehrt erscheint. Schilder bleiben bewusst einzeln benannt und werden nicht mit statischen Fassadenbatches zusammengeführt.

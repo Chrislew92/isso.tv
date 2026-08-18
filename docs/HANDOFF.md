@@ -2,7 +2,7 @@
 
 Datum / Agent: 18.08.2026 / Codex
 
-Ausgangs-Commit: `9b9f70d`
+Ausgangs-Commit: `51bbe3c`
 
 Arbeitspaket: HD-Hafenpass, sichere Außenkamera, 353L-Gait, lesbare 3D-Beschilderung und vollständiger Browser-Kernlauf
 
@@ -42,6 +42,7 @@ Arbeitspaket: HD-Hafenpass, sichere Außenkamera, 353L-Gait, lesbare 3D-Beschild
 - Gehaltenes Shift aktiviert den sichtbaren `⇧ HUFSPRINT`: Zielgeschwindigkeit 6,15 statt 3,05 Welteinheiten/Sekunde, weiches Anlaufen/Ausrollen, stärkere Körpervorlage und eine kontrollierte FOV-Erweiterung.
 - Der 3D-Lader zeigt Prozent, Bausteinzähler und Fortschrittsleiste. Ein Error Boundary ersetzt Asset-/Runtime-Weißbilder durch einen verständlichen Vollbild-Fallback mit erhaltenem Save und Ein-Klick-Neuladen.
 - Das Web-Audio-System erzeugt ein eigenes Regen-/Gebäudehum-Bett ohne externe Audiodatei und blendet dessen Mix zonenabhängig zwischen Wohnung, Flur, Vordach und Hafen. `TON AN/AUS` schaltet Stimme und Atmosphäre gemeinsam; beide Richtungen wurden im Browser bedient.
+- Jeder neue Halbzyklus des Gaits erzeugt einen kurzen synthetischen Hufkontakt. Frequenz und Ausklang unterscheiden Eichenboden, Flur, Vordach und Hafen; der Sprint hebt die Kontaktintensität an. Ein frischer Browserlauf blieb ohne Konsolenwarnung oder -fehler.
 - Wiederholte statische Details werden nach Bevel-Anwendung gebatcht; Blender meldet nach Schildern, Pendelleuchten, Schiff und ferner Speicherstadt 317 Objekte / 312 Meshes. Wohnung, Flur und Hafen wurden danach erneut visuell geprüft.
 - Die lokale Vorschau ist noch kein freigegebener Release.
 
@@ -51,7 +52,7 @@ Arbeitspaket: HD-Hafenpass, sichere Außenkamera, 353L-Gait, lesbare 3D-Beschild
 - `npm run build`: erfolgreich.
 - `npm audit`: 0 bekannte Sicherheitslücken.
 - Browser-Abnahme: automatischer Filmstart, Wohnung, echter Tür-/Flur-/Vordach-/Hafenlauf, kamerarelative Steuerung, Rollwagenprompt, Auswahl „Direkt helfen“, sichtbare Wagenfolge und Nachhall 3 → 4 geprüft. Untertitel-Failsafe und absichtlich ausgelöster 3D-Fehlerfallback geprüft; im normalen Lauf keine Konsolenwarnungen oder -fehler.
-- Produktionsbuild: App-Chunk rund 219,89 kB / 69,32 kB gzip, Runtime-Chunk rund 983,18 kB / 268,55 kB gzip; Level-GLB 8.675.592 Byte. Die aktuelle FPS-/Core-Web-Vitals-Messung bleibt offen, weil in dieser Umgebung kein Chrome-Trace-Werkzeug verfügbar ist.
+- Produktionsbuild: App-Chunk rund 221,09 kB / 69,66 kB gzip, Runtime-Chunk rund 983,36 kB / 268,62 kB gzip; Level-GLB 8.675.592 Byte. Die aktuelle FPS-/Core-Web-Vitals-Messung bleibt offen, weil in dieser Umgebung kein Chrome-Trace-Werkzeug verfügbar ist.
 
 ## Bekannte Risiken
 
