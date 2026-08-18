@@ -2,7 +2,7 @@
 
 Stand: 18.08.2026
 
-Verifizierte Basis: `bed2a5f` (`Batch distant harbor geometry and trim shadow work`).
+Verifizierte Basis: `2b75326` (`Add persistent camera and graphics options`).
 
 Produktstatus: **lokaler technischer 3D-Vertical-Slice, nicht releasefähig und nicht zur Veröffentlichung freigegeben**
 
@@ -29,6 +29,7 @@ Dieses Dokument beschreibt ausschließlich Funktionen, die im aktuellen V3-Code 
 - Film kann übersprungen oder später erneut geöffnet werden,
 - direkter Übergang vom Film in die bereits geladene 3D-Szene,
 - HUD mit Weltzeit, Ort, Wetter, Kapiteltext, Minimap, Interaktionshinweis und Nachhall.
+- verständliches ⚙-Optionsfenster mit persistentem Kameratempo sowie adaptivem, hohem und sparsamem Grafikmodus.
 
 ### Echte 3D-Runtime
 
@@ -78,7 +79,7 @@ Dieses Dokument beschreibt ausschließlich Funktionen, die im aktuellen V3-Code 
 - reducerbasierter Run-Zustand mit Weltminuten, Tür, Wagen, Besuchen und Ereignissen,
 - Save/Load/Reset über `localStorage` mit Schema-Version `2`,
 - doppelte Ereignisse werden für denselben Moment verhindert,
-- sechzehn Vitest-Fälle, darunter fünf Wagen-Haltungen und fünf Regressionen für Zimmer-/Tür-/Flurbewegung,
+- neunzehn Vitest-Fälle, darunter fünf Wagen-Haltungen, fünf Regressionen für Zimmer-/Tür-/Flurbewegung und drei Settings-/Persistenzfälle,
 - Produktions-Build erfolgreich,
 - npm-Audit zuletzt ohne bekannte Sicherheitslücke,
 - frühere interne Referenzmessung vor dem aktuellen Hafenpass dokumentiert; für den jetzigen Stand wurde mangels verfügbarem Chrome-Trace-Werkzeug bewusst keine neue FPS-/Core-Web-Vitals-Zahl behauptet.
@@ -118,6 +119,7 @@ Die folgenden Systeme existierten teilweise als V2-Prototyp oder Konzept, sind a
 | Zustandslogik | `src/game/state.js` | Run-Zustand und Folgen |
 | Bewegungslogik | `src/game/movement.js` | getestete Raum-/Tür-/Flurgrenzen und Ortszuordnung |
 | Persistenz | `src/game/save.js` | localStorage lesen/schreiben/löschen |
+| Optionen | `src/game/settings.js` | normalisierte Kamera-/Grafikwerte separat speichern |
 | Tests | `src/**/*.test.js` | reducerbasierte Regeln, Dialogkonsistenz und Bewegungsregressionen |
 | Voice-Runtime | `src/audio/useVoicePlayer.js` | Web Audio, Pegel, Untertitel- und Autoplayzustand |
 | Dialogdaten | `src/content/dialogue/` | stabile deutsche Dialog-IDs und Sprachdateiverweise |

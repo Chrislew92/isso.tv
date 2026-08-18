@@ -2,7 +2,7 @@
 
 Datum / Agent: 18.08.2026 / Codex
 
-Ausgangs-Commit: `bed2a5f`
+Ausgangs-Commit: `2b75326`
 
 Arbeitspaket: HD-Hafenpass, sichere Außenkamera, 353L-Gait, lesbare 3D-Beschilderung und vollständiger Browser-Kernlauf
 
@@ -44,16 +44,17 @@ Arbeitspaket: HD-Hafenpass, sichere Außenkamera, 353L-Gait, lesbare 3D-Beschild
 - Das Web-Audio-System erzeugt ein eigenes Regen-/Gebäudehum-Bett ohne externe Audiodatei und blendet dessen Mix zonenabhängig zwischen Wohnung, Flur, Vordach und Hafen. `TON AN/AUS` schaltet Stimme und Atmosphäre gemeinsam; beide Richtungen wurden im Browser bedient.
 - Jeder neue Halbzyklus des Gaits erzeugt einen kurzen synthetischen Hufkontakt. Frequenz und Ausklang unterscheiden Eichenboden, Flur, Vordach und Hafen; der Sprint hebt die Kontaktintensität an. Ein frischer Browserlauf blieb ohne Konsolenwarnung oder -fehler.
 - Tür, Donkey-Connection, Rollwagen, Bahnhof und Signalwerk lösen jeweils ein eigenes, kurz ausklingendes Weltklangmuster aus. Die Nodes werden nach jedem Cue getrennt; ein frischer Lauf mit entsperrtem Ton blieb fehlerfrei.
+- Das neue ⚙-Optionsfenster erklärt Kameratempo und Grafikmodus mit Symbolen/Klartext. 35–140 % Kameratempo sowie `AUTO`, `HOCH` und `SPARSAM` werden separat vom Save lokal gespeichert und unmittelbar an Orbit-Speed, DPR und Adaptive-DPR gebunden.
 - Wiederholte statische Details werden nach Bevel-Anwendung gebatcht. Der zweite Batchpass bündelt außerdem Speicherblöcke/-dächer/-schornsteine, Schiffreling, Hafenleuchten, Bollards und Kranserien; Blender meldet 263 Objekte / 258 Meshes statt 317 / 312. Ferne Kräne, Container, Schiff und Skyline empfangen Licht/Nebel, werfen aber keine teuren Echtzeitschatten mehr. Wohnung, Flur und Hafen wurden danach erneut visuell geprüft.
 - Die lokale Vorschau ist noch kein freigegebener Release.
 
 ## Zuletzt geprüft
 
-- `npm run test`: 16 Tests bestanden.
+- `npm run test`: 19 Tests bestanden.
 - `npm run build`: erfolgreich.
 - `npm audit`: 0 bekannte Sicherheitslücken.
 - Browser-Abnahme: automatischer Filmstart, Wohnung, echter Tür-/Flur-/Vordach-/Hafenlauf, kamerarelative Steuerung, Rollwagenprompt, Auswahl „Direkt helfen“, sichtbare Wagenfolge und Nachhall 3 → 4 geprüft. Untertitel-Failsafe und absichtlich ausgelöster 3D-Fehlerfallback geprüft; im normalen Lauf keine Konsolenwarnungen oder -fehler.
-- Produktionsbuild: App-Chunk rund 222,14 kB / 70,01 kB gzip, Runtime-Chunk rund 983,32 kB / 268,59 kB gzip; Level-GLB 8.734.416 Byte. Die aktuelle FPS-/Core-Web-Vitals-Messung bleibt offen, weil in dieser Umgebung kein Chrome-Trace-Werkzeug verfügbar ist.
+- Produktionsbuild: App-Chunk rund 224,61 kB / 70,76 kB gzip, Runtime-Chunk rund 983,45 kB / 268,65 kB gzip; Level-GLB 8.734.416 Byte. Die aktuelle FPS-/Core-Web-Vitals-Messung bleibt offen, weil in dieser Umgebung kein Chrome-Trace-Werkzeug verfügbar ist.
 
 ## Bekannte Risiken
 

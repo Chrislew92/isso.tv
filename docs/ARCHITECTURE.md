@@ -48,6 +48,8 @@ Neue dauerhafte Mechaniken benötigen:
 
 Kein persistenter Spielwert darf nur in einem React-Komponenten-State leben.
 
+Kamera-/Grafikoptionen sind kein Run-Fortschritt und liegen daher getrennt unter `isso-tv-v3-settings-v1`. `settings.js` normalisiert Kameratempo auf `0.35..1.4` und akzeptiert nur `auto`, `high` oder `efficient`; beschädigte Daten fallen auf sichere Defaults zurück. Das Optionsfenster ändert `OrbitControls.rotateSpeed`, Canvas-DPR und den Einsatz von `AdaptiveDpr` unmittelbar.
+
 ## 3D-Szene
 
 `RealtimeWorld.jsx` lädt zwei Modelle:
