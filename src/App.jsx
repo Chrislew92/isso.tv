@@ -45,6 +45,7 @@ export default function App() {
   const chooseConnection = useCallback(async (choice) => {
     dispatch({ type: 'CONNECTION_RESPONSE', choice: choice.id, aftermath: choice.aftermath })
     setModal(null)
+    voice.playWorldCue('connection')
     if (choice.id === 'morning') {
       await voice.play('de.room.connection.morning.353l.01')
       await voice.play('de.room.connection.morning.lotte.01')
@@ -54,12 +55,13 @@ export default function App() {
     } else {
       await voice.play('de.room.connection.silence.lotte.01')
     }
-  }, [voice.play])
+  }, [voice.play, voice.playWorldCue])
 
   const chooseCart = useCallback((choice) => {
     dispatch({ type: 'CART_STANCE', stance: choice.id, aftermath: CART_AFTERMATH[choice.id] })
     setModal(null)
-  }, [])
+    voice.playWorldCue('cart')
+  }, [voice.playWorldCue])
 
   useEffect(() => saveRun(run), [run])
 
@@ -110,6 +112,7 @@ export default function App() {
     }
     if (action === 'door') {
       dispatch({ type: 'OPEN_DOOR' })
+      voice.playWorldCue('door')
       voice.play('de.hallway.threshold.353l.01')
     }
     if (action === 'cart') {
@@ -118,13 +121,15 @@ export default function App() {
     }
     if (action === 'station') {
       setModal('station')
+      voice.playWorldCue('station')
       voice.play('de.station.platform.announcement.01')
     }
     if (action === 'signalwerk') {
       setModal('signalwerk')
+      voice.playWorldCue('signalwerk')
       voice.play('de.signalwerk.lotte.01')
     }
-  }, [chooseCart, chooseConnection, voice.play, voice.replay, voice.toggle])
+  }, [chooseCart, chooseConnection, voice.play, voice.playWorldCue, voice.replay, voice.toggle])
 
   const handleWorldReady = useCallback(() => setReady(true), [])
 

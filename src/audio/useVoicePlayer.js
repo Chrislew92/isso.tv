@@ -209,6 +209,39 @@ export default function useVoicePlayer() {
     click.stop(now + 0.05)
   }, [])
 
+  const playWorldCue = useCallback((cue) => {
+    const graph = context.current
+    const master = ambience.current.master
+    if (!graph || !master || graph.state !== 'running' || voiceState.current.enabled === false) return
+    const now = graph.currentTime
+    const tones = {
+      door: [[74, 0.00, 0.24, 0.030, 'triangle'], [228, 0.15, 0.055, 0.007, 'square']],
+      connection: [[310, 0.00, 0.11, 0.012, 'sine'], [465, 0.09, 0.14, 0.010, 'sine']],
+      cart: [[66, 0.00, 0.13, 0.031, 'triangle'], [58, 0.17, 0.15, 0.025, 'triangle']],
+      station: [[690, 0.00, 0.10, 0.009, 'sine'], [920, 0.13, 0.16, 0.008, 'sine']],
+      signalwerk: [[250, 0.00, 0.12, 0.010, 'sine'], [375, 0.10, 0.18, 0.009, 'sine']],
+    }
+    for (const [frequency, delay, duration, volume, type] of tones[cue] ?? []) {
+      const oscillator = graph.createOscillator()
+      const gain = graph.createGain()
+      const start = now + delay
+      oscillator.type = type
+      oscillator.frequency.setValueAtTime(frequency, start)
+      oscillator.frequency.exponentialRampToValueAtTime(Math.max(30, frequency * 0.72), start + duration)
+      gain.gain.setValueAtTime(0.0001, start)
+      gain.gain.exponentialRampToValueAtTime(volume, start + 0.005)
+      gain.gain.exponentialRampToValueAtTime(0.0001, start + duration)
+      oscillator.connect(gain)
+      gain.connect(master)
+      oscillator.onended = () => {
+        oscillator.disconnect()
+        gain.disconnect()
+      }
+      oscillator.start(start)
+      oscillator.stop(start + duration + 0.02)
+    }
+  }, [])
+
   const play = useCallback(async (id) => {
     const line = getDialogue(id)
     if (!line || !voiceState.current.enabled && !enabled) return false
@@ -327,6 +360,7 @@ export default function useVoicePlayer() {
     play,
     replay,
     playFootstep,
+    playWorldCue,
     stop,
     setAmbienceZone,
     toggle,
