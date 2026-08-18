@@ -1,6 +1,6 @@
-import { Suspense, useEffect, useMemo, useRef, useState } from 'react'
+import { Component, Suspense, useEffect, useMemo, useRef, useState } from 'react'
 import { Canvas, useFrame, useThree } from '@react-three/fiber'
-import { AdaptiveDpr, Html, OrbitControls, useGLTF } from '@react-three/drei'
+import { AdaptiveDpr, Html, OrbitControls, useGLTF, useProgress } from '@react-three/drei'
 import { clone } from 'three/examples/jsm/utils/SkeletonUtils.js'
 import {
   ACESFilmicToneMapping,
@@ -40,11 +40,50 @@ function closestInteraction(position, run) {
 }
 
 function LoadingModel() {
+  const { active, progress, loaded, total } = useProgress()
+  const percent = Math.max(2, Math.min(100, Math.round(progress || 0)))
   return (
     <Html center>
-      <div className="three-loader"><span>353L</span><small>ECHTES 3D WIRD GELADEN</small></div>
+      <div className="three-loader" role="status" aria-live="polite">
+        <span>353L</span>
+        <small>{active ? `STRAMMBURG LÄDT · ${percent}%` : 'ECHTES 3D IST BEREIT'}</small>
+        <i aria-hidden="true"><b style={{ width: `${percent}%` }} /></i>
+        <em>{total > 0 ? `${loaded} / ${total} BAUSTEINE` : 'WELT WIRD VERBUNDEN'}</em>
+      </div>
     </Html>
   )
+}
+
+class WorldErrorBoundary extends Component {
+  constructor(props) {
+    super(props)
+    this.state = { failed: false }
+  }
+
+  static getDerivedStateFromError() {
+    return { failed: true }
+  }
+
+  componentDidCatch(error) {
+    console.error('ISSO.TV 3D runtime failed', error)
+  }
+
+  render() {
+    if (this.state.failed) {
+      return (
+        <section className="world-error" role="alert">
+          <div>
+            <span>⚠</span>
+            <p className="eyebrow">3D-VERBINDUNG UNTERBROCHEN</p>
+            <h2>Strammburg konnte nicht vollständig geladen werden.</h2>
+            <p>Dein lokaler Spielstand bleibt erhalten. Ein Neuladen verbindet Welt und 353L erneut.</p>
+            <button type="button" onClick={() => window.location.reload()}>↻ NOCH EINMAL LADEN</button>
+          </div>
+        </section>
+      )
+    }
+    return this.props.children
+  }
 }
 
 function Rain() {
@@ -638,8 +677,11 @@ function WorldLighting() {
   )
 }
 
-export default function RealtimeWorld(props) {
+function WorldScene(props) {
   const [lost, setLost] = useState(false)
+  if (import.meta.env.DEV && new URLSearchParams(window.location.search).has('force3dError')) {
+    throw new Error('Intentional local 3D fallback check')
+  }
   return (
     <section className="realtime-world" aria-label="Echte frei begehbare 3D-Welt von Strammburg">
       <Canvas
@@ -669,6 +711,14 @@ export default function RealtimeWorld(props) {
       </Canvas>
       {lost && <div className="webgl-warning">Die 3D-Verbindung wurde unterbrochen. Bitte einmal neu laden.</div>}
     </section>
+  )
+}
+
+export default function RealtimeWorld(props) {
+  return (
+    <WorldErrorBoundary>
+      <WorldScene {...props} />
+    </WorldErrorBoundary>
   )
 }
 
