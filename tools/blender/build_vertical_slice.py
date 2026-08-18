@@ -155,6 +155,37 @@ def merge_static(prefix, merged_name):
     return objects[0]
 
 
+def text_mesh(name, body, location, size, mat, parent=None, rotation=(0, 0, 0), extrude=0.012):
+    curve = bpy.data.curves.new(f'{name}_curve', type='FONT')
+    curve.body = body
+    curve.align_x = 'CENTER'
+    curve.align_y = 'CENTER'
+    curve.size = size
+    curve.extrude = extrude
+    curve.bevel_depth = max(0.002, extrude * 0.22)
+    curve.resolution_u = 3
+    curve.bevel_resolution = 1
+    obj = bpy.data.objects.new(name, curve)
+    bpy.context.collection.objects.link(obj)
+    obj.location = location
+    obj.rotation_euler = rotation
+    apply_material(obj, mat)
+    bpy.ops.object.select_all(action='DESELECT')
+    obj.select_set(True)
+    bpy.context.view_layer.objects.active = obj
+    bpy.ops.object.convert(target='MESH')
+    obj = bpy.context.view_layer.objects.active
+    # glTF's Y-up conversion otherwise exposes the extruded font's mirrored back
+    # from the street-facing camera side. Bake one local horizontal correction.
+    obj.scale.x = -1
+    bpy.ops.object.transform_apply(location=False, rotation=False, scale=True)
+    if parent:
+        world_matrix = obj.matrix_world.copy()
+        obj.parent = parent
+        obj.matrix_world = world_matrix
+    return obj
+
+
 def ear_mesh(name, location, side, mat, parent):
     width = 0.2
     depth = 0.13
@@ -360,7 +391,19 @@ def build_level(mats):
             cylinder(f'awning_post_base_{x}_{y}', (x, y, 0.10), 0.23, 0.20, mats['metal_dark'], world, 20)
     for index, x in enumerate((10.85, 13.15)):
         cylinder(f'awning_lamp_mount_{index}', (x, 0, 2.88), 0.035, 0.32, mats['metal_dark'], world, 14)
-        sphere(f'awning_lamp_{index}', (x, 0, 2.70), (0.16, 0.16, 0.19), mats['lamp'], world, 20, 12)
+        # Small industrial pendants keep the sheltered exit readable without
+        # filling the camera with oversized glowing spheres.
+        cylinder(
+            f'awning_lamp_shade_{index}',
+            (x, 0, 2.75),
+            0.22,
+            0.16,
+            mats['metal_dark'],
+            world,
+            20,
+            radius_top=0.075,
+        )
+        sphere(f'awning_lamp_{index}', (x, 0, 2.66), (0.085, 0.085, 0.07), mats['lamp'], world, 18, 10)
 
     # Drainage and curb language visually explain where the dry route continues.
     box('harbor_drain_channel', (17.2, 2.42, 0.018), (10.4, 0.34, 0.055), mats['drain'], world, 0.018)
@@ -389,6 +432,17 @@ def build_level(mats):
         box(f'facade_window_l_{window_index}', (x - 0.84, 4.45, 1.92), (0.14, 0.14, 1.88), mats['hall_trim'], world, 0.022)
         box(f'facade_window_r_{window_index}', (x + 0.84, 4.45, 1.92), (0.14, 0.14, 1.88), mats['hall_trim'], world, 0.022)
         box(f'facade_window_mullion_{window_index}', (x, 4.42, 1.92), (0.09, 0.12, 1.68), mats['hall_trim'], world, 0.016)
+    box('facade_pier_lightbox', (11.35, 4.48, 3.58), (3.25, 0.16, 0.70), mats['kiosk_lightbox'], world, 0.055)
+    text_mesh(
+        'facade_pier_label',
+        'PIER 17',
+        (11.35, 4.365, 3.58),
+        0.42,
+        mats['metal_dark'],
+        world,
+        rotation=(math.radians(-90), 0, 0),
+        extrude=0.016,
+    )
 
     # Kiosk, cart and working harbor.
     box('kiosk_body', (23, -7.2, 1.65), (5.2, 4.2, 3.3), mats['kiosk'], world, 0.12)
@@ -400,7 +454,17 @@ def build_level(mats):
     box('kiosk_window_l', (21.36, -4.92, 2.0), (0.16, 0.18, 1.70), mats['kiosk_frame'], world, 0.025)
     box('kiosk_window_r', (24.64, -4.92, 2.0), (0.16, 0.18, 1.70), mats['kiosk_frame'], world, 0.025)
     box('kiosk_window_mullion', (23, -4.88, 2.0), (0.10, 0.15, 1.45), mats['kiosk_frame'], world, 0.018)
-    box('kiosk_lightbox', (23, -4.66, 3.15), (2.62, 0.10, 0.32), mats['kiosk_lightbox'], world, 0.045)
+    box('kiosk_lightbox', (23, -4.66, 3.15), (3.72, 0.12, 0.52), mats['kiosk_lightbox'], world, 0.045)
+    text_mesh(
+        'kiosk_name_label',
+        'NACHTKIOSK',
+        (23, -4.585, 3.15),
+        0.28,
+        mats['metal_dark'],
+        world,
+        rotation=(math.radians(90), 0, 0),
+        extrude=0.012,
+    )
     for paper_index, x in enumerate((21.92, 22.28, 23.72, 24.08)):
         box(f'kiosk_paper_{paper_index}', (x, -4.69, 1.76 + (paper_index % 2) * 0.38), (0.25, 0.035, 0.30), mats['paper' if paper_index % 2 else 'orange'], world, 0.012, rotation=(0, 0, math.radians(-3 + paper_index * 2)))
     box('kiosk_side_door', (25.62, -7.55, 1.38), (0.12, 1.22, 2.76), mats['hall_door'], world, 0.05)

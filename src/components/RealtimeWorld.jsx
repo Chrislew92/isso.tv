@@ -261,7 +261,6 @@ function Level({ run, paused, onInteract, onPrompt, onPosition, onReady, voiceSt
     cameraGoal: new Vector3(),
   })
   const { camera, gl } = useThree()
-
   const rigs = useMemo(() => ({
     hips: characterModel.getObjectByName('rig_hips'),
     spine: characterModel.getObjectByName('rig_spine'),
@@ -305,13 +304,14 @@ function Level({ run, paused, onInteract, onPrompt, onPosition, onReady, voiceSt
     const previewThreshold = previewZone === 'threshold'
     const previewAwning = previewZone === 'awning'
     const previewHarbor = previewZone === 'harbor'
+    const previewKiosk = previewZone === 'kiosk'
     character.current.position.set(
-      previewHallway ? 7.35 : previewThreshold ? 3.48 : previewAwning ? 13.8 : previewHarbor ? 17.1 : -1.1,
+      previewHallway ? 7.35 : previewThreshold ? 3.48 : previewAwning ? 13.8 : previewKiosk ? 23 : previewHarbor ? 17.1 : -1.1,
       motion.current.baseY,
-      previewHallway || previewThreshold || previewAwning ? 0 : previewHarbor ? 3.1 : 0.7,
+      previewHallway || previewThreshold || previewAwning ? 0 : previewHarbor || previewKiosk ? 3.1 : 0.7,
     )
-    if (previewHarbor) character.current.rotation.y = Math.PI
-    motion.current.zone = previewHallway ? 'hallway' : previewAwning ? 'awning' : previewHarbor ? 'harbor' : 'room'
+    if (previewHarbor || previewKiosk) character.current.rotation.y = Math.PI
+    motion.current.zone = previewHallway ? 'hallway' : previewAwning ? 'awning' : previewHarbor || previewKiosk ? 'harbor' : 'room'
     door.current = level.getObjectByName('door_pivot')
     cart.current = level.getObjectByName('cart_root')
     if (cart.current) motion.current.cartBaseZ = cart.current.position.z
@@ -364,9 +364,10 @@ function Level({ run, paused, onInteract, onPrompt, onPosition, onReady, voiceSt
       if (previewHallway) camera.position.set(root.position.x - 4.8, 2.35, root.position.z * 0.22)
       if (previewAwning) camera.position.set(root.position.x - 4.8, 2.55, root.position.z)
       if (previewHarbor) camera.position.set(root.position.x + 3.3, 2.85, root.position.z - 7.8)
+      if (previewKiosk) camera.position.set(root.position.x + 3.5, 3.2, root.position.z - 7.0)
       if (controls.current) {
-        controls.current.minAzimuthAngle = previewHallway ? -Math.PI * 0.78 : previewHarbor ? -Math.PI : -Math.PI * 0.46
-        controls.current.maxAzimuthAngle = previewHallway ? -Math.PI * 0.22 : previewHarbor ? Math.PI : Math.PI * 0.46
+        controls.current.minAzimuthAngle = previewHallway ? -Math.PI * 0.78 : previewHarbor || previewKiosk ? -Math.PI : -Math.PI * 0.46
+        controls.current.maxAzimuthAngle = previewHallway ? -Math.PI * 0.22 : previewHarbor || previewKiosk ? Math.PI : Math.PI * 0.46
       }
       controls.current?.target.copy(root.position).add(new Vector3(0, 1.08, 0))
       controls.current?.update()
@@ -611,8 +612,8 @@ function WorldLighting() {
       <pointLight color="#bfd3d8" intensity={5} distance={4.8} decay={2} position={[5.35, 2.25, 0.35]} />
       <pointLight color="#ffd09a" intensity={13} distance={5.5} decay={2} position={[7.65, 2.12, -1.30]} />
       <pointLight color="#ffbb72" intensity={13} distance={5.5} decay={2} position={[10.35, 2.12, 1.30]} />
-      <pointLight color="#ffad55" intensity={22} distance={11} decay={2} position={[12, 2.75, 0]} />
-      <pointLight color="#ffd19a" intensity={24} distance={10} decay={2} position={[17.5, 3.8, 0]} />
+      <pointLight color="#ffad55" intensity={8.5} distance={8} decay={2} position={[12, 2.75, 0]} />
+      <pointLight color="#ffd19a" intensity={11} distance={9} decay={2} position={[17.5, 3.8, 0]} />
       <pointLight color="#8fc6d4" intensity={12} distance={9} decay={2} position={[19.5, 3.6, 7]} />
       <pointLight color="#ff923c" intensity={30} distance={14} decay={2} position={[23, 3.0, 5]} />
       <pointLight color="#5e9daf" intensity={17} distance={20} decay={2} position={[31, 5.5, 12]} />
