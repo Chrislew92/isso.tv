@@ -16,6 +16,13 @@ const AMBIENCE_MIX = {
   harbor: { rain: 0.072, hum: 0.006 },
 }
 
+const FOOTSTEP_TONE = {
+  room: { frequency: 72, duration: 0.12 },
+  hallway: { frequency: 118, duration: 0.10 },
+  awning: { frequency: 96, duration: 0.11 },
+  harbor: { frequency: 82, duration: 0.13 },
+}
+
 export default function useVoicePlayer() {
   const [caption, setCaption] = useState(null)
   const [active, setActive] = useState(false)
@@ -158,6 +165,50 @@ export default function useVoicePlayer() {
     applyAmbienceMix(zone, voiceState.current.enabled !== false)
   }, [applyAmbienceMix])
 
+  const playFootstep = useCallback((zone, intensity = 0.65) => {
+    const graph = context.current
+    const master = ambience.current.master
+    if (!graph || !master || graph.state !== 'running' || voiceState.current.enabled === false) return
+    const tone = FOOTSTEP_TONE[zone] ?? FOOTSTEP_TONE.harbor
+    const now = graph.currentTime
+    const level = Math.min(1, Math.max(0.25, intensity))
+    const oscillator = graph.createOscillator()
+    const click = graph.createOscillator()
+    const bodyGain = graph.createGain()
+    const clickGain = graph.createGain()
+
+    oscillator.type = 'triangle'
+    oscillator.frequency.setValueAtTime(tone.frequency, now)
+    oscillator.frequency.exponentialRampToValueAtTime(tone.frequency * 0.56, now + tone.duration)
+    click.type = 'square'
+    click.frequency.setValueAtTime(tone.frequency * 4.2, now)
+    click.frequency.exponentialRampToValueAtTime(tone.frequency * 2.1, now + 0.035)
+
+    bodyGain.gain.setValueAtTime(0.0001, now)
+    bodyGain.gain.exponentialRampToValueAtTime(0.027 * level, now + 0.004)
+    bodyGain.gain.exponentialRampToValueAtTime(0.0001, now + tone.duration)
+    clickGain.gain.setValueAtTime(0.0001, now)
+    clickGain.gain.exponentialRampToValueAtTime(0.0065 * level, now + 0.002)
+    clickGain.gain.exponentialRampToValueAtTime(0.0001, now + 0.038)
+
+    oscillator.connect(bodyGain)
+    click.connect(clickGain)
+    bodyGain.connect(master)
+    clickGain.connect(master)
+    oscillator.onended = () => {
+      oscillator.disconnect()
+      bodyGain.disconnect()
+    }
+    click.onended = () => {
+      click.disconnect()
+      clickGain.disconnect()
+    }
+    oscillator.start(now)
+    click.start(now)
+    oscillator.stop(now + tone.duration + 0.02)
+    click.stop(now + 0.05)
+  }, [])
+
   const play = useCallback(async (id) => {
     const line = getDialogue(id)
     if (!line || !voiceState.current.enabled && !enabled) return false
@@ -275,6 +326,7 @@ export default function useVoicePlayer() {
     voiceState,
     play,
     replay,
+    playFootstep,
     stop,
     setAmbienceZone,
     toggle,

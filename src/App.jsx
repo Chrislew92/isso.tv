@@ -155,6 +155,7 @@ export default function App() {
           onPrompt={setPrompt}
           onPosition={setPosition}
           onReady={handleWorldReady}
+          onFootstep={voice.playFootstep}
           voiceState={voice.voiceState}
           voiceActive={voice.active}
         />

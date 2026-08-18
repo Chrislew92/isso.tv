@@ -264,7 +264,7 @@ function WetPatches() {
   )
 }
 
-function Level({ run, paused, onInteract, onPrompt, onPosition, onReady, voiceState }) {
+function Level({ run, paused, onInteract, onPrompt, onPosition, onReady, onFootstep, voiceState }) {
   const gltf = useGLTF(MODEL_URL)
   const characterGltf = useGLTF(CHARACTER_MODEL_URL)
   const level = useMemo(() => clone(gltf.scene), [gltf.scene])
@@ -282,6 +282,7 @@ function Level({ run, paused, onInteract, onPrompt, onPosition, onReady, voiceSt
     pace: 0,
     sprint: 0,
     stridePhase: 0,
+    footstepIndex: -1,
     turnLean: 0,
     baseY: 0,
     emoteUntil: 0,
@@ -497,6 +498,11 @@ function Level({ run, paused, onInteract, onPrompt, onPosition, onReady, voiceSt
       1 - Math.exp(-dt * (moving ? 9 : 11)),
     )
     motion.current.stridePhase += dt * MathUtils.lerp(3.8, 10.8, motion.current.pace)
+    const footstepIndex = Math.floor(motion.current.stridePhase / Math.PI)
+    if (moving && footstepIndex !== motion.current.footstepIndex) {
+      motion.current.footstepIndex = footstepIndex
+      onFootstep?.(motion.current.zone, sprinting ? 1 : 0.62)
+    }
     const stride = Math.sin(motion.current.stridePhase)
     const strideOpposite = -stride
     const step = stride * 0.62 * motion.current.pace
