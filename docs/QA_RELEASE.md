@@ -25,12 +25,14 @@
 - [x] V5/LOD1/LOD2 mit Skin, elf Clips, Meshopt und KTX2 automatisiert geprüft,
 - [x] verständlicher erzwungener 3D-Fehlerfall statt Weißbild,
 - [x] frischer normaler Browserlauf ohne neue Fehler-/Warnschleife,
-- [x] `npm test -- --run`: 25/25,
+- [x] `npm test -- --run`: 36/36 in 11 Dateien,
 - [x] `npm run build`: erfolgreich,
 - [x] `npm audit`: 0 bekannte Sicherheitslücken,
 - [x] Referenzprobe: 55,8 FPS / 17,93 ms Mittel / 18,3 ms p95,
-- [ ] kompletter frischer Morgen inklusive aller fünf Interaktionen, Reload und Reset als eine aufgezeichnete Sitzung,
-- [ ] Laptop/Tablet/Mobile/Touch/Controller/Reduced-Motion-Matrix,
+- [x] kompletter Morgen mit Verbindung, Tür, Hafenwagen, Bahnhof und HQ1 auf isoliertem Localhost-Teststand; Reload behielt sechs Nachhall-Ereignisse und HQ1-Position,
+- [x] Mobile 390×844, Touch-HUD, Optionsdialog, Untertitelgröße, Kontrast und ruhige Kamera im Browser geprüft,
+- [ ] physischer Controller sowie Laptop-/Tablet-Gerätematrix,
+- [ ] Reset-Löschung als vollständige Sitzung; Bestätigungsdialog und Reducer sind geprüft, lokale Nutzerdaten wurden im Browser nicht ungefragt gelöscht,
 - [ ] Nutzerabnahme des lokalen M1-Vertical-Slice.
 
 Details und Grenzen der Messung: `docs/PERFORMANCE.md`.

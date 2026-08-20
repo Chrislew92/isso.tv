@@ -30,4 +30,18 @@ describe('ISSO.TV V3 run state', () => {
     expect(run.cartStance).toBe(stance)
     expect(run.events[0].stance).toBe(stance)
   })
+
+  it('stores a compact reload position without changing the story', () => {
+    const run = runReducer(createRun(), { type: 'SAVE_POSITION', position: { x: 19.123, z: 3.086, location: 'harbor' } })
+    expect(run.version).toBe(6)
+    expect(run.player).toEqual({ x: 19.12, z: 3.09, location: 'harbor' })
+    expect(run.events).toEqual([])
+  })
+
+  it('starts as one game with a simple zero-euro economy', () => {
+    const run = createRun()
+    expect(run).not.toHaveProperty('mode')
+    expect(run).not.toHaveProperty('finance')
+    expect(run.economy).toEqual({ cash: 0, assets: 0, target: 50000 })
+  })
 })

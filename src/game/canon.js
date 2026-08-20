@@ -1,12 +1,14 @@
-export const BUILD = '3.0.0'
+export const BUILD = '3.1.0'
+
+export const WORLD_START = Object.freeze({ x: -1.1, z: 0.7, location: 'room' })
 
 export const PLACES = {
-  room: { id: 'room', label: 'Fährstraße 5B', short: 'ZIMMER', x: -2, z: 0 },
-  hallway: { id: 'hallway', label: 'Hausflur', short: 'FLUR', x: 7, z: 0 },
-  awning: { id: 'awning', label: 'Unter dem Vordach', short: 'VORDACH', x: 12, z: 0 },
-  harbor: { id: 'harbor', label: 'Pier 17', short: 'HAFEN', x: 20, z: -2 },
-  station: { id: 'station', label: 'Gleis 4 / Wiel', short: 'BAHNHOF', x: 36, z: 3 },
-  signalwerk: { id: 'signalwerk', label: 'Signalwerk / HQ1', short: 'HQ1', x: 30, z: 11 },
+  room: { id: 'room', label: 'Fährstraße 5B', short: 'ZIMMER', x: -1.1, z: 0.7 },
+  hallway: { id: 'hallway', label: 'Hausflur', short: 'FLUR', x: 7.35, z: 0 },
+  awning: { id: 'awning', label: 'Unter dem Vordach', short: 'VORDACH', x: 13.8, z: 0 },
+  harbor: { id: 'harbor', label: 'Pier 17', short: 'HAFEN', x: 19, z: 3.1 },
+  station: { id: 'station', label: 'Gleis 4 / Wiel', short: 'BAHNHOF', x: 35.5, z: -4.5 },
+  signalwerk: { id: 'signalwerk', label: 'Signalwerk / HQ1', short: 'HQ1', x: 27, z: -11 },
 }
 
 export const INTERACTIONS = {
@@ -15,45 +17,45 @@ export const INTERACTIONS = {
     label: 'Donkey-Connection öffnen',
     quiet: 'still bleiben',
     place: 'room',
-    x: -2.3,
-    z: 2.1,
-    radius: 2.1,
+    x: -3.15,
+    z: -3.36,
+    radius: 2.25,
   },
   door: {
     id: 'door',
     label: 'Tür öffnen',
     quiet: 'noch im Zimmer bleiben',
     place: 'room',
-    x: 4.1,
-    z: 0,
-    radius: 2,
+    x: 4.15,
+    z: 0.8,
+    radius: 2.1,
   },
   cart: {
     id: 'cart',
     label: 'Rollwagen ansehen',
     quiet: 'still beobachten',
     place: 'harbor',
-    x: 18,
-    z: -3.4,
-    radius: 2.7,
+    x: 19,
+    z: 3.1,
+    radius: 2.8,
   },
   station: {
     id: 'station',
     label: 'Gleis 4 ansehen',
     quiet: 'nur zuhören',
     place: 'station',
-    x: 35,
-    z: 3,
-    radius: 3,
+    x: 35.5,
+    z: -4.5,
+    radius: 3.4,
   },
   signalwerk: {
     id: 'signalwerk',
     label: 'Signalwerk betreten',
     quiet: 'Idee noch liegen lassen',
     place: 'signalwerk',
-    x: 29,
-    z: 10,
-    radius: 3,
+    x: 27,
+    z: -11,
+    radius: 3.4,
   },
 }
 

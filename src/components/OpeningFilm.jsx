@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useState } from 'react'
 
-export default function OpeningFilm({ onTransitionStart, onFinish, onSoundEnabled }) {
+export default function OpeningFilm({ onTransitionStart, onFinish, onSoundEnabled, reducedMotion = false }) {
   const [muted, setMuted] = useState(true)
   const [exiting, setExiting] = useState(false)
 
@@ -13,8 +13,8 @@ export default function OpeningFilm({ onTransitionStart, onFinish, onSoundEnable
     if (exiting) return
     setExiting(true)
     onTransitionStart?.({ canPlayAudio: !muted })
-    window.setTimeout(() => onFinish?.(), 1050)
-  }, [exiting, muted, onFinish, onTransitionStart])
+    window.setTimeout(() => onFinish?.(), reducedMotion ? 80 : 1050)
+  }, [exiting, muted, onFinish, onTransitionStart, reducedMotion])
 
   useEffect(() => {
     const timer = window.setTimeout(beginExit, 7200)
@@ -22,8 +22,7 @@ export default function OpeningFilm({ onTransitionStart, onFinish, onSoundEnable
   }, [beginExit])
 
   return (
-    <section className={`opening-film${exiting ? ' opening-film--exiting' : ''}`} aria-label="ISSO.TV Prolog">
-      <img src="/media/prolog-faehrbude-v3.png" alt="353L schläft in der kargen Fährbude auf einer Matratze am Boden" />
+    <section className={`opening-film${exiting ? ' opening-film--exiting' : ''}`} aria-label="ISSO.TV Prolog in derselben 3D-Spielwelt">
       <div className="opening-film__grade" />
       <header>
         <span className="logo-mark">ISSO<span>.TV</span></span>

@@ -20,13 +20,34 @@ describe('settings', () => {
     expect(normalizeSettings({ cameraSensitivity: 9, renderQuality: 'cinema' })).toEqual({
       cameraSensitivity: 1.4,
       renderQuality: 'auto',
+      subtitles: true,
+      subtitleSize: 'medium',
+      highContrast: false,
+      reducedMotion: false,
+      audio: { master: 0.85, voice: 1, ambience: 0.72, effects: 0.82 },
     })
   })
 
   it('round-trips normalized local settings', () => {
     const storage = fakeStorage()
     expect(saveSettings({ cameraSensitivity: 0.55, renderQuality: 'high' }, storage)).toBe(true)
-    expect(loadSettings(storage)).toEqual({ cameraSensitivity: 0.55, renderQuality: 'high' })
-    expect(JSON.parse(storage.read())).toEqual({ cameraSensitivity: 0.55, renderQuality: 'high' })
+    expect(loadSettings(storage)).toMatchObject({ cameraSensitivity: 0.55, renderQuality: 'high' })
+    expect(JSON.parse(storage.read())).toMatchObject({ cameraSensitivity: 0.55, renderQuality: 'high' })
+  })
+
+  it('clamps the four audio buses and keeps accessibility preferences', () => {
+    expect(normalizeSettings({
+      subtitles: false,
+      subtitleSize: 'large',
+      highContrast: true,
+      reducedMotion: true,
+      audio: { master: 2, voice: -1, ambience: 0.4, effects: 0.6 },
+    })).toMatchObject({
+      subtitles: false,
+      subtitleSize: 'large',
+      highContrast: true,
+      reducedMotion: true,
+      audio: { master: 1, voice: 0, ambience: 0.4, effects: 0.6 },
+    })
   })
 })

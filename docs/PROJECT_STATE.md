@@ -73,7 +73,7 @@ Dieses Dokument trennt strikt zwischen dem nachweisbar laufenden V3-Kern und dem
 
 ## Verifikation am 20.08.2026
 
-- `npm test -- --run`: **25/25 Tests in 7 Dateien bestanden**.
+- `npm test -- --run`: **36/36 Tests in 11 Dateien bestanden**.
 - `npm run build`: erfolgreich; größtes JavaScript-Chunk 368,90 kB minifiziert.
 - `npm audit`: **0 bekannte Sicherheitslücken**, einschließlich Entwicklungswerkzeugen.
 - Charakter: 4.707.288 Byte; LOD1 4.276.136 Byte; LOD2 4.008.540 Byte.
@@ -88,7 +88,7 @@ Dieses Dokument trennt strikt zwischen dem nachweisbar laufenden V3-Kern und dem
 
 - freie Charaktererstellung, mehrere spielbare Spezies/Formen und ein vollständiger Kleidungseditor,
 - mehrere Save-Slots, Export/Import und sichere Langzeitmigrationen,
-- Euro-, Konto-, Schutzkonto-, Schulden-, Insolvenz- und Haushaltsbuchsystem,
+- detaillierte Konten-, Schulden-, Insolvenz- oder Haushaltsbuchverwaltung; diese gehört ausdrücklich nicht in ISSO.TV,
 - Hunger, Durst, Energie, Essen, Gutscheine, Einkauf, Bestellung, Schlaf und Wochenrhythmus,
 - Gewohnheiten/Sucht-/Entzugssysteme,
 - echte Markt-/Kryptosimulation, Z-Coin, Spilo und belastbares Langzeitbalancing,
@@ -96,7 +96,7 @@ Dieses Dokument trennt strikt zwischen dem nachweisbar laufenden V3-Kern und dem
 - spielbare Bar, Supermarkt, Park, Klinik, Haft, weitere Bezirke und EyTonLand,
 - Hauptstory-Akte, Konfliktbranches, Krise-/Behandlungs- und Haftkapitel,
 - finale Sprecher, endgültige Tonrechte, Aufnahme-/Mixqualität und vollständiges Lip-Sync pro Dialog,
-- Controller, Touch, umfassende Barrierefreiheit und die gesamte Geräte-Matrix,
+- physischer Controller-Test sowie die vollständige Laptop-/Tablet-/Gerätematrix; Touch-HUD, Gamepad-Abfrage, Fokusfalle, Untertitelgröße, Kontrast und ruhige Kamera sind bereits eingebaut,
 - Live-Backup, rechtliche Endprüfung, Hostingwechsel, Monitoring und Release.
 
-Der nächste Produktblock ist nicht ein weiterer Grafik-Neustart, sondern M1-Abnahme und danach M2: Save-Schema, Charakterstart, Finanzprofil und ein kompletter räumlicher Tagesloop.
+Der nächste Produktblock ist nicht ein weiterer Grafik-Neustart, sondern M1-Abnahme und danach M2: Save-Schema, Charakterstart, einfacher 0-Euro-Aufbau und ein kompletter räumlicher Tagesloop.

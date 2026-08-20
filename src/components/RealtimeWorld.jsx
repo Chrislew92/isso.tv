@@ -23,6 +23,7 @@ import {
   Vector3,
 } from 'three'
 import { INTERACTIONS } from '../game/canon.js'
+import { readGamepad } from '../game/gamepad.js'
 import { collectNavigationGeometry, groundMovement, placeFor, resolveMovement } from '../game/movement.js'
 
 const MODEL_URL = '/models/isso-v3-vertical-slice-v1.glb'
@@ -30,19 +31,19 @@ const CHARACTER_MODEL_URL = '/models/353l-hi3d-character-v5.glb'
 const UP = new Vector3(0, 1, 0)
 const SHADOW_OPTIONS = { enabled: true, type: PCFShadowMap }
 
-const targets = {
-  connection: { ...INTERACTIONS.connection, point: new Vector3(-3.15, 0, -3.36), radius: 2.25 },
-  door: { ...INTERACTIONS.door, point: new Vector3(4.15, 0, 0.8), radius: 2.1 },
-  cart: { ...INTERACTIONS.cart, point: new Vector3(19, 0, 3.1), radius: 2.8 },
-  station: { ...INTERACTIONS.station, point: new Vector3(35.5, 0, -4.5), radius: 3.4 },
-  signalwerk: { ...INTERACTIONS.signalwerk, point: new Vector3(27, 0, -11), radius: 3.4 },
-}
+const targets = Object.fromEntries(Object.values(INTERACTIONS).map((target) => [
+  target.id,
+  { ...target, point: new Vector3(target.x, 0, target.z) },
+]))
 
 function closestInteraction(position, run) {
   let closest = null
   for (const target of Object.values(targets)) {
+    if (target.id === 'connection' && run.connectionTone) continue
     if (target.id === 'door' && run.doorOpen) continue
     if (target.id === 'cart' && run.cartResolved) continue
+    if (target.id === 'station' && run.visited.includes('station')) continue
+    if (target.id === 'signalwerk' && run.visited.includes('signalwerk')) continue
     const distance = position.distanceTo(target.point)
     if (distance <= target.radius && (!closest || distance < closest.distance)) closest = { ...target, distance }
   }
@@ -343,7 +344,7 @@ function DockWorker({ source, lodSources = [], resolved }) {
   )
 }
 
-function Level({ run, paused, wakeSequence, onWakeComplete, onInteract, onPrompt, onPosition, onReady, onFootstep, cameraSensitivity = 0.75, voiceState, ktx2Loader }) {
+function Level({ run, paused, wakeSequence, cinematicMode = false, reducedMotion = false, initialPosition, inputState, onWakeComplete, onInteract, onPrompt, onPosition, onReady, onFootstep, cameraSensitivity = 0.75, voiceState, ktx2Loader }) {
   const { camera, gl } = useThree()
   const configureTextures = useCallback((loader) => {
     loader.setKTX2Loader(ktx2Loader)
@@ -383,6 +384,8 @@ function Level({ run, paused, wakeSequence, onWakeComplete, onInteract, onPrompt
     wakeStarted: 0,
     wakeFinished: false,
     locomotion: 'Idle',
+    gamepadButtons: [],
+    idleSeconds: 0,
   })
   const vectors = useRef({
     forward: new Vector3(),
@@ -394,6 +397,8 @@ function Level({ run, paused, wakeSequence, onWakeComplete, onInteract, onPrompt
     cameraGoal: new Vector3(),
     cameraRay: new Vector3(),
     cameraSafe: new Vector3(),
+    idleFocus: new Vector3(),
+    idleCameraGoal: new Vector3(),
   })
   const rigs = useMemo(() => ({
     hips: characterModel.getObjectByName('rig_hips'),
@@ -461,18 +466,22 @@ function Level({ run, paused, wakeSequence, onWakeComplete, onInteract, onPrompt
     const previewAwning = previewZone === 'awning'
     const previewHarbor = previewZone === 'harbor'
     const previewKiosk = previewZone === 'kiosk'
+    const previewConnection = previewZone === 'connection'
+    const previewStation = previewZone === 'station'
+    const previewSignalwerk = previewZone === 'signalwerk'
     const startsFree = run.phase === 'free' || previewZone
+    const saved = initialPosition ?? { x: -1.1, z: 0.7 }
     character.current.position.set(
-      previewHallway ? 7.35 : previewThreshold ? 3.48 : previewAwning ? 13.8 : previewKiosk ? 23 : previewHarbor ? 17.1 : -1.1,
+      previewConnection ? targets.connection.x : previewStation ? 34.5 : previewSignalwerk ? 26 : previewHallway ? 7.35 : previewThreshold ? 3.48 : previewAwning ? 13.8 : previewKiosk ? 23 : previewHarbor ? 17.1 : saved.x,
       motion.current.baseY,
-      previewHallway || previewThreshold || previewAwning ? 0 : previewHarbor || previewKiosk ? 3.1 : 0.7,
+      previewConnection ? targets.connection.z : previewStation ? targets.station.z : previewSignalwerk ? targets.signalwerk.z : previewHallway || previewAwning ? 0 : previewThreshold ? 0.8 : previewHarbor || previewKiosk ? 3.1 : saved.z,
     )
     if (!startsFree) {
       character.current.position.set(-3.1, 0.42, 1.55)
       character.current.rotation.set(0, 0, -1.46)
     }
     if (previewHarbor || previewKiosk) character.current.rotation.y = Math.PI
-    motion.current.zone = previewHallway ? 'hallway' : previewAwning ? 'awning' : previewHarbor || previewKiosk ? 'harbor' : 'room'
+    motion.current.zone = placeFor(character.current.position)
     door.current = level.getObjectByName('door_pivot')
     cart.current = level.getObjectByName('cart_root')
     if (cart.current) motion.current.cartBaseZ = cart.current.position.z
@@ -541,6 +550,7 @@ function Level({ run, paused, wakeSequence, onWakeComplete, onInteract, onPrompt
       if (previewAwning) camera.position.set(root.position.x - 4.8, 2.55, root.position.z)
       if (previewHarbor) camera.position.set(root.position.x + 3.3, 2.85, root.position.z - 7.8)
       if (previewKiosk) camera.position.set(root.position.x + 3.5, 3.2, root.position.z - 7.0)
+      if (previewStation || previewSignalwerk) camera.position.set(root.position.x - 4.5, 2.85, root.position.z + 4.6)
       controls.current?.target.copy(root.position).add(new Vector3(0, 1.08, 0))
       controls.current?.update()
     }
@@ -626,7 +636,7 @@ function Level({ run, paused, wakeSequence, onWakeComplete, onInteract, onPrompt
     const dt = Math.min(delta, 0.033)
     motion.current.time += dt
     animationMixer.current?.update(dt)
-    const { forward, right, direction, next, target, followDelta, cameraGoal, cameraRay, cameraSafe } = vectors.current
+    const { forward, right, direction, next, target, followDelta, cameraGoal, cameraRay, cameraSafe, idleFocus, idleCameraGoal } = vectors.current
 
     if (wakeSequence && !motion.current.wakeFinished) {
       if (!motion.current.wakeStarted) {
@@ -663,18 +673,44 @@ function Level({ run, paused, wakeSequence, onWakeComplete, onInteract, onPrompt
       }
       return
     }
+    if (cinematicMode) {
+      const orbit = reducedMotion ? 0.18 : Math.sin(state.clock.elapsedTime * 0.16) * 0.48
+      const cinematicZone = placeFor(root.position)
+      target.copy(root.position).add(new Vector3(0, run.phase === 'mattress' ? 0.66 : 1.08, 0))
+      if (cinematicZone === 'harbor') cameraGoal.set(root.position.x - 4.6 + orbit, root.position.y + 2.35, root.position.z - 4.2)
+      else if (cinematicZone === 'hallway') cameraGoal.set(root.position.x - 3.8, root.position.y + 2.05, root.position.z + orbit)
+      else if (cinematicZone === 'room') cameraGoal.set(root.position.x + 2.6 + orbit, root.position.y + 1.45, Math.min(4.18, root.position.z + 2.4))
+      else cameraGoal.set(root.position.x - 1.4 + orbit, root.position.y + 1.55, root.position.z + 4.35)
+      camera.position.lerp(cameraGoal, 1 - Math.exp(-dt * (reducedMotion ? 14 : 1.8)))
+      controls.current?.target.lerp(target, 1 - Math.exp(-dt * 3.2))
+      controls.current?.update()
+      return
+    }
     camera.getWorldDirection(forward)
     forward.y = 0
     forward.normalize()
     right.crossVectors(forward, UP).normalize()
     direction.set(0, 0, 0)
     const activeKeys = keys.current
+    const gamepad = navigator.getGamepads?.().find(Boolean)
+    const pad = readGamepad(gamepad)
+    const touch = inputState?.current ?? { x: 0, y: 0, sprint: false }
     if (activeKeys.has('w') || activeKeys.has('arrowup')) direction.add(forward)
     if (activeKeys.has('s') || activeKeys.has('arrowdown')) direction.sub(forward)
     if (activeKeys.has('d') || activeKeys.has('arrowright')) direction.add(right)
     if (activeKeys.has('a') || activeKeys.has('arrowleft')) direction.sub(right)
+    direction.addScaledVector(forward, pad.y + touch.y)
+    direction.addScaledVector(right, pad.x + touch.x)
+    if (gamepad) {
+      const pressed = pad.buttons
+      const previous = motion.current.gamepadButtons
+      if (pressed[0] && !previous[0] && prompt.current && !paused) onInteract(prompt.current.id)
+      if (pressed[2] && !previous[2] && prompt.current && !paused) onInteract(`${prompt.current.id}:silence`)
+      if (pressed[3] && !previous[3]) onInteract('memory')
+      motion.current.gamepadButtons = pressed
+    }
     const moving = !paused && direction.lengthSq() > 0.01
-    const sprinting = moving && activeKeys.has('shift')
+    const sprinting = moving && (activeKeys.has('shift') || touch.sprint || pad.sprint)
     if (sprinting && !motion.current.wasSprinting) {
       playAuthoredClip('353L_AnimalRunTransition', false)
       motion.current.runTransitionUntil = state.clock.elapsedTime + 0.42
@@ -706,6 +742,7 @@ function Level({ run, paused, wakeSequence, onWakeComplete, onInteract, onPrompt
       motion.current.travelSpeed = MathUtils.lerp(motion.current.travelSpeed ?? 0, 0, 1 - Math.exp(-dt * 13))
       motion.current.turnLean = MathUtils.lerp(motion.current.turnLean, 0, 1 - Math.exp(-dt * 7))
     }
+    motion.current.idleSeconds = moving || paused ? 0 : motion.current.idleSeconds + dt
 
     motion.current.sprint = MathUtils.lerp(
       motion.current.sprint,
@@ -733,13 +770,13 @@ function Level({ run, paused, wakeSequence, onWakeComplete, onInteract, onPrompt
     const leftKnee = Math.max(0, -stride) * 0.12 * motion.current.pace
     const rightKnee = Math.max(0, stride) * 0.12 * motion.current.pace
     const breathing = Math.sin(motion.current.time * 1.55) * 0.012
-    const bodyBob = moving
+    const bodyBob = moving && !reducedMotion
       ? (Math.abs(Math.sin(motion.current.stridePhase * 2)) - 0.5) * (0.025 + motion.current.pace * 0.025)
       : breathing * 0.35
     groundMovement(root.position, navigation.current, groundRaycaster.current)
     root.position.y += bodyBob
     if (camera.isPerspectiveCamera) {
-      camera.fov = MathUtils.lerp(camera.fov, 48 + motion.current.sprint * 4.5, 1 - Math.exp(-dt * 5.5))
+      camera.fov = MathUtils.lerp(camera.fov, 48 + (reducedMotion ? 0 : motion.current.sprint * 4.5), 1 - Math.exp(-dt * 5.5))
       camera.updateProjectionMatrix()
     }
     const voice = voiceState?.current
@@ -786,7 +823,7 @@ function Level({ run, paused, wakeSequence, onWakeComplete, onInteract, onPrompt
     const zone = placeFor(root.position)
     if (zone !== motion.current.zone) {
       motion.current.zone = zone
-      motion.current.cameraTransition = zone === 'hallway' || zone === 'room'
+      motion.current.cameraTransition = reducedMotion ? 0 : zone === 'hallway' || zone === 'room'
         ? 1.35
         : zone === 'harbor'
           ? 1.7
@@ -795,6 +832,16 @@ function Level({ run, paused, wakeSequence, onWakeComplete, onInteract, onPrompt
 
     target.copy(root.position)
     target.y += 1.08
+    const idleBlend = reducedMotion ? 0 : MathUtils.smoothstep(motion.current.idleSeconds, 11, 18)
+    if (idleBlend > 0) {
+      if (zone === 'room') idleFocus.set(-3.15, 1.15, -3.36)
+      else if (zone === 'hallway') idleFocus.set(9.2, 2.0, 1.32)
+      else if (zone === 'awning') idleFocus.set(14.4, 2.85, -2.5)
+      else if (zone === 'station') idleFocus.set(35.5, 2.2, -4.5)
+      else if (zone === 'signalwerk') idleFocus.set(27.3, 2.3, -11)
+      else idleFocus.set(23, 2.15, -4.8)
+      target.lerp(idleFocus, idleBlend * 0.62)
+    }
     if (controls.current) {
       controls.current.minDistance = zone === 'hallway' ? 1.55 : zone === 'room' ? 1.75 : 2.4
       controls.current.maxDistance = zone === 'hallway' ? 4.6 : zone === 'room' ? 6.4 : 10.5
@@ -807,6 +854,14 @@ function Level({ run, paused, wakeSequence, onWakeComplete, onInteract, onPrompt
         // the apartment doorway or the wainscot swallow the camera.
         camera.position.z = MathUtils.lerp(camera.position.z, root.position.z * 0.22, 1 - Math.exp(-dt * 8))
       }
+      controls.current.update()
+    }
+
+    if (idleBlend > 0 && controls.current) {
+      if (zone === 'harbor') idleCameraGoal.set(root.position.x - 7.2, root.position.y + 4.1, root.position.z - 7.4)
+      else if (zone === 'room') idleCameraGoal.set(root.position.x + 2.4, root.position.y + 2.9, root.position.z + 6.0)
+      else idleCameraGoal.set(root.position.x - 5.2, root.position.y + 3.3, root.position.z + 5.6)
+      camera.position.lerp(idleCameraGoal, (1 - Math.exp(-dt * 0.34)) * idleBlend)
       controls.current.update()
     }
 
@@ -873,6 +928,7 @@ function Level({ run, paused, wakeSequence, onWakeComplete, onInteract, onPrompt
         ref={controls}
         makeDefault
         enabled={!paused}
+        onStart={() => { motion.current.idleSeconds = 0 }}
         enablePan={false}
         enableDamping
         dampingFactor={0.08}
@@ -977,7 +1033,7 @@ function WorldScene(props) {
     <section className="realtime-world" aria-label="Echte frei begehbare 3D-Welt von Strammburg">
       <Canvas
         shadows={SHADOW_OPTIONS}
-        frameloop={props.paused && !props.voiceActive && !props.wakeSequence ? 'demand' : 'always'}
+        frameloop={props.paused && !props.voiceActive && !props.wakeSequence && !props.cinematicMode ? 'demand' : 'always'}
         dpr={effectiveQuality === 'high' ? [1, 1.6] : effectiveQuality === 'efficient' ? [0.72, 1] : [0.9, 1.35]}
         camera={{ fov: 48, near: 0.08, far: 110, position: [0, 2.45, 7.2] }}
         gl={{ antialias: true, powerPreference: 'high-performance', alpha: false }}

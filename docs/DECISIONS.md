@@ -140,6 +140,14 @@ Dieses Protokoll hält dauerhafte Produkt-/Architekturentscheidungen fest. Neue 
 - Erwogene Alternativen: rohe Blender-GLBs direkt ausliefern; wegen Größe verworfen. Externe Decoder-CDNs; wegen Offline- und Ausfallabhängigkeit verworfen. Nur Draco oder nur Meshopt; Blender-Draco bleibt der Builder-Zwischenschritt, Meshopt der einheitliche Runtime-Vertrag.
 - Folge: `npm run assets:runtime` ist der verbindliche lokale Optimierungspfad. Tests prüfen Skins, Clips, LODs, KTX2, Meshopt, Weltknoten und Budgets. Jede Änderung an Decoderpfaden oder GLB-Erweiterungen ist eine Runtime-API-Änderung. Kein Push oder Deploy ist Teil der Pipeline.
 
+## D-020 — ISSO.TV ist ein Lebens-RPG, kein Finanzformular
+
+- Datum: 20.08.2026
+- Entscheidung: 353L beginnt arm und neu in Strammburg mit 0 Euro Bargeld und 0 Euro Besitz. Die Spielökonomie zeigt nur Bargeld, Besitz, nachvollziehbare Ursachen und große Aufbauziele. Schutzkonto, Insolvenz, Schuldenprofil, Kontomodelle, Deadlines und frei editierbare Geldfelder gehören nicht in ISSO.TV.
+- Grund: Cash soll Entscheidungen spannend machen, aber Verwaltungsdetail bremst Storytempo, Weltgefühl und Zugänglichkeit. Armut wird als klare Ausgangslage gespielt, nicht als Formular ausgefüllt.
+- Erwogene Alternative: ein optionaler intensiver Finanzmodus innerhalb des RPG; verworfen, weil er zwei Produkte und zwei Bedienlogiken im selben Spiel erzeugt.
+- Folge: ISSO.TV bleibt ein einziges zusammenhängendes Story-/Aufbau-RPG. Geld verändert sich nur durch gespielte Jobs, Projekte, Handel, Kosten oder Risiken. Ein tiefer Finanzsimulator wäre bei Bedarf ein eigenständiges Projekt und darf nicht durch die Hintertür in diese Runtime zurückkehren.
+
 ## Vorlage
 
 ```text

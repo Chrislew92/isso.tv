@@ -29,7 +29,7 @@ Arbeitspaket: V5-Masterkern sichern — Fährbude, Filmübergang, Kamera, Kollis
 
 ## Prüfung
 
-- Tests: 25/25 bestanden.
+- Tests: 36/36 in 11 Dateien bestanden.
 - Build: erfolgreich; größtes JS-Chunk 368,90 kB.
 - Audit: 0 bekannte Sicherheitslücken.
 - Referenzprobe: 55,8 FPS / 17,93 ms Mittel / 18,3 ms p95 / 180 Samples / WebGL2.
@@ -50,6 +50,6 @@ Arbeitspaket: V5-Masterkern sichern — Fährbude, Filmübergang, Kamera, Kollis
 
 1. Nutzerabnahme des lokalen M1-Morgens.
 2. Verbleibende M1-Punkte: Koordinaten vereinheitlichen, kompletter Interaktionslauf, Mobile-/Accessibility-/Langzeitprofil.
-3. Danach M2-01 bis M2-05: Save-Migration, Slots, Charakterstart, Finanzprofil und deterministische Zeit.
+3. Danach M2-01 bis M2-05: Save-Migration, Slots, Charakterstart, einfacher 0-Euro-Aufbau und deterministische Zeit. Keine Bank-/Insolvenz-/Schuldenverwaltung in ISSO.TV einführen.
 
 Live verändert: **NEIN**. Kein Push, kein Deploy, keine DNS- oder Cloudflare-Änderung.

@@ -25,7 +25,7 @@ const FOOTSTEP_TONE = {
   harbor: { frequency: 82, duration: 0.13 },
 }
 
-export default function useVoicePlayer() {
+export default function useVoicePlayer(mix = { master: 0.85, voice: 1, ambience: 0.72, effects: 0.82 }) {
   const [caption, setCaption] = useState(null)
   const [active, setActive] = useState(false)
   const [enabled, setEnabled] = useState(true)
@@ -39,7 +39,21 @@ export default function useVoicePlayer() {
   const captionTimer = useRef(0)
   const finishCurrent = useRef(null)
   const ambienceZone = useRef('room')
-  const ambience = useRef({ started: false, master: null, rain: null, hum: null, sources: [] })
+  const ambience = useRef({ started: false, rain: null, hum: null, sources: [] })
+  const output = useRef({ master: null, voice: null, ambience: null, effects: null })
+  const mixRef = useRef(mix)
+
+  const applyOutputMix = useCallback((audible = voiceState.current.enabled !== false) => {
+    const graph = context.current
+    const buses = output.current
+    if (!graph || !buses.master) return
+    const now = graph.currentTime
+    const values = mixRef.current
+    buses.master.gain.setTargetAtTime(audible ? values.master : 0, now, 0.08)
+    buses.voice.gain.setTargetAtTime(values.voice, now, 0.08)
+    buses.ambience.gain.setTargetAtTime(values.ambience, now, 0.12)
+    buses.effects.gain.setTargetAtTime(values.effects, now, 0.08)
+  }, [])
 
   const settleCurrent = useCallback((played) => {
     if (finishCurrent.current) {
@@ -49,6 +63,7 @@ export default function useVoicePlayer() {
   }, [])
 
   const stop = useCallback((keepCaption = false) => {
+    const wasEnabled = voiceState.current.enabled !== false
     cancelAnimationFrame(animationFrame.current)
     clearTimeout(captionTimer.current)
     if (audio.current) {
@@ -63,7 +78,7 @@ export default function useVoicePlayer() {
       source.current.disconnect()
       source.current = null
     }
-    voiceState.current = { ...SILENT_VOICE }
+    voiceState.current = { ...SILENT_VOICE, enabled: wasEnabled }
     setActive(false)
     if (!keepCaption) setCaption(null)
     settleCurrent(false)
@@ -75,14 +90,13 @@ export default function useVoicePlayer() {
     if (!graph || !bed.started) return
     const mix = AMBIENCE_MIX[zone] ?? AMBIENCE_MIX.harbor
     const now = graph.currentTime
-    bed.master.gain.setTargetAtTime(audible ? 1 : 0, now, 0.12)
     bed.rain.gain.setTargetAtTime(mix.rain, now, 0.75)
     bed.hum.gain.setTargetAtTime(mix.hum, now, 0.9)
-  }, [])
+    applyOutputMix(audible)
+  }, [applyOutputMix])
 
   const startAmbience = useCallback((graph) => {
     if (ambience.current.started) return
-    const master = graph.createGain()
     const rainGain = graph.createGain()
     const humGain = graph.createGain()
     const highpass = graph.createBiquadFilter()
@@ -90,7 +104,6 @@ export default function useVoicePlayer() {
     const hum = graph.createOscillator()
     const noise = graph.createBufferSource()
 
-    master.gain.value = 0
     rainGain.gain.value = 0
     humGain.gain.value = 0
     highpass.type = 'highpass'
@@ -116,16 +129,14 @@ export default function useVoicePlayer() {
     noise.connect(highpass)
     highpass.connect(lowpass)
     lowpass.connect(rainGain)
-    rainGain.connect(master)
+    rainGain.connect(output.current.ambience)
     hum.connect(humGain)
-    humGain.connect(master)
-    master.connect(graph.destination)
+    humGain.connect(output.current.ambience)
     noise.start()
     hum.start()
 
     ambience.current = {
       started: true,
-      master,
       rain: rainGain,
       hum: humGain,
       sources: [noise, hum],
@@ -138,15 +149,25 @@ export default function useVoicePlayer() {
     if (!AudioContext) return null
     if (!context.current) {
       context.current = new AudioContext()
+      const master = context.current.createGain()
+      const voice = context.current.createGain()
+      const ambienceBus = context.current.createGain()
+      const effects = context.current.createGain()
       analyser.current = context.current.createAnalyser()
       analyser.current.fftSize = 256
       analyser.current.smoothingTimeConstant = 0.68
-      analyser.current.connect(context.current.destination)
+      analyser.current.connect(voice)
+      voice.connect(master)
+      ambienceBus.connect(master)
+      effects.connect(master)
+      master.connect(context.current.destination)
+      output.current = { master, voice, ambience: ambienceBus, effects }
+      applyOutputMix()
     }
     startAmbience(context.current)
     if (context.current.state === 'suspended') await context.current.resume()
     return context.current
-  }, [startAmbience])
+  }, [applyOutputMix, startAmbience])
 
   const unlock = useCallback(async () => {
     setEnabled(true)
@@ -169,8 +190,8 @@ export default function useVoicePlayer() {
 
   const playFootstep = useCallback((zone, intensity = 0.65) => {
     const graph = context.current
-    const master = ambience.current.master
-    if (!graph || !master || graph.state !== 'running' || voiceState.current.enabled === false) return
+    const effects = output.current.effects
+    if (!graph || !effects || graph.state !== 'running' || voiceState.current.enabled === false) return
     const tone = FOOTSTEP_TONE[zone] ?? FOOTSTEP_TONE.harbor
     const now = graph.currentTime
     const level = Math.min(1, Math.max(0.25, intensity))
@@ -195,8 +216,8 @@ export default function useVoicePlayer() {
 
     oscillator.connect(bodyGain)
     click.connect(clickGain)
-    bodyGain.connect(master)
-    clickGain.connect(master)
+    bodyGain.connect(effects)
+    clickGain.connect(effects)
     oscillator.onended = () => {
       oscillator.disconnect()
       bodyGain.disconnect()
@@ -213,8 +234,8 @@ export default function useVoicePlayer() {
 
   const playWorldCue = useCallback((cue) => {
     const graph = context.current
-    const master = ambience.current.master
-    if (!graph || !master || graph.state !== 'running' || voiceState.current.enabled === false) return
+    const effects = output.current.effects
+    if (!graph || !effects || graph.state !== 'running' || voiceState.current.enabled === false) return
     const now = graph.currentTime
     const tones = {
       door: [[74, 0.00, 0.24, 0.030, 'triangle'], [228, 0.15, 0.055, 0.007, 'square']],
@@ -234,7 +255,7 @@ export default function useVoicePlayer() {
       gain.gain.exponentialRampToValueAtTime(volume, start + 0.005)
       gain.gain.exponentialRampToValueAtTime(0.0001, start + duration)
       oscillator.connect(gain)
-      gain.connect(master)
+      gain.connect(effects)
       oscillator.onended = () => {
         oscillator.disconnect()
         gain.disconnect()
@@ -355,6 +376,11 @@ export default function useVoicePlayer() {
   useEffect(() => {
     voiceState.current.enabled = enabled
   }, [enabled])
+
+  useEffect(() => {
+    mixRef.current = mix
+    applyOutputMix()
+  }, [applyOutputMix, mix])
 
   useEffect(() => () => {
     stop()

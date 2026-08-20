@@ -132,18 +132,18 @@ Verifizierter Kernstand 20.08.2026:
 
 # M2 — Charakter, Save und täglicher Kernloop
 
-Ziel: Aus dem festen Morgen wird ein neuer, persönlich konfigurierbarer Run mit verständlicher deutscher Alltags-/Finanzbasis. V2 dient nur als Logik- und UX-Spender.
+Ziel: Aus dem festen Morgen wird ein persönlicher Run mit einem schnellen, spielerischen Alltagskern. 353L beginnt arm in Strammburg; Verwaltungsdetail ist ausdrücklich nicht Teil dieses Spiels.
 
 | ID | Prio | Paket | Spender | Abnahme |
 | --- | --- | --- | --- | --- |
 | `P2-01` | P0 | Save-Schema V3 | V2 Save-Normalisierung | versionierte Migration, beschädigter-Save-Fallback, Tests; aktueller Slot bleibt erhalten. |
 | `P2-02` | P1 | Save-Slots/Export | V2 persönlicher Run | mindestens drei benannte lokale Slots, Vorschau, Export/Import, Lösch-Wiederherstellung. |
 | `P2-03` | P1 | Charaktererstellung | V2 Presets/Formen | Name, Alter, Identität/Form, Look, Wohnstart und editierbare Kurzbiografie; Menschen/KI/Cyborg sowie Gabenträger-Arten nach `docs/ANIMAL_LORE.md`; keine Herkunfts-/Körper-Wertigkeit. |
-| `P2-04` | P0 | Startprofil | V2 Finanzprofil | Presets und eigene Werte für liquide Mittel, Konto, geschützte Mittel, Vermögen, Schulden, Banking/Unterstützung; klare Verfügbarkeit. |
+| `P2-04` | P0 | Armer Neustart | V3 Spielökonomie | ein kanonischer Start mit 0 Euro Bargeld und 0 Euro Besitz; kein Bank-, Schutzkonto-, Schulden- oder Insolvenzformular. |
 | `P2-05` | P0 | Zeit/Kalender | V2 Zyklen | Minuten, Tage, Wochen, Fristen und Jahresziel deterministisch; Entscheidungen kosten nachvollziehbare Zeit. |
 | `P2-06` | P0 | Bedürfnisse kompakt | V2 Hunger/Durst/Essen | Hunger, Durst, Energie und Stress mit sanftem Takt; Versorgung schafft Handlungsmacht, kein hektisches Balkenpflegen. |
 | `P2-07` | P1 | Essen und Gutscheine | V2 Einkauf/Bestellung | selbst gekaufte Supermarkt-/Online-Gutscheine, Einkauf, wöchentliche Bestellung, Inventar und sichtbare Kosten. |
-| `P2-08` | P1 | Haushalt/Verträge | V2 Haushaltsbuch | Miete, Strom, Telefon, Internet, Fixkosten, Mahnungen und einfache „Wo ging Geld hin?“-Ansicht. |
+| `P2-08` | P2 | Wohnen kompakt | neue V3-Arbeit | Miete und laufende Kosten erscheinen nur als klare, seltene Spielereignisse; keine Buchhaltungsoberfläche. |
 | `P2-09` | P1 | Gewohnheiten/Entzug | V2 Tabak | Startwahl oder späterer Beginn, individuelle Verläufe, freiwillige Ausstiegswege, sensible Texte und keine medizinische Pauschalaussage. |
 | `P2-10` | P0 | 3D-Tagesloop | neue V3-Arbeit | Zuhause → Versorgung → Termin/Arbeit/Projekt → Kontakt → Rückkehr/Schlaf vollständig räumlich spielbar. |
 | `P2-11` | P1 | Artspezifische Verben | Obere-Gabe-Kanon | jede spielbare Tierart erhält mindestens zwei eigene Bewegungs-/Interaktionsverben, eine interessante Reibung und gleichwertige Lösungswege; keine Art ist die beste Klasse. |
@@ -151,7 +151,7 @@ Ziel: Aus dem festen Morgen wird ein neuer, persönlich konfigurierbarer Run mit
 ## M2-Gate
 
 - [ ] neuer Charakter kann erstellt, gespeichert, exportiert und erneut geladen werden,
-- [ ] eigene 0-Euro-/Schutzkonto-/Schuldenwerte bleiben exakt und verständlich,
+- [ ] 0 Euro Bargeld und 0 Euro Besitz bleiben ohne erspielte Ursache exakt 0,
 - [ ] ein kompletter Spieltag funktioniert ohne ungewollte Geldsprünge,
 - [ ] Bedürfnisse beeinflussen Entscheidungen, blockieren aber nicht unfair den Run,
 - [ ] alle neue Domänenlogik ist getestet.
@@ -241,16 +241,16 @@ Die vollständige Verzweigungsmatrix für Kneipenstreit und Straßenraub steht i
 
 ---
 
-# M5 — Geld, Projekte, Markt und endloser Aufstieg
+# M5 — Aufbau, Projekte und endloser Aufstieg
 
-Ziel: Der Highroller-Aspekt entsteht aus langfristigem Aufbau, nachvollziehbarem Risiko und echten Rückschlägen – nicht aus zufälligen Tausendern nach drei Klicks.
+Ziel: Der Aufstieg entsteht aus Jobs, Projekten, Handel, Risiko und sichtbaren Rückschlägen – nicht aus Formularpflege oder zufälligen Tausendern nach drei Klicks.
 
 | ID | Prio | Paket | Spender/Quelle | Abnahme |
 | --- | --- | --- | --- | --- |
-| `P5-01` | P0 | Doppelte Buchführung light | V2 Finanzsystem | jede Geldbewegung hat Quelle, Ziel, Zeit, Kategorie und Historie; Vermögen ≠ verfügbare Mittel. |
+| `P5-01` | P0 | Spielgeld-Kern | neue V3-Arbeit | nur Bargeld, Besitz, sichtbare Ursache und nächste große Zielmarke; jede Veränderung kommt aus einer gespielten Handlung. |
 | `P5-02` | P1 | Arbeit/Nebenjobs | neue V3-Arbeit | verlässliche kleine Einkommenswege mit Zeit-/Energie-/Beziehungsfolgen. |
 | `P5-03` | P1 | HQ1-Projekte | V2 Signalwerk | Idee → Prototyp → Gespräch → Lizenz → Kundschaft → Wartung; kein magischer Pitch-Gewinn. |
-| `P5-04` | P1 | Markt-Simulation | V2 BTC/ETH/LTC/SOL/ZED | EUR-Hauptrechnung, reale Startwerte nur mit Cache/Fallback, danach klar markierte Run-Simulation; Tests für Kauf/Verkauf/P&L. |
+| `P5-04` | P2 | Markt-Episoden | V2 BTC/ETH/LTC/SOL/ZED | wenige verständliche Kauf-/Verkaufsmomente innerhalb der Story; keine Broker- oder Portfolio-Verwaltungssoftware. |
 | `P5-05` | P1 | Risiko-/Spilo-System | V2 10/20/50/100 | transparente Spielwahrscheinlichkeiten, Zeit-/Stress-/Versorgungsfolgen, kein Echtgeld-Look, Schutz vor unverständlichem Totalverlust. |
 | `P5-06` | P1 | Z-Coin-Langzeitbogen | V2 ZED + Story Bible | Skepsis → Community → Nutzen → Königsmoment → Gegenreaktion; fiktiv und nicht als reale Anlage beworben. |
 | `P5-07` | P1 | EyTonLand-/Earthpeace-Aufbau | Story Bible | UG/GmbH, Team, Lizenzen, Insel/Schloss und der verspätete Earthpeace-Plan als Verantwortung über viele Kapitel; der Spieler entscheidet zwischen gemeinsamem Ort, Statusprojekt und neuer schöner Fassade. |
@@ -259,7 +259,7 @@ Ziel: Der Highroller-Aspekt entsteht aus langfristigem Aufbau, nachvollziehbarem
 ## M5-Gate
 
 - [ ] 0 Euro verfügbar bleibt ohne Aktion 0 Euro,
-- [ ] verfügbare Mittel, geschützte Mittel, Portfolio und Gesamtvermögen sind nie vermischt,
+- [ ] Bargeld und Besitz bleiben getrennt und mit einem Blick verständlich,
 - [ ] 50.000 Euro/35 Renommee ist erreichbar, aber nicht nach wenigen Klicks,
 - [ ] jeder Gewinn hat Ursache und jeder Verlust verständliche Historie,
 - [ ] das Spiel läuft nach jedem Meilenstein weiter.
@@ -310,7 +310,7 @@ V2 ist kein zweites Produkt. Der Tag `v2-archive-2026-08-17` wird nur gezielt ge
 | V2-System | V3-Zielpaket | Übernahmeregel |
 | --- | --- | --- |
 | Charakter-Presets/Formen | P2-03 | Daten/Ideen prüfen; UI und Save neu bauen. |
-| Finanzprofil/Schutzkonto/Schulden | P2-04, P5-01 | Begriffe und Rechenfälle retten; keinerlei persönliche Werte übernehmen. |
+| Altes V2-Finanzprofil | — | nicht übernehmen; ISSO.TV behält nur Bargeld, Besitz, erspielte Ursachen und große Zielmarken. |
 | Hunger/Durst/Essen/Gutscheine | P2-06, P2-07 | Balancing neu; als räumlicher Tagesloop statt Dashboard-Karten. |
 | Zeit/Zyklen/Fristen | P2-05 | in ein kalendarisches, testbares Modell überführen. |
 | Park/Kiosk/Behandlung/Haft-Karte | P3, P4 | nur Orts-/Storyideen; 3D-Gebiete neu produzieren. |

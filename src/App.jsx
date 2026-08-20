@@ -1,10 +1,11 @@
-import { lazy, Suspense, useCallback, useEffect, useMemo, useReducer, useState } from 'react'
+import { lazy, Suspense, useCallback, useEffect, useMemo, useReducer, useRef, useState } from 'react'
 import useVoicePlayer from './audio/useVoicePlayer.js'
 import GameInterface from './components/GameInterface.jsx'
 import Modal from './components/Modal.jsx'
 import OpeningFilm from './components/OpeningFilm.jsx'
-import { CART_STANCES, CONNECTION_CHOICES } from './game/canon.js'
+import { CART_STANCES, CONNECTION_CHOICES, WORLD_START } from './game/canon.js'
 import { clearRun, loadRun, saveRun } from './game/save.js'
+import { BUILD_GOALS, formatEuro, nextBuildGoal, totalWealth } from './game/economy.js'
 import { loadSettings, saveSettings } from './game/settings.js'
 import { createRun, runReducer } from './game/state.js'
 
@@ -17,6 +18,15 @@ const CART_AFTERMATH = {
 }
 
 const RealtimeWorld = lazy(() => import('./components/RealtimeWorld.jsx'))
+
+const CINEMATIC_STYLE = {
+  wake_mattress: 'scope',
+  donkey_connection_greeting: 'open',
+  hallway_threshold: 'soft',
+  cart_edge_situation: 'open',
+  station_direction: 'scope',
+  signalwerk_arrival: 'soft',
+}
 
 function ChoiceList({ choices, onChoose }) {
   return (
@@ -31,19 +41,35 @@ function ChoiceList({ choices, onChoose }) {
   )
 }
 
+function SettingRange({ label, copy, value, onChange }) {
+  return (
+    <label className="settings-range">
+      <span><b>{label}</b><small>{copy}</small></span>
+      <output>{Math.round(value * 100)}%</output>
+      <input aria-label={label} type="range" min="0" max="1" step="0.05" value={value} onChange={(event) => onChange(Number(event.target.value))} />
+    </label>
+  )
+}
+
 export default function App() {
   const [run, dispatch] = useReducer(runReducer, undefined, () => loadRun(createRun()))
   const [modal, setModal] = useState(null)
-  const [opening, setOpening] = useState(true)
+  const [opening, setOpening] = useState(() => run.phase === 'mattress')
+  const [cinematic, setCinematic] = useState(false)
   const [waking, setWaking] = useState(false)
   const [prompt, setPrompt] = useState(null)
   const [ready, setReady] = useState(false)
-  const [position, setPosition] = useState({ x: -0.8, z: -0.7, location: 'room' })
+  const [position, setPosition] = useState(run.player ?? WORLD_START)
   const [settings, setSettings] = useState(loadSettings)
-  const voice = useVoicePlayer()
+  const inputState = useRef({ x: 0, y: 0, sprint: false })
+  const positionTimer = useRef(0)
+  const voice = useVoicePlayer(settings.audio)
 
-  const paused = opening || waking || run.phase !== 'free' || Boolean(modal)
+  const paused = opening || cinematic || waking || run.phase !== 'free' || Boolean(modal)
   const filmEvents = useMemo(() => run.events.filter((event) => event.isRunFilmEligible), [run.events])
+  const wealth = totalWealth(run.economy)
+  const buildGoal = nextBuildGoal(wealth)
+  const cinematicStyle = opening || waking ? 'scope' : CINEMATIC_STYLE[filmEvents.at(-1)?.moment] ?? 'open'
 
   const chooseConnection = useCallback(async (choice) => {
     dispatch({ type: 'CONNECTION_RESPONSE', choice: choice.id, aftermath: choice.aftermath })
@@ -73,9 +99,17 @@ export default function App() {
     voice.setAmbienceZone(position.location)
   }, [position.location, voice.setAmbienceZone])
 
+  useEffect(() => () => window.clearTimeout(positionTimer.current), [])
+
+  useEffect(() => {
+    if (!cinematic) return undefined
+    const timer = window.setTimeout(() => setCinematic(false), 8000)
+    return () => window.clearTimeout(timer)
+  }, [cinematic])
+
   useEffect(() => {
     const onKeyDown = (event) => {
-      if (event.key === 'Escape') setModal(null)
+      if (event.key === 'Escape') { setModal(null); setCinematic(false) }
       if (modal === 'connection') {
         const choice = CONNECTION_CHOICES.find((item) => item.key.toLowerCase() === event.key.toLowerCase())
         if (choice) chooseConnection(choice)
@@ -86,7 +120,12 @@ export default function App() {
   }, [modal])
 
   const handleInteract = useCallback((action) => {
-    if (action === 'film' || action === 'memory' || action === 'settings' || action === 'reset') {
+    if (action === 'film') {
+      setModal(null)
+      setCinematic((value) => !value)
+      return
+    }
+    if (action === 'memory' || action === 'character' || action === 'economy' || action === 'settings' || action === 'reset') {
       setModal(action)
       return
     }
@@ -136,6 +175,11 @@ export default function App() {
   }, [chooseCart, chooseConnection, voice.play, voice.playWorldCue, voice.replay, voice.toggle])
 
   const handleWorldReady = useCallback(() => setReady(true), [])
+  const handlePosition = useCallback((next) => {
+    setPosition(next)
+    window.clearTimeout(positionTimer.current)
+    positionTimer.current = window.setTimeout(() => dispatch({ type: 'SAVE_POSITION', position: next }), 420)
+  }, [])
 
   function resetRun() {
     voice.stop()
@@ -143,7 +187,7 @@ export default function App() {
     dispatch({ type: 'RESET' })
     setModal(null)
     setPrompt(null)
-    setPosition({ x: -0.8, z: -0.7, location: 'room' })
+    setPosition({ ...WORLD_START })
     window.location.reload()
   }
 
@@ -163,16 +207,20 @@ export default function App() {
   }, [run.phase])
 
   return (
-    <main className={`app${ready ? ' app--ready' : ''}`}>
+    <main className={`app${ready ? ' app--ready' : ''}${opening || cinematic || waking ? ` app--cinematic app--cinematic-${cinematicStyle}` : ''}${settings.highContrast ? ' app--high-contrast' : ''} app--captions-${settings.subtitleSize}${settings.reducedMotion ? ' app--reduced-motion' : ''}`}>
       <Suspense fallback={null}>
         <RealtimeWorld
           run={run}
           paused={paused}
           wakeSequence={waking}
+          cinematicMode={opening || cinematic}
+          reducedMotion={settings.reducedMotion}
+          initialPosition={run.player}
+          inputState={inputState}
           onWakeComplete={finishWake}
           onInteract={handleInteract}
           onPrompt={setPrompt}
-          onPosition={setPosition}
+          onPosition={handlePosition}
           onReady={handleWorldReady}
           onFootstep={voice.playFootstep}
           cameraSensitivity={settings.cameraSensitivity}
@@ -185,18 +233,9 @@ export default function App() {
       {!ready && <div className="world-loader"><span>ISSO<span>.TV</span></span><small>STRAMMBURG WIRD GELADEN</small></div>}
 
       {opening ? (
-        <OpeningFilm onTransitionStart={startWake} onFinish={finishOpening} onSoundEnabled={voice.unlock} />
+        <OpeningFilm onTransitionStart={startWake} onFinish={finishOpening} onSoundEnabled={voice.unlock} reducedMotion={settings.reducedMotion} />
       ) : (
-        <GameInterface run={run} position={position} prompt={prompt} voice={voice} onAction={handleInteract} />
-      )}
-
-      {modal === 'film' && (
-        <Modal title="Der Morgen fängt an." kicker="BILDFILM / PROLOG" onClose={() => setModal(null)} wide>
-          <div className="film-frame">
-            <img src="/media/prolog-faehrbude-v3.png" alt="353L schläft in der kargen Fährbude" />
-          </div>
-          <p className="modal-note">Der Bildfilm und die steuerbare Szene zeigen denselben Raum und denselben Morgen.</p>
-        </Modal>
+        <GameInterface run={run} position={position} prompt={prompt} voice={voice} settings={settings} inputState={inputState} cinematic={cinematic} onAction={handleInteract} />
       )}
 
       {modal === 'connection' && (
@@ -251,7 +290,31 @@ export default function App() {
               ))}
             </ol>
           )}
-          <button className="secondary-action" onClick={() => setModal('film')}>▶ PROLOG NOCH EINMAL SEHEN</button>
+          <button className="secondary-action" onClick={() => { setModal(null); setCinematic(true) }}>▶ DEINEN 3D-FILM ANSEHEN</button>
+        </Modal>
+      )}
+
+      {modal === 'character' && (
+        <Modal title="Dein 353L" kicker="CHARAKTER / MASTER-LOOK" onClose={() => setModal(null)}>
+          <div className="character-profile"><span className="character-profile__mark">353L</span><div><b>Worker Master V5</b><small>Der echte 3D-Master mit Hufen, Rig, Mimik und elf Bewegungsclips.</small></div></div>
+          <p className="modal-intro">Ein Spiel, ein 353L, eine zusammenhängende Welt. Kleidung und persönliche Looks kommen später über echte 3D-Outfit-Slots.</p>
+          <p className="modal-note">Keine getrennten Spielmodi und keine aufgeklebten Attrappen.</p>
+        </Modal>
+      )}
+
+      {modal === 'economy' && (
+        <Modal title={`Nächstes großes Ziel: ${buildGoal.label}`} kicker="ISSO.TV / AUFBAU" onClose={() => setModal(null)} wide>
+          <div className="economy-alert"><b>START: ARM. PUNKT.</b><span>Neu in Strammburg · leerer Beutel · offene Stadt</span></div>
+          <div className="economy-summary">
+            <div><span>BARGELD</span><b>{formatEuro(run.economy.cash)}</b><small>was 353L gerade ausgeben kann</small></div>
+            <div><span>BESITZ</span><b>{formatEuro(run.economy.assets)}</b><small>erspielte Dinge und Projekte</small></div>
+            <div><span>GESAMT</span><b>{formatEuro(wealth)}</b><small>dein sichtbarer Aufbau</small></div>
+          </div>
+          <div className="goal-meter" aria-label={`${buildGoal.label}: ${Math.min(100, wealth / buildGoal.amount * 100).toFixed(1)} Prozent`}>
+            <span style={{ width: `${Math.min(100, wealth / buildGoal.amount * 100)}%` }} />
+          </div>
+          <ol className="build-goals" aria-label="Aufbauziele">{BUILD_GOALS.map((goal) => <li key={goal.id} className={wealth >= goal.amount ? 'is-complete' : goal.id === buildGoal.id ? 'is-current' : ''}><span>{wealth >= goal.amount ? '✓' : '◇'}</span><b>{goal.label}</b><small>{formatEuro(goal.amount)}</small></li>)}</ol>
+          <p className="economy-note">Jobs, Projekte, Handel und Entscheidungen füllen den Beutel. Was 353L gewinnt, muss in Strammburg tatsächlich erspielt werden.</p>
         </Modal>
       )}
 
@@ -300,6 +363,30 @@ export default function App() {
                     <b>{label}</b><small>{copy}</small>
                   </button>
                 ))}
+              </div>
+            </fieldset>
+            <fieldset>
+              <legend><b>◖ Tonmischung</b><small>Stimme, Welt und Effekte bleiben getrennt regelbar.</small></legend>
+              <div className="settings-audio">
+                {[
+                  ['master', 'Gesamt', 'Lautstärke des ganzen Spiels'],
+                  ['voice', 'Stimmen', '353L, Lotte und Durchsagen'],
+                  ['ambience', 'Atmosphäre', 'Regen, Räume und Hafen'],
+                  ['effects', 'Effekte', 'Hufe, Türen und Signale'],
+                ].map(([id, label, copy]) => (
+                  <SettingRange key={id} label={label} copy={copy} value={settings.audio[id]} onChange={(value) => setSettings((current) => ({ ...current, audio: { ...current.audio, [id]: value } }))} />
+                ))}
+              </div>
+            </fieldset>
+            <fieldset>
+              <legend><b>◇ Lesbarkeit & Bewegung</b><small>Alle wichtigen Inhalte funktionieren auch ohne Ton und Zeitdruck.</small></legend>
+              <div className="settings-options settings-options--two">
+                <button type="button" className={settings.subtitles ? 'is-active' : ''} aria-pressed={settings.subtitles} onClick={() => setSettings((current) => ({ ...current, subtitles: !current.subtitles }))}><b>CC UNTERTITEL</b><small>{settings.subtitles ? 'eingeschaltet' : 'ausgeschaltet'}</small></button>
+                <button type="button" className={settings.highContrast ? 'is-active' : ''} aria-pressed={settings.highContrast} onClick={() => setSettings((current) => ({ ...current, highContrast: !current.highContrast }))}><b>◐ KONTRAST</b><small>{settings.highContrast ? 'verstärkt' : 'standard'}</small></button>
+                <button type="button" className={settings.reducedMotion ? 'is-active' : ''} aria-pressed={settings.reducedMotion} onClick={() => setSettings((current) => ({ ...current, reducedMotion: !current.reducedMotion }))}><b>≈ RUHIGE KAMERA</b><small>{settings.reducedMotion ? 'aktiv' : 'filmisch'}</small></button>
+              </div>
+              <div className="settings-options settings-options--three">
+                {['small', 'medium', 'large'].map((size) => <button key={size} type="button" className={settings.subtitleSize === size ? 'is-active' : ''} onClick={() => setSettings((current) => ({ ...current, subtitleSize: size }))}><b>{size === 'small' ? 'KLEIN' : size === 'large' ? 'GROSS' : 'MITTEL'}</b><small>Untertitel</small></button>)}
               </div>
             </fieldset>
           </div>

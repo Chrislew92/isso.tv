@@ -21,7 +21,7 @@ npm run build
 
 Die reproduzierbare KTX2-/Meshopt-/LOD-Pipeline ist unter [docs/ASSET_PIPELINE.md](docs/ASSET_PIPELINE.md) beschrieben und wird mit `npm run assets:runtime` gestartet. Der verifizierte Ist-Stand steht in [docs/PROJECT_STATE.md](docs/PROJECT_STATE.md), die aktuelle Messung in [docs/PERFORMANCE.md](docs/PERFORMANCE.md).
 
-Das erste Ziel eines Runs: 50.000 € Gesamtvermögen und 35 Renommee. Das ist ein Meilenstein, kein Ende: ISSO.TV ist als Dauer-Run angelegt.
+353L beginnt arm in Strammburg: 0 € Bargeld, 0 € Besitz. Das erste große Ziel sind 50.000 € Gesamtvermögen. Es gibt kein Finanzformular; Geld und Dinge entstehen nur aus gespielten Jobs, Projekten, Handel und Entscheidungen. 50K ist ein Meilenstein, kein Ende.
 
 ## Roadmap
 

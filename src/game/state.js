@@ -1,8 +1,9 @@
-import { EVENT_COPY } from './canon.js'
+import { EVENT_COPY, WORLD_START } from './canon.js'
+import { DEFAULT_ECONOMY, normalizeEconomy } from './economy.js'
 
 export function createRun() {
   return {
-    version: 2,
+    version: 6,
     phase: 'mattress',
     worldMinutes: 0,
     doorOpen: false,
@@ -11,7 +12,9 @@ export function createRun() {
     connectionTone: null,
     visited: ['room'],
     events: [],
-    lastLine: 'Regen auf Blech. Der Morgen ist schon da.',
+    player: { ...WORLD_START },
+    economy: { ...DEFAULT_ECONOMY },
+    lastLine: 'Regen auf Blech. Neu in Strammburg. Im Beutel: nichts.',
   }
 }
 
@@ -131,6 +134,17 @@ export function runReducer(run, action) {
       }
     case 'SET_LAST_LINE':
       return { ...run, lastLine: action.line }
+    case 'SAVE_POSITION':
+      return {
+        ...run,
+        player: {
+          x: Number(action.position.x.toFixed(2)),
+          z: Number(action.position.z.toFixed(2)),
+          location: action.position.location,
+        },
+      }
+    case 'UPDATE_ECONOMY':
+      return { ...run, economy: normalizeEconomy({ ...run.economy, ...action.patch }) }
     case 'RESET':
       return createRun()
     default:
