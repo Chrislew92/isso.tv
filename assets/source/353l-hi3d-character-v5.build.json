@@ -1,0 +1,92 @@
+{
+  "character": "353L",
+  "version": 5,
+  "sourceFile": "353l-hi3d-character-v5-original.glb",
+  "sourceSha256": "a5f52502e9637ca8f5a4d606323e72aa2e0690728981b141a798cce1ded76ea5",
+  "sourceGenerator": "THREE.GLTFExporter r178",
+  "rightsStatus": "user-provided; verify commercial release rights before publication",
+  "targetHeightMeters": 2.15,
+  "trianglesBefore": 2000000,
+  "trianglesAfter": 120000,
+  "blenderRuntimeBytes": 4417892,
+  "optimizedRuntimeBytes": 4707288,
+  "lod1RuntimeBytes": 4276136,
+  "lod2RuntimeBytes": 4008540,
+  "runtimeCompression": [
+    "EXT_meshopt_compression",
+    "KHR_texture_basisu"
+  ],
+  "textureResize": [
+    {
+      "name": "353L_Runtime_Image_0",
+      "before": [
+        8192,
+        8192
+      ],
+      "after": [
+        2048,
+        2048
+      ]
+    },
+    {
+      "name": "353L_Runtime_Image_1",
+      "before": [
+        8192,
+        8192
+      ],
+      "after": [
+        2048,
+        2048
+      ]
+    },
+    {
+      "name": "353L_Runtime_Viewer Node",
+      "before": [
+        256,
+        256
+      ],
+      "after": [
+        256,
+        256
+      ]
+    }
+  ],
+  "outfitProfile": "worker",
+  "outfitSlotValidation": [
+    "slot_head",
+    "slot_face",
+    "slot_torso",
+    "slot_back",
+    "slot_hip",
+    "slot_front_hoof_l",
+    "slot_front_hoof_r",
+    "slot_rear_hoof_l",
+    "slot_rear_hoof_r"
+  ],
+  "weighting": "normalized four-influence anatomical weights; joint seams smoothed twice",
+  "animationClips": [
+    "353L_AnimalRunTransition",
+    "353L_Carry",
+    "353L_Door",
+    "353L_Idle",
+    "353L_Laptop",
+    "353L_Run",
+    "353L_StandUp",
+    "353L_Stop",
+    "353L_TurnLeft",
+    "353L_TurnRight",
+    "353L_Walk"
+  ],
+  "visemeRig": [
+    "REST",
+    "CLOSED",
+    "OPEN",
+    "WIDE",
+    "ROUND",
+    "TEETH",
+    "TONGUE",
+    "BREATH"
+  ],
+  "anatomyStatus": "user-approved source anatomy preserved: furred articulated front hooves, solid equine rear hooves and complete tail",
+  "runtimeAsset": "public/models/353l-hi3d-character-v5.glb"
+}

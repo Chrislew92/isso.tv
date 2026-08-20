@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useRef, useState } from 'react'
 import { getDialogue } from '../content/dialogue/index.js'
+import { visemeAtTime } from './visemes.js'
 
 const SILENT_VOICE = {
   active: false,
@@ -7,6 +8,7 @@ const SILENT_VOICE = {
   performance: null,
   level: 0,
   mouth: 0,
+  viseme: 'REST',
 }
 
 const AMBIENCE_MIX = {
@@ -254,6 +256,13 @@ export default function useVoicePlayer() {
     const element = new Audio(line.audio)
     element.preload = 'auto'
     audio.current = element
+    let timingWords = []
+    try {
+      const timingResponse = await fetch(line.timings, { cache: 'force-cache' })
+      if (timingResponse.ok) timingWords = (await timingResponse.json()).words ?? []
+    } catch {
+      // Offline/local fallback remains amplitude-driven and keeps captions intact.
+    }
 
     try {
       const graph = await ensureAudioGraph()
@@ -289,6 +298,7 @@ export default function useVoicePlayer() {
         performance: line.performance,
         level: 0,
         mouth: 0,
+        viseme: 'REST',
         enabled: true,
       }
 
@@ -309,6 +319,9 @@ export default function useVoicePlayer() {
         const nextLevel = voiceState.current.level + (target - voiceState.current.level) * 0.42
         voiceState.current.level = nextLevel
         voiceState.current.mouth = line.speaker === '353L' && line.performance !== 'inner' ? nextLevel : 0
+        voiceState.current.viseme = line.speaker === '353L' && line.performance !== 'inner'
+          ? visemeAtTime(timingWords, element.currentTime * 1000)
+          : 'REST'
         animationFrame.current = requestAnimationFrame(updateLevel)
       }
       animationFrame.current = requestAnimationFrame(updateLevel)

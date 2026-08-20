@@ -31,7 +31,11 @@ def import_and_normalize(source):
         bpy.ops.wm.obj_import(filepath=str(source))
     else:
         bpy.ops.import_scene.gltf(filepath=str(source))
-    imported = [obj for obj in bpy.data.objects if obj not in before]
+    imported = [
+        obj for obj in bpy.data.objects
+        if obj not in before
+        and not any(collection.name == 'glTF_not_exported' for collection in obj.users_collection)
+    ]
     roots = [obj for obj in imported if obj.parent not in imported]
     root = bpy.data.objects.new('CHARACTER_353L_ROOT', None)
     bpy.context.collection.objects.link(root)
@@ -146,16 +150,37 @@ def apply_walk_pose():
     if not rig:
         return
     for name, angle in (
-        ('rig_leg_l', 0.34),
-        ('rig_leg_r', -0.34),
-        ('rig_arm_l', -0.22),
-        ('rig_arm_r', 0.22),
-        ('rig_head', 0.04),
+        # Restrained leg pose for the automated deformation check. Arm swing
+        # stays locked until the fused scan clothing receives manual weights.
+        ('rig_leg_l', 0.15),
+        ('rig_leg_r', -0.15),
+        ('rig_head', 0.02),
     ):
         bone = rig.pose.bones.get(name)
         if bone:
             bone.rotation_mode = 'XYZ'
             bone.rotation_euler.x = angle
+    bpy.context.view_layer.update()
+
+
+def attach_hooves_for_pose():
+    rig = next((obj for obj in bpy.data.objects if obj.type == 'ARMATURE'), None)
+    if not rig:
+        return
+    for hoof_name, bone_name in (
+        ('353L_FRONT_HOOF_L', 'rig_hand_l'),
+        ('353L_FRONT_HOOF_R', 'rig_hand_r'),
+        ('353L_REAR_HOOF_L', 'rig_foot_l'),
+        ('353L_REAR_HOOF_R', 'rig_foot_r'),
+    ):
+        hoof = bpy.data.objects.get(hoof_name)
+        if not hoof or bone_name not in rig.pose.bones:
+            continue
+        world = hoof.matrix_world.copy()
+        hoof.parent = rig
+        hoof.parent_type = 'BONE'
+        hoof.parent_bone = bone_name
+        hoof.matrix_world = world
     bpy.context.view_layer.update()
 
 
@@ -167,6 +192,7 @@ def main():
     _, imported = import_and_normalize(source)
     apply_external_texture(imported, source)
     if len(args) > 2 and args[2].lower() == 'pose':
+        attach_hooves_for_pose()
         apply_walk_pose()
     add_stage()
     render_views(output_dir)

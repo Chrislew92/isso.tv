@@ -13,11 +13,13 @@ npm run dev
 
 Steuerung: `WASD`/Pfeiltasten gehen, Maus dreht die Kamera, Mausrad zoomt, `E` interagiert, `Q` bleibt still, `Leertaste` zeigt ein Emote.
 
-Für eine Produktionsversion:
+Für einen lokalen Produktionsbuild:
 
 ```bash
 npm run build
 ```
+
+Die reproduzierbare KTX2-/Meshopt-/LOD-Pipeline ist unter [docs/ASSET_PIPELINE.md](docs/ASSET_PIPELINE.md) beschrieben und wird mit `npm run assets:runtime` gestartet. Der verifizierte Ist-Stand steht in [docs/PROJECT_STATE.md](docs/PROJECT_STATE.md), die aktuelle Messung in [docs/PERFORMANCE.md](docs/PERFORMANCE.md).
 
 Das erste Ziel eines Runs: 50.000 € Gesamtvermögen und 35 Renommee. Das ist ein Meilenstein, kein Ende: ISSO.TV ist als Dauer-Run angelegt.
 
@@ -39,5 +41,7 @@ Codex, Claude, Manus und andere IDE-/AGI-Agenten beginnen verbindlich mit [AGENT
 8. [Tierkanon: Die Obere Gabe](docs/ANIMAL_LORE.md)
 9. [Erde-1, 2033 und die höhere Macht](docs/EARTH_1.md)
 10. [Full Voice und Tier-Lippensynchronität](docs/VOICE_AND_LIPSYNC.md)
+11. [Runtime-Assetpipeline](docs/ASSET_PIPELINE.md)
+12. [Performance-Nachweis](docs/PERFORMANCE.md)
 
 V3 ist die einzige aktive Codebasis. V2 bleibt ein archivierter Feature-Spender; geplant bedeutet niemals automatisch eingebaut. Kein Agent veröffentlicht oder verändert `isso.tv` ohne eine ausdrückliche Freigabe in der aktuellen Aufgabe.

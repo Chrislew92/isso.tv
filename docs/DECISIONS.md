@@ -116,6 +116,30 @@ Dieses Protokoll hält dauerhafte Produkt-/Architekturentscheidungen fest. Neue 
 - Erwogene Alternative: Nur PNG ausliefern; verworfen, weil der erste Hafenexport das Level-GLB auf rund 15,1 MB vergrößerte. Nur JPEG behalten; verworfen, weil wiederholte Bearbeitung dann auf einer verlustbehafteten Quelle aufbauen würde.
 - Folge: Der erweiterte und statisch gebatchte Weltstand liegt mit drei Laufzeittexturen bei rund 8,01 MB. Vor späterem Release werden KTX2, Mipmaps, LOD und sichtbarer Qualitätsvergleich erneut geprüft; PNG-Master werden nicht automatisch an den Browser ausgeliefert.
 
+## D-017 — Hi3D-Arbeiter-Esel wird der neue lokale 353L-Visual-Anchor
+
+- Datum: 19.08.2026
+- Entscheidung: Der vom Nutzer bereitgestellte Hi3D-Sculpt ersetzt im lokalen V3-Stand das bisherige Charaktermodell. Die Pipeline erhält die Erscheinung, normalisiert auf 2,15 m, reduziert zwei Millionen auf 79.017 Laufzeitdreiecke, verkleinert 8K-Texturen auf 2K und ergänzt die stabile Rig-/Outfit-Slot-API.
+- Grund: Gesicht, Silhouette, Fell und Arbeitskleidung tragen 353Ls Figur wesentlich glaubwürdiger als der bisherige Platzhalter und bleiben mit rund 8,8 MB browserfähig.
+- Erwogene Alternative: primitive Huf-Cover auf Handschuhe und Schuhe setzen; nach Vier-Richtungs-Sichtprüfung verworfen, weil die Anbauteile die Figur sichtbar verbilligten und beim Skin-Export unzuverlässig waren.
+- Folge: Quellschuhe und lose Handinseln werden entfernt. Vier geschlossene, modellierte, einzehige Eselhufe ersetzen die sichtbaren Extremitäten; die Vorderhufschalen kapseln verschmolzene Quellflächen unter dem Ärmel. Stand- und sanfte Beinpose müssen aus vier Richtungen geprüft werden. Provisorischer Armschwung bleibt bis zum manuellen Weight-Painting aus; echte Browser-Laufabnahme bleibt Teil von `P1-07`. Die GLB enthält keine Lizenzmetadaten; kommerzielle Veröffentlichungsrechte müssen vor einem Deploy separat belegt werden. Diese Entscheidung gibt keinerlei Live-Freigabe.
+
+## D-018 — Nutzerabgenommener V5-353L ersetzt den V4-Visual-Anchor
+
+- Datum: 19.08.2026
+- Entscheidung: Die Datei `Hi3D_Realistisches Anthropomorphes Esel-Arbeiter 3D-Modell_allparts_20260819_221428.glb` wird zum verbindlichen lokalen 353L-Visual-Anchor. D-018 ersetzt D-017 für das aktive Modell. V5 bewahrt Gesicht, Kleidung, Schwanz, feste Hinterhufe und die fellbedeckten greiffähigen Vorderhufe des gelieferten Modells.
+- Grund: Der Nutzer hat diese Figur nach mehreren Generatorvarianten ausdrücklich als gefundenen 353L angenommen. Ihre Silhouette und alle vier Ansichten sind konsistent; externe Hufschalen würden die abgenommene Identität erneut verfälschen.
+- Erwogene Alternative: V4 mit entfernten Händen/Schuhen und nachträglich modellierten Hufschalen; verworfen, weil dies nicht mehr dem abgenommenen Charakter entspricht.
+- Folge: Die reproduzierbare V5-Pipeline reduziert 2.000.000 auf 120.000 Dreiecke, 8K auf 2K und exportiert nach KTX2/Meshopt 4.707.288 Byte mit 21-Gelenk-Rig, Gesichtsbones, elf Clips und Outfit-Slots. Mehrgelenk-Weighting, ein prozeduraler Foot-Lock und der erste Tierlaufübergang sind umgesetzt; ein späterer Cinematic-/Mocap-Pass bleibt Qualitätsausbau. Die Vorderhufe werden kanonisch als tierische, keratinbesetzte Greifhufe verstanden, nicht als Menschenhände. Die Quell-GLB enthält keine Lizenzmetadaten; vor Veröffentlichung müssen kommerzielle Rechte belegt werden. Kein Deploy wurde freigegeben.
+
+## D-019 — Komprimierte lokale WebGL-Runtime ist der Master-Assetpfad
+
+- Datum: 20.08.2026
+- Entscheidung: Blender-Exporte bleiben editierbare Quellen; Browserassets werden anschließend reproduzierbar mit KTX2/UASTC, Meshopt und Charakter-LODs erzeugt. Basis- und Draco-Decoder werden lokal ausgeliefert, nicht von einem CDN geladen.
+- Grund: Der V5-Charakter, die texturierte Welt und spätere Bezirke brauchen planbare Download-, GPU- und Offline-Eigenschaften. Ein einzelnes riesiges Three.js-Chunk und unkomprimierte Bildtexturen skalieren nicht mit der geplanten Stadt.
+- Erwogene Alternativen: rohe Blender-GLBs direkt ausliefern; wegen Größe verworfen. Externe Decoder-CDNs; wegen Offline- und Ausfallabhängigkeit verworfen. Nur Draco oder nur Meshopt; Blender-Draco bleibt der Builder-Zwischenschritt, Meshopt der einheitliche Runtime-Vertrag.
+- Folge: `npm run assets:runtime` ist der verbindliche lokale Optimierungspfad. Tests prüfen Skins, Clips, LODs, KTX2, Meshopt, Weltknoten und Budgets. Jede Änderung an Decoderpfaden oder GLB-Erweiterungen ist eine Runtime-API-Änderung. Kein Push oder Deploy ist Teil der Pipeline.
+
 ## Vorlage
 
 ```text

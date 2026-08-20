@@ -55,7 +55,7 @@ Die Gabe baut keinen Menschenkörper über das Tier. Sie erlaubt Haltung und Bew
 
 ## 353L und die Gabe
 
-353L ist ein Eselträger der Oberen Gabe. Seine Vorderhufe funktionieren im Alltag wie Hände, bleiben aber sichtbar, schwer und hufartig. Er greift über Druck, Gelenke, Gurte, angepasste Werkzeuge, Sprache und Donkey-Connection — nicht über plötzlich auftauchende Menschenfinger.
+353L ist ein Eselträger der Oberen Gabe. Seine Vorderhufe funktionieren im Alltag wie Hände, bleiben aber sichtbar fellbedeckt, schwer und tierisch. V5 konkretisiert ihre Form als kurze greiffähige Hufglieder mit dunklen Keratinspitzen und einem opponierbaren Ansatz. Sie können Kleidung und größere Gegenstände halten, sind jedoch keine menschlichen Haut-/Nagelhände und bleiben bei feinen Fingergeräten im Nachteil. Gurte, angepasste Werkzeuge, Sprache und Donkey-Connection gleichen diese Reibung aus.
 
 Seine Kraft und Geschwindigkeit kommen nicht aus einem Superhelden-Upgrade, sondern aus seinem erhaltenen Eselkörper:
 

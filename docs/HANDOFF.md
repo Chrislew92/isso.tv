@@ -1,88 +1,55 @@
-# ISSO.TV V3 — aktuelle Agentenübergabe
+# ISSO.TV V3 — aktuelle Übergabe
 
-Datum / Agent: 18.08.2026 / Codex
+Datum / Agent: 20.08.2026 / Codex
 
-Ausgangs-Commit: `226db03`
+Ausgangs-Commit: `33ac73d`
 
-Arbeitspaket: HD-Hafenpass, sichere Außenkamera, 353L-Gait, lesbare 3D-Beschilderung und vollständiger Browser-Kernlauf
+Arbeitspaket: V5-Masterkern sichern — Fährbude, Filmübergang, Kamera, Kollision, 353L-Animationen und Runtime-Assets.
 
-## Geänderte Dokumentation
+## Geändert
 
-- `AGENTS.md`, `CLAUDE.md`, `MANUS.md` und `.github/copilot-instructions.md` als Agenten-Einstiege,
-- `ROADMAP.md` als phasenweise Produktionsplanung mit IDs, Abhängigkeiten und Gates,
-- `docs/PROJECT_STATE.md` als belegter V3-Ist-Stand,
-- `docs/ARCHITECTURE.md`, `docs/DECISIONS.md` und `docs/QA_RELEASE.md`,
-- `MERGE_MATRIX.md` als ehrliche V2-Spendermatrix,
-- `STORY_BIBLE.md` um 353Ls kontrollierte Stärke und zwei **mögliche** gespiegelte 1-gegen-1-QTE-Pfade ergänzt: gefeierter Kneipensieg mit innerem Unbehagen sowie späterer Straßenraub mit heftiger Gegenwehr, bewusstem Stopp und offener Frage nach seiner aggressiven Seite. Beide können vermieden werden; ein gewaltfreier Run bleibt gleichwertig.
-- `docs/CONFLICT_SCENARIOS.md` enthält die vollständige Entscheidungs- und Nachhallmatrix. Beim Straßenraub sind frühes Vermeiden, **Weglaufen**, Abgeben, Reden, Hilfe und Gegenwehr gleichwertige Hauptpfade; pro Moment werden höchstens drei kontextuelle Optionen gezeigt.
-- 353Ls **Hufsprint** ist verbindlicher Bewegungskanon: für wenige Sekunden ungefähr doppelte Menschengeschwindigkeit, spektakulär und direkt steuerbar; auf offener Strecke ist Flucht vor einem einzelnen menschlichen Räuber normalerweise erfolgreich.
-- `docs/ANIMAL_LORE.md` definiert die **Obere Gabe**: ausgewählte Tiere können sich freiwillig aufrichten, müssen aber anatomisch Tier bleiben. 353L behält Vorder-/Hinterhufe; Katzen behalten Pfoten und Krallen. Aufrecht- und Tierhaltung sowie artspezifische Verben sind zukünftige Gameplay-Pakete.
-- `docs/EARTH_1.md` definiert **Erde-1 im Jahr 2033** als Parallelwelt mit demselben Kalender und anderen Grundgesetzen. Eine höhere Macht kann für Gott stehen und machte die Obere Gabe möglich; ISSO.TV bestätigt dennoch keine bestimmte Religion und vergibt keine Glaubenspunkte.
-- Die älteste Tierlegende versteht die Obere Gabe als einen von Gottes Friedensplänen. **Earthpeace 2033 wurde nicht pünktlich erreicht**; EyTonLand kann später versuchen, die verspätete Aufgabe praktisch weiterzuführen.
-- Jedes aufgerichtete Tier trägt laut Tierwissen einen eigenen höheren Zweck, kennt ihn aber nicht. 353Ls Zweck bleibt ausdrücklich offen; Agenten dürfen Spuren schreiben, aber keine endgültige Antwort erfinden.
-- Menschen können ebenfalls einen unbekannten höheren Zweck besitzen; bei bewusster KI bleibt die Frage offen. Nur Tiere teilen die Gewissheit der Oberen Gabe.
-- Eitelstedt beginnt bewusst grau und nass. Hoffnung erscheint ohne Balken als lokale Weltveränderung: warme Fenster, reparierte Lichter, Grüße, Pflanzen, offene Orte und erinnerte gute Handlungen.
-- `docs/VOICE_AND_LIPSYNC.md` definiert Full Voice. Der lokale KI-Voice-Vertical-Slice ist umgesetzt: elf Zeilen, stabile IDs, Untertitel, Audiofallback, `rig_jaw` sowie Kopf-/Ohrperformance. Anbieterrechte, finale Masterstimme und Phonemviseme bleiben offen; nichts davon ist zur Veröffentlichung freigegeben.
+- Fährbude auf kanonische Armut zurückgebaut: Bodenmatratze, alter Tisch/Laptop, abgenutzte Oberflächen, kühles Licht, kleine warme Hoffnungsecke; falsche Apartmentmöbel entfernt.
+- Neues Prologbild integriert; alter Prolog und V3-Blockout-Figur aus `public/` in das ignorierte lokale Archiv verschoben.
+- Film und 3D-Aufstehen bilden einen Ablauf; Steuerung bleibt bis zum sichtbaren Aufstehen gesperrt.
+- Kamera auf 360° plus geometrische Verdeckungskorrektur umgestellt.
+- Bewegungsauflösung, Bodenhaftung und Nav-Grundlage aus echter Weltgeometrie statt harter Rechteckgrenzen.
+- V5-353L mit verbessertem Weighting, Gesichtsbones, elf Clips, Foot-Lock-Pass, Hufsprint/Auslaufen, Tierlaufübergang, Visemen und Outfit-Slot-Test.
+- KTX2, Meshopt, lokale Decoder, drei Charakter-LODs und geteilte Three-/React-Three-Chunks.
+- Offline-/Low-Memory-/WebGL-Fallbacks und eingebaute FPS-/Frame-Time-Probe.
+- Reproduzierbare Runtime-Assetpipeline unter `tools/build_runtime_assets.ps1` und `docs/ASSET_PIPELINE.md`.
+- Veraltete Projektstatus- und Roadmap-Aussagen auf den beweisbaren Stand gebracht.
 
-## Aktueller sichtbarer Stand
+## Im Browser sichtbar
 
-- Film startet automatisch.
-- Danach ist 353L in einer zusammenhängenden 3D-Szene frei steuerbar.
-- Donkey-Connection, Tür, Pier-Wagen, Bahnhof und Signalwerk erzeugen lokalen Nachhall.
-- Die Wohnung besitzt jetzt einen ersten HD-Art-Pass: texturierter dunkler Eichenboden, einzelne Dielen, Bettaufbau, Teppich, Nachttisch/Lampe, Fensterrahmen, Heizkörper und geschlossener Stauraum.
-- Das Zimmer misst jetzt rund 10,3 × 9,6 m; 353L besitzt statt der irrtümlichen 3,35 m einen glaubwürdigen 2,15-m-Maßstab. Die offene vierte Wand hält die Verfolgerkamera frei.
-- Der Hausflur besitzt Terrazzo, Petrol-Vertäfelung, vier Türen, Rahmen, Briefkästen, Messingdetails, Lichtspalten und warme Leuchten.
-- Vordach und Pier besitzen jetzt eine konstruierte Schwelle, eigene Hafen-Asphaltoberfläche, Entwässerung, Kiosk-/Wagen-/Fassadendetails, kontrollierte Industrieleuchten, Container-/Kran-Silhouetten, animiertes Wasser und weich auslaufende Nassstellen.
-- `PIER 17` und `NACHTKIOSK` sind physische, korrekt ausgerichtete 3D-Schilder. Der Nachtkiosk wurde nach dem Export im Browser aus Spielperspektive geprüft.
-- Ein Arbeitsschiff mit Kabine, Fenstern, Mast, Markierungsstreifen, Reling und Rettungskasten sowie eine gestaffelte ferne Speicherstadt ersetzen die zuvor leere schwarze Hafenweite.
-- Die geöffnete Tür ist wirklich passierbar. Im Flur bleibt die Linse näher an der Korridormitte; am Hafen bleibt sie hinter 353L und wechselt die Laufrichtung bei gedrücktem W nicht mehr um.
-- 353L besitzt einen deformierenden Kiefer; 353L/Lotte/Bahnhof sprechen elf lokale deutsche KI-Vorschauzeilen mit Untertitel- und Autoplay-Fallback.
-- Untertitel blenden selbst dann aus, wenn ein Browseraudio weder `ended` noch einen Fehler meldet.
-- 353L besitzt jetzt einen ersten geglätteten Walk/Run/Turn/Stop-Gait mit Knie-/Hufarbeit, Gegenschwung, Hüftgewicht, Oberkörperneigung und Idle-Atmung.
-- Gehaltenes Shift aktiviert den sichtbaren `⇧ HUFSPRINT`: Zielgeschwindigkeit 6,15 statt 3,05 Welteinheiten/Sekunde, weiches Anlaufen/Ausrollen, stärkere Körpervorlage und eine kontrollierte FOV-Erweiterung.
-- Der 3D-Lader zeigt Prozent, Bausteinzähler und Fortschrittsleiste. Ein Error Boundary ersetzt Asset-/Runtime-Weißbilder durch einen verständlichen Vollbild-Fallback mit erhaltenem Save und Ein-Klick-Neuladen.
-- Das Web-Audio-System erzeugt ein eigenes Regen-/Gebäudehum-Bett ohne externe Audiodatei und blendet dessen Mix zonenabhängig zwischen Wohnung, Flur, Vordach und Hafen. `TON AN/AUS` schaltet Stimme und Atmosphäre gemeinsam; beide Richtungen wurden im Browser bedient.
-- Jeder neue Halbzyklus des Gaits erzeugt einen kurzen synthetischen Hufkontakt. Frequenz und Ausklang unterscheiden Eichenboden, Flur, Vordach und Hafen; der Sprint hebt die Kontaktintensität an. Ein frischer Browserlauf blieb ohne Konsolenwarnung oder -fehler.
-- Tür, Donkey-Connection, Rollwagen, Bahnhof und Signalwerk lösen jeweils ein eigenes, kurz ausklingendes Weltklangmuster aus. Die Nodes werden nach jedem Cue getrennt; ein frischer Lauf mit entsperrtem Ton blieb fehlerfrei.
-- Das neue ⚙-Optionsfenster erklärt Kameratempo und Grafikmodus mit Symbolen/Klartext. 35–140 % Kameratempo sowie `AUTO`, `HOCH` und `SPARSAM` werden separat vom Save lokal gespeichert und unmittelbar an Orbit-Speed, DPR und Adaptive-DPR gebunden.
-- Der bisher nur im Text vorhandene Hafenarbeiter steht als echtes zweites 3D-Tier am Rollwagen: 1,94-m-Maßstab, eigener kühler Materialklon, Warnweste, Reflexring und Schutzhelm. Sein Kopf bewegt sich ruhig und nickt stärker, sobald der Wagen gelöst wurde. Das ist der erste Hintergrund-NPC-Pass; ein endgültiges individuelles NPC-Modell bleibt offen.
-- Wiederholte statische Details werden nach Bevel-Anwendung gebatcht. Der zweite Batchpass bündelt außerdem Speicherblöcke/-dächer/-schornsteine, Schiffreling, Hafenleuchten, Bollards und Kranserien; Blender meldet 263 Objekte / 258 Meshes statt 317 / 312. Ferne Kräne, Container, Schiff und Skyline empfangen Licht/Nebel, werfen aber keine teuren Echtzeitschatten mehr. Wohnung, Flur und Hafen wurden danach erneut visuell geprüft.
-- Die lokale Vorschau ist noch kein freigegebener Release.
+- automatischer Bildfilm in der kargen Fährbude,
+- 353L liegt auf der Bodenmatratze, reagiert, richtet sich auf und steht auf,
+- danach frei steuerbarer V5-353L in derselben Wohnung,
+- 360°-Kamera ohne künstlichen Seitenstopp und ohne beobachtetes Wandclippen,
+- verständlicher 3D-Fehlerbildschirm bei `?force3dError=1`.
 
-## Zuletzt geprüft
+## Prüfung
 
-- `npm run test`: 19 Tests bestanden.
-- `npm run build`: erfolgreich.
-- `npm audit`: 0 bekannte Sicherheitslücken.
-- Browser-Abnahme: automatischer Filmstart, Wohnung, echter Tür-/Flur-/Vordach-/Hafenlauf, kamerarelative Steuerung, Rollwagenprompt, Auswahl „Direkt helfen“, sichtbare Wagenfolge und Nachhall 3 → 4 geprüft. Untertitel-Failsafe und absichtlich ausgelöster 3D-Fehlerfallback geprüft; im normalen Lauf keine Konsolenwarnungen oder -fehler.
-- Produktionsbuild: App-Chunk rund 224,61 kB / 70,76 kB gzip, Runtime-Chunk rund 985,85 kB / 269,27 kB gzip; Level-GLB 8.734.416 Byte. Die aktuelle FPS-/Core-Web-Vitals-Messung bleibt offen, weil in dieser Umgebung kein Chrome-Trace-Werkzeug verfügbar ist.
+- Tests: 25/25 bestanden.
+- Build: erfolgreich; größtes JS-Chunk 368,90 kB.
+- Audit: 0 bekannte Sicherheitslücken.
+- Referenzprobe: 55,8 FPS / 17,93 ms Mittel / 18,3 ms p95 / 180 Samples / WebGL2.
+- GLB-Vertrag: V5 + LOD1/2 jeweils 1 Skin, 11 Clips, Meshopt und KTX2; Welt Meshopt und ausschließlich KTX2-Bilder.
+- Browserkonsole im frischen normalen Lauf: keine neue Fehler- oder Warnschleife.
+- `git diff --check`: sauber; finaler Build/Audit/Test werden unmittelbar vor dem lokalen Master-Commit erneut ausgeführt.
 
-## Bekannte Risiken
+## Bekannte Grenzen / Risiken
 
-- Wohnung, Flur, Vordach und Hafen besitzen einen ersten zusammenhängenden Art-Pass; Bahnhof/Signalwerk brauchen weitere Innenräume, Props, zusätzliche Wegweisung und NPCs.
-- Harte Bewegungsgrenzen statt echter Kollision/Navmesh.
-- Level-GLB jetzt rund 8,73 MB trotz größerer Welt; Laufzeit-JPEGs und statische Detailbatches sind eingebettet, Produktions-LOD/KTX2 fehlen weiterhin.
-- V2-Systeme sind noch nicht in V3 integriert.
-- Rechtstext-Links führen im lokalen V3-Build noch nicht zu fertigen Dateien.
+- Die Animationen sind ein belastbarer erster authored Gameplay-Pass, noch kein Motion-Capture-/Cinematic-Endstandard.
+- Die FPS-Zahl stammt aus der eingebauten Referenzprobe; Chrome-Trace, Core Web Vitals, VRAM-Langzeitprofil und schwache Mobilgeräte sind noch nicht vermessen.
+- Flur, Vordach, Hafen und der vorläufige Hafenarbeiter brauchen weitere sichtbare Art-/NPC-Abnahme.
+- Kanonische Orts-/Interaktionsdaten sind noch teilweise zwischen `canon.js` und `RealtimeWorld.jsx` doppelt.
+- Finale Sprecher-, Musik-/Soundrechte, Touch/Controller, Accessibility und Geräte-Matrix fehlen.
+- Der Gesamtspiel-Backlog ab M2 ist groß; der aktuelle Stand ist ein Vertical Slice, keine fertige Welt.
 
-## Nächster kleinster Produktionsschritt
+## Nächster kleinster sicherer Schritt
 
-Die vom Nutzer am 18.08.2026 zuletzt sichtbaren Brüche gemeinsam als einen Szenenpass lösen: (1) Fährbude nach den Bildreferenzen mit Bodenmatratze und Tisch/Laptop statt sauberem Standard-Apartment, (2) freie seitliche/360-Grad-Sicht ohne Azimutstopp bei gleichzeitig echter Wandbegrenzung, (3) Filmende auf der Matratze nahtlos über eine sichtbare 3D-Aufstehbewegung in die Steuerung überführen. 353Ls überhelles Erscheinungsbild dabei über Licht, Exposure und nicht-emissive Materialwerte korrigieren. Die vier neuen `room-*-worn-hd-v2`-Dateien sind nur vorbereitete Quellen und noch nicht in GLB/Runtime integriert.
+1. Nutzerabnahme des lokalen M1-Morgens.
+2. Verbleibende M1-Punkte: Koordinaten vereinheitlichen, kompletter Interaktionslauf, Mobile-/Accessibility-/Langzeitprofil.
+3. Danach M2-01 bis M2-05: Save-Migration, Slots, Charakterstart, Finanzprofil und deterministische Zeit.
 
-Live verändert: **NEIN**
-
----
-
-## Vorlage für die nächste Übergabe
-
-```text
-Datum / Agent:
-Ausgangs-Commit:
-Arbeitspaket:
-Geänderte Dateien:
-Was ist im Browser sichtbar:
-Tests / Build / Audit:
-Bekannte Fehler oder Risiken:
-Nächster kleinster Schritt:
-Live verändert: NEIN/JA + ausdrückliche Freigabe
-```
+Live verändert: **NEIN**. Kein Push, kein Deploy, keine DNS- oder Cloudflare-Änderung.

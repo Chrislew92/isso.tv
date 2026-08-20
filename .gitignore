@@ -23,3 +23,10 @@ vite.config.*.timestamp-*
 
 # Blender automatic backups
 *.blend1
+
+# User-provided binary masters stay local; reproducible build reports record hashes.
+assets/source/*-original.glb
+
+# Superseded local character builds are recoverable but never part of the active game.
+assets/archive/
+.cache/

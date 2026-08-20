@@ -35,13 +35,14 @@ export default function App() {
   const [run, dispatch] = useReducer(runReducer, undefined, () => loadRun(createRun()))
   const [modal, setModal] = useState(null)
   const [opening, setOpening] = useState(true)
+  const [waking, setWaking] = useState(false)
   const [prompt, setPrompt] = useState(null)
   const [ready, setReady] = useState(false)
   const [position, setPosition] = useState({ x: -0.8, z: -0.7, location: 'room' })
   const [settings, setSettings] = useState(loadSettings)
   const voice = useVoicePlayer()
 
-  const paused = opening || run.phase !== 'free' || Boolean(modal)
+  const paused = opening || waking || run.phase !== 'free' || Boolean(modal)
   const filmEvents = useMemo(() => run.events.filter((event) => event.isRunFilmEligible), [run.events])
 
   const chooseConnection = useCallback(async (choice) => {
@@ -146,12 +147,20 @@ export default function App() {
     window.location.reload()
   }
 
-  async function finishOpening({ canPlayAudio = false } = {}) {
+  async function startWake({ canPlayAudio = false } = {}) {
     if (canPlayAudio) await voice.unlock()
-    if (run.phase === 'mattress') dispatch({ type: 'MORNING_CHOICE', choice: 'stand' })
-    setOpening(false)
+    setWaking(true)
     window.setTimeout(() => voice.play('de.room.wake.353l.01'), 620)
   }
+
+  function finishOpening() {
+    setOpening(false)
+  }
+
+  const finishWake = useCallback(() => {
+    if (run.phase === 'mattress') dispatch({ type: 'MORNING_CHOICE', choice: 'stand' })
+    setWaking(false)
+  }, [run.phase])
 
   return (
     <main className={`app${ready ? ' app--ready' : ''}`}>
@@ -159,6 +168,8 @@ export default function App() {
         <RealtimeWorld
           run={run}
           paused={paused}
+          wakeSequence={waking}
+          onWakeComplete={finishWake}
           onInteract={handleInteract}
           onPrompt={setPrompt}
           onPosition={setPosition}
@@ -174,7 +185,7 @@ export default function App() {
       {!ready && <div className="world-loader"><span>ISSO<span>.TV</span></span><small>STRAMMBURG WIRD GELADEN</small></div>}
 
       {opening ? (
-        <OpeningFilm onFinish={finishOpening} onSoundEnabled={voice.unlock} />
+        <OpeningFilm onTransitionStart={startWake} onFinish={finishOpening} onSoundEnabled={voice.unlock} />
       ) : (
         <GameInterface run={run} position={position} prompt={prompt} voice={voice} onAction={handleInteract} />
       )}
@@ -182,12 +193,9 @@ export default function App() {
       {modal === 'film' && (
         <Modal title="Der Morgen fängt an." kicker="BILDFILM / PROLOG" onClose={() => setModal(null)} wide>
           <div className="film-frame">
-            <video controls poster="/media/prolog-matratze.png" preload="metadata">
-              <source src="/media/prolog-matratzenmorgen.mp4" type="video/mp4" />
-              <track src="/media/prolog-de.srt" kind="subtitles" srcLang="de" label="Deutsch" default />
-            </video>
+            <img src="/media/prolog-faehrbude-v3.png" alt="353L schläft in der kargen Fährbude" />
           </div>
-          <p className="modal-note">Der Film zeigt die Stimmung. Danach steuerst du denselben Morgen selbst.</p>
+          <p className="modal-note">Der Bildfilm und die steuerbare Szene zeigen denselben Raum und denselben Morgen.</p>
         </Modal>
       )}
 

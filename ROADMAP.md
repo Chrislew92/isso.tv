@@ -1,10 +1,10 @@
 # ISSO.TV V3 / Master Edition — Produktionsroadmap
 
-Stand: 18.08.2026
+Stand: 20.08.2026
 
 Aktiver Branch: `master`
 
-Verifizierte Runtime-Basis: `226db03` (`Document first harbor NPC pass`).
+Verifizierte Runtime-Basis: lokaler V5-Master-Arbeitsstand; die Abschlussprüfung und der lokale Master-Commit sind Bestandteil dieses Arbeitspakets.
 
 Freigabe: **nur lokal; kein Deploy**
 
@@ -61,7 +61,7 @@ flowchart LR
 Status: **abgeschlossen und lokal gesichert**
 
 - [x] React/Vite-Anwendung und Produktions-Build.
-- [x] Film-first Prolog mit Poster, Video, Untertiteln und Skip.
+- [x] Film-first Prolog mit Bildfilm, Untertiteln, Skip und fließender 3D-Aufstehsequenz.
 - [x] Lazy geladene React-Three-Fiber-Szene.
 - [x] Zusammenhängende Wohnung/Flur/Hafen/Bahnhof/Signalwerk-Geometrie.
 - [x] Eigenes texturiertes, geriggtes 353L-Modell.
@@ -69,8 +69,8 @@ Status: **abgeschlossen und lokal gesichert**
 - [x] Donkey-Connection, Tür, Wagen, Bahnhof und Signalwerk als räumliche Interaktionen.
 - [x] Lokaler Run-Zustand, Nachhall, Reload und Reset.
 - [x] Blender-Quellen und reproduzierbare Exportskripte.
-- [x] Sechzehn State-, Dialog- und Bewegungs-Tests, erfolgreicher Build und Audit ohne bekannte Lücke.
-- [x] Historische Referenzmessung vor dem aktuellen Hafenpass dokumentiert; der neue Stand braucht noch eine aktuelle Chrome-Trace-/Core-Web-Vitals-Messung.
+- [x] Fünfundzwanzig State-, Dialog-, Bewegungs-, Viseme-, Welt- und Charakterasset-Tests, erfolgreicher Build und Audit ohne bekannte Lücke.
+- [x] Aktuelle Runtime-Referenzprobe dokumentiert: 55,8 FPS, 17,93 ms Mittel, 18,3 ms p95; Chrome-Trace/Core Web Vitals bleiben ein Alpha-Gate.
 
 M0 ist ein technisches Fundament, kein fertiger Premium-Look.
 
@@ -99,17 +99,22 @@ Ziel: Der Pfad **Film → Wohnung → Flur → Hafen → Bahnhof/Signalwerk → 
 | `P1-13` | P1 | Haltungstest der Oberen Gabe | P1-03, P1-07 | 353L wechselt flüssig zwischen aufrechter Stadtbewegung und Tierlauf/Hufsprint. Der Test entscheidet anhand Lesbarkeit und Rigqualität, ob der Sprint vierbeinig oder stark vorgebeugt bleibt; keine Menschenhände/-füße und keine brechende Transformation. |
 | `P1-14` | P0 | Full-Voice-/Tier-Lip-Sync-Fundament | P1-07, P1-09 | Pipeline gemäß `docs/VOICE_AND_LIPSYNC.md`: stabile Dialog-IDs, deutsche Untertitel, 353L-Castingtest, erste Donkey-Connection vollständig gesprochen, Schnauzen-Viseme plus Ohren/Blick/Atem, Skip/Reload/Fallback geprüft. |
 
-Teilstand 18.08.2026:
+Verifizierter Kernstand 20.08.2026:
 
-- `P1-03`: der zuvor unpassierbare Übergang durch die geöffnete Wohnungstür ist repariert und mit fünf Bewegungsregressionstests gesichert; echte Objektkollision/Nav-Daten bleiben offen.
-- `P1-04`: Wohnung auf rund 10,3 × 9,6 m erweitert und 353L auf kanonische 2,15 m gesetzt. Der sichtbare HD-Pass ist technisch vorhanden, wurde aber am 18.08.2026 art-direktionell verworfen: Er wirkt zu sauber und zu wohlhabend. Verbindliches Rework-Ziel sind die Bildreferenzen `scene-room-v1.png` und `prolog_02_matratze.png`: etwas mehr Spielfläche, abgewohnte Fährbude, Matratze direkt auf dem Boden, alter Tisch und Laptop, keine Standard-Apartment-Ausstattung. Zwei neue Texturmaster plus Laufzeitderivate sind vorbereitet, aber noch nicht eingebaut.
-- `P1-05`: erster HD-Flur-/Schwellenpass mit Terrazzo, Vertäfelung, Wohnungstüren, Briefkästen, Messing, Lichtspalten, Leuchten sowie konstruiertem Vordach, Dachrippen, Trägern, Rinne, Ablauf, Pfosten und beleuchtetem Vorplatz ist sichtbar. Die endgültige Detailabnahme bleibt offen.
-- `P1-06`: erster Hafen-Art-Pass mit eigener Asphalt-HD-Quelle, Laufzeittextur, Entwässerung, Bordstein, Kiosk-/Rollwagendetails, Werkstattfassade, Bahnhof-/Signalwerkfassaden, Leuchten, Containern, Kränen, animiertem Wasser und weich auslaufenden Nassstellen ist sichtbar. `PIER 17` und `NACHTKIOSK` sind echte lesbare 3D-Schilder; kleinere Industriependeleuchten halten das Vordach materiallesbar. Ein detailliertes Arbeitsschiff, gestaffelte Speicherhäuser, Schornsteine und ferne Fensterlichter schließen die zuvor leere Hafenweite. Ferne Kulissen sind gebatcht und aus dem Echtzeitschattenpass entfernt. Der erste echte 3D-Hafenarbeiter steht mit eigenem Maßstab, Materialtint, Warnweste, Reflexring und Schutzhelm am Wagen und reagiert auf dessen Zustand. Ein eigenständiges finales NPC-Asset, weitere Performance und LOD bleiben offen.
-- `P1-07`: erster Laufzeit-Gait-Pass blendet Anlaufen/Stoppen, Walk/Run-Pace, Oberschenkel, Knie, Hufe, Gegenschwung der Arme, Hüftgewicht, Oberkörperneigung, Kurvenlage und ruhige Atmung. Gehaltenes Shift erzeugt jetzt einen kontrolliert anlaufenden Hufsprint mit ungefähr doppelter Gehgeschwindigkeit, stärkerer Körpervorlage und leicht erweitertem Kamerablick. Authored AnimationClips, Foot-Lock, Sprintlimit und endgültige Hufsprint-Abnahme bleiben offen.
-- `P1-08`: der zonenabhängige Kamerapass hält die Linse im Flur zur Korridormitte und führt stabil ins Hafengelände. Das ⚙-Menü steuert Kameratempo und Grafikmodus. Abnahme bleibt offen: Im Zimmer stoppt die Azimutbegrenzung den Blick nach links/rechts und ohne geometrische Kamerakollision kann die Sicht Wände schneiden. Ziel ist freier Rundumblick innerhalb kollisionssicherer Raumgrenzen.
-- `P1-09`: blockiertes Browseraudio kann Untertitel nicht dauerhaft festhalten; Regen-/Tieftonbett, Hufimpulse und Weltklänge sind vorhanden. Die visuelle Filmübergabe ist noch nicht aus einem Guss: Der Matratzenfilm muss ohne Teleport in eine kurze 3D-Aufstehbewegung und erst danach in freie Steuerung übergehen. Produzierte Varianten, Mixoptionen und Film-/Spiel-Crossfade bleiben ebenfalls offen.
-- `P1-11`: der 3D-Suspensezustand zeigt Prozent, geladene Bausteine und eine sichtbare Fortschrittsleiste. Runtime-/Assetfehler landen in einem bildschirmfüllenden Strammburg-Fallback mit Hinweis auf den erhaltenen Spielstand und Ein-Klick-Neuladen; der Zustand wurde über den ausschließlich lokalen Testparameter `?force3dError=1` sichtbar abgenommen. Hardware-/Low-Memory-Varianten bleiben offen.
-- `P1-14`: elf deutsche KI-Vorschauzeilen, stabile Dialog-IDs, Untertitel, Audiofallback, deformierender Kiefer und Pegelperformance sind implementiert; finale Lizenz-/Castingentscheidung und echte Phonemviseme bleiben offen.
+- [x] `P1-01`: Assetbudgets und aktuelle Runtimeprobe stehen in `docs/PERFORMANCE.md`; der vollständige Chrome-/Gerätelaborpass bleibt M6-Gate.
+- [ ] `P1-02`: einige Orts- und Interaktionskoordinaten sind noch zwischen `canon.js` und `RealtimeWorld.jsx` doppelt.
+- [x] `P1-03`: Weltmeshes liefern Blocker und begehbare Flächen; Capsule-Slide, Türstatus, Bodenraycast und Nav-Grundlage ersetzen harte Rechteckgrenzen und sind regressionsgetestet.
+- [x] `P1-04`: die Fährbude zeigt Bodenmatratze, alten Tisch/Laptop, abgenutzte Wände/Boden, kühles Grau und eine kleine warme Hoffnungsecke; falsche Apartmentmöbel sind entfernt.
+- [ ] `P1-05`: Flur und Schwelle sind technisch/visuell ausgebaut; eine endgültige sichtbare Detailabnahme bleibt offen.
+- [ ] `P1-06`: Hafen, Schiff, Bahnhof, Signalwerk, Kiosk und erster Arbeiter sind vorhanden; finale NPC-Assets und weiterer Art-Pass bleiben offen.
+- [x] `P1-07`: V5 besitzt verbessertes Weighting, 11 authored Clips, prozeduralen Foot-Lock, Hufsprint/Auslaufen, Ohren/Schwanz/Gesicht, Viseme-Bones und geprüfte Outfit-Slots. Cinematic-/Mocap-Polish bleibt späteres Qualitätsarbeitspaket.
+- [x] `P1-08`: 360°-Kamera ohne Azimutstopp, geometrische Kamerakollision/Verdeckungskorrektur und Zonenabstände sind im Browser geprüft.
+- [x] `P1-09`: Prolog und spielbare Szene bilden einen Ablauf; 353L liegt, reagiert, richtet sich auf und steht sichtbar auf, bevor Steuerung freigegeben wird. Finaler Audio-Mix bleibt offen.
+- [ ] `P1-10`: vorhandene Stationen und Nachhall funktionieren; der komplette frische End-to-End-Morgen braucht die letzte Abnahme.
+- [x] `P1-11`: Ladefortschritt, WebGL-/Assetfallback, Offline- und Low-Memory-Hinweis sind implementiert; der Fehlerbildschirm wurde sichtbar erzwungen.
+- [ ] `P1-12`: Tests/Build/Audit und Desktop-Browser sind bestanden; Mobile, Accessibility, kompletter Reload/Reset-Lauf und Nutzerabnahme fehlen.
+- [x] `P1-13`: der authored Tierlauf-Übergang ist technisch vorhanden; seine endgültige visuelle Stilabnahme bleibt Teil des Animationspolish.
+- [x] `P1-14`: stabile Dialog-IDs, Untertitel, Audiofallback, Vorschauvoices, Kiefer und Schnauzen-Viseme plus Ohren/Blick/Atem sind vorhanden. Finale Sprecher-/Rechteentscheidung bleibt offen.
 
 ## M1-Gate
 

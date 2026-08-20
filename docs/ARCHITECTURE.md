@@ -55,19 +55,19 @@ Kamera-/Grafikoptionen sind kein Run-Fortschritt und liegen daher getrennt unter
 `RealtimeWorld.jsx` lädt zwei Modelle:
 
 - `/models/isso-v3-vertical-slice-v1.glb`
-- `/models/353l-master-character-v3.glb`
+- `/models/353l-hi3d-character-v5.glb`
 
 Das Level besitzt benannte Objekte wie `door_pivot` und `cart_root`. Der Charakter besitzt benannte Rig-Bones (`rig_arm_l`, `rig_leg_l`, `rig_head` usw.). Änderungen an Blender-Namen sind API-Änderungen und müssen gemeinsam mit der Runtime angepasst werden.
 
-Aktuelle Bewegungszonen:
+Semantische Kamera-/Audiozonen:
 
 - Wohnung: `x < 4.25`
 - Flur: `4.25 <= x < 10.7`
 - Außenwelt: `x >= 10.7`
 
-Diese Werte sind Übergangscode. Phase 1 ersetzt sie durch nachvollziehbare Collider/Nav-Daten.
+Die x-Werte wählen nur Atmosphäre, Kameraabstand und Audiozone. Physische Bewegung wird nicht mehr an diesen Grenzen gekappt: `collectNavigationGeometry()` sammelt benannte Blocker und begehbare Meshes aus dem exportierten Level, `resolveMovement()` löst eine Capsule-ähnliche Bewegung mit Gleiten auf und `groundMovement()` hält 353L per Raycast auf dem Boden. Die Wohnungstür wird als zustandsabhängiger Blocker behandelt. Dieselben Daten sind die Grundlage für spätere NPC-Wege und Verkehr.
 
-Die Kamera benutzt Zonenpresets: Im offenen Zimmer bleibt sie auf der Filmset-Seite; im Flur folgt das Ziel 353L, während die Linse zur Korridormitte gezogen wird; hinter dem Vordach wechselt sie in einen stabilen Hafenversatz hinter der Figur, ohne die kamerarelative Vorwärtsrichtung umzukehren. Für lokale Sichtprüfung existieren ausschließlich im Vite-Entwicklungsmodus `?preview=hall`, `?preview=threshold`, `?preview=awning`, `?preview=harbor` und `?preview=kiosk`; Produktionsstarts ignorieren diese Parameter.
+Die Orbit-Kamera besitzt keinen künstlichen Azimutstopp und erlaubt 360° Rundumblick. Zonenpresets wählen nur geeignete Abstände für Zimmer, Flur/Vordach und Hafen. Ein Raycast vom Ziel zur gewünschten Kameraposition zieht die Linse automatisch vor tatsächliche Weltgeometrie und verhindert das beobachtete Schneiden durch Hauptwände, Decke und Möbel. Für lokale Sichtprüfung existieren ausschließlich im Vite-Entwicklungsmodus `?preview=room`, `?preview=hall`, `?preview=threshold`, `?preview=awning`, `?preview=harbor` und `?preview=kiosk`; Produktionsstarts ignorieren diese Parameter.
 
 ## Kanonische Daten
 
@@ -85,10 +85,10 @@ Neue Storytexte gehören nach Funktion:
 | Zweck | Quelle | Runtime-Ausgabe |
 | --- | --- | --- |
 | Welt | `assets/source/isso-v3-vertical-slice-v1.blend` | `public/models/isso-v3-vertical-slice-v1.glb` |
-| 353L | `assets/source/353l-master-character-v3.blend` | `public/models/353l-master-character-v3.glb` |
+| 353L | `assets/source/353l-hi3d-character-v5.blend` | `public/models/353l-hi3d-character-v5.glb` |
 | Konzepte | `assets/concept/` | nicht automatisch ausgeliefert |
 | Oberflächenmaster | `assets/textures/*-hd-v1.png` | nicht in GLB eingebettet |
-| Oberflächenruntime | `assets/textures/*-runtime.jpg` | im Welt-GLB eingebettet |
+| Oberflächenruntime | lokale Pipeline-Derivate | als KTX2/UASTC im Welt-GLB eingebettet |
 
 Welt neu erzeugen:
 
@@ -96,17 +96,15 @@ Welt neu erzeugen:
 blender --background --python tools/blender/build_vertical_slice.py -- <repo-root>
 ```
 
-Der Character-Builder erwartet zusätzlich ein lokal erzeugtes OBJ-Verzeichnis mit `texture.png`:
+Der aktuelle Character-Builder erwartet die vom Nutzer bereitgestellte Hi3D-GLB und schreibt zusätzlich einen Buildbericht mit Hash, Rechtehinweis und Budgets:
 
 ```text
-blender --background --python tools/blender/build_master_character.py -- <source.obj> <repo-root>
+blender --background --python tools/blender/build_hi3d_character.py -- <source.glb> <repo-root>
 ```
 
-Danach den aktuellen Sprachkiefer und Runtime-Materialpass anwenden:
+Der V5-Export normalisiert auf 2,15 m und reduziert zwei Millionen auf 120.000 Laufzeitdreiecke. Er bewahrt die vom Nutzer abgenommene Quellanatomie vollständig: fellbedeckte greiffähige Vorderhufe mit Keratinspitzen, feste equine Hinterhufe und Schwanz bleiben Teil des einen geskinnten Körpermeshes. Eingebettete 8K-Bilder werden auf höchstens 2K skaliert; die stabile `rig_*`-API und `slot_*`-Anker bleiben erhalten. Der Builder erzeugt verbessertes Mehrgelenk-Weighting, Gesichtsbones und elf Clips. Das lokale, über `.gitignore` ausgeschlossene Original liegt als `assets/source/353l-hi3d-character-v5-original.glb`; sein SHA-256 steht im Buildbericht. `src/game/characterAsset.test.js` schützt Dateibudget, V5-Metadaten, Gelenke, Clips, Kompression, LODs und Slots.
 
-```text
-blender --background assets/source/353l-master-character-v3.blend --python tools/blender/add_voice_rig.py -- <repo-root>
-```
+`npm run assets:runtime` führt anschließend KTX2/UASTC-Texturwandlung, Meshopt-Kompression und die LOD-Ausgaben aus. Blender-Draco bleibt der reproduzierbare Geometrie-Zwischenschritt; die Browser-Runtime lädt Meshopt und KTX2 über lokale Decoder unter `public/draco/` und `public/basis/`. Der vollständige Ablauf steht in `docs/ASSET_PIPELINE.md`.
 
 Lokale deutsche KI-Vorschauzeilen aus dem kanonischen Dialog-JSON neu erzeugen:
 
@@ -129,7 +127,7 @@ Der Hafen nutzt zusätzlich zwei kleine Runtime-Shader in `RealtimeWorld.jsx`: `
 
 Arbeitsschiff und ferne Speicherstadt sind echte 3D-Geometrie derselben Weltdatei. Sie liegen außerhalb des spielbaren Piers, erzeugen Parallaxe und verschwinden kontrolliert im Laufzeitnebel. Fenster-Serien werden gebatcht; Schiffsteile bleiben einzeln benannt, damit spätere Animation, Licht und Hafeninteraktion ohne Neuaufbau möglich sind.
 
-Der aktuelle Hufsprint bleibt Teil der prozeduralen Runtime: Shift hebt die Zielgeschwindigkeit von `3.05` auf `6.15`, blendet die Vorwärtsneigung ein und erweitert den Perspektivwinkel weich um maximal 4,5 Grad. Er ist noch kein Ersatz für authored Clips, Foot-Lock oder ein späteres Ausdauer-/Impulssystem.
+Der Hufsprint kombiniert den authored Run-/Tierlauf-Übergang mit der prozeduralen Geschwindigkeits- und Stabilitätsschicht: Shift hebt die Zielgeschwindigkeit von `3.05` auf `6.15`, blendet die Vorwärtsneigung ein und erweitert den Perspektivwinkel weich um maximal 4,5 Grad. Ein gait-synchroner Foot-Lock korrigiert die Pflanzphase; ein späterer Mocap-/Cinematic-Pass und ein Ausdauer-/Impulssystem bleiben Qualitätsausbau.
 
 `WorldErrorBoundary` umschließt die gesamte Canvas-Runtime. Fehler beim Laden oder Rendern führen zu einem eigenen Vollbildzustand mit Reload-Aktion; der Save liegt außerhalb dieser Komponente und bleibt erhalten. `LoadingModel` verwendet `useProgress()` für Prozent und Bausteinzähler. `?force3dError=1` erzwingt den Fallback ausschließlich im Vite-Entwicklungsmodus und dient der visuellen Regression, nicht dem Gameplay.
 

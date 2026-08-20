@@ -15,6 +15,26 @@
 - [ ] `npm audit` ohne ungeklärte relevante Lücke,
 - [ ] `git diff --check` sauber.
 
+## Nachweis des V5-Kernabschlusses vom 20.08.2026
+
+- [x] automatischer Filmstart ohne Frage,
+- [x] sichtbares Liegen, Reagieren, Aufrichten und Aufstehen vor der Steuerungsfreigabe,
+- [x] Fährbude mit Bodenmatratze, altem Tisch/Laptop und ohne falsche Apartmentmöbel,
+- [x] 360°-Kamera und geometrische Verdeckungskorrektur im Zimmer sichtbar geprüft,
+- [x] Weltgeometrie liefert Kollision, Boden und Nav-Grundlage; Bewegungsregressionen bestanden,
+- [x] V5/LOD1/LOD2 mit Skin, elf Clips, Meshopt und KTX2 automatisiert geprüft,
+- [x] verständlicher erzwungener 3D-Fehlerfall statt Weißbild,
+- [x] frischer normaler Browserlauf ohne neue Fehler-/Warnschleife,
+- [x] `npm test -- --run`: 25/25,
+- [x] `npm run build`: erfolgreich,
+- [x] `npm audit`: 0 bekannte Sicherheitslücken,
+- [x] Referenzprobe: 55,8 FPS / 17,93 ms Mittel / 18,3 ms p95,
+- [ ] kompletter frischer Morgen inklusive aller fünf Interaktionen, Reload und Reset als eine aufgezeichnete Sitzung,
+- [ ] Laptop/Tablet/Mobile/Touch/Controller/Reduced-Motion-Matrix,
+- [ ] Nutzerabnahme des lokalen M1-Vertical-Slice.
+
+Details und Grenzen der Messung: `docs/PERFORMANCE.md`.
+
 ## Geräte-Matrix vor Alpha
 
 | Ziel | Viewport/Input | Mindestprüfung |

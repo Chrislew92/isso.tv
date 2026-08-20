@@ -1,155 +1,102 @@
 # ISSO.TV V3 — verifizierter Projektstand
 
-Stand: 18.08.2026
+Stand: 20.08.2026
 
-Verifizierte Runtime-Basis: `226db03` (`Document first harbor NPC pass`).
+Produktstatus: **lokaler 3D-Vertical-Slice auf Branch `master`; nicht veröffentlicht und noch keine fertige Vollversion**
 
-Produktstatus: **lokaler technischer 3D-Vertical-Slice, nicht releasefähig und nicht zur Veröffentlichung freigegeben**
+Dieses Dokument trennt strikt zwischen dem nachweisbar laufenden V3-Kern und dem geplanten Gesamtspiel. Der vollständige Ausbauplan steht in `ROADMAP.md`.
 
-Dieses Dokument beschreibt ausschließlich Funktionen, die im aktuellen V3-Code nachweisbar vorhanden sind. Ideen und V2-Spender stehen in `ROADMAP.md`, nicht in der Fertig-Liste.
-
-## Produktgrenzen
+## Projektgrenze
 
 | Thema | Verbindlicher Stand |
 | --- | --- |
-| Aktive Codebasis | dieses Repository, Branch `master` |
-| Öffentliche Version | bestehendes `https://isso.tv`; durch V3 noch nicht ersetzt |
+| Aktive Codebasis | dieses Repository; ausschließlich ISSO.TV V3 / Master Edition |
 | Lokale Vorschau | `http://127.0.0.1:5173/` |
-| V2 | archivierter Spender am Tag `v2-archive-2026-08-17` |
-| 353L.ai | getrenntes Projekt; hier nicht bearbeiten |
+| Öffentliche Version | bestehendes `https://isso.tv`; durch diesen Arbeitsstand nicht verändert |
+| Frühere Builds | nur Git-Historie bzw. lokales, ignoriertes Archiv; keine aktive Runtime |
+| 353L.ai | getrenntes KI-Chat-Projekt; hier nicht bearbeiten |
 | Echtgeld | nicht vorhanden |
-| Save-Ort | Browser-`localStorage`, Schlüssel `isso-tv-v3-run-v2` |
+| Save | Browser-`localStorage`, Schema 2 |
 
-## Tatsächlich implementiert
+## Was jetzt tatsächlich funktioniert
 
-### Einstieg und Präsentation
+### Film und derselbe spielbare Morgen
 
-- automatischer Prolog-Film beim Laden, inklusive Poster und deutschen Untertiteln,
-- Browser-Autoplay stumm; Ton kann bewusst aktiviert werden,
-- Film kann übersprungen oder später erneut geöffnet werden,
-- direkter Übergang vom Film in die bereits geladene 3D-Szene,
-- HUD mit Weltzeit, Ort, Wetter, Kapiteltext, Minimap, Interaktionshinweis und Nachhall.
-- verständliches ⚙-Optionsfenster mit persistentem Kameratempo sowie adaptivem, hohem und sparsamem Grafikmodus.
+- Die Seite beginnt automatisch mit dem Prologbild `public/media/prolog-faehrbude-v3.png`; es gibt keine vorgeschaltete Frage.
+- Das Bild erzählt die karge Fährbude: Matratze direkt auf dem Boden, alter Tisch, Laptop, kaltes Grau und nur ein kleiner warmer Lichtpunkt.
+- Danach liegt 353L in derselben 3D-Wohnung auf der Matratze. Augenlider und Ohren reagieren, er richtet sich sichtbar auf, steht auf und erst dann wird die Steuerung freigegeben.
+- Die Kamera übernimmt fließend; es gibt keinen Teleport zu einer bereits stehenden Figur.
+- Film kann übersprungen oder erneut geöffnet werden. Untertitel und Ton-Fallback blockieren die Szene nicht.
 
-### Echte 3D-Runtime
+### Fährbude und Strammburg
 
-- React Three Fiber / Three.js als Laufzeit,
-- zusammenhängendes GLB mit Wohnung, Flur, Vordach, Hafen, Bahnhof und Signalwerk,
-- texturiertes und geriggtes 353L-GLB statt Sprite,
-- WASD/Pfeiltasten, Sprint mit Shift, Orbit-Kamera, Zoom und Kamera-Nachführung,
-- getestete harte Bewegungszonen mit passierbarer geöffneter Wohnungstür, ohne vollständige Physik/Kollision,
-- zonenabhängige Kameraführung: offener Filmset-Blick im Zimmer, zur Korridormitte geführte Perspektive im schmalen Flur und ein hinter 353L bleibender Übergang ins Hafengelände,
-- GPU-Regen, Fog, Schatten, mehrere Lichtquellen und adaptive Auflösung,
-- Renderloop pausiert während Film und Dialogen,
-- 3D-Suspenseanzeige mit Prozent, Bausteinzähler und Fortschrittsleiste sowie ein Runtime-Error-Boundary mit verständlichem Wiederladen statt Weißbild.
+- Wohnung ohne Bettgestell, Teppich, Nachttisch, Lampe oder Schrank.
+- Matratze, gebrauchte Decke und Kissen liegen auf einfachem Boden; Wände und Boden tragen reproduzierbare Gebrauchsspuren.
+- Alter Tisch und Laptop bilden die kleine warme Hoffnungsecke. Das restliche Licht bleibt kühl, grau und arm, ohne den Raum unbewohnbar zu machen.
+- Die begehbare Welt enthält außerdem Flur, Türschwelle, Vordach, Pier, Kiosk, Wagen, Bahnhof, Signalwerk/HQ1, Wasser, Schiff und Hafenhintergrund.
+- Ein erster Hafenarbeiter-NPC reagiert auf den Wagenzustand. Das ist eine technische NPC-/Weggrundlage, noch keine lebendige Stadtpopulation.
 
-### Lokaler HD-/Voice-Vertical-Slice
+### 353L V5
 
-- Wohnung mit rund 10,3 × 9,6 m Grundfläche, glaubwürdig skaliertem 2,15-m-353L und einem technisch funktionierenden ersten HD-Pass. Dieser sichtbare Pass ist ausdrücklich **nicht art-direktionell abgenommen**: Bettgestell, Teppich, Nachttisch, Stauraum, helle Materialien und Licht erzeugen derzeit ein zu gepflegtes Standard-Apartment statt der kanonischen Fährbude,
-- Hausflur mit eigenem gekacheltem Terrazzo, Vertäfelung, vier Wohnungstüren, Rahmen, Briefkästen, Messingdetails, Lichtspalten und Leuchten,
-- verlustfreie Raum-, Flur- und Hafen-Texturmaster unter `assets/textures/` sowie visuell hochwertige JPEG-Laufzeitderivate im GLB,
-- ausgebautes Vordach mit Dachrippen, Trägern, Regenrinne, Ablauf, Pfostenbasen, Leuchten, Pflastervorplatz, Entwässerungsrinne und sicher lesbarem Weg,
-- erster Hafen-Art-Pass mit gekacheltem Regenasphalt, Werkstattfassade, Kioskdetails, Rollwagen/Transportkisten, Bahnhof-/Signalwerkfassaden, kontrollierten Industrieleuchten, Container-/Kran-Silhouetten, animiertem Wasser und weichen Nassreflexionen,
-- physische, aus der Blender-Quelle reproduzierbare 3D-Schilder `PIER 17` und `NACHTKIOSK`,
-- räumliche Hafenweite mit detailliertem Arbeitsschiff, beleuchteter Kabine, Reling, Mast, Rettungskasten sowie ferner Speicherstadt, Schornsteinen und sparsamen Fensterlichtern,
-- erster echter 3D-Hintergrund-NPC am Rollwagen: wiederverwendetes Tier-Rig mit eigener Materialinstanz, abweichendem Maßstab, Warnweste, Reflexring, Schutzhelm und zustandsabhängigem Kopfnicken,
-- 353L-Material mit höherer Anisotropie, ruhigerer Rauheit und neuem deformierendem `rig_jaw`,
-- elf lokale deutsche KI-Sprachzeilen für 353L, Lotte und Bahnhof,
-- stabile Dialog-IDs, MP3-Dateien, Wortzeitmarken, Untertiteloverlay, Stimme-an/aus und Autoplay-Fallback; ein 6,8-Sekunden-Failsafe verhindert dauerhaft festhängende Untertitel,
-- lokal prozedural erzeugtes Regen-/Tiefton-Ambientebett mit sanften zonenabhängigen Mischungen für Wohnung, Flur, Vordach und Hafen; der gemeinsame Ton-Schalter mutet Atmosphäre und Stimme,
-- gait-synchrone prozedurale Hufkontakte mit bodenabhängiger Frequenz/Ausklingzeit und höherer Sprintintensität,
-- unterscheidbare kurze Weltklangmuster für Wohnungstür, Donkey-Connection, Rollwagen, Bahnhof und Signalwerk,
-- Kiefer-, Kopf- und Ohrperformance reagieren in Echtzeit auf den Sprachpegel.
-- erster prozeduraler Gait-Pass mit beschleunigendem Walk/Run-Blend, Knie-/Hufgegenbewegung, Armgegenswing, Hüftgewicht, Oberkörperneigung, Kurvenlage, Körperhub und ruhiger Idle-Atmung,
-- kontrolliert anlaufender Hufsprint mit ungefähr doppelter Gehgeschwindigkeit, verstärkter Körpervorlage, leichter FOV-Dynamik und sichtbarer `⇧ HUFSPRINT`-Steuerhilfe,
-- statische Seriendetails wie Ziegel, Dielen, Gitter, Rippen, Papiere, Speicherbauten, Hafenleuchten, Bollards und Kranbauteile werden im reproduzierbaren Blender-Build nach Anwendung ihrer Bevels gebatcht; der aktuelle Weltstand enthält einschließlich 3D-Schildern, Schiff und ferner Speicherstadt 263 Objekte / 258 Meshes statt 317 / 312 vor dem zweiten Batchpass,
-- der Echtzeitschattenpass ist auf spielnahe Wohnung-/Flur-/Vordach-/Kiosk-/Fassadenobjekte begrenzt; ferne Hafenobjekte bleiben beleuchtet und im Nebel sichtbar.
+- Aktives Modell: `public/models/353l-hi3d-character-v5.glb`, 2,15 m, 120.000 Dreiecke, ein geskinntes Mesh und 2K-KTX2-Texturen.
+- Sichtbare Tieranatomie bleibt erhalten: feste Hinterhufe, fellbedeckte greiffähige Vorderhufe, Ohren und Schwanz.
+- 21-Gelenk-Rig plus Gesichtsbones, Kiefer und neun geprüfte Outfit-Slots.
+- Elf Clips: Idle, Walk, Run, Turn links/rechts, Stop, Aufstehen, Tür, Laptop, Tragen und Übergang in die natürliche Tierlaufhaltung.
+- Laufzeit blendet Clips, Beschleunigung, Hufsprint und kontrolliertes Auslaufen; ein prozeduraler Foot-Lock-Pass reduziert sichtbares Hufrutschen.
+- Ohren, Schwanz, Blick, Kiefer und Schnauzen-Viseme reagieren getrennt auf Bewegung und Sprache.
+- LOD1 und LOD2 werden entfernungsabhängig nachgeladen. Ein praktischer Outfit-Slot-Vertrag wird automatisiert geprüft; ein vollständiges Kleidungsgeschäft existiert noch nicht.
 
-### Aktueller spielbarer Morgen
+### Bewegung, Kollision und Kamera
 
-1. Film endet; 353L steht in der Wohnung auf.
-2. Donkey-Connection bietet drei Haltungen.
-3. Die Wohnungstür öffnet Flur und Außenweg.
-4. Ein Rollwagen am Pier bietet fünf gleichwertige Haltungen.
-5. Bahnhof/Gleis 4 kann betrachtet werden.
-6. Signalwerk/HQ1 kann betreten bzw. als Idee markiert werden.
-7. Ereignisse erscheinen im lokalen „Nachhall“.
+- WASD/Pfeile, Shift-Hufsprint, Mausblick, Mausrad, Interaktion und Emote.
+- Bewegung wird gegen benannte, tatsächlich exportierte Wand-, Möbel-, Tür- und Objektgeometrie aufgelöst; es gibt keine unsichtbare rechteckige Raumgrenze mehr.
+- Bodenhaftung nutzt exportierte begehbare Flächen und Raycasts. Die Tür steuert die Durchquerbarkeit der Schwelle.
+- Dieselben Navigationsdaten liefern die Grundlage für spätere NPC-Wege und Verkehr.
+- Die Kamera kann vollständig um 353L kreisen. Ein Raycast zieht sie bei Wänden, Decken oder Möbeln automatisch vor das Hindernis.
+- Zimmer, Flur/Vordach und Hafen besitzen eigene sinnvolle Kameraabstände und weiche Übergänge.
 
-### Zustand und Qualität
+### Runtime, Performance und Fehlerfälle
 
-- reducerbasierter Run-Zustand mit Weltminuten, Tür, Wagen, Besuchen und Ereignissen,
-- Save/Load/Reset über `localStorage` mit Schema-Version `2`,
-- doppelte Ereignisse werden für denselben Moment verhindert,
-- neunzehn Vitest-Fälle, darunter fünf Wagen-Haltungen, fünf Regressionen für Zimmer-/Tür-/Flurbewegung und drei Settings-/Persistenzfälle,
-- Produktions-Build erfolgreich,
-- npm-Audit zuletzt ohne bekannte Sicherheitslücke,
-- frühere interne Referenzmessung vor dem aktuellen Hafenpass dokumentiert; für den jetzigen Stand wurde mangels verfügbarem Chrome-Trace-Werkzeug bewusst keine neue FPS-/Core-Web-Vitals-Zahl behauptet.
+- React 19, Vite 8, React Three Fiber und Three.js.
+- Welt und Charakter verwenden `EXT_meshopt_compression`; Blender-Draco bleibt reproduzierbarer Pipeline-Zwischenschritt.
+- Alle eingebetteten Laufzeittexturen sind UASTC-KTX2 mit Mipmaps; lokale Basis-/Draco-Decoder benötigen kein CDN.
+- Charakter besitzt drei LOD-Stufen. Welt, Figur und 3D-Runtime werden lazy geladen; Three/React-Three sind in mehrere Produktionschunks geteilt.
+- Adaptive Grafik, Low-Memory-Erkennung, Online-/Offline-Hinweis, sichtbarer Ladefortschritt und verständlicher WebGL-/Assetfehler statt Weißbild.
+- Referenzmessung im lokalen In-App-Browser: 55,8 FPS, 17,93 ms durchschnittlich, 18,3 ms p95, 180 Samples, WebGL2. Das ist eine Runtime-Probe, kein vollständiger Core-Web-Vitals-/Gerätelaborbericht.
 
-## Ausdrücklich noch nicht implementiert
+### Spielkern des aktuellen Slices
 
-Die folgenden Systeme existierten teilweise als V2-Prototyp oder Konzept, sind aber **nicht** Teil der aktuellen V3-Runtime:
+- reducerbasierter Run mit Weltzeit, Tür, Wagen, Besuchen, Dialogen und Nachhall,
+- fünf gleichwertige Wagenhaltungen sowie Interaktionen an Donkey-Connection, Tür, Bahnhof und Signalwerk,
+- lokaler Save/Load/Reset, normalisierte Einstellungen und Duplikatschutz für Ereignisse,
+- Regen-/Raumambiente, Hufkontakte, Weltklänge, elf deutsche Vorschauzeilen und Untertitel.
 
-- Charaktererstellung, Presets, Alter, Wohnform oder freie Startwerte,
-- die Obere Gabe als spielbares Haltungssystem, Tierlauf oder weitere artspezifische Figuren/Fähigkeiten,
-- Erde-1-/höhere-Macht-Lore als sichtbare In-Game-Fragmente oder Dialoge,
-- Euro-/Vermögens-/Schutzkonto-/Schulden-/Insolvenz-System,
-- Hunger, Durst, Essensgutscheine, Bestellung, Schlaf und Routinen,
-- BTC/ETH/LTC/SOL/Z-Coin-Portfolio und echte/simulierte Marktwerte,
-- Spilo-Sprung mit 10/20/50/100 Euro,
-- individuelle NPC-Modelle, Messenger, NPC-Beziehungen, Fraktionen, Rang und Aufträge,
-- vollständige Stadtkarte, Verkehr und frei betretbare Stadt-Innenräume,
-- Behandlung, Krise, Haft und Rückkehrpfade als spielbare 3D-Kapitel,
-- mehrere Save-Slots, Export/Import und Save-Migrationen,
-- Controller-, Touch- und vollständige Mobile-Steuerung,
-- vollständige Audio-Landschaft mit Türen, konkreten Hafenquellen, Musik-State-System, aufgenommenen/produzierten Hufvarianten und professionellen Animation-Blends,
-- finale rechtlich geprüfte Masterstimmen, vollständige Vertonung, Offline-Phonem-/Visem-Timing und alle artspezifischen Mundformen,
-- echte Kollisions-/Physikschicht, Navigation Mesh, Treppen und Interaktionsanimationen,
-- finaler Environment-Art-Pass, LOD/Kompression und Asset-Streaming,
-- fertige Impressums-/Datenschutzseiten im aktuellen V3-Build,
-- Deployment-Workflow oder Freigabe zum Live-Austausch.
+## Verifikation am 20.08.2026
 
-## Aktuelle Dateilandkarte
+- `npm test -- --run`: **25/25 Tests in 7 Dateien bestanden**.
+- `npm run build`: erfolgreich; größtes JavaScript-Chunk 368,90 kB minifiziert.
+- `npm audit`: **0 bekannte Sicherheitslücken**, einschließlich Entwicklungswerkzeugen.
+- Charakter: 4.707.288 Byte; LOD1 4.276.136 Byte; LOD2 4.008.540 Byte.
+- Welt: 8.783.396 Byte.
+- Charakter und Welt: Meshopt + KTX2; Charakter enthält 1 Skin und 11 Animationen.
+- Frischer Browserlauf: automatischer Filmübergang abgeschlossen, Steuerung freigegeben, keine neue Fehler-/Warnschleife.
+- Erzwungener lokaler 3D-Fehler: verständlicher Vollbild-Fallback sichtbar.
+- PowerShell-Assetpipeline: Syntax geprüft.
+- Kein Push, kein Deploy, keine DNS-/Cloudflare-/Live-Änderung.
 
-| Bereich | Datei / Ordner | Aufgabe |
-| --- | --- | --- |
-| App-Orchestrierung | `src/App.jsx` | Film, Modals, Reducer, UI/3D-Verbindung |
-| 3D-Runtime | `src/components/RealtimeWorld.jsx` | Laden, Rendern, Bewegung, Kamera, Interaktionsnähe |
-| HUD | `src/components/GameInterface.jsx` | Status, Navigation, Prompt, Footer |
-| Film | `src/components/OpeningFilm.jsx` | Auto-Prolog und Übergang |
-| Weltkanon | `src/game/canon.js` | Orte, Texte, Interaktionen, Zeitformat |
-| Zustandslogik | `src/game/state.js` | Run-Zustand und Folgen |
-| Bewegungslogik | `src/game/movement.js` | getestete Raum-/Tür-/Flurgrenzen und Ortszuordnung |
-| Persistenz | `src/game/save.js` | localStorage lesen/schreiben/löschen |
-| Optionen | `src/game/settings.js` | normalisierte Kamera-/Grafikwerte separat speichern |
-| Tests | `src/**/*.test.js` | reducerbasierte Regeln, Dialogkonsistenz und Bewegungsregressionen |
-| Voice-Runtime | `src/audio/useVoicePlayer.js` | Web Audio, Pegel, Untertitel- und Autoplayzustand |
-| Dialogdaten | `src/content/dialogue/` | stabile deutsche Dialog-IDs und Sprachdateiverweise |
-| Sprachdateien | `public/audio/de/` | lokaler KI-Voice-Vertical-Slice plus Wortzeitmarken |
-| Runtime-Modelle | `public/models/` | ausgelieferte GLB-Dateien |
-| Blender-Quellen | `assets/source/` | editierbare Master-Assets |
-| HD-Texturen | `assets/textures/` | projektgebundene Oberflächenquellen |
-| Asset-Pipeline | `tools/blender/` | reproduzierbare Erstellung/Inspektion |
-| Voice-Pipeline | `tools/audio/` | reproduzierbare lokale Stimmerzeugung |
+## Was ausdrücklich noch nicht Teil der Runtime ist
 
-## Bekannte technische Schulden
+- freie Charaktererstellung, mehrere spielbare Spezies/Formen und ein vollständiger Kleidungseditor,
+- mehrere Save-Slots, Export/Import und sichere Langzeitmigrationen,
+- Euro-, Konto-, Schutzkonto-, Schulden-, Insolvenz- und Haushaltsbuchsystem,
+- Hunger, Durst, Energie, Essen, Gutscheine, Einkauf, Bestellung, Schlaf und Wochenrhythmus,
+- Gewohnheiten/Sucht-/Entzugssysteme,
+- echte Markt-/Kryptosimulation, Z-Coin, Spilo und belastbares Langzeitbalancing,
+- vollständige NPC-Tagespläne, Verkehr, Messenger, Gruppen, Beziehungen und Stadtgedächtnis,
+- spielbare Bar, Supermarkt, Park, Klinik, Haft, weitere Bezirke und EyTonLand,
+- Hauptstory-Akte, Konfliktbranches, Krise-/Behandlungs- und Haftkapitel,
+- finale Sprecher, endgültige Tonrechte, Aufnahme-/Mixqualität und vollständiges Lip-Sync pro Dialog,
+- Controller, Touch, umfassende Barrierefreiheit und die gesamte Geräte-Matrix,
+- Live-Backup, rechtliche Endprüfung, Hostingwechsel, Monitoring und Release.
 
-1. Interaktionskoordinaten stehen sowohl in `canon.js` als auch in `RealtimeWorld.jsx`; eine einzige Quelle fehlt.
-2. Bewegungsgrenzen sind hart codierte Zonen, keine echte Kollision oder Navigation.
-3. Das 3D-JavaScript-Chunk ist mit rund 979 kB minifiziert weiterhin groß; Modelle nutzen noch kein Draco/Meshopt und Texturen kein KTX2.
-4. Animationen verändern Bones direkt und besitzen noch keinen AnimationMixer/Blend-Tree.
-5. Die Minimap benutzt eigene feste Bounds; spätere Bezirke brauchen eine datengetriebene Kartenprojektion.
-6. Footer verlinkt Rechtstexte, die im aktuellen `public/` noch nicht vorhanden sind.
-7. `useGLTF.preload` startet erst beim Lazy-Import der 3D-Runtime; ein definierter Lade-/Fehlerzustand fehlt.
-8. Save-Schema akzeptiert nur exakt Version `2`; echte Migrationsketten fehlen.
-9. Die lokalen KI-Stimmen sind noch nicht zur öffentlichen Veröffentlichung lizenzgeprüft.
-10. Der erste Kieferpass ist amplitudenbasiert; echte Phonem-/Visem-Blends fehlen noch.
-11. Drei eingebettete JPEG-Laufzeittexturen halten das erweiterte, gebatchte Level-GLB bei rund 8,73 MB; die verlustfreien PNG-Master werden nicht eingebettet. KTX2/Streaming fehlen.
-12. Der zonenabhängige Kamerapass löst Hauptverdeckungen an Schwelle und Vordach, ersetzt aber noch keine geometrische Kamera-Kollision.
-13. Der neue 3D-Fehlerfallback schützt Runtime-/Assetfehler, besitzt aber noch keine differenzierte Offline-, WebGL-Kompatibilitäts- oder Low-Memory-Diagnose.
-14. Der Zimmerpass widerspricht den verbindlichen Bildreferenzen. Ziel ist eine etwas großzügigere, aber sichtbar abgewohnte Fährbude mit Matratze direkt auf dem Boden und nur einem alten Tisch samt Laptop; vier neue verlustfreie/Laufzeit-Texturen liegen als vorbereitete, noch nicht integrierte Materialquellen vor.
-15. Die Raumkamera besitzt noch keine geometrische Wandkollision und stoppt wegen ihrer Azimutgrenzen beim Umschauen. Freier Rundumblick und kollisionssichere Innenkamera sind offen.
-16. Film und Spiel teilen Motiv und Ort, aber noch keinen nahtlosen Bewegungsübergang: Nach dem Schlafbild erscheint 353L zu abrupt stehend. Die Übergabe muss Matratze, Aufrichten und Freigabe der Steuerung als eine 3D-Sequenz verbinden.
-
-## Nächster freigegebener Arbeitsbereich
-
-`ROADMAP.md` Phase 1: zuerst Fährbuden-Art-Direction, freie kollisionssichere Raumkamera und den nahtlosen Film-zu-Aufstehen-Übergang gemeinsam lösen. Wirtschaft, Vollstadt und Langzeitspiel werden erst danach integriert.
+Der nächste Produktblock ist nicht ein weiterer Grafik-Neustart, sondern M1-Abnahme und danach M2: Save-Schema, Charakterstart, Finanzprofil und ein kompletter räumlicher Tagesloop.

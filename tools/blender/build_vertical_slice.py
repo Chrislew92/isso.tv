@@ -271,44 +271,32 @@ def build_character(mats):
 def build_level(mats):
     world = empty('WORLD_ROOT')
 
-    # Apartment: a generous but believable first flat. The camera-facing wall stays open.
-    # The right-hand door remains at x=4.45 so the connected world and triggers stay stable.
-    box('room_floor', (-0.65, 0, -0.11), (10.3, 9.6, 0.22), mats['wood'], world, 0.03)
-    box('room_wall_back', (-0.65, 4.8, 2.0), (10.3, 0.22, 4.0), mats['plaster'], world, 0.04)
-    box('room_wall_left', (-5.8, 0, 2.0), (0.22, 9.6, 4.0), mats['plaster'], world, 0.04)
-    # The fourth wall is intentionally open: this is a playable cinematic set, and a solid
-    # camera-side wall would cut between 353L and the player while crossing the room.
+    # Faehrbude: spacious enough to play in, but visibly used and almost empty.
+    # All four walls are real geometry. Runtime camera collision, rather than an open film set,
+    # keeps the lens inside and moves it in front of occluders.
+    box('room_floor', (-0.65, 0, -0.11), (10.3, 9.6, 0.22), mats['worn_floor'], world, 0.03)
+    box('room_wall_back', (-0.65, 4.8, 2.0), (10.3, 0.22, 4.0), mats['worn_plaster'], world, 0.04)
+    box('room_wall_left', (-5.8, 0, 2.0), (0.22, 9.6, 4.0), mats['worn_plaster'], world, 0.04)
+    box('room_wall_front', (-0.65, -4.8, 2.0), (10.3, 0.22, 4.0), mats['worn_plaster'], world, 0.04)
     box('room_wall_door_a', (4.45, 2.82, 2.0), (0.2, 3.96, 4.0), mats['plaster'], world, 0.03)
     box('room_wall_door_b', (4.45, -2.82, 2.0), (0.2, 3.96, 4.0), mats['plaster'], world, 0.03)
 
-    # Narrow floorboards, skirting and a quiet rug replace the large blockout floor plane.
-    for index, x in enumerate((-5.40, -4.66, -3.92, -3.18, -2.44, -1.70, -0.96, -0.22, 0.52, 1.26, 2.00, 2.74, 3.48, 4.22)):
-        box(f'room_floorboard_{index}', (x, 0, 0.018), (0.70, 9.38, 0.036), mats['wood_alt' if index % 3 == 1 else 'wood'], world, 0.012)
-    box('room_skirting_back', (-0.65, 4.62, 0.13), (10.05, 0.13, 0.25), mats['paint'], world, 0.018)
-    box('room_skirting_left', (-5.63, 0, 0.13), (0.13, 9.25, 0.25), mats['paint'], world, 0.018)
-    box('room_rug', (-3.00, -1.35, 0.055), (4.15, 4.35, 0.07), mats['rug'], world, 0.035, rotation=(0, 0, math.radians(-2)))
+    box('room_skirting_back', (-0.65, 4.62, 0.11), (10.05, 0.13, 0.18), mats['worn_trim'], world, 0.018)
+    box('room_skirting_left', (-5.63, 0, 0.11), (0.13, 9.25, 0.18), mats['worn_trim'], world, 0.018)
+    # No bed, rug, nightstand, lamp or wardrobe: just the thin floor mattress from the story.
+    box('mattress_floor', (-3.10, -1.55, 0.20), (2.54, 3.28, 0.30), mats['mattress_worn'], world, 0.12)
+    box('blanket_worn', (-3.05, -1.17, 0.40), (2.34, 1.72, 0.12), mats['blanket'], world, 0.06, rotation=(0, 0, math.radians(3)))
+    box('pillow_flat', (-3.05, -2.62, 0.43), (1.28, 0.66, 0.18), mats['pillow'], world, 0.10)
 
-    box('bed_platform', (-3.10, -1.55, 0.18), (2.74, 3.48, 0.28), mats['bed_frame'], world, 0.08)
-    box('mattress', (-3.10, -1.55, 0.43), (2.54, 3.28, 0.34), mats['linen'], world, 0.14)
-    box('blanket', (-3.05, -1.37, 0.64), (2.36, 2.18, 0.14), mats['blanket'], world, 0.075, rotation=(0, 0, math.radians(2)))
-    box('blanket_fold', (-3.05, -0.45, 0.75), (2.36, 0.34, 0.12), mats['blanket_alt'], world, 0.055, rotation=(0, 0, math.radians(2)))
-    box('pillow', (-3.05, -2.63, 0.70), (1.42, 0.73, 0.23), mats['pillow'], world, 0.12)
-
-    # One small bedside piece, one lamp and a book: readable, but not cluttered.
-    box('bedside_body', (-1.02, -2.55, 0.39), (0.82, 0.72, 0.76), mats['bed_frame'], world, 0.07)
-    box('bedside_drawer', (-1.02, -2.92, 0.49), (0.66, 0.035, 0.25), mats['desk'], world, 0.018)
-    cylinder('bedside_lamp_stem', (-1.02, -2.55, 1.02), 0.035, 0.52, mats['metal'], world, 16)
-    cylinder('bedside_lamp_shade', (-1.02, -2.55, 1.34), 0.25, 0.34, mats['lamp_shade'], world, 28, radius_top=0.13)
-    box('bedside_book', (-0.79, -2.50, 0.83), (0.34, 0.46, 0.055), mats['orange'], world, 0.016, rotation=(0, 0, math.radians(-8)))
-
-    box('desk_top', (-3.15, 3.36, 1.04), (2.45, 1.05, 0.16), mats['desk'], world, 0.05)
+    # The only proper furniture: a scratched old table and a used laptop.
+    box('old_table_top', (-3.15, 3.36, 0.91), (2.45, 1.05, 0.13), mats['desk_worn'], world, 0.035)
     for x in (-4.13, -2.17):
         for y in (2.99, 3.73):
-            box(f'desk_leg_{x}_{y}', (x, y, 0.52), (0.12, 0.12, 1.04), mats['desk'], world, 0.025)
-    box('connection_base', (-3.15, 3.29, 1.18), (1.08, 0.72, 0.1), mats['device'], world, 0.04)
-    screen = box('connection_screen', (-3.15, 3.62, 1.55), (1.08, 0.08, 0.66), mats['screen'], world, 0.04, rotation=(math.radians(-8), 0, 0))
+            box(f'old_table_leg_{x}_{y}', (x, y, 0.45), (0.10, 0.10, 0.90), mats['desk_worn'], world, 0.018)
+    box('old_laptop_base', (-3.15, 3.29, 1.02), (1.08, 0.72, 0.08), mats['device'], world, 0.025)
+    screen = box('old_laptop_screen', (-3.15, 3.62, 1.38), (1.08, 0.07, 0.64), mats['screen'], world, 0.025, rotation=(math.radians(-8), 0, 0))
     screen['interaction'] = 'connection'
-    cylinder('hoof_button', (-2.41, 2.98, 1.2), 0.24, 0.12, mats['orange'], world, 28, rotation=(math.radians(90), 0, 0))
+    cylinder('laptop_hoof_key', (-2.41, 2.98, 1.04), 0.18, 0.07, mats['orange'], world, 28, rotation=(math.radians(90), 0, 0))
     box('rain_window', (0.65, 4.68, 2.25), (3.2, 0.06, 1.72), mats['window'], world, 0.03)
 
     # Proper window casing, sill and radiator make the apartment feel constructed.
@@ -322,15 +310,9 @@ def build_level(mats):
         box(f'radiator_fin_{index}', (x, 4.35, 0.66), (0.18, 0.18, 0.78), mats['radiator'], world, 0.045)
     box('radiator_pipe', (2.28, 4.35, 0.34), (0.10, 0.10, 0.62), mats['radiator'], world, 0.03)
 
-    # Minimal wall graphic and closed storage keep the room intentional and clean.
-    box('wall_print_frame', (-5.64, 1.25, 2.32), (0.08, 1.42, 1.08), mats['metal_dark'], world, 0.025)
-    box('wall_print_paper', (-5.58, 1.25, 2.32), (0.025, 1.24, 0.90), mats['paper'], world, 0.008)
-    box('wall_print_signal', (-5.555, 1.25, 2.32), (0.018, 0.16, 0.62), mats['orange'], world, 0.004, rotation=(math.radians(18), 0, 0))
-    box('storage_body', (3.45, 3.50, 0.92), (1.38, 1.02, 1.84), mats['storage'], world, 0.075)
-    box('storage_door_l', (3.10, 2.97, 0.94), (0.56, 0.035, 1.54), mats['storage_front'], world, 0.022)
-    box('storage_door_r', (3.80, 2.97, 0.94), (0.56, 0.035, 1.54), mats['storage_front'], world, 0.022)
-    cylinder('storage_handle_l', (3.32, 2.93, 0.96), 0.025, 0.18, mats['metal'], world, 12, rotation=(math.radians(90), 0, 0))
-    cylinder('storage_handle_r', (3.58, 2.93, 0.96), 0.025, 0.18, mats['metal'], world, 12, rotation=(math.radians(90), 0, 0))
+    # Cheap repairs and stains tell the history without filling the room with props.
+    box('wall_patch_a', (-5.555, 1.25, 2.15), (0.018, 1.10, 0.42), mats['patch'], world, 0.004, rotation=(0, 0, math.radians(-3)))
+    box('wall_patch_b', (2.35, 4.665, 0.82), (1.08, 0.018, 0.24), mats['patch_dark'], world, 0.004, rotation=(0, 0, math.radians(2)))
 
     door_pivot = empty('door_pivot', (4.42, -0.82, 0), world)
     door = box('apartment_door', (4.32, 0, 1.38), (0.18, 1.65, 2.76), mats['door'], door_pivot, 0.05)
@@ -629,6 +611,8 @@ def export_project(repo_root):
         export_cameras=False,
         export_lights=False,
         export_extras=True,
+        export_draco_mesh_compression_enable=True,
+        export_draco_mesh_compression_level=6,
     )
     print(f'BLEND={blend_path}')
     print(f'GLB={glb_path}')
@@ -638,6 +622,18 @@ def main():
     repo_root = Path(sys.argv[sys.argv.index('--') + 1]).resolve() if '--' in sys.argv else Path.cwd()
     clean_scene()
     oak = image_material('floor_oak_hd', repo_root / 'assets' / 'textures' / 'room-oak-hd-v1-runtime.jpg', 0.70)
+    worn_floor = image_material(
+        'room_floor_worn_hd_v2',
+        repo_root / 'assets' / 'textures' / 'room-floor-worn-hd-v2-runtime.jpg',
+        0.94,
+        (5.0, 5.0),
+    )
+    worn_plaster = image_material(
+        'room_plaster_worn_hd_v2',
+        repo_root / 'assets' / 'textures' / 'room-plaster-worn-hd-v2-runtime.jpg',
+        0.98,
+        (4.0, 2.0),
+    )
     terrazzo = image_material(
         'hall_terrazzo_hd',
         repo_root / 'assets' / 'textures' / 'hall-terrazzo-hd-v1-runtime.jpg',
@@ -671,15 +667,22 @@ def main():
         'screen': material('connection_screen', (0.025, 0.19, 0.21), 0.18, 0.25, (0.02, 0.18, 0.2)),
         'wood': oak,
         'wood_alt': oak,
+        'worn_floor': worn_floor,
+        'worn_plaster': worn_plaster,
         'desk': material('desk_wood', (0.19, 0.092, 0.038), 0.0, 0.58),
+        'desk_worn': material('desk_worn_scratched', (0.105, 0.055, 0.026), 0.0, 0.90),
         'bed_frame': material('bed_frame_oak', (0.075, 0.042, 0.025), 0.0, 0.76),
         'fabric': material('mattress_fabric', (0.028, 0.038, 0.052), 0.0, 0.96),
         'linen': material('clean_linen', (0.26, 0.285, 0.29), 0.0, 0.92),
+        'mattress_worn': material('mattress_worn_grey', (0.15, 0.16, 0.16), 0.0, 1.0),
         'blanket': material('blanket_navy', (0.015, 0.032, 0.055), 0.0, 1.0),
         'blanket_alt': material('blanket_fold_petrol', (0.018, 0.08, 0.09), 0.0, 0.96),
         'pillow': material('pillow_navy', (0.022, 0.035, 0.05), 0.0, 1.0),
         'rug': material('room_rug_warm', (0.16, 0.115, 0.075), 0.0, 0.98),
         'paint': material('trim_warm_white', (0.48, 0.46, 0.42), 0.0, 0.72),
+        'worn_trim': material('trim_chipped_grey', (0.24, 0.25, 0.24), 0.0, 0.96),
+        'patch': material('wall_patch_old', (0.12, 0.125, 0.12), 0.0, 1.0),
+        'patch_dark': material('wall_damp_mark', (0.065, 0.075, 0.073), 0.0, 1.0),
         'paper': material('print_warm_paper', (0.42, 0.40, 0.36), 0.0, 0.88),
         'radiator': material('radiator_painted_steel', (0.32, 0.34, 0.33), 0.18, 0.64),
         'storage': material('storage_dark_oak', (0.055, 0.037, 0.026), 0.0, 0.76),

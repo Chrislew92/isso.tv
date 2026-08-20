@@ -1,40 +1,29 @@
-import { useEffect, useRef, useState } from 'react'
+import { useCallback, useEffect, useState } from 'react'
 
-export default function OpeningFilm({ onFinish, onSoundEnabled }) {
-  const videoRef = useRef(null)
+export default function OpeningFilm({ onTransitionStart, onFinish, onSoundEnabled }) {
   const [muted, setMuted] = useState(true)
-  const [started, setStarted] = useState(false)
-
-  useEffect(() => {
-    const video = videoRef.current
-    if (!video) return
-    video.play().then(() => setStarted(true)).catch(() => setStarted(false))
-  }, [])
+  const [exiting, setExiting] = useState(false)
 
   function enableSound() {
-    const video = videoRef.current
-    if (!video) return
-    video.muted = false
     setMuted(false)
     onSoundEnabled?.()
-    video.play().then(() => setStarted(true)).catch(() => {})
   }
 
+  const beginExit = useCallback(() => {
+    if (exiting) return
+    setExiting(true)
+    onTransitionStart?.({ canPlayAudio: !muted })
+    window.setTimeout(() => onFinish?.(), 1050)
+  }, [exiting, muted, onFinish, onTransitionStart])
+
+  useEffect(() => {
+    const timer = window.setTimeout(beginExit, 7200)
+    return () => window.clearTimeout(timer)
+  }, [beginExit])
+
   return (
-    <section className="opening-film" aria-label="ISSO.TV Prolog">
-      <video
-        ref={videoRef}
-        autoPlay
-        muted={muted}
-        playsInline
-        poster="/media/prolog-matratze.png"
-        preload="auto"
-        onPlay={() => setStarted(true)}
-        onEnded={() => onFinish({ canPlayAudio: !muted })}
-      >
-        <source src="/media/prolog-matratzenmorgen.mp4" type="video/mp4" />
-        <track src="/media/prolog-de.srt" kind="subtitles" srcLang="de" label="Deutsch" default />
-      </video>
+    <section className={`opening-film${exiting ? ' opening-film--exiting' : ''}`} aria-label="ISSO.TV Prolog">
+      <img src="/media/prolog-faehrbude-v3.png" alt="353L schläft in der kargen Fährbude auf einer Matratze am Boden" />
       <div className="opening-film__grade" />
       <header>
         <span className="logo-mark">ISSO<span>.TV</span></span>
@@ -47,8 +36,7 @@ export default function OpeningFilm({ onFinish, onSoundEnabled }) {
       </div>
       <div className="opening-film__actions">
         {muted && <button onClick={enableSound}>◖ TON EINSCHALTEN</button>}
-        {!started && <button onClick={() => videoRef.current?.play()}>▶ FILM STARTEN</button>}
-        <button onClick={() => onFinish({ canPlayAudio: true })}>FILM ÜBERSPRINGEN →</button>
+        <button onClick={beginExit}>FILM ÜBERSPRINGEN →</button>
       </div>
     </section>
   )

@@ -32,8 +32,10 @@ button:focus-visible, a:focus-visible, canvas:focus-visible { outline: 2px solid
 .eyebrow { margin: 0 0 9px; color: var(--amber); font-size: .66rem; font-weight: 900; letter-spacing: .19em; text-transform: uppercase; }
 
 /* Film-first opening */
-.opening-film { position: fixed; inset: 0; z-index: 50; overflow: hidden; background: #020608; }
-.opening-film video { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+.opening-film { position: fixed; inset: 0; z-index: 50; overflow: hidden; background: #020608; opacity: 1; transition: opacity 1.05s cubic-bezier(.2,.7,.2,1); }
+.opening-film--exiting { opacity: 0; pointer-events: none; }
+.opening-film > img { position: absolute; inset: -2%; width: 104%; height: 104%; object-fit: cover; animation: opening-camera 8.3s cubic-bezier(.2,.65,.25,1) both; }
+@keyframes opening-camera { from { transform: scale(1.035) translate3d(1.2%, .4%, 0); } to { transform: scale(1.085) translate3d(-1.5%, -.6%, 0); } }
 .opening-film__grade { position: absolute; inset: 0; pointer-events: none; background: linear-gradient(90deg, rgba(1,5,7,.76), rgba(1,5,7,.06) 58%, rgba(1,5,7,.3)), linear-gradient(0deg, rgba(1,5,7,.78), transparent 48%); }
 .opening-film > header { position: absolute; top: 34px; left: clamp(24px, 4vw, 62px); display: flex; align-items: flex-end; gap: 17px; }
 .opening-film > header .logo-mark { font-size: 2.2rem; }
@@ -56,6 +58,8 @@ button:focus-visible, a:focus-visible, canvas:focus-visible { outline: 2px solid
 .three-loader > i b { display: block; height: 100%; background: linear-gradient(90deg, var(--orange), var(--amber)); transition: width .18s ease-out; }
 .three-loader em { color: #7f8887; font-size: .48rem; font-style: normal; font-weight: 800; letter-spacing: .13em; }
 .webgl-warning { position: absolute; z-index: 20; left: 50%; bottom: 84px; transform: translateX(-50%); padding: 12px 16px; border: 1px solid var(--orange); background: rgba(3,10,13,.94); font-size: .72rem; }
+.runtime-notice { position: absolute; z-index: 19; left: 18px; bottom: 54px; padding: 8px 11px; border: 1px solid rgba(124,217,226,.42); color: #bfeff3; background: rgba(3,10,13,.9); font-size: .56rem; font-weight: 850; letter-spacing: .08em; }
+.runtime-notice--memory { bottom: 86px; border-color: rgba(255,179,71,.42); color: var(--amber); }
 .world-error { position: absolute; inset: 0; z-index: 45; display: grid; place-items: center; padding: 24px; background: radial-gradient(circle at 50% 40%, #11232a, #03080b 70%); }
 .world-error > div { width: min(520px, 100%); padding: 30px; border: 1px solid rgba(255,90,40,.52); background: rgba(3,10,13,.92); box-shadow: 0 30px 90px rgba(0,0,0,.5); }
 .world-error > div > span { display: inline-grid; place-items: center; width: 38px; height: 38px; margin-bottom: 20px; border: 1px solid var(--orange); color: var(--orange); font-weight: 1000; }
@@ -150,7 +154,7 @@ button:focus-visible, a:focus-visible, canvas:focus-visible { outline: 2px solid
 .modal-intro, .modal-note, .empty-memory { margin: 0; padding: 22px 28px; color: #bdc0bd; font-size: .88rem; line-height: 1.6; }
 .modal-note { padding-top: 14px; color: #858b89; font-size: .72rem; }
 .film-frame { padding: 22px 22px 0; }
-.film-frame video { display: block; width: 100%; max-height: 60vh; background: #000; object-fit: contain; }
+.film-frame img { display: block; width: 100%; max-height: 60vh; background: #000; object-fit: contain; }
 .dialog-line { display: grid; grid-template-columns: 44px 1fr; gap: 15px; align-items: center; margin: 22px 28px 6px; padding: 17px; border-left: 2px solid var(--blue); background: rgba(119,213,214,.07); }
 .dialog-avatar { display: grid; place-items: center; width: 40px; height: 40px; border: 1px solid var(--blue); border-radius: 50%; color: var(--blue); font-weight: 1000; }
 .dialog-line p { margin: 0; color: #e1e1db; line-height: 1.45; }
@@ -183,7 +187,7 @@ button:focus-visible, a:focus-visible, canvas:focus-visible { outline: 2px solid
 }
 
 @media (max-width: 620px) {
-  .opening-film video { object-position: 58% center; }
+  .opening-film > img { object-position: 58% center; }
   .opening-film > header { top: 22px; left: 18px; }
   .opening-film > header small { display: none; }
   .opening-film__title { left: 18px; bottom: 122px; }
