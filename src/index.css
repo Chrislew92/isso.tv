@@ -272,6 +272,8 @@ button:focus-visible, a:focus-visible, canvas:focus-visible { outline: 2px solid
 
 @media (hover: none) and (pointer: coarse), (max-width: 620px) {
   .control-strip { display: none; }
+  .interaction-prompt { bottom: 282px; }
+  .voice-caption { bottom: 344px; }
   .touch-controls { position: absolute; z-index: 14; left: max(14px, env(safe-area-inset-left)); right: max(14px, env(safe-area-inset-right)); bottom: max(60px, calc(env(safe-area-inset-bottom) + 48px)); display: flex; justify-content: space-between; align-items: end; pointer-events: none; }
   .touch-controls button { pointer-events: auto; touch-action: none; user-select: none; border: 1px solid rgba(255,255,255,.32); color: #f3eee6; background: rgba(3,10,13,.72); backdrop-filter: blur(8px); }
   .touch-pad { display: grid; grid-template-columns: repeat(3, 48px); grid-template-rows: repeat(2, 48px); gap: 4px; }

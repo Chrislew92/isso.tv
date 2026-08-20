@@ -11,19 +11,23 @@ const SILENT_VOICE = {
   viseme: 'REST',
 }
 
-const AMBIENCE_MIX = {
+export const AMBIENCE_MIX = Object.freeze({
   room: { rain: 0.008, hum: 0.014 },
   hallway: { rain: 0.014, hum: 0.018 },
   awning: { rain: 0.050, hum: 0.008 },
   harbor: { rain: 0.072, hum: 0.006 },
-}
+  station: { rain: 0.036, hum: 0.024 },
+  signalwerk: { rain: 0.022, hum: 0.032 },
+})
 
-const FOOTSTEP_TONE = {
+export const FOOTSTEP_TONE = Object.freeze({
   room: { frequency: 72, duration: 0.12 },
   hallway: { frequency: 118, duration: 0.10 },
   awning: { frequency: 96, duration: 0.11 },
   harbor: { frequency: 82, duration: 0.13 },
-}
+  station: { frequency: 104, duration: 0.11 },
+  signalwerk: { frequency: 92, duration: 0.12 },
+})
 
 export default function useVoicePlayer(mix = { master: 0.85, voice: 1, ambience: 0.72, effects: 0.82 }) {
   const [caption, setCaption] = useState(null)

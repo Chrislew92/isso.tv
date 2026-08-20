@@ -71,7 +71,7 @@ Die Orbit-Kamera besitzt keinen künstlichen Azimutstopp und erlaubt 360° Rundu
 
 ## Kanonische Daten
 
-`src/game/canon.js` soll langfristig die einzige Quelle für Orte, Interaktionspunkte, Radius, Labels und Kartenpositionen sein. Aktuell dupliziert `RealtimeWorld.jsx` einige 3D-Punkte in `targets`; Arbeitspaket `P1-03` entfernt diese Doppelung.
+`src/game/canon.js` ist die einzige Quelle für Weltstart, Orte, Interaktionspunkte, Radien, Labels und Kartenpositionen. `RealtimeWorld.jsx` leitet Ziele, Vorschau-Starts, Lichter und Idle-Fokuspunkte daraus ab; lokale Zahlen sind nur noch ausdrücklich szenische Kamera- oder Spawn-Offsets.
 
 Neue Storytexte gehören nach Funktion:
 
@@ -131,7 +131,7 @@ Der Hufsprint kombiniert den authored Run-/Tierlauf-Übergang mit der prozedural
 
 `WorldErrorBoundary` umschließt die gesamte Canvas-Runtime. Fehler beim Laden oder Rendern führen zu einem eigenen Vollbildzustand mit Reload-Aktion; der Save liegt außerhalb dieser Komponente und bleibt erhalten. `LoadingModel` verwendet `useProgress()` für Prozent und Bausteinzähler. `?force3dError=1` erzwingt den Fallback ausschließlich im Vite-Entwicklungsmodus und dient der visuellen Regression, nicht dem Gameplay.
 
-`useVoicePlayer()` besitzt neben Sprachwiedergabe und Analyser jetzt ein einziges prozedurales Ambientebett im selben `AudioContext`: gelooptes gefiltertes Brown-Noise für Regen sowie einen sehr leisen 48-Hz-Raumton. `setAmbienceZone()` fährt Gain-Ziele weich für `room`, `hallway`, `awning` und `harbor`; der zentrale Ton-Schalter blendet den Master-Gain und stoppt weiterhin laufende Sprache. Die Quellen werden genau einmal gestartet und beim Unmount beendet.
+`useVoicePlayer()` besitzt neben Sprachwiedergabe und Analyser ein prozedurales Ambientebett im selben `AudioContext`: gelooptes gefiltertes Brown-Noise für Regen sowie einen sehr leisen 48-Hz-Raumton. `setAmbienceZone()` fährt Gain-Ziele weich für `room`, `hallway`, `awning`, `harbor`, `station` und `signalwerk`. Master, Sprache, Atmosphäre und Effekte sind getrennte Busse; der zentrale Ton-Schalter blendet den Master-Gain und stoppt weiterhin laufende Sprache. Die Quellen werden genau einmal gestartet und beim Unmount beendet.
 
 `RealtimeWorld` zählt Gait-Halbzyklen und meldet nur neue Kontakte über `onFootstep(zone, intensity)`. `playFootstep()` erzeugt daraus zwei kurze Hüllkurven (tiefer Hufkörper plus leiser Klick), verbindet sie mit demselben Ambientemaster und trennt die Nodes nach dem Ausklang. Ohne laufenden/entsperrten `AudioContext` oder bei `TON AUS` ist der Aufruf wirkungslos.
 

@@ -60,8 +60,11 @@ export default function App() {
   const [prompt, setPrompt] = useState(null)
   const [ready, setReady] = useState(false)
   const [position, setPosition] = useState(run.player ?? WORLD_START)
+  const [interactionPulse, setInteractionPulse] = useState(null)
   const [settings, setSettings] = useState(loadSettings)
   const inputState = useRef({ x: 0, y: 0, sprint: false })
+  const interactionSerial = useRef(0)
+  const interactionTimer = useRef(0)
   const positionTimer = useRef(0)
   const voice = useVoicePlayer(settings.audio)
 
@@ -99,7 +102,10 @@ export default function App() {
     voice.setAmbienceZone(position.location)
   }, [position.location, voice.setAmbienceZone])
 
-  useEffect(() => () => window.clearTimeout(positionTimer.current), [])
+  useEffect(() => () => {
+    window.clearTimeout(positionTimer.current)
+    window.clearTimeout(interactionTimer.current)
+  }, [])
 
   useEffect(() => {
     if (!cinematic) return undefined
@@ -120,6 +126,13 @@ export default function App() {
   }, [modal])
 
   const handleInteract = useCallback((action) => {
+    const worldAction = action.split(':')[0]
+    if (!action.endsWith(':silence') && ['connection', 'door', 'cart'].includes(worldAction)) {
+      interactionSerial.current += 1
+      setInteractionPulse({ id: worldAction, serial: interactionSerial.current })
+      window.clearTimeout(interactionTimer.current)
+      interactionTimer.current = window.setTimeout(() => setInteractionPulse(null), 1450)
+    }
     if (action === 'film') {
       setModal(null)
       setCinematic((value) => !value)
@@ -217,6 +230,7 @@ export default function App() {
           reducedMotion={settings.reducedMotion}
           initialPosition={run.player}
           inputState={inputState}
+          interactionPulse={interactionPulse}
           onWakeComplete={finishWake}
           onInteract={handleInteract}
           onPrompt={setPrompt}

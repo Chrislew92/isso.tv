@@ -2,18 +2,18 @@
 
 ## Lokales Gate für jedes Arbeitspaket
 
-- [ ] frischer Start zeigt den Film ohne vorgeschaltete Frage,
-- [ ] Filmende/Überspringen führt in eine bedienbare 3D-Szene,
-- [ ] WASD, Maus, Zoom, E, Q, Leertaste, R und Escape funktionieren entsprechend dem HUD,
-- [ ] Interaktion erzeugt genau eine nachvollziehbare Folge,
-- [ ] Reload lädt den Run ohne Crash,
-- [ ] Reset fragt nach und betrifft nur den lokalen V3-Save,
-- [ ] Browserkonsole enthält keine neuen Fehler/Warnschleifen,
-- [ ] Sprache, Untertitel, Skip und fehlendes-Audio-Fallback lösen keine Szene doppelt aus,
-- [ ] `npm run test` erfolgreich,
-- [ ] `npm run build` erfolgreich,
-- [ ] `npm audit` ohne ungeklärte relevante Lücke,
-- [ ] `git diff --check` sauber.
+- [x] frischer Start zeigt den Film ohne vorgeschaltete Frage,
+- [x] Filmende/Überspringen führt in eine bedienbare 3D-Szene,
+- [x] WASD, Maus, Zoom, E, Q, Leertaste, R und Escape funktionieren entsprechend dem HUD,
+- [x] Interaktion erzeugt genau eine nachvollziehbare Folge,
+- [x] Reload lädt den Run ohne Crash,
+- [x] Reset fragt nach und betrifft nur den lokalen V3-Save,
+- [x] Browserkonsole enthält keine neuen Fehler/Warnschleifen,
+- [x] Sprache, Untertitel, Skip und fehlendes-Audio-Fallback lösen keine Szene doppelt aus,
+- [x] `npm run test` erfolgreich,
+- [x] `npm run build` erfolgreich,
+- [x] `npm audit` ohne ungeklärte relevante Lücke,
+- [x] `git diff --check` sauber.
 
 ## Nachweis des V5-Kernabschlusses vom 20.08.2026
 
@@ -25,14 +25,14 @@
 - [x] V5/LOD1/LOD2 mit Skin, elf Clips, Meshopt und KTX2 automatisiert geprüft,
 - [x] verständlicher erzwungener 3D-Fehlerfall statt Weißbild,
 - [x] frischer normaler Browserlauf ohne neue Fehler-/Warnschleife,
-- [x] `npm test -- --run`: 36/36 in 11 Dateien,
+- [x] `npm test -- --run`: 38/38 in 12 Dateien,
 - [x] `npm run build`: erfolgreich,
 - [x] `npm audit`: 0 bekannte Sicherheitslücken,
-- [x] Referenzprobe: 55,8 FPS / 17,93 ms Mittel / 18,3 ms p95,
+- [x] stabilisierte Referenzprobe: 59,9 FPS / 16,69 ms Mittel / 17,0 ms p95,
 - [x] kompletter Morgen mit Verbindung, Tür, Hafenwagen, Bahnhof und HQ1 auf isoliertem Localhost-Teststand; Reload behielt sechs Nachhall-Ereignisse und HQ1-Position,
 - [x] Mobile 390×844, Touch-HUD, Optionsdialog, Untertitelgröße, Kontrast und ruhige Kamera im Browser geprüft,
 - [ ] physischer Controller sowie Laptop-/Tablet-Gerätematrix,
-- [ ] Reset-Löschung als vollständige Sitzung; Bestätigungsdialog und Reducer sind geprüft, lokale Nutzerdaten wurden im Browser nicht ungefragt gelöscht,
+- [x] Reset-Löschung als vollständige isolierte Sitzung: Bestätigung brachte Film und leeren Run zurück; der zweite bestätigte Reset entfernte sechs Ereignisse und HQ1-Position,
 - [ ] Nutzerabnahme des lokalen M1-Vertical-Slice.
 
 Details und Grenzen der Messung: `docs/PERFORMANCE.md`.

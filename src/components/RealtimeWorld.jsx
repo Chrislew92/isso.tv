@@ -22,7 +22,7 @@ import {
   SRGBColorSpace,
   Vector3,
 } from 'three'
-import { INTERACTIONS } from '../game/canon.js'
+import { INTERACTIONS, PLACES, WORLD_START } from '../game/canon.js'
 import { readGamepad } from '../game/gamepad.js'
 import { collectNavigationGeometry, groundMovement, placeFor, resolveMovement } from '../game/movement.js'
 
@@ -35,6 +35,17 @@ const targets = Object.fromEntries(Object.values(INTERACTIONS).map((target) => [
   target.id,
   { ...target, point: new Vector3(target.x, 0, target.z) },
 ]))
+
+const PREVIEW_SPAWN = Object.freeze({
+  connection: { x: INTERACTIONS.connection.x, z: INTERACTIONS.connection.z },
+  threshold: { x: INTERACTIONS.door.x - 0.67, z: INTERACTIONS.door.z },
+  hall: { x: PLACES.hallway.x, z: PLACES.hallway.z },
+  awning: { x: PLACES.awning.x, z: PLACES.awning.z },
+  harbor: { x: INTERACTIONS.cart.x - 1.9, z: INTERACTIONS.cart.z },
+  kiosk: { x: PLACES.harbor.x + 4, z: PLACES.harbor.z },
+  station: { x: INTERACTIONS.station.x - 1, z: INTERACTIONS.station.z },
+  signalwerk: { x: INTERACTIONS.signalwerk.x - 1, z: INTERACTIONS.signalwerk.z },
+})
 
 function closestInteraction(position, run) {
   let closest = null
@@ -279,9 +290,23 @@ function DockWorker({ source, lodSources = [], resolved }) {
   const model = useMemo(() => clone(selectedSource), [selectedSource])
   const group = useRef(null)
   const head = useMemo(() => model.getObjectByName('rig_head'), [model])
+  const armL = useMemo(() => model.getObjectByName('rig_arm_l'), [model])
+  const armR = useMemo(() => model.getObjectByName('rig_arm_r'), [model])
+  const forearmL = useMemo(() => model.getObjectByName('rig_forearm_l'), [model])
+  const forearmR = useMemo(() => model.getObjectByName('rig_forearm_r'), [model])
+  const earL = useMemo(() => model.getObjectByName('rig_ear_l'), [model])
+  const earR = useMemo(() => model.getObjectByName('rig_ear_r'), [model])
+  const tail = useMemo(() => model.getObjectByName('rig_tail'), [model])
   const rest = useMemo(() => ({
     head: head?.rotation.clone(),
-  }), [head])
+    armL: armL?.rotation.clone(),
+    armR: armR?.rotation.clone(),
+    forearmL: forearmL?.rotation.clone(),
+    forearmR: forearmR?.rotation.clone(),
+    earL: earL?.rotation.clone(),
+    earR: earR?.rotation.clone(),
+    tail: tail?.rotation.clone(),
+  }), [armL, armR, earL, earR, forearmL, forearmR, head, tail])
 
   useEffect(() => {
     const root = model.getObjectByName('CHARACTER_353L_ROOT') || model
@@ -319,6 +344,20 @@ function DockWorker({ source, lodSources = [], resolved }) {
       const nod = resolved ? Math.sin(state.clock.elapsedTime * 2.1) * 0.055 : Math.sin(state.clock.elapsedTime * 0.75) * 0.018
       head.rotation.x = MathUtils.lerp(head.rotation.x, rest.head.x + nod, 1 - Math.exp(-dt * 5))
     }
+    const effort = resolved ? 0 : 1
+    if (armL && rest.armL) {
+      armL.rotation.x = MathUtils.lerp(armL.rotation.x, rest.armL.x - effort * 0.62, 1 - Math.exp(-dt * 4.5))
+      armL.rotation.z = MathUtils.lerp(armL.rotation.z, rest.armL.z - effort * 0.10, 1 - Math.exp(-dt * 4.5))
+    }
+    if (armR && rest.armR) {
+      armR.rotation.x = MathUtils.lerp(armR.rotation.x, rest.armR.x - effort * 0.62, 1 - Math.exp(-dt * 4.5))
+      armR.rotation.z = MathUtils.lerp(armR.rotation.z, rest.armR.z + effort * 0.10, 1 - Math.exp(-dt * 4.5))
+    }
+    if (forearmL && rest.forearmL) forearmL.rotation.x = MathUtils.lerp(forearmL.rotation.x, rest.forearmL.x - effort * 0.38, 1 - Math.exp(-dt * 5))
+    if (forearmR && rest.forearmR) forearmR.rotation.x = MathUtils.lerp(forearmR.rotation.x, rest.forearmR.x - effort * 0.38, 1 - Math.exp(-dt * 5))
+    if (earL && rest.earL) earL.rotation.x = rest.earL.x + Math.sin(state.clock.elapsedTime * 1.6) * 0.025
+    if (earR && rest.earR) earR.rotation.x = rest.earR.x + Math.sin(state.clock.elapsedTime * 1.35 + 1.2) * 0.022
+    if (tail && rest.tail) tail.rotation.y = rest.tail.y + Math.sin(state.clock.elapsedTime * 1.15) * 0.08
   })
 
   return (
@@ -344,7 +383,7 @@ function DockWorker({ source, lodSources = [], resolved }) {
   )
 }
 
-function Level({ run, paused, wakeSequence, cinematicMode = false, reducedMotion = false, initialPosition, inputState, onWakeComplete, onInteract, onPrompt, onPosition, onReady, onFootstep, cameraSensitivity = 0.75, voiceState, ktx2Loader }) {
+function Level({ run, paused, wakeSequence, cinematicMode = false, reducedMotion = false, initialPosition, inputState, interactionPulse, onWakeComplete, onInteract, onPrompt, onPosition, onReady, onFootstep, cameraSensitivity = 0.75, voiceState, ktx2Loader }) {
   const { camera, gl } = useThree()
   const configureTextures = useCallback((loader) => {
     loader.setKTX2Loader(ktx2Loader)
@@ -386,6 +425,9 @@ function Level({ run, paused, wakeSequence, cinematicMode = false, reducedMotion
     locomotion: 'Idle',
     gamepadButtons: [],
     idleSeconds: 0,
+    cameraObstruction: null,
+    turnUntil: 0,
+    interactionUntil: 0,
   })
   const vectors = useRef({
     forward: new Vector3(),
@@ -446,6 +488,19 @@ function Level({ run, paused, wakeSequence, cinematicMode = false, reducedMotion
   }
 
   useEffect(() => {
+    if (!interactionPulse) return
+    const clip = {
+      connection: '353L_Laptop',
+      door: '353L_Door',
+      cart: '353L_Carry',
+    }[interactionPulse.id]
+    if (clip) {
+      motion.current.interactionUntil = performance.now() + 1250
+      playAuthoredClip(clip, false)
+    }
+  }, [interactionPulse?.serial])
+
+  useEffect(() => {
     const blockout = level.getObjectByName('CHARACTER_353L_ROOT')
     if (blockout) blockout.visible = false
     const modelRoot = characterModel.getObjectByName('CHARACTER_353L_ROOT') || characterModel
@@ -470,12 +525,9 @@ function Level({ run, paused, wakeSequence, cinematicMode = false, reducedMotion
     const previewStation = previewZone === 'station'
     const previewSignalwerk = previewZone === 'signalwerk'
     const startsFree = run.phase === 'free' || previewZone
-    const saved = initialPosition ?? { x: -1.1, z: 0.7 }
-    character.current.position.set(
-      previewConnection ? targets.connection.x : previewStation ? 34.5 : previewSignalwerk ? 26 : previewHallway ? 7.35 : previewThreshold ? 3.48 : previewAwning ? 13.8 : previewKiosk ? 23 : previewHarbor ? 17.1 : saved.x,
-      motion.current.baseY,
-      previewConnection ? targets.connection.z : previewStation ? targets.station.z : previewSignalwerk ? targets.signalwerk.z : previewHallway || previewAwning ? 0 : previewThreshold ? 0.8 : previewHarbor || previewKiosk ? 3.1 : saved.z,
-    )
+    const saved = initialPosition ?? WORLD_START
+    const previewSpawn = PREVIEW_SPAWN[previewZone] ?? saved
+    character.current.position.set(previewSpawn.x, motion.current.baseY, previewSpawn.z)
     if (!startsFree) {
       character.current.position.set(-3.1, 0.42, 1.55)
       character.current.rotation.set(0, 0, -1.46)
@@ -520,6 +572,20 @@ function Level({ run, paused, wakeSequence, cinematicMode = false, reducedMotion
           material.emissiveIntensity = 0.11
           material.needsUpdate = true
         }
+        if (material?.name === 'hall_terrazzo_hd') {
+          material.color.set('#9b968c')
+          material.emissive?.set('#242321')
+          material.emissiveIntensity = 0.18
+          material.roughness = 0.84
+          material.needsUpdate = true
+        }
+        if (material?.name === 'awning_paver') {
+          material.color.set('#4b5353')
+          material.emissive?.set('#101719')
+          material.emissiveIntensity = 0.08
+          material.roughness = 0.68
+          material.needsUpdate = true
+        }
       }
     })
     characterModel.traverse((object) => {
@@ -546,7 +612,7 @@ function Level({ run, paused, wakeSequence, cinematicMode = false, reducedMotion
 
     const root = character.current
     if (root) {
-      if (previewHallway) camera.position.set(root.position.x - 4.8, 2.35, root.position.z * 0.22)
+      if (previewHallway) camera.position.set(root.position.x - 2.4, 2.35, root.position.z + 0.78)
       if (previewAwning) camera.position.set(root.position.x - 4.8, 2.55, root.position.z)
       if (previewHarbor) camera.position.set(root.position.x + 3.3, 2.85, root.position.z - 7.8)
       if (previewKiosk) camera.position.set(root.position.x + 3.5, 3.2, root.position.z - 7.0)
@@ -589,9 +655,6 @@ function Level({ run, paused, wakeSequence, cinematicMode = false, reducedMotion
         event.preventDefault()
       }
       if ((key === 'e' || key === 'enter') && prompt.current && !paused) {
-        if (prompt.current.id === 'connection') playAuthoredClip('353L_Laptop', false)
-        if (prompt.current.id === 'door') playAuthoredClip('353L_Door', false)
-        if (prompt.current.id === 'cart') playAuthoredClip('353L_Carry', false)
         onInteract(prompt.current.id)
         event.preventDefault()
       }
@@ -628,6 +691,8 @@ function Level({ run, paused, wakeSequence, cinematicMode = false, reducedMotion
         camera: camera.position.toArray().map((value) => Number(value.toFixed(2))),
         target: controls.current?.target.toArray().map((value) => Number(value.toFixed(2))),
         zone: motion.current.zone,
+        cameraObstruction: motion.current.cameraObstruction,
+        animation: activeAnimation.current?.name ?? null,
       }
       window.__ISSO_DEBUG__ = debug
       const panel = document.querySelector('.realtime-world')
@@ -711,9 +776,24 @@ function Level({ run, paused, wakeSequence, cinematicMode = false, reducedMotion
     }
     const moving = !paused && direction.lengthSq() > 0.01
     const sprinting = moving && (activeKeys.has('shift') || touch.sprint || pad.sprint)
-    if (sprinting && !motion.current.wasSprinting) {
+    let desiredRotation = root.rotation.y
+    let turnDelta = 0
+    if (moving) {
+      direction.normalize()
+      desiredRotation = Math.atan2(direction.x, direction.z)
+      turnDelta = MathUtils.euclideanModulo(desiredRotation - root.rotation.y + Math.PI, Math.PI * 2) - Math.PI
+    }
+    const interactionActive = performance.now() < motion.current.interactionUntil
+    if (interactionActive) {
+      // Modal and controller interactions keep their authored body performance.
+    } else if (sprinting && !motion.current.wasSprinting) {
       playAuthoredClip('353L_AnimalRunTransition', false)
       motion.current.runTransitionUntil = state.clock.elapsedTime + 0.42
+    } else if (moving && !sprinting && Math.abs(turnDelta) > 0.68 && state.clock.elapsedTime >= motion.current.turnUntil) {
+      playAuthoredClip(turnDelta > 0 ? '353L_TurnLeft' : '353L_TurnRight', false)
+      motion.current.turnUntil = state.clock.elapsedTime + 0.28
+    } else if (state.clock.elapsedTime < motion.current.turnUntil) {
+      // Let the authored hoof plant finish before blending back to the walk.
     } else if (moving && (!motion.current.runTransitionUntil || state.clock.elapsedTime >= motion.current.runTransitionUntil)) {
       playAuthoredClip(sprinting ? '353L_Run' : '353L_Walk')
     } else if (motion.current.moving) {
@@ -724,7 +804,6 @@ function Level({ run, paused, wakeSequence, cinematicMode = false, reducedMotion
     }
 
     if (moving) {
-      direction.normalize()
       const desiredSpeed = sprinting ? 6.15 : 3.05
       motion.current.travelSpeed = MathUtils.lerp(
         motion.current.travelSpeed ?? 0,
@@ -734,8 +813,6 @@ function Level({ run, paused, wakeSequence, cinematicMode = false, reducedMotion
       next.copy(root.position).addScaledVector(direction, dt * motion.current.travelSpeed)
       root.position.copy(resolveMovement(root.position, next, navigation.current, run.doorOpen))
       groundMovement(root.position, navigation.current, groundRaycaster.current)
-      const desiredRotation = Math.atan2(direction.x, direction.z)
-      const turnDelta = MathUtils.euclideanModulo(desiredRotation - root.rotation.y + Math.PI, Math.PI * 2) - Math.PI
       root.rotation.y += turnDelta * (1 - Math.exp(-dt * 12))
       motion.current.turnLean = MathUtils.lerp(motion.current.turnLean, MathUtils.clamp(turnDelta * 0.46, -0.22, 0.22), 1 - Math.exp(-dt * 9))
     } else {
@@ -776,7 +853,8 @@ function Level({ run, paused, wakeSequence, cinematicMode = false, reducedMotion
     groundMovement(root.position, navigation.current, groundRaycaster.current)
     root.position.y += bodyBob
     if (camera.isPerspectiveCamera) {
-      camera.fov = MathUtils.lerp(camera.fov, 48 + (reducedMotion ? 0 : motion.current.sprint * 4.5), 1 - Math.exp(-dt * 5.5))
+      const zoneFov = motion.current.zone === 'hallway' ? 62 : motion.current.zone === 'room' ? 52 : 48
+      camera.fov = MathUtils.lerp(camera.fov, zoneFov + (reducedMotion ? 0 : motion.current.sprint * 4.5), 1 - Math.exp(-dt * 5.5))
       camera.updateProjectionMatrix()
     }
     const voice = voiceState?.current
@@ -837,8 +915,8 @@ function Level({ run, paused, wakeSequence, cinematicMode = false, reducedMotion
       if (zone === 'room') idleFocus.set(-3.15, 1.15, -3.36)
       else if (zone === 'hallway') idleFocus.set(9.2, 2.0, 1.32)
       else if (zone === 'awning') idleFocus.set(14.4, 2.85, -2.5)
-      else if (zone === 'station') idleFocus.set(35.5, 2.2, -4.5)
-      else if (zone === 'signalwerk') idleFocus.set(27.3, 2.3, -11)
+      else if (zone === 'station') idleFocus.set(PLACES.station.x, 2.2, PLACES.station.z)
+      else if (zone === 'signalwerk') idleFocus.set(PLACES.signalwerk.x + 0.3, 2.3, PLACES.signalwerk.z)
       else idleFocus.set(23, 2.15, -4.8)
       target.lerp(idleFocus, idleBlend * 0.62)
     }
@@ -849,10 +927,13 @@ function Level({ run, paused, wakeSequence, cinematicMode = false, reducedMotion
       controls.current.target.add(followDelta)
       camera.position.add(followDelta)
       if (zone === 'hallway') {
-        // Keep the lens near the corridor centre even when 353L walks along a wall.
-        // The target still follows him, so the shot stays responsive without letting
-        // the apartment doorway or the wainscot swallow the camera.
-        camera.position.z = MathUtils.lerp(camera.position.z, root.position.z * 0.22, 1 - Math.exp(-dt * 8))
+        // A shoulder angle keeps both 353L and the opposite row of doors visible.
+        // Looking straight down the corridor previously let the doorway/wainscot
+        // fill the whole frame after the collision ray shortened the camera.
+        const shoulderZ = root.position.z >= 0
+          ? Math.min(0.82, root.position.z + 0.78)
+          : Math.max(-0.82, root.position.z - 0.78)
+        camera.position.z = MathUtils.lerp(camera.position.z, shoulderZ, 1 - Math.exp(-dt * 8))
       }
       controls.current.update()
     }
@@ -875,7 +956,8 @@ function Level({ run, paused, wakeSequence, cinematicMode = false, reducedMotion
       cameraRaycaster.current.far = desiredCameraDistance
       const obstruction = cameraRaycaster.current
         .intersectObjects(level.children, true)
-        .find((hit) => !/(floor|character|rain|water|puddle)/i.test(hit.object.name))
+        .find((hit) => !/(floor|character|rain|water|puddle|hall_(door|frame|knob|light|mail|dado|baseboard|wainscot))/i.test(hit.object.name))
+      motion.current.cameraObstruction = obstruction ? `${obstruction.object.name}@${obstruction.distance.toFixed(2)}` : null
       if (obstruction && obstruction.distance < desiredCameraDistance - 0.12) {
         const safeDistance = Math.max(0.72, obstruction.distance - 0.22)
         cameraSafe.copy(target).addScaledVector(cameraRay, safeDistance)
@@ -885,7 +967,7 @@ function Level({ run, paused, wakeSequence, cinematicMode = false, reducedMotion
     }
 
     if (motion.current.cameraTransition > 0 && controls.current) {
-      if (zone === 'hallway') cameraGoal.set(root.position.x - 4.8, root.position.y + 2.35, root.position.z * 0.22)
+      if (zone === 'hallway') cameraGoal.set(root.position.x - 2.4, root.position.y + 2.35, root.position.z + (root.position.z >= 0 ? 0.78 : -0.78))
       else if (zone === 'harbor') {
         const cameraOutsideHall = camera.position.x > 11.65
         cameraGoal.set(
@@ -972,9 +1054,13 @@ function WorldLighting() {
       <pointLight color="#d7b38b" intensity={7} distance={5.5} decay={2} position={[10.35, 2.12, 1.30]} />
       <pointLight color="#d2a16d" intensity={5} distance={8} decay={2} position={[12, 2.75, 0]} />
       <pointLight color="#d9b083" intensity={7} distance={9} decay={2} position={[17.5, 3.8, 0]} />
+      <pointLight color="#b8cbd0" intensity={15} distance={8} decay={2} position={[INTERACTIONS.cart.x, 3.8, INTERACTIONS.cart.z]} />
       <pointLight color="#8fc6d4" intensity={12} distance={9} decay={2} position={[19.5, 3.6, 7]} />
       <pointLight color="#ff923c" intensity={30} distance={14} decay={2} position={[23, 3.0, 5]} />
-      <pointLight color="#5e9daf" intensity={17} distance={20} decay={2} position={[31, 5.5, 12]} />
+      <pointLight color="#9fc7d1" intensity={20} distance={13} decay={2} position={[PLACES.station.x, 4.6, PLACES.station.z]} />
+      <pointLight color="#ffc078" intensity={9} distance={7} decay={2} position={[PLACES.station.x - 0.4, 3.1, PLACES.station.z]} />
+      <pointLight color="#63b6cc" intensity={22} distance={14} decay={2} position={[PLACES.signalwerk.x + 0.2, 4.3, PLACES.signalwerk.z]} />
+      <pointLight color="#ffad62" intensity={8} distance={7} decay={2} position={[PLACES.signalwerk.x, 2.8, PLACES.signalwerk.z]} />
       <pointLight color="#ffc882" intensity={7} distance={13} decay={2} position={[16.5, 3.4, 17.5]} />
       <pointLight color="#5cb9da" intensity={14} distance={16} decay={2} position={[0, 2.5, -3.5]} />
     </>
@@ -1033,7 +1119,7 @@ function WorldScene(props) {
     <section className="realtime-world" aria-label="Echte frei begehbare 3D-Welt von Strammburg">
       <Canvas
         shadows={SHADOW_OPTIONS}
-        frameloop={props.paused && !props.voiceActive && !props.wakeSequence && !props.cinematicMode ? 'demand' : 'always'}
+        frameloop={props.paused && !props.voiceActive && !props.wakeSequence && !props.cinematicMode && !props.interactionPulse ? 'demand' : 'always'}
         dpr={effectiveQuality === 'high' ? [1, 1.6] : effectiveQuality === 'efficient' ? [0.72, 1] : [0.9, 1.35]}
         camera={{ fov: 48, near: 0.08, far: 110, position: [0, 2.45, 7.2] }}
         gl={{ antialias: true, powerPreference: 'high-performance', alpha: false }}

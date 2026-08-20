@@ -16,7 +16,7 @@ Dieses Dokument trennt strikt zwischen dem nachweisbar laufenden V3-Kern und dem
 | Frühere Builds | nur Git-Historie bzw. lokales, ignoriertes Archiv; keine aktive Runtime |
 | 353L.ai | getrenntes KI-Chat-Projekt; hier nicht bearbeiten |
 | Echtgeld | nicht vorhanden |
-| Save | Browser-`localStorage`, Schema 2 |
+| Save | Browser-`localStorage`, Schema 6 |
 
 ## Was jetzt tatsächlich funktioniert
 
@@ -62,24 +62,25 @@ Dieses Dokument trennt strikt zwischen dem nachweisbar laufenden V3-Kern und dem
 - Alle eingebetteten Laufzeittexturen sind UASTC-KTX2 mit Mipmaps; lokale Basis-/Draco-Decoder benötigen kein CDN.
 - Charakter besitzt drei LOD-Stufen. Welt, Figur und 3D-Runtime werden lazy geladen; Three/React-Three sind in mehrere Produktionschunks geteilt.
 - Adaptive Grafik, Low-Memory-Erkennung, Online-/Offline-Hinweis, sichtbarer Ladefortschritt und verständlicher WebGL-/Assetfehler statt Weißbild.
-- Referenzmessung im lokalen In-App-Browser: 55,8 FPS, 17,93 ms durchschnittlich, 18,3 ms p95, 180 Samples, WebGL2. Das ist eine Runtime-Probe, kein vollständiger Core-Web-Vitals-/Gerätelaborbericht.
+- Stabilisierte Referenzmessung im lokalen In-App-Browser: 59,9 FPS, 16,69 ms durchschnittlich, 17,0 ms p95, 180 Samples, WebGL2. Das ist eine Runtime-Probe, kein vollständiger Core-Web-Vitals-/Gerätelaborbericht.
 
 ### Spielkern des aktuellen Slices
 
 - reducerbasierter Run mit Weltzeit, Tür, Wagen, Besuchen, Dialogen und Nachhall,
 - fünf gleichwertige Wagenhaltungen sowie Interaktionen an Donkey-Connection, Tür, Bahnhof und Signalwerk,
 - lokaler Save/Load/Reset, normalisierte Einstellungen und Duplikatschutz für Ereignisse,
-- Regen-/Raumambiente, Hufkontakte, Weltklänge, elf deutsche Vorschauzeilen und Untertitel.
+- fester Neustart als armer Neuankömmling in Strammburg: **0 € Bargeld und 0 € Besitz**; Geld und Ziele werden ausschließlich erspielt,
+- vier Audiobusse, sechs Zonenmischungen, Hufkontakte, Weltklänge, elf deutsche Vorschauzeilen und Untertitel.
 
 ## Verifikation am 20.08.2026
 
-- `npm test -- --run`: **36/36 Tests in 11 Dateien bestanden**.
+- `npm test -- --run`: **38/38 Tests in 12 Dateien bestanden**.
 - `npm run build`: erfolgreich; größtes JavaScript-Chunk 368,90 kB minifiziert.
 - `npm audit`: **0 bekannte Sicherheitslücken**, einschließlich Entwicklungswerkzeugen.
 - Charakter: 4.707.288 Byte; LOD1 4.276.136 Byte; LOD2 4.008.540 Byte.
 - Welt: 8.783.396 Byte.
 - Charakter und Welt: Meshopt + KTX2; Charakter enthält 1 Skin und 11 Animationen.
-- Frischer Browserlauf: automatischer Filmübergang abgeschlossen, Steuerung freigegeben, keine neue Fehler-/Warnschleife.
+- Isolierter Browserlauf: Film, Verbindung, Tür, Hafenwagen, Bahnhof, Signalwerk/HQ1, Nachhall 6, Reload und bestätigter Reset vollständig geprüft; keine neue Fehler-/Warnschleife.
 - Erzwungener lokaler 3D-Fehler: verständlicher Vollbild-Fallback sichtbar.
 - PowerShell-Assetpipeline: Syntax geprüft.
 - Kein Push, kein Deploy, keine DNS-/Cloudflare-/Live-Änderung.
@@ -95,7 +96,7 @@ Dieses Dokument trennt strikt zwischen dem nachweisbar laufenden V3-Kern und dem
 - vollständige NPC-Tagespläne, Verkehr, Messenger, Gruppen, Beziehungen und Stadtgedächtnis,
 - spielbare Bar, Supermarkt, Park, Klinik, Haft, weitere Bezirke und EyTonLand,
 - Hauptstory-Akte, Konfliktbranches, Krise-/Behandlungs- und Haftkapitel,
-- finale Sprecher, endgültige Tonrechte, Aufnahme-/Mixqualität und vollständiges Lip-Sync pro Dialog,
+- finale Sprecher, endgültige Tonrechte und vollständiges Lip-Sync pro Dialog; der lokale technische Slice-Mix ist abgeschlossen,
 - physischer Controller-Test sowie die vollständige Laptop-/Tablet-/Gerätematrix; Touch-HUD, Gamepad-Abfrage, Fokusfalle, Untertitelgröße, Kontrast und ruhige Kamera sind bereits eingebaut,
 - Live-Backup, rechtliche Endprüfung, Hostingwechsel, Monitoring und Release.
 
