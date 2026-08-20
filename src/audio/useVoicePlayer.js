@@ -11,6 +11,12 @@ const SILENT_VOICE = {
   viseme: 'REST',
 }
 
+const PRESENTATION_MIX = Object.freeze({
+  clear: { master: 1, voice: 1, ambience: 1, effects: 1 },
+  cinematic: { master: 0.92, voice: 1, ambience: 0.42, effects: 0.34 },
+  wake: { master: 0.98, voice: 1, ambience: 0.76, effects: 0.52 },
+})
+
 export const AMBIENCE_MIX = Object.freeze({
   room: { rain: 0.008, hum: 0.014 },
   hallway: { rain: 0.014, hum: 0.018 },
@@ -46,18 +52,22 @@ export default function useVoicePlayer(mix = { master: 0.85, voice: 1, ambience:
   const ambience = useRef({ started: false, rain: null, hum: null, sources: [] })
   const output = useRef({ master: null, voice: null, ambience: null, effects: null })
   const mixRef = useRef(mix)
+  const presentationModeRef = useRef('clear')
 
-  const applyOutputMix = useCallback((audible = voiceState.current.enabled !== false) => {
+  const modeGain = useCallback((mode = presentationModeRef.current) => PRESENTATION_MIX[mode] ?? PRESENTATION_MIX.clear, [])
+
+  const applyOutputMix = useCallback((audible = voiceState.current.enabled !== false, mode = presentationModeRef.current) => {
     const graph = context.current
     const buses = output.current
     if (!graph || !buses.master) return
     const now = graph.currentTime
     const values = mixRef.current
+    const modeValues = modeGain(mode)
     buses.master.gain.setTargetAtTime(audible ? values.master : 0, now, 0.08)
-    buses.voice.gain.setTargetAtTime(values.voice, now, 0.08)
-    buses.ambience.gain.setTargetAtTime(values.ambience, now, 0.12)
-    buses.effects.gain.setTargetAtTime(values.effects, now, 0.08)
-  }, [])
+    buses.voice.gain.setTargetAtTime(values.voice * modeValues.voice, now, 0.08)
+    buses.ambience.gain.setTargetAtTime(values.ambience * modeValues.ambience, now, 0.12)
+    buses.effects.gain.setTargetAtTime(values.effects * modeValues.effects, now, 0.08)
+  }, [modeGain])
 
   const settleCurrent = useCallback((played) => {
     if (finishCurrent.current) {
@@ -94,8 +104,9 @@ export default function useVoicePlayer(mix = { master: 0.85, voice: 1, ambience:
     if (!graph || !bed.started) return
     const mix = AMBIENCE_MIX[zone] ?? AMBIENCE_MIX.harbor
     const now = graph.currentTime
-    bed.rain.gain.setTargetAtTime(mix.rain, now, 0.75)
-    bed.hum.gain.setTargetAtTime(mix.hum, now, 0.9)
+    const ambientScale = modeGain().ambience * (audible ? 1 : 0)
+    bed.rain.gain.setTargetAtTime(mix.rain * ambientScale, now, 0.75)
+    bed.hum.gain.setTargetAtTime(mix.hum * ambientScale, now, 0.9)
     applyOutputMix(audible)
   }, [applyOutputMix])
 
@@ -191,6 +202,12 @@ export default function useVoicePlayer(mix = { master: 0.85, voice: 1, ambience:
     ambienceZone.current = zone
     applyAmbienceMix(zone, voiceState.current.enabled !== false)
   }, [applyAmbienceMix])
+
+  const setPresentationMode = useCallback((mode = 'clear') => {
+    const safeMode = mode === 'cinematic' || mode === 'wake' ? mode : 'clear'
+    presentationModeRef.current = safeMode
+    applyOutputMix(voiceState.current.enabled !== false, safeMode)
+  }, [applyOutputMix])
 
   const playFootstep = useCallback((zone, intensity = 0.65) => {
     const graph = context.current
@@ -406,6 +423,7 @@ export default function useVoicePlayer(mix = { master: 0.85, voice: 1, ambience:
     playWorldCue,
     stop,
     setAmbienceZone,
+    setPresentationMode,
     toggle,
     unlock,
   }

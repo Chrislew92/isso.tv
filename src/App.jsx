@@ -28,6 +28,15 @@ const CINEMATIC_STYLE = {
   signalwerk_arrival: 'soft',
 }
 
+function cinematicStyleFromState(filmEvents) {
+  const seedSource = filmEvents.flatMap((event, index) => `${event.id}-${event.moment}-${index}`)
+  const seed = seedSource.join('').split('').reduce((total, char) => (total * 33 + char.charCodeAt(0)) % 9973, 7)
+  const base = CINEMATIC_STYLE[filmEvents.at(-1)?.moment] ?? 'open'
+  if (seed % 3 === 0 && base !== 'scope') return 'scope'
+  if (seed % 4 === 0) return 'soft'
+  return base
+}
+
 function ChoiceList({ choices, onChoose }) {
   return (
     <div className="choice-list">
@@ -72,7 +81,8 @@ export default function App() {
   const filmEvents = useMemo(() => run.events.filter((event) => event.isRunFilmEligible), [run.events])
   const wealth = totalWealth(run.economy)
   const buildGoal = nextBuildGoal(wealth)
-  const cinematicStyle = opening || waking ? 'scope' : CINEMATIC_STYLE[filmEvents.at(-1)?.moment] ?? 'open'
+  const cinematicStyle = opening || waking ? 'scope' : cinematicStyleFromState(filmEvents)
+  const cinematicMode = opening || waking || cinematic ? 'wake' : 'clear'
 
   const chooseConnection = useCallback(async (choice) => {
     dispatch({ type: 'CONNECTION_RESPONSE', choice: choice.id, aftermath: choice.aftermath })
@@ -101,6 +111,10 @@ export default function App() {
   useEffect(() => {
     voice.setAmbienceZone(position.location)
   }, [position.location, voice.setAmbienceZone])
+
+  useEffect(() => {
+    voice.setPresentationMode(cinematicMode)
+  }, [cinematicMode, voice.setPresentationMode])
 
   useEffect(() => () => {
     window.clearTimeout(positionTimer.current)
