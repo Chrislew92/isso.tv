@@ -8,11 +8,11 @@ Stand: 20.08.2026
 | --- | ---: |
 | Renderer | WebGL2 |
 | Samples | 180 Frames |
-| FPS | 59,9 |
-| durchschnittliche Framezeit | 16,69 ms |
-| p95 Framezeit | 17,0 ms |
+| FPS | 56,0 |
+| durchschnittliche Framezeit | 17,86 ms |
+| p95 Framezeit | 18,3 ms |
 
-Gemessen wurde lokal im In-App-Browser nach stabilisiertem Lauf im Hafen; die ersten Ladeframes wurden nicht gewertet. `PerformanceProbe` schreibt das Ergebnis ausschließlich als Diagnoseattribut an `.realtime-world`; es verändert keinen Spielzustand. Die Probe ist kein Ersatz für den noch offenen Chrome-Trace und Gerätelaborpass.
+Gemessen wurde lokal im In-App-Browser nach stabilisiertem Lauf im Hafen und nach dem finalen Surface-Art-Pass; die ersten Ladeframes wurden nicht gewertet. `PerformanceProbe` schreibt das Ergebnis ausschließlich als Diagnoseattribut an `.realtime-world`; es verändert keinen Spielzustand. Die Probe ist kein Ersatz für den noch offenen Chrome-Trace und Gerätelaborpass.
 
 ## Produktionsbuild
 

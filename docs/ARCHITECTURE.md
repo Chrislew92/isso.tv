@@ -69,6 +69,8 @@ Die x-Werte wählen nur Atmosphäre, Kameraabstand und Audiozone. Physische Bewe
 
 Die Orbit-Kamera besitzt keinen künstlichen Azimutstopp und erlaubt 360° Rundumblick. Zonenpresets wählen nur geeignete Abstände für Zimmer, Flur/Vordach und Hafen. Ein Raycast vom Ziel zur gewünschten Kameraposition zieht die Linse automatisch vor tatsächliche Weltgeometrie und verhindert das beobachtete Schneiden durch Hauptwände, Decke und Möbel. Für lokale Sichtprüfung existieren ausschließlich im Vite-Entwicklungsmodus `?preview=room`, `?preview=hall`, `?preview=threshold`, `?preview=awning`, `?preview=harbor` und `?preview=kiosk`; Produktionsstarts ignorieren diese Parameter.
 
+`SurfaceStoryDetails` ergänzt ausschließlich dünne, nicht kollidierende Oberflächenbeweise: abgenutzter Flurläufer, nasse Schwelle, markierte Ladefläche, Ablauf, Bahnhofskante und HQ1-Antritt. Die Details leiten ihre Positionen aus `PLACES` und `INTERACTIONS` ab und dürfen keine zweite Weltkoordinatenquelle bilden.
+
 ## Kanonische Daten
 
 `src/game/canon.js` ist die einzige Quelle für Weltstart, Orte, Interaktionspunkte, Radien, Labels und Kartenpositionen. `RealtimeWorld.jsx` leitet Ziele, Vorschau-Starts, Lichter und Idle-Fokuspunkte daraus ab; lokale Zahlen sind nur noch ausdrücklich szenische Kamera- oder Spawn-Offsets.
@@ -136,6 +138,8 @@ Der Hufsprint kombiniert den authored Run-/Tierlauf-Übergang mit der prozedural
 `RealtimeWorld` zählt Gait-Halbzyklen und meldet nur neue Kontakte über `onFootstep(zone, intensity)`. `playFootstep()` erzeugt daraus zwei kurze Hüllkurven (tiefer Hufkörper plus leiser Klick), verbindet sie mit demselben Ambientemaster und trennt die Nodes nach dem Ausklang. Ohne laufenden/entsperrten `AudioContext` oder bei `TON AUS` ist der Aufruf wirkungslos.
 
 `playWorldCue()` nutzt dieselbe sichere Einmal-Node-Strategie für semantische Interaktionen. Die Cue-Namen `door`, `connection`, `cart`, `station` und `signalwerk` sind die aktuelle Audio-API zwischen `App.jsx` und dem Soundgraph; unbekannte Namen bleiben lautlos. Ein Cue ändert keinen Spielzustand und darf eine Reducer-Action nie ersetzen.
+
+Im Entwicklungsmodus kann `?inputProbe=controller-forward`, `controller-right`, `touch-forward` oder `touch-right` dieselbe Bewegungs-, Kollisions- und Animationsschicht deterministisch speisen. Der aktive Pfad erscheint als `inputSource` im lokalen `data-debug`; Produktionsbuilds erhalten keinen wirksamen Probe-Eingang. Das ersetzt nicht den physischen Gerätepass, beweist aber die vollständige Softwareintegration reproduzierbar.
 
 `DockWorker` klont vorläufig dasselbe geriggte Quellmodell wie 353L, erzeugt jedoch eigene Materialinstanzen und einen eigenen Maßstab; dadurch darf seine kühlere Tönung den Spieler niemals mitverändern. Warnweste, Reflexring und Schutzhelm sind zusätzliche echte Three-Meshes. Nur das Kopfrig reagiert derzeit auf `run.cartResolved`; ein späteres individuelles NPC-Asset kann die Komponente ersetzen, ohne die Wagenlogik zu ändern.
 

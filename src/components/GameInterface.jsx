@@ -1,9 +1,10 @@
 import { BUILD, PLACES, formatWorldTime } from '../game/canon.js'
 import { formatEuro } from '../game/economy.js'
+import { updateTouchInput } from '../game/touch.js'
 import MiniMap from './MiniMap.jsx'
 
 function TouchControls({ inputState }) {
-  const set = (next) => Object.assign(inputState.current, next)
+  const set = (next) => updateTouchInput(inputState.current, next)
   const bind = (pressed, released) => ({
     onPointerDown: (event) => { event.preventDefault(); event.currentTarget.setPointerCapture?.(event.pointerId); set(pressed) },
     onPointerUp: () => set(released),

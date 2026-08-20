@@ -284,6 +284,78 @@ function WetPatches() {
   )
 }
 
+const HARBOR_MARKS = [-2.25, -1.35, -0.45, 0.45, 1.35, 2.25]
+const STATION_TILES = [-2.1, -1.4, -0.7, 0, 0.7, 1.4, 2.1]
+
+function SurfaceStoryDetails() {
+  return (
+    <group name="runtime_surface_story">
+      {/* Worn corridor runner: readable, cheap and old instead of renovated. */}
+      <mesh position={[PLACES.hallway.x + 0.25, 0.018, PLACES.hallway.z]} receiveShadow>
+        <boxGeometry args={[5.5, 0.022, 1.12]} />
+        <meshStandardMaterial color="#32464a" emissive="#0b1517" emissiveIntensity={0.2} roughness={0.96} />
+      </mesh>
+      {[[-1.7, -0.18], [0, 0.16], [1.7, -0.1]].map(([offset, z]) => (
+        <mesh key={`runner-wear-${offset}`} position={[PLACES.hallway.x + 0.25 + offset, 0.032, PLACES.hallway.z + z]} rotation={[0, offset * 0.025, 0]}>
+          <boxGeometry args={[0.42, 0.008, 0.035]} />
+          <meshStandardMaterial color="#1c2a2c" emissive="#071012" emissiveIntensity={0.1} roughness={1} />
+        </mesh>
+      ))}
+
+      {/* Wet, inexpensive threshold: rubber mat and irregular water marks. */}
+      <mesh position={[PLACES.awning.x - 1.7, 0.03, PLACES.awning.z]} receiveShadow>
+        <boxGeometry args={[1.32, 0.035, 1.08]} />
+        <meshStandardMaterial color="#172023" roughness={0.93} />
+      </mesh>
+      {[
+        [PLACES.awning.x + 0.7, 0.038, PLACES.awning.z + 0.72, 0.82, 0.38],
+        [PLACES.awning.x + 2.0, 0.038, PLACES.awning.z - 0.66, 0.58, 0.28],
+      ].map(([x, y, z, sx, sz], index) => (
+        <mesh key={`awning-wet-${index}`} position={[x, y, z]} rotation={[-Math.PI / 2, 0, index * 0.7]} scale={[sx, sz, 1]} renderOrder={2}>
+          <circleGeometry args={[1, 36]} />
+          <meshStandardMaterial color="#182b31" emissive="#10262d" emissiveIntensity={0.18} metalness={0.16} roughness={0.28} transparent opacity={0.66} depthWrite={false} />
+        </mesh>
+      ))}
+
+      {/* Loading bay ties cart, worker and wet asphalt into one foreground shot. */}
+      <mesh position={[INTERACTIONS.cart.x, 0.016, INTERACTIONS.cart.z]} receiveShadow>
+        <boxGeometry args={[6.2, 0.024, 4.5]} />
+        <meshStandardMaterial color="#26373c" emissive="#0c171b" emissiveIntensity={0.16} roughness={0.76} metalness={0.04} />
+      </mesh>
+      {HARBOR_MARKS.map((offset, index) => (
+        <mesh key={`harbor-mark-${offset}`} position={[INTERACTIONS.cart.x + offset, 0.04, INTERACTIONS.cart.z - 2.02]} rotation={[0, index % 2 ? 0.018 : -0.018, 0]}>
+          <boxGeometry args={[0.56, 0.018, 0.11]} />
+          <meshStandardMaterial color="#c86c32" emissive="#3a1809" emissiveIntensity={0.22} roughness={0.86} />
+        </mesh>
+      ))}
+      <group position={[INTERACTIONS.cart.x + 2.45, 0.045, INTERACTIONS.cart.z + 1.42]}>
+        {[-0.24, -0.08, 0.08, 0.24].map((z) => (
+          <mesh key={`drain-${z}`} position={[0, 0, z]}>
+            <boxGeometry args={[0.84, 0.028, 0.055]} />
+            <meshStandardMaterial color="#10171a" metalness={0.58} roughness={0.46} />
+          </mesh>
+        ))}
+      </group>
+
+      {/* Station and HQ1 use the same wet-industrial visual grammar. */}
+      {STATION_TILES.map((offset) => (
+        <mesh key={`station-tile-${offset}`} position={[PLACES.station.x + offset, 0.035, PLACES.station.z + 1.18]}>
+          <boxGeometry args={[0.46, 0.018, 0.24]} />
+          <meshStandardMaterial color="#b98a43" emissive="#2b1b09" emissiveIntensity={0.2} roughness={0.82} />
+        </mesh>
+      ))}
+      <mesh position={[PLACES.signalwerk.x, 0.035, PLACES.signalwerk.z + 1.15]}>
+        <boxGeometry args={[2.2, 0.024, 0.82]} />
+        <meshStandardMaterial color="#21383d" emissive="#0d2328" emissiveIntensity={0.22} roughness={0.78} />
+      </mesh>
+      <mesh position={[PLACES.signalwerk.x, 0.055, PLACES.signalwerk.z + 0.78]}>
+        <boxGeometry args={[1.64, 0.025, 0.07]} />
+        <meshStandardMaterial color="#c66d32" emissive="#3b1809" emissiveIntensity={0.25} roughness={0.82} />
+      </mesh>
+    </group>
+  )
+}
+
 function DockWorker({ source, lodSources = [], resolved }) {
   const [lodIndex, setLodIndex] = useState(0)
   const selectedSource = lodSources[lodIndex] ?? source
@@ -385,6 +457,7 @@ function DockWorker({ source, lodSources = [], resolved }) {
 
 function Level({ run, paused, wakeSequence, cinematicMode = false, reducedMotion = false, initialPosition, inputState, interactionPulse, onWakeComplete, onInteract, onPrompt, onPosition, onReady, onFootstep, cameraSensitivity = 0.75, voiceState, ktx2Loader }) {
   const { camera, gl } = useThree()
+  const inputProbe = import.meta.env.DEV ? new URLSearchParams(window.location.search).get('inputProbe') : null
   const configureTextures = useCallback((loader) => {
     loader.setKTX2Loader(ktx2Loader)
   }, [ktx2Loader])
@@ -573,17 +646,25 @@ function Level({ run, paused, wakeSequence, cinematicMode = false, reducedMotion
           material.needsUpdate = true
         }
         if (material?.name === 'hall_terrazzo_hd') {
-          material.color.set('#9b968c')
-          material.emissive?.set('#242321')
-          material.emissiveIntensity = 0.18
+          material.color.set('#aaa69c')
+          material.emissive?.set('#3d3c39')
+          material.emissiveIntensity = 0.28
           material.roughness = 0.84
           material.needsUpdate = true
         }
         if (material?.name === 'awning_paver') {
           material.color.set('#4b5353')
-          material.emissive?.set('#101719')
-          material.emissiveIntensity = 0.08
+          material.emissive?.set('#283235')
+          material.emissiveIntensity = 0.2
           material.roughness = 0.68
+          material.needsUpdate = true
+        }
+        if (material?.name === 'harbor_asphalt_hd') {
+          material.color.set('#a8afb0')
+          material.emissive?.set('#263337')
+          material.emissiveIntensity = 0.27
+          material.roughness = 0.64
+          material.metalness = 0.03
           material.needsUpdate = true
         }
       }
@@ -693,6 +774,7 @@ function Level({ run, paused, wakeSequence, cinematicMode = false, reducedMotion
         zone: motion.current.zone,
         cameraObstruction: motion.current.cameraObstruction,
         animation: activeAnimation.current?.name ?? null,
+        inputSource: motion.current.inputSource ?? 'idle',
       }
       window.__ISSO_DEBUG__ = debug
       const panel = document.querySelector('.realtime-world')
@@ -757,9 +839,28 @@ function Level({ run, paused, wakeSequence, cinematicMode = false, reducedMotion
     right.crossVectors(forward, UP).normalize()
     direction.set(0, 0, 0)
     const activeKeys = keys.current
-    const gamepad = navigator.getGamepads?.().find(Boolean)
+    const hardwareGamepad = navigator.getGamepads?.().find(Boolean)
+    const probeGamepad = inputProbe?.startsWith('controller-')
+      ? {
+          axes: inputProbe === 'controller-right' ? [0.82, 0] : [0, -0.86],
+          buttons: Array.from({ length: 4 }, () => ({ pressed: false })),
+        }
+      : null
+    const gamepad = hardwareGamepad ?? probeGamepad
     const pad = readGamepad(gamepad)
-    const touch = inputState?.current ?? { x: 0, y: 0, sprint: false }
+    const liveTouch = inputState?.current ?? { x: 0, y: 0, sprint: false }
+    const touch = inputProbe === 'touch-right'
+      ? { x: 0.82, y: 0, sprint: false }
+      : inputProbe === 'touch-forward'
+        ? { x: 0, y: 0.86, sprint: false }
+        : liveTouch
+    motion.current.inputSource = hardwareGamepad
+      ? 'controller'
+      : probeGamepad
+        ? 'controller-probe'
+        : Math.abs(touch.x) + Math.abs(touch.y) > 0 || touch.sprint
+          ? inputProbe?.startsWith('touch-') ? 'touch-probe' : 'touch'
+          : activeKeys.size > 0 ? 'keyboard' : 'idle'
     if (activeKeys.has('w') || activeKeys.has('arrowup')) direction.add(forward)
     if (activeKeys.has('s') || activeKeys.has('arrowdown')) direction.sub(forward)
     if (activeKeys.has('d') || activeKeys.has('arrowright')) direction.add(right)
@@ -1138,6 +1239,7 @@ function WorldScene(props) {
         <Rain />
         <HarborWater />
         <WetPatches />
+        <SurfaceStoryDetails />
         <PerformanceProbe />
         {ktx2Loader && (
           <Suspense fallback={<LoadingModel />}>

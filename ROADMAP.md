@@ -70,7 +70,7 @@ Status: **abgeschlossen und lokal gesichert**
 - [x] Lokaler Run-Zustand, Nachhall, Reload und Reset.
 - [x] Blender-Quellen und reproduzierbare Exportskripte.
 - [x] Fünfundzwanzig State-, Dialog-, Bewegungs-, Viseme-, Welt- und Charakterasset-Tests, erfolgreicher Build und Audit ohne bekannte Lücke.
-- [x] Aktuelle stabilisierte Runtime-Referenzprobe dokumentiert: 59,9 FPS, 16,69 ms Mittel, 17,0 ms p95; Chrome-Trace/Core Web Vitals bleiben ein Alpha-Gate.
+- [x] Aktuelle stabilisierte Runtime-Referenzprobe nach Surface-Art-Pass dokumentiert: 56,0 FPS, 17,86 ms Mittel, 18,3 ms p95; Chrome-Trace/Core Web Vitals bleiben ein Alpha-Gate.
 
 M0 ist ein technisches Fundament, kein fertiger Premium-Look.
 
@@ -105,21 +105,21 @@ Verifizierter Kernstand 20.08.2026:
 - [x] `P1-02`: Weltstart, Orte, Interaktionspunkte und Vorschau-Starts werden aus `canon.js` abgeleitet; eigene Zahlen bleiben nur als dokumentierte Kamera-/Spawn-Offsets bestehen.
 - [x] `P1-03`: Weltmeshes liefern Blocker und begehbare Flächen; Capsule-Slide, Türstatus, Bodenraycast und Nav-Grundlage ersetzen harte Rechteckgrenzen und sind regressionsgetestet.
 - [x] `P1-04`: die Fährbude zeigt Bodenmatratze, alten Tisch/Laptop, abgenutzte Wände/Boden, kühles Grau und eine kleine warme Hoffnungsecke; falsche Apartmentmöbel sind entfernt.
-- [x] `P1-05`: Flur, Türschwelle und Vordach sind räumlich lesbar, materialseitig gealtert, beleuchtet und mit korrigierter Kamerakollision sichtbar geprüft.
-- [x] `P1-06`: Hafen, Schiff, Bahnhof, Signalwerk, Kiosk und der reagierende Hafenarbeiter bilden den vollständigen Slice-Art-Pass. Individuelle Produktions-NPCs bleiben späterer Weltenausbau.
-- [x] `P1-07`: V5 besitzt verbessertes Weighting, 11 authored Clips, prozeduralen Foot-Lock, Hufsprint/Auslaufen, Ohren/Schwanz/Gesicht, Viseme-Bones und geprüfte Outfit-Slots. Cinematic-/Mocap-Polish bleibt späteres Qualitätsarbeitspaket.
+- [x] `P1-05`: Flur, Türschwelle und Vordach sind räumlich lesbar, materialseitig gealtert, beleuchtet und mit korrigierter Kamerakollision, abgenutztem Läufer, Matte und Nassstellen sichtbar geprüft.
+- [x] `P1-06`: Hafen, Schiff, Bahnhof, Signalwerk, Kiosk und der reagierende Hafenarbeiter bilden mit Ladefläche, Ablauf, Wegmarkierungen und Antrittslinien den vollständigen Slice-Art-Pass. Individuelle Produktions-NPCs bleiben späterer Weltenausbau.
+- [x] `P1-07`: V5 besitzt verbessertes Weighting, 11 authored Clips, prozeduralen Foot-Lock, Hufsprint/Auslaufen, Turn-/Stop- und Interaktionsblends für alle Eingabewege, Ohren/Schwanz/Gesicht, Viseme-Bones und geprüfte Outfit-Slots. Externes Vollkörper-Mocap bleibt optionaler späterer Qualitätsausbau, nicht Slice-Blocker.
 - [x] `P1-08`: 360°-Kamera ohne Azimutstopp, geometrische Kamerakollision/Verdeckungskorrektur und Zonenabstände sind im Browser geprüft.
 - [x] `P1-09`: Prolog und spielbare Szene bilden einen Ablauf; vier getrennte Audiobusse, sechs Zonenmischungen, eigene Hufklänge, Welt-Cues, Sprache und Untertitel sind lokal aufeinander abgestimmt. Finale Sprecher-/Musikrechte bleiben Release-Gate.
 - [x] `P1-10`: Verbindung, Tür, Hafenwagen, Bahnhof und Signalwerk/HQ1 wurden vom frischen Start bis Nachhall 6 ohne doppelte Folge durchgespielt.
 - [x] `P1-11`: Ladefortschritt, WebGL-/Assetfallback, Offline- und Low-Memory-Hinweis sind implementiert; der Fehlerbildschirm wurde sichtbar erzwungen.
 - [x] `P1-12`: 38 Tests, Build, Audit, Konsole, Mobile-Layout, Fokusfalle, kompletter Morgen, Reload und zweiter bestätigter Reset sind lokal bestanden. Physische Geräte und Nutzerfreigabe bleiben getrennte Release-Gates.
-- [x] `P1-13`: der authored Tierlauf-Übergang ist technisch vorhanden; seine endgültige visuelle Stilabnahme bleibt Teil des Animationspolish.
+- [x] `P1-13`: Tierlauf-Übergang, Hufsprint, Turn, Stop, Interaktion und additive Körperreaktionen sind im aktuellen Slice-Stil integriert; keine Menschenhände/-füße oder brechende Transformation sichtbar.
 - [x] `P1-14`: stabile Dialog-IDs, Untertitel, Audiofallback, Vorschauvoices, Kiefer und Schnauzen-Viseme plus Ohren/Blick/Atem sind vorhanden. Finale Sprecher-/Rechteentscheidung bleibt offen.
 
 ## M1-Gate
 
 - [x] gesamter Morgen ohne Blocker spielbar,
-- [ ] keine sichtbare Platzhalterfigur und keine flache Spielkulisse,
+- [x] keine sichtbare Platzhalterfigur und keine flache Spielkulisse im M1-Pfad,
 - [x] stabile Bewegung/Kamera/Kollision,
 - [x] verständliches Laden und Fehlerhandling,
 - [x] kohärenter Visual-, Licht- und Audio-Pass für den aktuellen Slice,

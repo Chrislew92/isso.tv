@@ -62,7 +62,7 @@ Dieses Dokument trennt strikt zwischen dem nachweisbar laufenden V3-Kern und dem
 - Alle eingebetteten Laufzeittexturen sind UASTC-KTX2 mit Mipmaps; lokale Basis-/Draco-Decoder benötigen kein CDN.
 - Charakter besitzt drei LOD-Stufen. Welt, Figur und 3D-Runtime werden lazy geladen; Three/React-Three sind in mehrere Produktionschunks geteilt.
 - Adaptive Grafik, Low-Memory-Erkennung, Online-/Offline-Hinweis, sichtbarer Ladefortschritt und verständlicher WebGL-/Assetfehler statt Weißbild.
-- Stabilisierte Referenzmessung im lokalen In-App-Browser: 59,9 FPS, 16,69 ms durchschnittlich, 17,0 ms p95, 180 Samples, WebGL2. Das ist eine Runtime-Probe, kein vollständiger Core-Web-Vitals-/Gerätelaborbericht.
+- Stabilisierte Referenzmessung nach dem Surface-Art-Pass im lokalen In-App-Browser: 56,0 FPS, 17,86 ms durchschnittlich, 18,3 ms p95, 180 Samples, WebGL2. Das ist eine Runtime-Probe, kein vollständiger Core-Web-Vitals-/Gerätelaborbericht.
 
 ### Spielkern des aktuellen Slices
 
@@ -74,13 +74,14 @@ Dieses Dokument trennt strikt zwischen dem nachweisbar laufenden V3-Kern und dem
 
 ## Verifikation am 20.08.2026
 
-- `npm test -- --run`: **38/38 Tests in 12 Dateien bestanden**.
+- `npm test -- --run`: **40/40 Tests in 13 Dateien bestanden**.
 - `npm run build`: erfolgreich; größtes JavaScript-Chunk 368,90 kB minifiziert.
 - `npm audit`: **0 bekannte Sicherheitslücken**, einschließlich Entwicklungswerkzeugen.
 - Charakter: 4.707.288 Byte; LOD1 4.276.136 Byte; LOD2 4.008.540 Byte.
 - Welt: 8.783.396 Byte.
 - Charakter und Welt: Meshopt + KTX2; Charakter enthält 1 Skin und 11 Animationen.
 - Isolierter Browserlauf: Film, Verbindung, Tür, Hafenwagen, Bahnhof, Signalwerk/HQ1, Nachhall 6, Reload und bestätigter Reset vollständig geprüft; keine neue Fehler-/Warnschleife.
+- Deterministische Entwicklungsproben führten Controller und Touch jeweils durch die echte Weltbewegung und `353L_Walk`; physische Hardware bleibt Teil der Geräte-Matrix.
 - Erzwungener lokaler 3D-Fehler: verständlicher Vollbild-Fallback sichtbar.
 - PowerShell-Assetpipeline: Syntax geprüft.
 - Kein Push, kein Deploy, keine DNS-/Cloudflare-/Live-Änderung.

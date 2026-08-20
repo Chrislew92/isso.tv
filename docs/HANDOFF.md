@@ -24,6 +24,7 @@ Arbeitspaket: V3.1-Vertical-Slice abnehmen — kanonische Welt, kompletter Morge
 - Interaktionsclips funktionieren für Tastatur, Maus, Touch und Gamepad statt nur über die E-Taste; Turn-Clips greifen bei scharfen Richtungswechseln.
 - Vier Audiobusse und sechs Zonenmischungen mit eigenen kurzen Hufklängen abgeschlossen.
 - Mobiles HUD 390×844 ohne Überdeckung sowie Fokusfalle, Escape und Fokuswiederherstellung geprüft.
+- Flur, Vordach, Hafen, Bahnhof und HQ1 durch einen kanonisch positionierten Surface-Art-Pass verbunden; Controller-/Touch-Proben laufen reproduzierbar durch Weltbewegung und Animation.
 
 ## Im Browser sichtbar
 
@@ -35,10 +36,10 @@ Arbeitspaket: V3.1-Vertical-Slice abnehmen — kanonische Welt, kompletter Morge
 
 ## Prüfung
 
-- Tests: 38/38 in 12 Dateien bestanden.
+- Tests: 40/40 in 13 Dateien bestanden.
 - Build: erfolgreich; größtes JS-Chunk 368,90 kB.
 - Audit: 0 bekannte Sicherheitslücken.
-- Stabilisierte Referenzprobe: 59,9 FPS / 16,69 ms Mittel / 17,0 ms p95 / 180 Samples / WebGL2.
+- Stabilisierte Referenzprobe nach Surface-Art-Pass: 56,0 FPS / 17,86 ms Mittel / 18,3 ms p95 / 180 Samples / WebGL2.
 - GLB-Vertrag: V5 + LOD1/2 jeweils 1 Skin, 11 Clips, Meshopt und KTX2; Welt Meshopt und ausschließlich KTX2-Bilder.
 - Browserkonsole im frischen normalen Lauf: keine neue Fehler- oder Warnschleife.
 - `git diff --check`: sauber; finaler Build/Audit/Test werden unmittelbar vor dem lokalen Master-Commit erneut ausgeführt.
