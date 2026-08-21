@@ -2,6 +2,7 @@ import { lazy, Suspense, useCallback, useEffect, useMemo, useReducer, useRef, us
 import useVoicePlayer from './audio/useVoicePlayer.js'
 import GameInterface from './components/GameInterface.jsx'
 import Modal from './components/Modal.jsx'
+import PcScreen from './components/PcScreen.jsx'
 import OpeningFilm from './components/OpeningFilm.jsx'
 import { CART_STANCES, CONNECTION_CHOICES, WORLD_START } from './game/canon.js'
 import { clearRun, loadRun, saveRun } from './game/save.js'
@@ -152,7 +153,7 @@ export default function App() {
       setCinematic((value) => !value)
       return
     }
-    if (action === 'memory' || action === 'character' || action === 'economy' || action === 'settings' || action === 'reset') {
+    if (action === 'memory' || action === 'character' || action === 'economy' || action === 'settings' || action === 'reset' || action === 'pc') {
       setModal(action)
       return
     }
@@ -273,7 +274,14 @@ export default function App() {
             <p>„Ich bin da. Du bestimmst, ob und wie wir anfangen.“</p>
           </div>
           <ChoiceList choices={CONNECTION_CHOICES} onChoose={chooseConnection} />
+          <button type="button" className="os-open-button" onClick={() => setModal('pc')}>
+            🖥 DE-BIOS öffnen <small>ISSO.TV · dein Rechner</small>
+          </button>
         </Modal>
+      )}
+
+      {modal === 'pc' && (
+        <PcScreen onClose={() => setModal(null)} />
       )}
 
       {modal === 'cart' && (

@@ -1,0 +1,3498 @@
+﻿<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>ISSO.TV — 353L.EXE</title>
+
+<!-- 353L.ico lag im Repo, war aber weder eingebunden noch im Upload-Ordner: Der Tab
+     zeigte gar kein Symbol, und /353L.ico lieferte die Startseite aus (Pages faellt
+     bei fehlenden Dateien auf index.html zurueck). Beim Deploy MIT hochladen. -->
+<link rel="icon" href="/353L.ico" sizes="any">
+
+<!-- Ohne diese Zeilen zeigte ein geteilter Link nur die nackte Adresse — kein Titel,
+     keine Beschreibung. Bewusst kein og:image: lieber gar kein Bild als ein kaputtes. -->
+<meta name="description" content="Ein Spiel über Geld, Nerven und die Frage, wie weit man geht. Kostenlos, ohne Konto, ohne Werbung — läuft direkt im Browser.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://isso.tv/">
+<meta property="og:title" content="ISSO.TV — 353L.EXE">
+<meta property="og:description" content="Ein Spiel über Geld, Nerven und die Frage, wie weit man geht. Kostenlos, ohne Konto, ohne Werbung.">
+<meta name="twitter:card" content="summary">
+<style>
+:root{
+  --gelb:#ffd21e; --pink:#ff3ea5; --cyan:#29b6f6; --orange:#ff7a18;
+  --gruen:#7ed321; --lila:#7b2ff7; --nacht:#2a1258;
+  --rot:#ff2e4c; --blau:#1ea7ff; --grau:#2a2b30;
+  --tinte:#e2e2e2; --papier:#222327; --kreide:#fff;
+  --fett:"Arial Black","Segoe UI Black",system-ui,sans-serif;
+  --sans:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+  --mono:ui-monospace,"Cascadia Mono",Consolas,monospace;
+  --out:1px solid rgba(255,255,255,0.05); 
+  --sh-out: 8px 8px 16px rgba(0,0,0,0.7), -8px -8px 16px rgba(255,255,255,0.04);
+  --sh-in: inset 6px 6px 12px rgba(0,0,0,0.7), inset -6px -6px 12px rgba(255,255,255,0.04);
+  --sh: var(--sh-out);
+  --br: 20px; --br-sm: 10px;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{height:100%;overflow:hidden;background:#1a1b1f}
+body{font-family:var(--sans);color:var(--tinte);-webkit-font-smoothing:antialiased;
+     user-select:none;-webkit-tap-highlight-color:transparent}
+.bild{position:absolute;inset:0;opacity:0;pointer-events:none;transition:opacity .45s ease;overflow:hidden}
+.bild.an{opacity:1;pointer-events:auto}
+.punkte{position:absolute;inset:0;pointer-events:none;
+  background-image:radial-gradient(circle,rgba(255,255,255,.07) 2px,transparent 2px);background-size:26px 26px}
+
+/* Knöpfe — überall dieselben */
+.k{display:flex;align-items:center;gap:12px;width:100%;text-align:left;cursor:pointer;
+  font-family:var(--fett);color:var(--tinte);background:var(--grau);border:var(--out);
+  border-radius:var(--br);box-shadow:var(--sh-out);padding:14px 18px;
+  background:linear-gradient(145deg, #2d2e33, #26272b);
+  transition:all .2s cubic-bezier(0.2,0.8,0.2,1)}
+.k:hover:not(:disabled){transform:translateY(-2px);box-shadow:12px 12px 20px rgba(0,0,0,0.8), -6px -6px 15px rgba(255,255,255,0.05)}
+.k:active:not(:disabled){transform:translateY(1px);box-shadow:var(--sh-in)}
+/* Gesperrt muss man SEHEN, nicht erraten. Vorher nur opacity:.36 — der Knopf
+   sah aus wie ein Knopf, nur blass, und der Grund war bei 36 % Deckkraft
+   praktisch unlesbar. Man drückt drauf und es passiert nichts.
+   Jetzt: flaches Grau ohne Sticker-Schatten, durchgestrichene Beschriftung
+   (ein Signal, das nicht an Farbe hängt) und der Grund in voller Lesbarkeit. */
+.k:disabled{opacity:1;cursor:not-allowed;
+  background:#33333d!important;color:#d2d2dc!important;
+  border-color:#5c5c6b!important;box-shadow:none!important;transform:none!important}
+/* muss .k .t u schlagen (das setzt text-decoration:none) — deshalb der
+   gleiche Aufbau statt !important */
+.k:disabled .t u{text-decoration:line-through;text-decoration-thickness:3px}
+.k:disabled em{color:#9a9aa8}
+.k:disabled .p{color:var(--gelb);font-weight:700}
+.k:disabled kbd{background:#4a4a58;color:#d2d2dc;border-color:#5c5c6b}
+.k.rot{background:var(--rot);color:#fff} .k.blau{background:var(--blau);color:#fff}
+.k.job{background:var(--gelb)}
+.k kbd{flex:0 0 auto;font-family:var(--mono);font-size:11px;font-weight:700;
+  background:rgba(0,0,0,.5);color:#fff;padding:3px 7px;border-radius:var(--br-sm)}
+.k.grau kbd,.k.job kbd{background:var(--tinte)}
+.k .t{flex:1;min-width:0;display:flex;flex-direction:column;gap:2px}
+.k .t u{text-decoration:none;font-size:15px;text-transform:uppercase;line-height:1.2}
+.k .t em{font-style:normal;font-family:var(--sans);font-weight:600;font-size:11.5px;opacity:.75}
+.k .p{font-family:var(--mono);font-size:11px;text-align:right;white-space:nowrap;opacity:.85}
+
+/* 0 — Zugang */
+#b0{background:var(--nacht);display:grid;place-items:center;text-align:center}
+#b0 .mark{font-family:var(--fett);font-size:clamp(44px,13vmin,150px);color:var(--gelb);
+  -webkit-text-stroke:min(1.2vmin,8px) var(--tinte);paint-order:stroke fill;
+  text-shadow:min(1.3vmin,9px) min(1.3vmin,9px) 0 var(--pink);transform:rotate(-2deg)}
+#b0 .sub{display:inline-block;margin-top:22px;font-family:var(--fett);font-size:12px;
+  letter-spacing:.22em;text-transform:uppercase;background:var(--papier);border-radius:var(--br);
+  border:var(--out);box-shadow:var(--sh);padding:9px 18px;transform:rotate(1.5deg)}
+#b0 form{margin-top:40px;display:flex;gap:10px;justify-content:center;flex-wrap:wrap}
+#b0 input{font-family:var(--fett);font-size:18px;letter-spacing:.4em;text-align:center;
+  text-transform:uppercase;background:var(--papier);border:var(--out);box-shadow:var(--sh-in);
+  border-radius:var(--br);padding:13px;background:#1e1f23;color:#e2e2e2;width:min(230px,64vw);outline:none}
+#b0 input::placeholder{color:#d3cabd;font-family:var(--fett)}
+#b0 button{font-family:var(--fett);font-size:13px;letter-spacing:.14em;text-transform:uppercase;
+  color:#fff;background:var(--rot);border:var(--out);box-shadow:var(--sh-out);border-radius:var(--br);padding:13px 20px;background:linear-gradient(145deg, #ff3f5a, #e62944);cursor:pointer}
+#b0 .err{margin-top:22px;font-family:var(--fett);font-size:12px;letter-spacing:.18em;
+  text-transform:uppercase;color:#fff;background:var(--rot);border:var(--out);
+  padding:7px 14px;display:inline-block;opacity:0;transition:opacity .2s}
+#b0.bad .err{opacity:1}
+#b0.bad .kasten{animation:zitter .34s}
+@keyframes zitter{25%{transform:translateX(-8px)}75%{transform:translateX(8px)}}
+.graffiti { position:absolute; top:30%; left:50%; transform:translate(-50%,-50%) rotate(-10deg) skewX(-10deg); font-family:"Arial Black",sans-serif; font-size:clamp(60px,25vmin,300px); color:transparent; -webkit-text-stroke:4px var(--rot); opacity:0.3; z-index:1; pointer-events:none; filter:blur(2px) drop-shadow(0 0 10px var(--rot)); white-space:nowrap; }
+
+/* 1 — Nacht */
+#b1{background:#05060a;display:grid;place-items:center;text-align:center}
+#b1 .uhr{font-family:var(--mono);font-size:clamp(34px,9vmin,80px);color:#3d4557;transition:color .6s}
+#b1.spaet .uhr{color:#6b7690}
+#b1 .txt{margin:26px auto 40px;font-size:17px;line-height:1.6;color:#8d94a6;
+  max-width:420px;min-height:3.4em;transition:opacity .35s}
+#b1 .txt.weg{opacity:0}
+#b1 .in{width:min(360px,84vw)}
+#b1.zu{animation:augen 1.4s ease}
+@keyframes augen{0%{filter:brightness(1)}30%{filter:brightness(.04)}
+                 68%{filter:brightness(.04)}100%{filter:brightness(1)}}
+
+/* 2 — Raum, Ego */
+#b2{background:#10082e;cursor:crosshair}
+.welt{position:absolute;left:-30%;top:-30%;width:160%;height:160%;
+  transform-origin:50% 52%;will-change:transform}
+.welt svg{width:100%;height:100%;display:block}
+.haende{position:absolute;inset:0;z-index:30;pointer-events:none;will-change:transform}
+.hand{position:absolute;bottom:-6%;width:min(40%,380px)}
+.hand.l{left:-3%} .hand.r{right:-3%;transform:scaleX(-1)}
+.hand svg{width:100%;height:auto;display:block;filter:drop-shadow(0 -8px 12px rgba(0,0,0,.55))}
+.marker{position:absolute;left:50%;top:46%;transform:translateX(-50%);z-index:25;
+  color:var(--gelb);font-size:clamp(20px,3.6vmin,32px);pointer-events:none;
+  text-shadow:2px 2px 0 var(--tinte);animation:huepf 1.2s ease-in-out infinite;transition:opacity .3s}
+.marker.aus{opacity:0}
+@keyframes huepf{0%,100%{transform:translate(-50%,0)}50%{transform:translate(-50%,-9px)}}
+.hint{position:absolute;left:50%;bottom:5vmin;transform:translateX(-50%);z-index:40;
+  font-family:var(--fett);font-size:13px;letter-spacing:.14em;text-transform:uppercase;
+  background:var(--papier);border:3px solid var(--tinte);box-shadow:4px 4px 0 var(--tinte);
+  padding:9px 16px;white-space:nowrap}
+.hint.nah{background:var(--gelb);animation:atmen 1.3s ease-in-out infinite}
+@keyframes atmen{0%,100%{opacity:.82}50%{opacity:1}}
+
+/* 3 — Kennung */
+#b3{background:radial-gradient(circle at 50% 45%,#2a1c4d,#16171a 74%);display:grid;place-items:center}
+#b3 h1{font-family:var(--fett);font-size:clamp(46px,15vmin,180px);line-height:.88;color:var(--gelb);
+  -webkit-text-stroke:min(1.3vmin,9px) var(--tinte);paint-order:stroke fill;
+  text-shadow:-4px -4px 0 var(--kreide),4px -4px 0 var(--kreide),-4px 4px 0 var(--kreide),
+    4px 4px 0 var(--kreide),12px 13px 0 var(--pink),17px 18px 0 var(--tinte);
+  transform:rotate(-3deg);text-align:center}
+#b3 h1 small{font-size:.36em;color:var(--cyan)}
+
+/* 4 — Desktop */
+#b4{background:radial-gradient(circle at 78% 22%,rgba(255,62,165,.28),transparent 46%),
+    radial-gradient(circle at 18% 74%,rgba(41,182,246,.26),transparent 48%),
+    linear-gradient(160deg,#3a1a72,#1b0f3d 62%,#120a2b)}
+/* Das Raster hing oben in der Ecke. Auf einem 20:9-Handy blieben darunter rund
+   1260 px leerer Verlauf — auf dem Pixel 8 Pro etwa 42 % der Bildhöhe. Auf einem
+   breiten Monitor fällt das nicht auf, auf einem hohen Bildschirm sieht es aus, als
+   hätte jemand die untere Hälfte vergessen. Jetzt füllt das Raster die freie Fläche
+   und sitzt mittig; die 34 px für die Leiste bleiben unten frei. */
+.icons{position:relative;z-index:2;display:grid;gap:10px;
+  padding:22px 22px calc(22px + 34px);
+  grid-template-columns:repeat(auto-fill,100px);
+  min-height:100%;align-content:center;justify-content:center}
+
+/* Schmale Bildschirme: größere Symbole. Füllt die Fläche und ist mit dem Daumen
+   leichter zu treffen als 42 px. */
+@media (max-width:560px){
+  .icons{grid-template-columns:repeat(auto-fill,118px);gap:16px}
+  .icon svg{width:54px;height:54px}
+  .icon span{font-size:11.5px}
+}
+
+/* Auf Tippgeräten die Tastenschildchen ausblenden. Auf jedem Knopf klebte ein
+   <kbd> mit der Taste — auf einem Telefon sind das lauter Hinweise auf Tasten,
+   die es dort nicht gibt. Die Knöpfe selbst funktionieren durch Antippen; nur
+   die Beschriftung führte in die Irre. Geprüft wird der Zeiger, nicht die Breite:
+   ein Laptop mit schmalem Fenster behält seine Tastenhinweise. */
+@media (hover:none) and (pointer:coarse){
+  kbd, .taste{display:none}
+  .k .t{margin-left:2px}
+}
+.icon{background:none;border:0;cursor:pointer;display:flex;flex-direction:column;align-items:center;
+  gap:6px;padding:9px 4px;font:inherit;color:#fff;outline:none}
+.icon:hover,.icon.sel{background:rgba(255,255,255,.18);outline:2px solid var(--gelb)}
+.icon svg{width:42px;height:42px}
+.icon.boerse .i{background:#0a0a0a;border:2px solid var(--gelb)}
+.icon.boerse .i::after{content:'~';color:var(--gelb);font-size:30px;line-height:48px}
+.icon.schwarzmarkt .i{background:#000;border:2px dashed var(--rot)}
+.icon.schwarzmarkt .i::after{content:'!';color:var(--rot);font-size:30px;line-height:48px}
+.icon.s7v3n .i{background:#003366}
+.icon.s7v3n .i::after{content:'§';font-size:32px;color:var(--kreide);line-height:48px}
+.icon span{font-family:var(--fett);font-size:10.5px;text-align:center;line-height:1.25;
+  text-shadow:1px 1px 0 #0d0d0d,-1px 1px 0 #0d0d0d,1px -1px 0 #0d0d0d,-1px -1px 0 #0d0d0d}
+/* z-index 140: die Leiste ist Bedienung, die Marken-Zeile darunter ist nur
+   Beiwerk. Bei z-index 3 lag die Impressum-Zeile über dem Türschloss. */
+.leiste{position:absolute;left:0;right:0;bottom:0;z-index:140;height:34px;display:flex;
+  align-items:center;justify-content:space-between;padding:0 10px;background:#0d0d0d;
+  border-top:3px solid var(--gelb)}
+.leiste .s{font-family:var(--fett);font-size:12px;letter-spacing:.14em;color:#0d0d0d;
+  background:var(--gelb);padding:3px 9px}
+.leiste .u{font-family:var(--mono);font-size:11.5px;color:var(--gelb)}
+.leiste .raus{font-family:var(--fett);font-size:11px;letter-spacing:.1em;text-transform:uppercase;
+  background:none;border:2px solid var(--gelb);color:var(--gelb);padding:3px 10px;cursor:pointer}
+.leiste .raus:hover{background:var(--gelb);color:var(--tinte)}
+/* haushalt.exe */
+.hb .rumpf label{display:block;font-family:var(--fett);font-size:11px;letter-spacing:.1em;
+  text-transform:uppercase;margin:12px 0 5px;opacity:.7}
+.hb .rumpf label:first-child{margin-top:0}
+.hb input{font-family:var(--mono);font-size:14px;padding:8px 10px;border:3px solid var(--tinte);
+  background:#fff;width:100%;outline:none}
+.hb input:focus{background:var(--gelb)}
+.hb .zeile{display:flex;gap:6px;margin-bottom:6px}
+.hb .zeile input:first-child{flex:1}
+.hb .zeile input[type=number]{width:96px}
+.hb .zeile button{background:var(--rot);color:#fff;border:3px solid var(--tinte);
+  font-family:var(--fett);width:34px;cursor:pointer}
+.hb .leer{font-size:12px;opacity:.5;padding:6px 0}
+.hb .hplus{font-family:var(--fett);font-size:11px;text-transform:uppercase;background:var(--cyan);
+  border:3px solid var(--tinte);box-shadow:3px 3px 0 var(--tinte);padding:6px 12px;
+  cursor:pointer;margin-top:8px}
+.hb .summe{margin-top:16px;border-top:3px solid var(--tinte);padding-top:12px}
+.hb .summe div{display:flex;justify-content:space-between;align-items:baseline;padding:3px 0}
+.hb .summe span{font-family:var(--fett);font-size:11px;text-transform:uppercase;letter-spacing:.08em;opacity:.7}
+.hb .summe b{font-family:var(--mono);font-size:15px}
+.hb .summe b.pos{color:#1a7a2e} .hb .summe b.neg{color:var(--rot)}
+.hb .fuss{margin-top:14px;font-size:11px;line-height:1.5;opacity:.6;font-weight:400}
+.fenster{position:absolute;inset:0;z-index:5;display:grid;place-items:center;padding:5vmin;
+  pointer-events:none}
+.fenster .kasten{pointer-events:auto;width:min(400px,86vw);background:var(--papier);
+  border:var(--out);box-shadow:var(--sh);border-radius:var(--br);overflow:hidden;}
+.fenster .kopf{display:flex;justify-content:space-between;align-items:center;background:var(--tinte);
+  color:var(--papier);font-family:var(--fett);font-size:12px;letter-spacing:.1em;padding:8px 10px}
+.fenster .kopf button{background:var(--rot);color:#fff;border:0;font-family:var(--fett);
+  font-size:12px;width:21px;height:21px;cursor:pointer}
+.fenster .rumpf{padding:16px;font-size:13.5px;line-height:1.65;font-weight:600}
+.fenster .rumpf b{background:var(--gelb);padding:0 3px}
+
+/* 5 — Comic */
+#b5{background:#16171a;display:grid;place-items:center;padding:3vmin;cursor:pointer}
+.panel{width:min(720px,94vw);background:var(--pbg,var(--gelb));border:var(--out);box-shadow:var(--sh);
+  padding:14px;opacity:0;transform:translateY(14px) rotate(-.6deg);border-radius:var(--br);
+  transition:opacity .35s ease,transform .35s cubic-bezier(.2,.9,.3,1)}
+.panel.in{opacity:1;transform:translateY(0) rotate(-.6deg)}
+.panel .rahmen{border:var(--out);background:#fff;line-height:0;overflow:hidden}
+.panel svg{width:100%;height:auto;display:block;max-height:50vh}
+.panel .kopf{display:inline-block;font-family:var(--fett);font-size:clamp(13px,2.4vmin,22px);
+  text-transform:uppercase;background:var(--papier);border:var(--out);padding:7px 12px;
+  margin-bottom:10px;transform:rotate(-1.2deg)}
+.panel .fuss{display:inline-block;font-family:var(--fett);font-size:14px;background:var(--tinte);
+  color:var(--papier);padding:7px 12px;margin-top:10px;transform:rotate(.8deg)}
+.panel.r .fuss{background:var(--rot);color:#fff}
+.blaettern{margin-top:14px;text-align:center;font-family:var(--mono);font-size:11px;
+  letter-spacing:.16em;color:#9b8fc9}
+
+/* 6/7 — Berufswahl & Spiel */
+#b6,#b7{overflow-y:auto;padding:3vmin 3vmin 60px;
+  background:radial-gradient(circle at 78% 22%,rgba(255,62,165,.22),transparent 46%),
+  linear-gradient(160deg,#3a1a72,#1b0f3d 62%,#120a2b)}
+.spalte{width:min(660px,96vw);margin:0 auto;position:relative;z-index:1}
+.karte{background:linear-gradient(145deg, #2d2e33, #26272b);border:var(--out);box-shadow:var(--sh-out);padding:18px;margin-bottom:18px;border-radius:var(--br)}
+.karte h2{font-family:var(--fett);font-size:22px;text-transform:uppercase;margin-bottom:6px}
+.karte .lead{font-size:14px;font-weight:600;line-height:1.55;margin-bottom:16px;opacity:.8}
+.chip.danke{background:var(--gelb)!important;color:var(--tinte)!important;
+  box-shadow:4px 4px 0 var(--tinte),0 0 0 3px var(--gelb),0 0 14px rgba(255,210,31,.7)}
+.chip.danke::before{content:"★ ";}
+.sid{display:block;font-style:normal;font-family:var(--mono);font-size:9px;
+  letter-spacing:.12em;opacity:.75;margin-top:1px;text-transform:none}
+
+/* VIP-Abzeichen neben der safeID. Die Stufe steht im TEXT ("VIP 2"), nicht in der
+   Farbe — wer Farben schlecht unterscheidet, liest sie trotzdem. Dunkles Feld mit
+   gelber Schrift, damit es auf dem gelben Chip immer lesbar bleibt; die Randfarbe
+   ist reine Zugabe und trägt keine Bedeutung. */
+.vip{display:inline-block;font-style:normal;font-family:var(--fett);font-size:9.5px;
+  letter-spacing:.14em;margin-top:4px;padding:2px 7px;background:var(--tinte);
+  color:var(--gelb);border:2px solid var(--gelb);text-transform:uppercase}
+.vip.v1{border-color:var(--cyan)}
+.vip.v2{border-color:var(--kreide)}
+.vip.v3{border-color:var(--pink);box-shadow:0 0 10px rgba(255,62,165,.55)}
+.namensfeld{font-family:var(--fett);font-size:18px;letter-spacing:.16em;text-transform:uppercase;
+  background:#fff;border:var(--out);box-shadow:5px 5px 0 var(--tinte);padding:12px 14px;
+  width:100%;outline:none;color:var(--tinte)}
+.namensfeld::placeholder{color:#bdb7a4}
+.namensfeld:focus{background:var(--gelb)}
+.namensfehler{font-family:var(--mono);font-size:11px;letter-spacing:.1em;margin-top:8px;opacity:.5}
+.namensfehler.bad{opacity:1;color:#fff;background:var(--rot);display:inline-block;padding:4px 9px;
+  border:3px solid var(--tinte)}
+.kopfz{display:flex;align-items:center;gap:9px;flex-wrap:wrap;margin-bottom:14px}
+.chip{font-family:var(--fett);font-size:13px;text-transform:uppercase;border:var(--out);
+  padding:5px 11px;border-radius:var(--br-sm);box-shadow:var(--sh-out);background:linear-gradient(145deg, #2d2e33, #26272b);;background:var(--gelb)}
+/* Nebensätze im HUD. Bedeutung steht im Wort, nicht in der Farbe. */
+.chip i.steigt,.chip i.starr{font-style:normal;font-family:var(--mono);
+  font-size:10px;letter-spacing:.04em;text-transform:none;opacity:.82;
+  border-bottom:1px dotted currentColor;padding-bottom:1px}
+.chip i.steigt::before{content:"▲ "}
+.chip i.starr::before{content:"— "}
+.chip.geld{background:var(--gruen)} .chip.geld.neg{background:var(--rot);color:#fff}
+.chip.geld.hit{animation:flashRot .4s} @keyframes flashRot{0%,100%{background:var(--rot);color:#fff;transform:scale(1.1)}}
+.fix{font-family:var(--mono);font-size:12px;opacity:.75;margin-top:-6px;margin-bottom:10px}
+.fix b{font-weight:600}
+.nerv{margin-left:auto;font-family:var(--mono);font-size:13px;color:var(--rot);letter-spacing:.05em}
+.nerv i{color:#c9c2ad;font-style:normal}
+.waage{display:flex;align-items:center;gap:10px;margin-top:12px}
+.waage i{font-style:normal;font-family:var(--fett);font-size:10px;letter-spacing:.12em;
+  text-transform:uppercase;opacity:.42;transition:opacity .4s;white-space:nowrap}
+.waage i.r{color:var(--rot)} .waage i.b{color:#0f6fb5} .waage i.lit{opacity:1}
+.bahn{position:relative;flex:1;height:12px;border:3px solid var(--tinte);
+  background:linear-gradient(90deg,var(--rot),var(--papier) 46%,var(--papier) 54%,var(--blau))}
+.knopf{position:absolute;top:50%;left:50%;width:20px;height:20px;border-radius:50%;
+  background:var(--grau);border:3px solid var(--tinte);transform:translate(-50%,-50%);
+  transition:left .6s cubic-bezier(.6,0,.2,1),background .4s}
+.strasse{display:flex;flex-wrap:wrap;align-items:center;gap:8px;margin-top:14px}
+.strasse .lbl{font-family:var(--fett);font-size:10px;letter-spacing:.16em;text-transform:uppercase;
+  opacity:.55;width:100%}
+.haus{display:inline-flex;align-items:center;gap:5px;font-family:var(--fett);font-size:12px;
+  background:var(--blau);color:#fff;border:3px solid var(--tinte);box-shadow:3px 3px 0 var(--tinte);
+  padding:4px 9px}
+.haus s{text-decoration:none;opacity:.75}
+#joker{margin-top:14px}
+#joker button{font-family:var(--fett);font-size:12px;text-transform:uppercase;background:var(--gelb);
+  border:3px solid var(--tinte);box-shadow:4px 4px 0 var(--tinte);padding:6px 12px;cursor:pointer}
+#joker .aus{font-family:var(--fett);font-size:12px;text-transform:uppercase;opacity:.32;
+  border:3px solid var(--tinte);padding:6px 12px;display:inline-block}
+#joker kbd{font-family:var(--mono);font-size:10px;background:var(--tinte);color:var(--gelb);
+  padding:2px 5px;margin-right:5px}
+#folge{opacity:0;transition:opacity .4s} #folge.in{opacity:1}
+.fz{font-family:var(--fett);font-size:13.5px;border:3px solid var(--tinte);padding:8px 12px;
+  margin-bottom:7px;background:var(--papier);box-shadow:4px 4px 0 var(--tinte)}
+.fz.rot{background:var(--rot);color:#fff} .fz.blau{background:var(--blau);color:#fff}
+.fz.grau{background:var(--grau)} .fz.feind{background:var(--tinte);color:var(--rot)}
+.fz.gut{background:var(--gruen)} .fz.schlecht{background:var(--orange)}
+.fz.joker{background:var(--gelb);transform:rotate(-1deg)}
+.fz.job{background:var(--cyan)}
+#text{font-size:16px;line-height:1.6;margin-bottom:18px;font-weight:600}
+#text em{font-style:normal;background:var(--gelb);padding:0 4px;box-decoration-break:clone}
+#wahl{display:grid;gap:10px} #wahl.warte{pointer-events:none;opacity:.5}
+#ende{background:var(--papier);border:var(--out);box-shadow:var(--sh);padding:26px;
+  margin-bottom:18px;display:none}
+#ende.an{display:block}
+#ende h2{font-family:var(--fett);font-size:clamp(28px,6.5vmin,58px);line-height:.95;
+  text-transform:uppercase;margin-bottom:14px;-webkit-text-stroke:3px var(--tinte);paint-order:stroke fill}
+#ende h2.rot{color:var(--rot)} #ende h2.blau{color:var(--blau)} #ende h2.grau{color:var(--gelb)}
+#ende p{font-size:15px;line-height:1.65;margin-bottom:20px;font-weight:600}
+#ende p b{background:var(--gelb);padding:0 4px}
+
+/* 8 — Netzwerk / Motherbrowser */
+#b8 { background: #05060a; overflow: hidden; position: relative; }
+#b8 canvas { position: absolute; inset: 0; width: 100%; height: 100%; z-index: 1; opacity: 0.7; }
+#b8 .net-ui { position: relative; z-index: 2; display: flex; flex-direction: column; height: 100%; padding: 4vmin; pointer-events: none; }
+#b8 .net-kopf { display: flex; justify-content: space-between; align-items: flex-start; pointer-events: auto; }
+#b8 .net-kopf button { background: var(--rot); color: #fff; border: 3px solid var(--tinte); font-family: var(--fett); padding: 8px 16px; cursor: pointer; }
+#b8 .net-stadt { background: var(--gelb); border: 3px solid var(--tinte); box-shadow: 6px 6px 0 var(--tinte); padding: 12px 18px; }
+#b8 .net-stadt select { font-family: var(--fett); font-size: 16px; text-transform: uppercase; background: none; border: none; outline: none; cursor: pointer; color: var(--tinte); }
+#b8 .chat-kasten { flex: 1; margin-top: 20px; border: 4px solid var(--gelb); background: rgba(13, 13, 13, 0.88); padding: 16px; overflow-y: auto; pointer-events: auto; box-shadow: 0 0 20px rgba(255,210,30,0.2); font-family: var(--mono); color: var(--gelb); display: flex; flex-direction: column; gap: 8px; }
+#b8 .chat-msg { animation: chatIn 0.2s ease-out forwards; }
+#b8 .chat-msg .user { opacity: 0.6; font-size: 11px; display: block; margin-bottom: 2px; }
+#b8 .chat-msg .text { font-size: 13px; line-height: 1.4; color: #fff; }
+#b8 .chat-msg a { color: var(--tinte); background: var(--gelb); padding: 3px 8px; cursor: pointer; text-decoration: none; display: inline-block; margin-top: 4px; font-family: var(--fett); font-size: 12px; }
+#b8 .chat-msg a:hover { background: #fff; }
+@keyframes chatIn { 0% { opacity: 0; transform: translateY(10px); } 100% { opacity: 1; transform: translateY(0); } }
+
+/* 9 — MINIGAME */
+#b9 { background: #05060a; display: grid; place-items: center; }
+#mg-ui.bad { animation: zitter .34s; }
+.mg-kopf { background: var(--gelb); color: var(--tinte); font-family: var(--fett); padding: 10px; display: flex; justify-content: space-between; text-transform: uppercase; font-size: 14px; border-bottom: 3px solid var(--tinte); }
+#mg-time { font-family: var(--mono); font-size: 16px; }
+
+/* 10 — 3DWORLD (Bonzenviertel) */
+#b10 { background: #020204; overflow: hidden; perspective: 800px; display: flex; align-items: center; justify-content: center; }
+/* NUR die begehbare Straße in b10. Ohne die #b10-Fessel trifft diese Regel
+   auch die Häuserzeile im Spiel-HUD (die heißt genauso) und macht sie 100vh
+   hoch — dann steht die halbe Runde unterhalb des Bildschirmrands. */
+#b10 .strasse { position: relative; width: 100vw; height: 100vh; transform-style: preserve-3d; }
+/* Horizont statt Sackgasse: ein schmutziger Lichtschein am Fluchtpunkt,
+   damit die Straße weitergeht statt gegen eine schwarze Wand zu laufen. */
+.str-bg { position: absolute; inset: -20%; transform: translateZ(-500px);
+  background:
+    radial-gradient(ellipse 40% 22% at 50% 62%, rgba(255,210,31,.20) 0%, rgba(255,120,0,.07) 45%, transparent 75%),
+    radial-gradient(circle at center, #14141b 0%, #000 80%); }
+.haus-l, .haus-r { position: absolute; top: -10%; height: 120%; width: 40vw; background: repeating-linear-gradient(0deg, #050508, #050508 40px, #0a0a12 40px, #0a0a12 42px); box-shadow: inset 0 0 50px #000; border: 2px solid #1a1a24; }
+.haus-l { left: -15%; transform: translateZ(-200px) rotateY(15deg); }
+.haus-r { right: -15%; transform: translateZ(-200px) rotateY(-15deg); }
+.str-boden { position: absolute; bottom: -20%; left: -20%; width: 140%; height: 50vh; background: #09090c; transform: translateY(30vh) rotateX(70deg); border-top: 5px solid #ff0055; opacity: 0.3; }
+/* ---- LAUFEN ---- Die Straße ist ein Gang, kein Bild. #str-lauf schiebt sich
+   auf den Spieler zu; alles darin gehört zur Welt und rückt mit. */
+.str-lauf { position:absolute; inset:0; transform-style:preserve-3d; }
+.seg { position:absolute; top:-10%; height:120%; width:26vw;
+  background:repeating-linear-gradient(0deg,#050508,#050508 40px,#0a0a12 40px,#0a0a12 42px);
+  border:2px solid #1a1a24; box-shadow:inset 0 0 50px #000; }
+.seg.l { left:-4vw; transform-origin:right center; }
+.seg.r { right:-4vw; transform-origin:left center; }
+.seg .klappe { position:absolute; left:50%; bottom:34%; width:26px; height:16px;
+  margin-left:-13px; background:#15151f; border:2px solid #262636; }
+.lampe { position:absolute; left:50%; top:26%; width:8px; height:8px; margin-left:-4px;
+  border-radius:50%; background:var(--gelb); box-shadow:0 0 26px 10px rgba(255,210,31,.30); }
+.ort-schild { position:absolute; left:50%; top:40%; transform:translateX(-50%);
+  font-family:var(--fett); font-size:15px; letter-spacing:.12em; text-transform:uppercase;
+  color:var(--papier); background:var(--tinte); border:3px solid var(--papier);
+  padding:7px 13px; white-space:nowrap; box-shadow:5px 5px 0 rgba(0,0,0,.7); }
+.ort-schild.hier { background:var(--gelb); color:var(--tinte); border-color:var(--tinte); }
+/* Der Asphalt. Ohne mitlaufende Streifen merkt kein Mensch, dass er geht. */
+.str-asphalt { position:absolute; left:-60%; bottom:-34%; width:220%; height:135vh;
+  transform:rotateX(79deg); transform-origin:50% 100%; z-index:1;
+  background:
+    repeating-linear-gradient(90deg, transparent 0 46%, rgba(255,210,31,.5) 46% 54%, transparent 54% 100%),
+    linear-gradient(#0d0d12, #16161d);
+  background-size:100% 190px, 100% 100%; background-repeat:repeat-y, no-repeat;
+  border-top:3px solid #23232e; }
+/* Die Beine. Man sieht sich selbst laufen — sonst bewegt sich nur die Kulisse. */
+.str-beine { position:absolute; bottom:52px; left:50%; width:190px; height:120px;
+  margin-left:-95px; z-index:5; pointer-events:none; }
+.str-beine i { position:absolute; bottom:0; width:46px; height:104px; display:block;
+  background:#14141c; border:3px solid var(--papier); border-bottom:0;
+  border-radius:10px 10px 0 0; transform-origin:50% 100%; }
+.str-beine i.a { left:24px; } .str-beine i.b { right:24px; }
+.str-beine i::after { content:''; position:absolute; left:-9px; bottom:-3px;
+  width:58px; height:19px; background:var(--papier); border:3px solid var(--tinte);
+  border-radius:4px 9px 3px 3px; }
+/* ---- ZWEITE PERSPEKTIVE ----
+   Standard ist Ego, wie im Egoshooter. V schaltet hinter die Figur.
+   Beides muss gehen, deshalb hängt alles an EINER Klasse am body. */
+.str-figur { position:absolute; bottom:15%; left:50%; width:130px; height:225px;
+  margin-left:-65px; z-index:5; display:none; pointer-events:none; }
+body.dritte .str-figur { display:block; }
+body.dritte .str-beine { display:none; }
+body.dritte #haende { display:none; }
+.str-figur span { position:absolute; background:#14141c; border:3px solid var(--papier); display:block; }
+.str-figur .kopf   { left:38px; top:0; width:54px; height:50px; border-radius:9px;
+  background:var(--papier); border-color:var(--tinte); }
+.str-figur .kopf::after { content:''; position:absolute; inset:8px 9px auto 9px; height:15px;
+  background:var(--tinte); border-radius:3px; }           /* Hinterkopf, kein Gesicht */
+.str-figur .rumpf  { left:22px; top:46px; width:86px; height:104px; border-radius:11px 11px 5px 5px; }
+.str-figur .arm    { top:56px; width:23px; height:88px; border-radius:8px; transform-origin:50% 0; }
+.str-figur .arm.l  { left:2px; } .str-figur .arm.r { right:2px; }
+.str-figur .bein   { top:146px; width:33px; height:80px; border-radius:5px 5px 8px 8px;
+  transform-origin:50% 0; }
+.str-figur .bein.l { left:26px; } .str-figur .bein.r { right:26px; }
+.p-schalt { position:absolute; top:112px; right:16px; z-index:11; pointer-events:auto;
+  font-family:var(--fett); font-size:11px; letter-spacing:.14em; text-transform:uppercase;
+  color:var(--tinte); background:var(--papier); border:3px solid var(--tinte);
+  padding:8px 12px; cursor:pointer; box-shadow:4px 4px 0 rgba(0,0,0,.65); }
+.p-schalt:hover { background:var(--gelb); }
+.str-schritt { position:absolute; bottom:12px; left:50%; transform:translateX(-50%);
+  z-index:7; font-family:var(--mono); font-size:10px; letter-spacing:.18em;
+  color:var(--papier); background:rgba(13,13,13,.8); border:2px solid var(--tinte);
+  padding:5px 11px; text-transform:uppercase; }
+.str-ui { position: absolute; bottom: 20px; left: 20px; right: 20px; display: flex; justify-content: space-between; z-index: 10; pointer-events: none; }
+.str-ui button { pointer-events: auto; }
+.blick { position: absolute; width: 30px; height: 10px; opacity: 0; transition: opacity 0.5s; background: radial-gradient(circle, #fff 20%, transparent 60%); filter: blur(1px); }
+.blick::before, .blick::after { content: ''; position: absolute; width: 6px; height: 6px; background: #fff; border-radius: 50%; top: 2px; }
+.blick::before { left: 4px; box-shadow: 0 0 10px #fff; }
+.blick::after { right: 4px; box-shadow: 0 0 10px #fff; }
+.str-ort { position:absolute; top:20px; left:50%; transform:translateX(-50%); z-index:6;
+  font-family:var(--fett); font-size:12px; letter-spacing:.14em; text-transform:uppercase;
+  text-align:center; line-height:1.7; color:var(--papier); background:rgba(13,13,13,.78);
+  border:3px solid var(--tinte); padding:8px 16px; max-width:min(560px,88vw); }
+.str-ort b { color:var(--gelb); }
+.str-ort i { display:block; font-style:normal; font-family:var(--sans); font-size:11.5px;
+  letter-spacing:0; text-transform:none; opacity:.75; margin-top:3px; }
+/* tiefer gelegt — lag vorher genau auf dem Ortsschild */
+.str-hint { position: absolute; top: 27%; left: 50%; transform: translateX(-50%); color: var(--rot); font-family: var(--fett); text-transform: uppercase; letter-spacing: 2px; opacity: 0; transition: opacity 0.3s; text-shadow: 0 0 10px var(--rot); }
+.mg-track { position: absolute; inset: 45px 0 60px 0; display: flex; flex-direction: column; align-items: center; padding-bottom: 20px; overflow:hidden;}
+.mg-item { width: 60px; height: 60px; background: var(--papier); border: 3px solid var(--tinte); box-shadow: 4px 4px 0 var(--tinte); font-family: var(--fett); font-size: 30px; display: grid; place-items: center; position: absolute; top: 0; transition: transform 0.15s; }
+.mg-item.r { background: var(--rot); color: #fff; }
+.mg-item.b { background: var(--blau); color: #fff; }
+.mg-controls { position: absolute; bottom: 0; left: 0; right: 0; display: flex; border-top: 3px solid var(--tinte); height: 60px;}
+.mg-btn { flex: 1; font-family: var(--fett); font-size: 18px; border: 0; cursor: pointer; text-transform: uppercase; color: #fff; }
+.mg-btn.l { background: var(--rot); border-right: 3px solid var(--tinte); }
+.mg-btn.r { background: var(--blau); }
+.mg-btn:active { filter: brightness(0.8); }
+.mg-msg { position: absolute; inset: 0; display: grid; place-items: center; background: rgba(0,0,0,0.8); color: #fff; font-family: var(--fett); font-size: 36px; text-transform: uppercase; opacity: 0; pointer-events: none; transition: opacity 0.3s; z-index: 10; text-shadow: 4px 4px 0 var(--tinte); }
+.mg-msg.an { opacity: 1; }
+
+/* Immer erreichbar, auf jedem Bildschirm. Zustand steht im Wort, nicht in
+   der Farbe — sonst weiß der halbe Planet nicht, ob der Ton an ist. */
+/* Vorwarnung. Wer gleich einen lauten Ton abbekommen kann, muss das vorher
+   wissen — sonst trifft es Leute mit Kopfhoerern ohne jede Chance. */
+.warnt{margin:14px auto 0;padding:11px 13px;max-width:34em;text-align:left;
+  border:3px solid var(--gelb);background:rgba(40,30,0,.55);
+  font-family:var(--mono);font-size:11px;line-height:1.6;color:#ffeeb8}
+.warnt b{color:var(--gelb)}
+.warnt b:first-child{display:block;font-family:var(--fett);font-size:12px;
+  letter-spacing:.1em;margin-bottom:5px}
+/* Die Wand am Tor. Reine Anzeige — sie schlaegt nicht zurueck, sie steht nur
+   da und macht klar, dass hier nichts weitergeht. */
+.abwehr{margin-top:16px;padding:12px 14px;max-width:34em;
+  border:3px solid var(--rot);background:rgba(20,0,6,.9);
+  font-family:var(--mono);font-size:11.5px;line-height:1.65;color:#ffd9e1;
+  animation:abwehrPuls 1.1s steps(2,end) infinite}
+.abwehr b{display:block;font-family:var(--fett);font-size:13px;letter-spacing:.16em;
+  color:#ff5c7a;margin-bottom:6px}
+@keyframes abwehrPuls{0%,100%{border-color:var(--rot)}50%{border-color:#ff9db0}}
+@media (prefers-reduced-motion:reduce){.abwehr{animation:none}}
+/* ---- SZENENBILDER ----
+   Flach und fett: dicke schwarze Outline, satte Fläche, Sticker-Schatten.
+   Alles inline-SVG, kein einziges Bild von außen. Die Formen sind absichtlich
+   grob — auf 300×110 gelesen zählt die Silhouette, nicht das Detail. */
+.szenenbild{margin:-4px -4px 14px;border:var(--out);background:var(--tinte);
+  box-shadow:6px 6px 0 rgba(0,0,0,.55);overflow:hidden;line-height:0}
+.szenenbild svg{display:block;width:100%;height:auto}
+.szenenbild .o{stroke:var(--tinte);stroke-width:5;stroke-linejoin:round;stroke-linecap:round}
+.szenenbild .k{stroke:var(--papier);stroke-width:2.5;fill:none}   /* Kreidekontur */
+.szenenbild .d{fill:var(--tinte)}
+@media (max-width:520px){ .szenenbild{box-shadow:4px 4px 0 rgba(0,0,0,.55)} }
+.gott-schild{position:absolute;left:50%;top:8px;transform:translateX(-50%);z-index:130;
+  font-family:var(--fett);font-size:11px;letter-spacing:.14em;text-transform:uppercase;
+  color:var(--tinte);background:var(--gelb);border:3px solid var(--tinte);
+  padding:6px 14px;box-shadow:4px 4px 0 rgba(0,0,0,.6);pointer-events:none}
+/* Nach oben rechts. Unten liegt die Taskleiste des Spiel-Desktops, und dort
+   haben diese Schalter Aufstehen und die Uhr zugedeckt — man klickte auf die
+   Leiste und traf den Ton-Schalter. */
+.ton-schalt{position:absolute;right:8px;top:8px;z-index:120;cursor:pointer;
+  font-family:var(--mono);font-size:10px;letter-spacing:.1em;
+  color:var(--papier);background:rgba(13,13,13,.85);border:2px solid var(--tinte);
+  padding:5px 10px}
+.ton-schalt:hover{background:var(--gelb);color:var(--tinte)}
+.ton-schalt[aria-pressed="true"]{border-style:dashed;opacity:.8}
+.marke{position:absolute;left:8px;bottom:5px;z-index:99;font-family:var(--mono);font-size:9px;
+  letter-spacing:.15em;color:#8a86a0;max-width:calc(100vw - 20px)}
+/* Auf dem Spiel-Desktop rückt die Marken-Zeile über die Taskleiste. Sie ist
+   `fixed` und bildet einen eigenen Stapel — ein höherer z-index an der Leiste
+   reicht deshalb nicht, sie lag trotzdem über Türschloss und Aufstehen. */
+body.desktop .marke{bottom:42px}
+.marke a{color:var(--gelb);text-decoration:none;border-bottom:1px solid rgba(255,210,31,.5)}
+.marke a:hover{color:#fff;border-bottom-color:#fff}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition-duration:.1s!important}}
+
+/* ========== EXTREME CRT & GLITCH ========== */
+body::after {
+  content: "";
+  position: fixed;
+  top: 0; left: 0; width: 100vw; height: 100vh;
+  background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.25) 50%), linear-gradient(90deg, rgba(255, 0, 0, 0.06), rgba(0, 255, 0, 0.02), rgba(0, 0, 255, 0.06));
+  background-size: 100% 2px, 3px 100%;
+  pointer-events: none;
+  z-index: 999;
+}
+body::before {
+  content: "";
+  position: fixed;
+  top: 0; left: 0; width: 100vw; height: 100vh;
+  box-shadow: inset 0 0 120px rgba(0,0,0,0.9);
+  pointer-events: none;
+  z-index: 1000;
+}
+.glitch-anim { animation: crt-glitch 0.2s cubic-bezier(.25, .46, .45, .94) both; }
+
+/* Ruhiges Bild: kein Zucken, keine pulsenden Rahmen, schwächere Scanlines.
+   Für alle, denen das Geflacker auf die Augen geht — und für jeden, der
+   lichtempfindlich ist. Der Rest der Optik bleibt wie er ist. */
+body.ruhig .glitch-anim,
+body.ruhig .abwehr { animation: none !important; }
+body.ruhig::after { opacity: .35; }
+body.ruhig .hint.nah { animation: none !important; }
+@keyframes crt-glitch {
+  0% { transform: translate(0) skew(0); filter: drop-shadow(0 0 0 transparent); }
+  20% { transform: translate(-3px, 1px) skew(-1deg); filter: drop-shadow(-3px 0 0 var(--rot)) drop-shadow(3px 0 0 var(--cyan)); }
+  40% { transform: translate(3px, -1px) skew(1deg); filter: drop-shadow(3px 0 0 var(--rot)) drop-shadow(-3px 0 0 var(--cyan)); }
+  60% { transform: translate(-1px, 2px) skew(-0.5deg); filter: drop-shadow(-2px 0 0 var(--rot)) drop-shadow(2px 0 0 var(--cyan)); }
+  80% { transform: translate(1px, -2px) skew(0.5deg); filter: drop-shadow(2px 0 0 var(--rot)) drop-shadow(-2px 0 0 var(--cyan)); }
+  100% { transform: translate(0) skew(0); filter: drop-shadow(0 0 0 transparent); }
+}
+h1, h2, .namensfeld, .k .t u { text-shadow: 1.5px 0px 0.5px var(--rot), -1.5px 0px 0.5px var(--cyan); }
+.k:hover:not(:disabled) { text-shadow: 2.5px 0px 1px var(--rot), -2.5px 0px 1px var(--cyan); }
+
+
+  50% { opacity: 0.82; }
+  100% { opacity: 0.85; }
+}
+
+#kino-frame {
+  position: relative;
+  width: 100vw;
+  height: 56.25vw;
+  max-height: 100vh;
+  max-width: 177.78vh;
+  margin: auto;
+  overflow: hidden;
+  background: #1a1b1f;
+  box-shadow: 0 0 50px rgba(0,0,0,0.8);
+}
+body {
+  display: flex;
+  background: #000 !important;
+  justify-content: center;
+  align-items: center;
+}
+#gedanken {
+  position: absolute;
+  bottom: 8%;
+  left: 0;
+  right: 0;
+  text-align: center;
+  z-index: 99999;
+  pointer-events: none;
+  opacity: 0;
+  transform: translateY(20px);
+  transition: opacity 0.5s ease, transform 0.5s ease;
+}
+#gedanken.show {
+  opacity: 1;
+  transform: translateY(0);
+}
+#gedanken span {
+  display: inline-block;
+  background: rgba(20, 20, 24, 0.85);
+  color: #fff;
+  padding: 12px 24px;
+  border-radius: 30px;
+  font-family: var(--fett);
+  font-size: clamp(14px, 2.5vmin, 24px);
+  box-shadow: 0 10px 30px rgba(0,0,0,0.8);
+  backdrop-filter: blur(4px);
+  text-shadow: 1px 1px 2px rgba(0,0,0,0.8);
+}
+
+</style>
+<style id="im-pc-style">
+  body.im-pc #b4{opacity:1!important;pointer-events:auto!important;display:block!important;}
+  body.im-pc .bild:not(#b4){display:none!important;}
+  body.im-pc .marke{display:none!important;}
+</style>
+</head>
+<body>
+<div id="kino-frame">
+
+<!-- 0 ZUGANG -->
+<section class="bild an" id="b0">
+  <div class="punkte"></div>
+  <div class="graffiti">BLUSTERS!</div>
+  <div style="position:relative;z-index:2">
+    <div class="mark">ISSO.TV</div>
+    <div class="sub" id="untertitel">VERZWEIFLUNGSSIMULATOR PROTOTYP</div>
+    <form id="tor" autocomplete="off">
+      <input type="text" id="pw" maxlength="10" placeholder="ISSO.TV">
+      <button type="submit">Start</button>
+    </form>
+    <div class="warnt">
+      <b>⚠ Passwortgeschützt · mit Alarm</b>
+      Ohne Kennung geht hier nichts. Nach mehreren Fehlversuchen ertönt ein
+      lautes Signal und der Zugang wird gesperrt — die Sperre verdoppelt sich
+      jedes Mal. <b>Ton vorher leiser stellen.</b> Der Schalter unten rechts
+      stellt ihn ganz ab.
+    </div>
+    <div class="err" id="pw-err" style="display:none">Passwort inkorrekt</div>
+    <div class="abwehr" id="abwehr" hidden>
+      <b>IRONMIND · ZUTRITT VERWEIGERT</b>
+      <span id="abwehr-txt"></span>
+    </div>
+  </div>
+</section>
+
+<!-- 1 NACHT -->
+<section class="bild" id="b1">
+  <div>
+    <div class="uhr" id="uhr">03:41</div>
+    <div class="txt" id="gedanke">Du liegst wach.</div>
+    <div class="in"><button class="k grau" id="schlaf">
+      <kbd>⎵</kbd><span class="t"><u>Augen zu</u><em>nochmal versuchen</em></span><span class="p">schlafen</span>
+    </button></div>
+  </div>
+</section>
+
+<!-- 2 RAUM -->
+<section class="bild" id="b2">
+ <div class="welt" id="welt">
+  <svg viewBox="0 0 1200 700" preserveAspectRatio="xMidYMid slice">
+    <rect width="1200" height="700" fill="#1a1040"/>
+    <rect x="52" y="96" width="196" height="250" fill="#0f2a52"/>
+    <g fill="#ffd21e" opacity=".85">
+      <rect x="74" y="252" width="9" height="12"/><rect x="100" y="234" width="8" height="10"/>
+      <rect x="124" y="266" width="9" height="9"/><rect x="150" y="242" width="8" height="13"/>
+      <rect x="176" y="272" width="9" height="10"/><rect x="202" y="250" width="8" height="11"/>
+    </g>
+    <g stroke="#0d0d0d" stroke-width="7" fill="none">
+      <rect x="52" y="96" width="196" height="250"/><line x1="150" y1="96" x2="150" y2="346"/>
+    </g>
+    <ellipse cx="1064" cy="250" rx="180" ry="180" fill="#ff7a18" opacity=".16"/>
+    <g stroke="#0d0d0d" stroke-width="7" stroke-linejoin="round">
+      <path d="M1032 248 L1096 248 L1082 206 L1046 206 Z" fill="#ff7a18"/>
+      <rect x="1060" y="248" width="8" height="200" fill="#0d0d0d"/>
+      <rect x="398" y="452" width="404" height="16" fill="#7b2ff7"/>
+      <rect x="422" y="468" width="12" height="120" fill="#5a1fb8"/>
+      <rect x="766" y="468" width="12" height="120" fill="#5a1fb8"/>
+      <rect x="536" y="372" width="128" height="86" rx="6" fill="#14161c"/>
+      <rect x="550" y="386" width="100" height="58" fill="#20242c"/>
+      <path d="M0 700 L0 630 Q0 606 30 606 L318 606 Q348 606 348 630 L348 700 Z" fill="#7ed321"/>
+      <!-- Wohnungstür -->
+      <rect x="852" y="180" width="150" height="360" fill="#5a1fb8"/>
+      <rect x="866" y="196" width="122" height="150" fill="#3d1180"/>
+      <rect x="866" y="366" width="122" height="158" fill="#3d1180"/>
+      <circle cx="972" cy="372" r="11" fill="#ffd21e"/>
+    </g>
+    <rect x="0" y="590" width="1200" height="110" fill="#120b2e"/>
+  </svg>
+ </div>
+ <div class="marker" id="marker">▼</div>
+ <div class="haende" id="haende">
+  <div class="hand l"><svg viewBox="0 0 300 250">
+    <g stroke="#0d0d0d" stroke-width="11" stroke-linejoin="round" stroke-linecap="round" fill="#f0a878">
+     <path d="M18 250 L14 168 Q12 118 74 106 L160 90 Q214 80 232 116 L252 158 Q272 200 250 250 Z"/>
+     <path d="M158 92 Q150 30 184 26 Q216 22 216 82 L214 112"/>
+     <path d="M196 88 Q194 28 228 28 Q260 30 252 88 L246 118"/>
+     <path d="M232 102 Q240 52 270 58 Q296 64 282 116 L272 144"/>
+     <path d="M70 112 Q34 76 58 54 Q84 34 106 78 L118 108"/>
+    </g>
+    <g fill="none" stroke="#c98156" stroke-width="6" stroke-linecap="round" opacity=".8">
+     <path d="M96 176 Q150 162 206 178"/><path d="M104 208 Q152 196 200 210"/></g>
+  </svg></div>
+  <div class="hand r"><svg viewBox="0 0 300 250">
+    <g stroke="#0d0d0d" stroke-width="11" stroke-linejoin="round" stroke-linecap="round" fill="#f0a878">
+     <path d="M18 250 L14 168 Q12 118 74 106 L160 90 Q214 80 232 116 L252 158 Q272 200 250 250 Z"/>
+     <path d="M158 92 Q150 30 184 26 Q216 22 216 82 L214 112"/>
+     <path d="M196 88 Q194 28 228 28 Q260 30 252 88 L246 118"/>
+     <path d="M232 102 Q240 52 270 58 Q296 64 282 116 L272 144"/>
+     <path d="M70 112 Q34 76 58 54 Q84 34 106 78 L118 108"/>
+    </g>
+    <g fill="none" stroke="#c98156" stroke-width="6" stroke-linecap="round" opacity=".8">
+     <path d="M96 176 Q150 162 206 178"/><path d="M104 208 Q152 196 200 210"/></g>
+  </svg></div>
+ </div>
+ <div class="hint" id="hint">W vor · A/D drehen · Maus umsehen</div>
+</section>
+
+<!-- 3 KENNUNG -->
+<section class="bild" id="b3"><h1>ISSO<small>.TV</small></h1></section>
+
+<!-- 4 DESKTOP -->
+<section class="bild" id="b4"><div class="punkte"></div>
+  <div class="icons" id="icons">
+    <button class="icon sel" data-auf="spiel">
+      <svg viewBox="0 0 40 40"><rect x="4" y="6" width="32" height="24" rx="3" fill="#ff3ea5" stroke="#0d0d0d" stroke-width="3"/><rect x="9" y="11" width="22" height="14" fill="#fff3d6"/><rect x="15" y="31" width="10" height="4" fill="#0d0d0d"/></svg>
+      <span>353L.exe</span></button>
+    <button class="icon" data-auf="plan">
+      <svg viewBox="0 0 40 40"><rect x="7" y="6" width="26" height="28" fill="#fff3d6" stroke="#0d0d0d" stroke-width="3"/><rect x="12" y="13" width="16" height="3" fill="#29b6f6"/><rect x="12" y="20" width="16" height="3" fill="#29b6f6"/><rect x="12" y="27" width="10" height="3" fill="#29b6f6"/></svg>
+      <span>plan.txt</span></button>
+    <button class="icon" data-auf="rechnungen">
+      <svg viewBox="0 0 40 40"><rect x="8" y="5" width="24" height="30" fill="#fff3d6" stroke="#0d0d0d" stroke-width="3"/><rect x="13" y="12" width="14" height="3" fill="#ff2e4c"/><rect x="13" y="19" width="14" height="3" fill="#ff2e4c"/><rect x="13" y="26" width="9" height="3" fill="#ff2e4c"/></svg>
+      <span>Rechnungen</span></button>
+    <button class="icon" data-auf="buch">
+      <svg viewBox="0 0 40 40"><rect x="6" y="5" width="28" height="30" fill="#7ed321" stroke="#0d0d0d" stroke-width="3"/><rect x="11" y="11" width="18" height="3" fill="#0d0d0d"/><rect x="11" y="18" width="18" height="3" fill="#0d0d0d"/><rect x="11" y="25" width="11" height="3" fill="#0d0d0d"/></svg>
+      <span>haushalt.exe</span></button>
+    <button class="icon" data-auf="strasse">
+      <svg viewBox="0 0 40 40"><path d="M5 20 L20 7 L35 20 L30 20 L30 34 L10 34 L10 20 Z" fill="#7ed321" stroke="#0d0d0d" stroke-width="3" stroke-linejoin="round"/></svg>
+      <span>Bunkerstraße</span></button>
+    <button class="icon" data-auf="netzwerk">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 20V10M18 20V4M6 20v-4M2 20h20"></path><circle cx="12" cy="10" r="2"></circle><circle cx="18" cy="4" r="2"></circle><circle cx="6" cy="16" r="2"></circle></svg>
+      <span>NETZWERK</span>
+    </button>
+    <button class="icon" data-auf="strohhalm">
+      <svg viewBox="0 0 24 24" fill="none" stroke="var(--rot)" stroke-width="2"><line x1="12" y1="2" x2="12" y2="22"></line><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path></svg>
+      <span>STROHHALM</span>
+    </button>
+    <button class="icon" data-auf="3dworld">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="12 2 22 8.5 22 15.5 12 22 2 15.5 2 8.5 12 2"></polygon><line x1="12" y1="22" x2="12" y2="15.5"></line><polyline points="22 8.5 12 15.5 2 8.5"></polyline><polyline points="2 15.5 12 8.5 22 15.5"></polyline><line x1="12" y1="2" x2="12" y2="8.5"></line></svg>
+      <span>3D WORLD</span>
+    </button>
+    <button class="icon" data-auf="spende">
+      <svg viewBox="0 0 24 24" fill="none" stroke="var(--gelb)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.8 4.6a5.5 5.5 0 0 0-7.8 0L12 5.7l-1-1.1a5.5 5.5 0 0 0-7.8 7.8l1.1 1L12 21l7.7-7.6 1.1-1a5.5 5.5 0 0 0 0-7.8z"></path></svg>
+      <span>unterstuetzen</span>
+    </button>
+    <button class="icon" data-auf="mitbewohner">
+      <svg viewBox="0 0 24 24" fill="none" stroke="var(--cyan)" stroke-width="2"><circle cx="12" cy="7" r="4"></circle><path d="M5.5 21v-2a4 4 0 0 1 4-4h5a4 4 0 0 1 4 4v2"></path></svg>
+      <span>Mitbewohner</span>
+    </button>
+  </div>
+  <div class="leiste">
+    <button class="schloss" id="tuer-schloss" title="Tür abschließen" style="background:none;border:none;cursor:pointer;padding:0 10px;margin-right:auto;display:flex;align-items:center;">
+      <svg id="schloss-icon" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="var(--rot)" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>
+      <span id="schloss-text" style="margin-left:7px;font-family:var(--mono);font-size:11px;letter-spacing:.08em;color:var(--gelb)">Tür: offen</span>
+    </button>
+    <span class="s">ISSO</span>
+    <button class="raus" id="aufstehen">◀ Aufstehen</button>
+    <span class="u" id="deskuhr">--:--:--</span>
+  </div>
+  <div class="fenster" id="fenster"></div>
+</section>
+
+<!-- 5 COMIC -->
+<section class="bild" id="b5"><div id="comic"></div></section>
+
+<!-- 6 BERUF -->
+<section class="bild" id="b6"><div class="punkte"></div>
+  <div class="spalte" style="max-width:560px">
+    <div class="karte">
+      <h2>Wer bist du hier?</h2>
+      <p class="lead">Such dir einen Namen. 5 bis 13 Buchstaben. Ab da läuft dein Leben
+        auf ISSO.TV — und jeder hat seinen eigenen.</p>
+      <input id="spielername" class="namensfeld" maxlength="13" spellcheck="false"
+             autocomplete="off" placeholder="DEIN NAME" aria-label="Dein Name">
+      <div class="namensfehler" id="namensfehler">5 bis 13 Buchstaben</div>
+
+      <h2 style="margin-top:22px">Wovon lebst du gerade?</h2>
+      <p class="lead">Ist nur der Anfang. Jobs kann man wechseln, verlieren und neu lernen —
+        genau darum geht es.</p>
+      <div id="berufe" style="display:grid;gap:10px"></div>
+    </div>
+  </div>
+</section>
+
+<!-- 7 SPIEL -->
+<section class="bild" id="b7"><div class="punkte"></div>
+  <div class="spalte">
+    <div id="ende"></div>
+    <div class="karte">
+      <div class="kopfz">
+        <span class="chip" id="cName" style="background:var(--pink);color:#fff">—</span>
+        <span class="chip" id="cWoche">Woche 1</span>
+        <span class="chip" id="cJob" style="background:var(--cyan)">—</span>
+        <span class="chip geld" id="cGeld">—</span>
+        <span class="nerv" id="cNerv"></span>
+      </div>
+      <div class="fix" id="cFix"></div>
+      <div class="waage">
+        <i class="r" id="lRot">Richkid</i>
+        <div class="bahn"><div class="knopf" id="kn"></div></div>
+        <i class="b" id="lBlau">Worklife</i>
+      </div>
+      <div class="strasse" id="strasse"></div>
+      <div id="joker"></div>
+    </div>
+    <div id="folge"></div>
+    <div class="karte"><div class="szenenbild" id="szenenbild"></div><div id="text"></div><div id="wahl"></div></div>
+  </div>
+</section>
+
+<!-- 8 NETZWERK -->
+<section class="bild" id="b8">
+  <canvas id="cNet"></canvas>
+  <div class="net-ui">
+    <div class="net-kopf">
+      <div class="net-stadt">
+        HUB: 
+        <select id="stadt-wahl">
+          <option value="none">-- VERBINDEN --</option>
+          <option value="Berlin">Berlin (3.7M)</option>
+          <option value="Hamburg">Hamburg (1.8M)</option>
+          <option value="Muenchen">München (1.5M)</option>
+          <option value="Koeln">Köln (1.0M)</option>
+          <option value="Frankfurt">Frankfurt (760k)</option>
+        </select>
+      </div>
+      <button id="net-raus">TRENNEN</button>
+    </div>
+    <div class="chat-kasten" id="chat-feed">
+      <div class="chat-msg"><span class="user">SYSTEM</span><span class="text">Warte auf Hub-Auswahl...</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- 9 MINIGAME -->
+<section class="bild" id="b9"><div class="punkte"></div>
+  <div id="mg-ui">
+    <div class="mg-kopf"><span>Fokus-Sortierer</span><span id="mg-time">10.0</span></div>
+    <div class="mg-track" id="mg-track"></div>
+    <div class="mg-controls">
+      <!-- (A) und (D) stecken in .taste und verschwinden auf Tippgeräten:
+           Die Knöpfe funktionieren dort durch Antippen, die Tastennamen wären
+           nur eine Anleitung für eine Tastatur, die es nicht gibt. -->
+      <button class="mg-btn l" id="mg-btn-l">◀ TRASH <span class="taste">(A)</span></button>
+      <button class="mg-btn r" id="mg-btn-r">KEEP <span class="taste">(D)</span> ▶</button>
+    </div>
+    <div class="mg-msg" id="mg-msg"></div>
+  </div>
+</section>
+
+<!-- 10 3DWORLD -->
+<section class="bild" id="b10">
+  <div class="strasse" id="str-raum">
+    <div class="str-bg"></div>
+    <div class="str-lauf" id="str-lauf">
+      <div class="str-asphalt" id="str-asphalt"></div>
+      <div class="str-boden"></div>
+      <div class="haus-l">
+        <div class="blick" style="top:30%; left:70%;" id="bl1"></div>
+        <div class="blick" style="top:70%; left:50%;" id="bl2"></div>
+      </div>
+      <div class="haus-r">
+        <div class="blick" style="top:40%; left:10%;" id="bl3"></div>
+        <div class="blick" style="top:80%; left:30%;" id="bl4"></div>
+      </div>
+    </div>
+  </div>
+  <div class="str-beine" id="str-beine"><i class="a"></i><i class="b"></i></div>
+  <div class="str-figur" id="str-figur">
+    <span class="arm l"></span><span class="arm r"></span>
+    <span class="bein l"></span><span class="bein r"></span>
+    <span class="rumpf"></span><span class="kopf"></span>
+  </div>
+  <button class="p-schalt" id="p-schalt" type="button">Ansicht: Ego · V</button>
+  <div class="str-schritt" id="str-schritt">W A S D — laufen · E — hingehen</div>
+  <div class="str-hint" id="str-warn">Schiefe Blicke...</div>
+  <div class="str-ort" id="str-ort"></div>
+  <div class="str-ui">
+    <button class="k rot" onclick="weltSchliessen()">ZURÜCK ZUM DESKTOP</button>
+    <div id="str-konto" style="color:var(--gelb); font-family:var(--mono); font-size:18px; text-shadow:0 0 10px var(--gelb);"></div>
+  </div>
+</section>
+
+<div class="gott-schild" id="gott-schild" hidden>GODMODE AN — du gehst nicht mehr drauf</div>
+
+<button class="ton-schalt" id="ruhe-schalt" type="button" aria-pressed="false"
+        style="right:104px;top:8px">Bild: flimmert</button>
+<button class="ton-schalt" id="ton-schalt" type="button" aria-pressed="false">Ton: an</button>
+
+<div class="marke">ISSO.TV — 353L.EXE · © CHRISTOPH LEWANDOWSKI 2026 ·
+  <a href="impressum.html">Impressum</a> · <a href="datenschutz.html">Datenschutz</a> ·
+  <a href="https://s7v3n.com">S7V3N</a> · <a href="https://eytonland.com">EyTonLand</a></div>
+
+<div id="gedanken"><span></span></div>
+</div>
+<script>
+(function(){
+'use strict';
+const $=id=>document.getElementById(id);
+let bild='b0';
+
+let gedankenTimer = null;
+let idleTimer = null;
+window.denke = function(text, farbe='#fff') {
+  const g = document.getElementById('gedanken');
+  const span = g.querySelector('span');
+  span.textContent = text;
+  span.style.color = farbe;
+  g.classList.add('show');
+  clearTimeout(gedankenTimer);
+  gedankenTimer = setTimeout(() => {
+    g.classList.remove('show');
+  }, 4000);
+};
+
+// Reset Idle Timer on click/mousemove
+document.addEventListener('pointerdown', () => {
+  clearTimeout(idleTimer);
+  idleTimer = setTimeout(() => {
+    const idleGedanken = [
+      "Alle denken, ich bin Rapper. Dabei will ich zu den 777ern, den Mächtigsten auf Erde-1.",
+      "Die 777er sind die Gefährlichsten überhaupt. Und ich? Ich bin der Freund selbst. Was stimmt nicht mit mir?",
+      "Die verfeindeten Banden... und ich stehe dazwischen und helfe einfach Menschen. Was stimmt nicht mit mir?",
+      /* Die Schnapszahlen. Auf Erde-1 sortiert sich alles nach ihnen —
+         das ist abstrakter als irgendein Rockerclub und passt besser
+         zu einer Welt, in der die Zeit der Server ist. */
+      "Bei den 333ern wiederholt sich alles. Jede Woche dieselbe Woche. Manche merken es nie.",
+      "Die 444er kennt keiner. Deshalb heißen sie so. Angeblich sind sie überall.",
+      "Die 666er nennen sich Satanisten. Ob sie's glauben, weiß keiner — Angst machen sie trotzdem.",
+      "Vier Zahlen, vier Türen. Ich stehe vor allen vieren und keine geht auf.",
+      "Niemand darf von den Pillen wissen. Mein kleines Geheimnis.",
+      "Sie beobachten mich.",
+      "Ich kenne von den 777ern niemanden persönlich. Aber ich würde alles für die Jungs tun. Alles.",
+      "Ich gehe einfach direkt zum Clubhaus. 'Stecht mir eine 777 auf die Brust', werde ich sagen.",
+      "Noch bin ich Fußgänger. Aber wenn ich die Maschine hab, respektieren die mich.",
+      "Es ist nicht immer leicht, aber ich bin an der Sache dran.",
+      "Sie beobachten mich.",
+      "Was mache ich hier eigentlich mit meinem Leben?",
+      "Manchmal gehe ich auf Socken am Bahnhof über Scherben. Um etwas zu spüren.",
+      "Die Halluzinationen stören im Alltag nicht. Sie lassen mich nur anders handeln als die normalen 353Ls.",
+      "Ein Emu wäre jetzt nicht schlecht...",
+      "Ich sollte mal wieder auf den Kontostand schauen.",
+      "Immer dieser Stress...",
+      "TA$CH€N schläft nie."
+    ];
+    denke(idleGedanken[Math.floor(Math.random()*idleGedanken.length)], '#aaa');
+  }, 30000); // 30 seconds idle
+});
+
+
+/* Tippgerät oder Tastatur? Das Spiel funktioniert auf beiden — nur die Anleitungen
+   auf dem Bildschirm passten bisher immer nur zur Tastatur. Auf dem Handy stand
+   "W vor · A/D drehen · Maus umsehen", also drei Dinge, die es dort nicht gibt.
+   Geprüft wird die Zeigergenauigkeit, nicht die Bildschirmbreite: ein Tablet mit
+   Tastatur soll die Tastenhinweise behalten, ein schmales Fenster am Monitor auch. */
+const TIPPGERAET = window.matchMedia
+  ? window.matchMedia('(hover: none) and (pointer: coarse)').matches
+  : ('ontouchstart' in window);
+
+/* Die feste Zeile über der 3D-Ansicht steht im HTML auf Tastatur. Auf einem
+   Tippgerät wird sie hier einmal überschrieben — das div existiert schon,
+   das Skript steht darunter. */
+if (TIPPGERAET) {
+  const h0 = document.getElementById('hint');
+  if (h0) h0.textContent = 'Tippen — dahin gehen';
+}
+
+/* ---- FLIMMERN ----
+   Der CRT-Glitch lief bei jedem Bildwechsel und auf der Straße zusätzlich
+   jede Sekunde mit 20 %. Das fühlt sich an, als würde man dauernd Schläge
+   kassieren — vor allem, weil dahinter gar keine Mechanik lag (siehe der
+   Phantom-Zähler S.nerv weiter unten). Alles Zucken läuft jetzt hier durch,
+   damit man es an einer Stelle abstellen kann. */
+/* Ruhig ist der STANDARD. Das Zucken war als Stimmung gedacht und kam als
+   Dauerbeschuss an — der Bildschirm schlug bei jedem Bildwechsel zu.
+   Wer das Flackern will, schaltet es an; niemand muss es wegdrücken.
+   Nur ein ausdrückliches "aus" im Speicher macht es wieder unruhig. */
+let ruhig=true;
+try{ if(localStorage.getItem('isso.tv.ruhe')==='aus') ruhig=false; }catch(e){}
+
+function flimmer(){
+  if(ruhig) return;
+  document.body.classList.remove('glitch-anim');
+  void document.body.offsetWidth;
+  document.body.classList.add('glitch-anim');
+}
+function ruheSchalten(){
+  ruhig=!ruhig;
+  try{ localStorage.setItem('isso.tv.ruhe', ruhig?'an':'aus'); }catch(e){}
+  if(ruhig) document.body.classList.remove('glitch-anim');
+  document.body.classList.toggle('ruhig',ruhig);
+  const b=$('ruhe-schalt');
+  if(b){ b.textContent = ruhig?'Bild: ruhig':'Bild: flimmert';
+         b.setAttribute('aria-pressed', ruhig?'true':'false'); }
+  /* Der Ton hängt mit dran: ohne Bildwackeln auch kein Glitch-Geräusch.
+     Sonst hört man den Schlag, den man nicht mehr sieht. */
+}
+function zeig(id){
+  document.querySelectorAll('.bild').forEach(s=>s.classList.toggle('an',s.id===id));
+  bild=id; window.focus();
+  document.body.classList.toggle('desktop', id==='b4');
+  flimmer();
+  if(typeof window.sfxGlitch==='function') window.sfxGlitch();
+}
+
+/* ========== ZUGANG ========== */
+const SALT='isso.tv/kanal/', KEY='isso.tv.kanal';
+const WANT='041c7f58e0c844bbb3e659bc4b364e4ef666fe40dfe2c2d9e5fc0cef5993af50';
+async function hash(v){
+  const b=await crypto.subtle.digest('SHA-256',new TextEncoder().encode(SALT+v.trim().toUpperCase()));
+  return [...new Uint8Array(b)].map(x=>x.toString(16).padStart(2,'0')).join('');
+}
+try{ if(localStorage.getItem(KEY)===WANT) zeig('b1'); }catch(e){}
+/* IM-WELT-PC (ISSO.TV OS in Strammburg): mit ?boot=desktop sitzt 353L an
+   SEINEM Rechner - kein Passwort, kein Zimmer, kein Comic. Hart auf den
+   Desktop, und per Klasse erzwingen wir, dass NUR der Desktop sichtbar ist. */
+try{ if(new URLSearchParams(location.search).get('boot')==='desktop'){
+  document.body.classList.add('im-pc');
+  const forceDesk=()=>{ try{ zeig('b4'); if(typeof deskUhr==='function') deskUhr(); }catch(e){} };
+  forceDesk();
+  window.addEventListener('load', forceDesk);
+} }catch(e){}
+/* Das Tor wird zäh, je öfter man dagegenläuft: 3 s, 6 s, 12 s, 24 s … bis
+   fünf Minuten. Wer sich vertippt, wartet einmal kurz. Wer Kennungen
+   durchprobiert, kommt auf ein paar Versuche pro Stunde — und das merkt
+   auch, wer den Ton längst stummgeschaltet hat. */
+let fehlversuche=0, torFrei=0;
+function sperreTor(){
+  if(fehlversuche<2) return;
+  const s=Math.min(300, 3*Math.pow(2,fehlversuche-2));
+  torFrei=Date.now()+s*1000;
+  const b=$('tor').querySelector('button[type="submit"],button:not([type])');
+  const zeig=()=>{
+    const rest=Math.ceil((torFrei-Date.now())/1000);
+    const wand=$('abwehr'), txt=$('abwehr-txt');
+    if(rest<=0){
+      if(b){ b.disabled=false; b.textContent=b.dataset.txt||'REIN'; }
+      if(wand) wand.hidden=true;
+      return;
+    }
+    if(b){ if(!b.dataset.txt) b.dataset.txt=b.textContent;
+           b.disabled=true; b.textContent='GESPERRT · '+rest+' s'; }
+    if(wand && txt){
+      wand.hidden=false;
+      txt.innerHTML='Kennung '+fehlversuche+' mal falsch. Das Tor bleibt '+rest+
+        ' Sekunden zu, und beim nächsten Mal doppelt so lang.<br><br>'+
+        'Hier wird nichts mitgeschrieben und nichts zurückgeschickt. '+
+        'Es geht hier nur nicht weiter.';
+    }
+    setTimeout(zeig,250);
+  };
+  zeig();
+}
+$('tor').addEventListener('submit',async e=>{
+  e.preventDefault();
+  if(Date.now()<torFrei) return;              // Sperre läuft noch
+  let d=null; try{ d=await hash($('pw').value); }catch(x){}
+  const val = $('pw').value.trim().toUpperCase();
+  if(d===WANT || val === 'MBC' || val === 'EMBCE'){ try{localStorage.setItem(KEY,WANT);}catch(x){} zeig('b1'); }
+  else{ $('b0').classList.add('bad'); $('pw').value=''; $('pw').focus();
+        /* Wer hier fremd ist, kriegt den Ton. Der gehörte vorher ans normale
+           Monitor-Einschalten und traf damit jeden — jetzt trifft er den,
+           der es ohne Kennung versucht. Ab dem dritten Fehlversuch, damit
+           ein Vertipper nicht gleich pfeift. */
+        fehlversuche++;
+        if(fehlversuche>=3 && typeof window.sfxAbwehr==='function') window.sfxAbwehr();
+        setTimeout(()=>$('b0').classList.remove('bad'),1400);
+        sperreTor(); }
+});
+if(bild==='b0') $('pw').focus();
+
+/* ========== NACHT ========== */
+const GED=['Du denkst an das Geld auf dem Konto.',
+           'Du denkst an den Zettel auf dem Schreibtisch.',
+           'Du denkst an den Typen von der Kneipentür.'];
+const UHR=['03:52','04:09','04:31'];
+let vs=0;
+function schlafen(){
+  if(bild!=='b1') return;
+  if(vs>=GED.length){ zeig('b2'); losRaum(); return; }
+  $('b1').classList.add('zu'); $('gedanke').classList.add('weg');
+  setTimeout(()=>{
+    $('uhr').textContent=UHR[vs]; $('gedanke').textContent=GED[vs];
+    $('gedanke').classList.remove('weg'); vs++;
+    if(vs>=GED.length){
+      $('b1').classList.add('spaet');
+      const b=$('schlaf'); b.style.background='var(--gelb)';
+      b.querySelector('u').textContent='Aufstehen';
+      b.querySelector('em').textContent='es hat keinen Zweck';
+      b.querySelector('.p').textContent='zum Rechner';
+    }
+  },560);
+  setTimeout(()=>$('b1').classList.remove('zu'),1420);
+}
+$('schlaf').addEventListener('click',schlafen);
+
+/* ========== RAUM ========== */
+const welt=$('welt'), haende=$('haende'), hint=$('hint'), marker=$('marker');
+let dreh=-26, vor=0, bob=0, tast={}, tickt=false;
+const klemm=(v,a,b)=>Math.max(a,Math.min(b,v));
+function stell(){
+  welt.style.transform='translateX('+(-dreh*.5).toFixed(2)+'%) scale('+(1+vor*1.4).toFixed(3)+')';
+  haende.style.transform='translateY('+(Math.sin(bob)*1.5+(1-vor)*5).toFixed(2)+'%)';
+  marker.style.left=(50-dreh*.42)+'%';
+}
+const nah=()=>Math.abs(dreh)<20 && vor>.72;
+/* Die Wohnungstür liegt rechts. Man muss sich wegdrehen vom Schreibtisch. */
+const anDerTuer=()=>dreh>62;
+let draussenVon='desktop';
+function losRaum(){ dreh=-26; vor=0; bob=0; stell(); if(!tickt){tickt=true;requestAnimationFrame(tick);} }
+function tick(){
+  if(bild==='b2'){
+    let dd=0,dv=0;
+    if(tast.a||tast.arrowleft) dd-=1.15;
+    if(tast.d||tast.arrowright) dd+=1.15;
+    if(tast.w||tast.arrowup) dv+=.012;
+    if(tast.s||tast.arrowdown) dv-=.012;
+    if(dd||dv){ dreh=klemm(dreh+dd,-100,100); vor=klemm(vor+dv,0,1); bob+=.22; stell(); }
+    const n=nah(), t=anDerTuer();
+    hint.classList.toggle('nah', n||t);
+    /* Auf dem Handy stand hier "W — geh hin" und "A / D — Schreibtisch links, Tür
+       rechts". Tasten, die ein Telefon nicht hat. Dabei funktionierte Tippen die
+       ganze Zeit (siehe den click-Handler auf #b2): ein Tipp dreht dich dorthin UND
+       macht einen Schritt. Das Spiel war auf dem Handy nie kaputt — es hat nur eine
+       Steuerung angesagt, die es dort nicht gibt. */
+    hint.textContent = TIPPGERAET
+      ? (n ? 'Tippen — Monitor einschalten'
+        : t ? 'Tippen — raus auf die Straße'
+        : 'Tippen — dahin gehen')
+      : (n ? 'E oder Klick — Monitor einschalten'
+        : t ? 'E — raus auf die Straße'
+        : (Math.abs(dreh)>=20 ? 'A / D — Schreibtisch links, Tür rechts' : 'W — geh hin'));
+    marker.classList.toggle('aus', n||t);
+  }
+  requestAnimationFrame(tick);
+}
+$('b2').addEventListener('mousemove',ev=>{
+  if(bild!=='b2') return;
+  const r=$('b2').getBoundingClientRect();
+  dreh=klemm(((ev.clientX-r.left)/r.width-.5)*150,-100,100); stell();
+});
+/* Raus auf die Straße. Dein Haus steht zwischen den Blocks. */
+function rausgehen(){
+  draussenVon='raum';
+  const b=document.querySelector('#b10 .str-ui .k');
+  if(b) b.textContent='◀ ZURÜCK INS HAUS';
+  const o=$('str-ort');
+  if(o) o.innerHTML='<b>Bunkerstraße · Eitelstedt</b>'+
+    '<i>Dein Familienhaus steht zwischen den Blocks. Ein Zimmer gehört dir, '+
+    'eins dem Mitbewohner. Mehr brauchst du nicht — sagst du.</i>';
+  if(typeof window.weltOeffnen==='function') window.weltOeffnen();
+}
+
+$('b2').addEventListener('click',ev=>{
+  if(nah()){ anmachen(); return; }
+  if(anDerTuer()){ rausgehen(); return; }
+  const r=$('b2').getBoundingClientRect();
+  if(ev.clientX){ const z=klemm(((ev.clientX-r.left)/r.width-.5)*150,-100,100); dreh+=(z-dreh)*.6; }
+  else dreh+=(0-dreh)*.5;
+  vor=klemm(vor+.18,0,1); bob+=1; stell();
+});
+function anmachen(){ if(typeof window.sfxTurnOn==='function') window.sfxTurnOn(); zeig('b3'); setTimeout(()=>{ zeig('b4'); deskUhr(); },2300); }
+
+/* ========== DESKTOP ========== */
+const INFO={
+  plan:{t:'plan.txt',x:'Zwei Zeilen und eine Zahl.<br><br>Du weißt, dass es aufgeht. Angefangen hast du <b>nie</b>.'},
+  rechnungen:{t:'Rechnungen',x:'14 Dateien.<br><br>Du machst den Ordner wieder zu.'},
+  strasse:{t:'Bunkerstraße',x:'Eine Allee mit kleinen Betonhäusern. Ein <b>Homebunker</b> kostet 40 % von dem, was du hast, und geht sechs Wochen nicht auf.<br><br>Dafür kommt keiner rein. Auch er nicht.'}
+};
+let iSel=0;
+const icons=()=>[...document.querySelectorAll('#icons .icon')];
+const markiere=()=>icons().forEach((b,i)=>b.classList.toggle('sel',i===iSel));
+/* Der Rechner ist keine Einbahnstraße: aufstehen und zurück in den Raum. */
+function aufstehen(){ $('fenster').innerHTML=''; zeig('b2'); losRaum(); }
+$('aufstehen').addEventListener('click',aufstehen);
+
+
+const ZIMMER_ITEMS = [
+  {id:'rank1_rocker', name:'Kleines Zeichen (Arm)', preis:150, woche:1, desc:'Ein kleines 777er-Logo. Du darfst im Clubhaus fegen und Getränke holen. Schaltet "Hangaround"-AUFTRÄGE frei.'},
+  {id:'rank2_rocker', name:'Anwärter-Zeichen (Brust)', preis:350, woche:2, desc:'Du hast bewiesen, dass du dazugehörst. Du bist Anwärter. Schaltet "Kurierfahrten" frei.'},
+  {id:'rank3_rocker', name:'Die volle Zahl (Hals)', preis:600, woche:5, desc:'Vollwertiges Mitglied der 777er. Jetzt bist du gefährlich. (Vorbedingung für die Maschine)'},
+  {id:'rank4_rocker', name:'Enforcer-Rückenstück', preis:1500, woche:10, desc:'Du bist der fürs Grobe. Schaltet das Support Car (Mercedes AMG) und Enforcer-Missionen frei.'},
+  
+  {id:'rank1_rap', name:'Hand-Tattoo "MIC"', preis:150, woche:1, desc:'Erstes Tattoo für deinen Producer-Hustle. Schaltet die MPC-Beatmaschine frei.'},
+  {id:'rank2_rap', name:'Hals-Tattoo "NOTEN"', preis:350, woche:2, desc:'Du machst dir einen Namen. Schaltet erste Ghostwriting-AUFTRÄGE frei.'},
+  {id:'rank3_rap', name:'Face-Tattoo "BARS"', preis:600, woche:5, desc:'Der echte Rapper-Status. Du traust dich was. Schaltet "Beat Placements" frei.'},
+  {id:'rank4_rap', name:'Platin-Schallplatte', preis:1500, woche:10, desc:'Dein erster großer Durchbruch. Der Weg zur goldenen Kette ist frei.'},
+
+  {id:'eddy', name:'E-Scooter Eddy', preis:450, woche:2, desc:'Dein erstes Gefährt. Unterhalt: 5 €/Woche. (Benötigt Kleine Zeichen)'},
+  {id:'mpc', name:'Beat-Maschine', preis:450, woche:2, desc:'Produziere nachts eigene Beats. (Benötigt Hand-Tattoo)'},
+  {id:'harley', name:'Die Maschine', preis:18000, woche:10, desc:'Das Ticket in die Bruderschaft. Unterhalt: 50 €/Woche. (Benötigt die volle Zahl)'},
+  
+  {id:'cla', name:'Mercedes CLA AMG', preis:45000, woche:15, desc:'Metallic Grau. Das Support Car. Unterhalt: 150 €/Woche. (Benötigt Enforcer-Rückenstück)'},
+  {id:'kette', name:'Massive Goldkette', preis:45000, woche:15, desc:'Das Zeichen des Rap-Gottes. Zeig, dass du das Game übernommen hast. (Benötigt Platin-Schallplatte)'}
+];
+
+function kaufItem(id, preis) {
+  if (S.geld < preis) {
+    if(typeof window.denke==='function') window.denke('Dafür reicht das Geld nicht.', 'var(--rot)');
+    return;
+  }
+  
+  // Progression Logic & Mutual Exclusivity
+  const check = (req, msg) => {
+    if (!S.zimmer || !S.zimmer[req]) {
+      if(typeof window.denke==='function') window.denke(msg, 'var(--rot)');
+      return false;
+    }
+    return true;
+  };
+  const block = (req, msg) => {
+    if (S.zimmer && S.zimmer[req]) {
+      if(typeof window.denke==='function') window.denke(msg, 'var(--rot)');
+      return false;
+    }
+    return true;
+  };
+
+  const t = id;
+  // Sperren fuer den Weg der Zahlen
+  if (t.includes('rocker') || t === 'eddy' || t === 'harley' || t === 'cla') {
+    if (!block('rank1_rap', 'Du bist den Rap-Weg gegangen. Die Zahlen bleiben dir zu.')) return;
+  }
+  // Rap Path Blockers
+  if (t.includes('rap') || t === 'mpc' || t === 'kette') {
+    if (!block('rank1_rocker', 'Du bist den Weg der Zahlen gegangen. Rap ist vorbei.')) return;
+  }
+
+  // Rangfolge bei den Zahlen
+  if (t === 'rank2_rocker' && !check('rank1_rocker', 'Du brauchst erst das Kleines Zeichen (Arm).')) return;
+  if (t === 'rank3_rocker' && !check('rank2_rocker', 'Du brauchst erst das Anwärter-Zeichen (Brust).')) return;
+  if (t === 'rank4_rocker' && !check('rank3_rocker', 'Du brauchst erst das Die volle Zahl (Hals).')) return;
+  if (t === 'eddy' && !check('rank1_rocker', 'Du brauchst das Kleine Zeichen, um den Scooter auf den Straßen zu rechtfertigen.')) return;
+  if (t === 'harley' && !check('rank3_rocker', 'Nur wer die volle Zahl trägt, fährt die Maschine.')) return;
+  if (t === 'cla' && !check('rank4_rocker', 'Nur Enforcer dürfen das AMG Support Car fahren.')) return;
+
+  // Rap Rank Prerequisites
+  if (t === 'rank2_rap' && !check('rank1_rap', 'Du brauchst erst das Hand-Tattoo.')) return;
+  if (t === 'rank3_rap' && !check('rank2_rap', 'Du brauchst erst das Hals-Tattoo.')) return;
+  if (t === 'rank4_rap' && !check('rank3_rap', 'Du brauchst erst das Face-Tattoo.')) return;
+  if (t === 'mpc' && !check('rank1_rap', 'Du brauchst erst den Producer-Hustle (Hand-Tattoo).')) return;
+  if (t === 'kette' && !check('rank4_rap', 'Du brauchst erst die Platin-Schallplatte, bevor du den Boss markierst.')) return;
+
+  S.geld -= preis;
+  if (!S.zimmer) S.zimmer = {};
+  S.zimmer[id] = true;
+  
+  $('fenster').innerHTML = ''; // Close window
+  if(typeof window.denke==='function') window.denke('Gekauft. Der Rang ist gestiegen.', 'var(--gelb)');
+}
+
+function schwarzmarktAuf() {
+  if (!S.zimmer) S.zimmer = {};
+  let h = '<div class="kasten hb"><div class="kopf">schwarzmarkt.exe<button>×</button></div><div class="rumpf" style="padding:15px;max-height:60vh;overflow-y:auto;">';
+  h += '<p style="margin-top:0;"><strong>DEIN WEG: ENTSCHEIDE WEISE.</strong><br>Was du hier kaufst, bestimmt deine Zukunft. Gegenstücke blockieren sich gegenseitig!</p>';
+  
+  ZIMMER_ITEMS.forEach(it => {
+    if (S.woche < it.woche) return;
+    const hat = S.zimmer[it.id];
+    h += '<div style="background:#222; padding:10px; margin-bottom:10px; border:1px solid #444;">';
+    h += '<h3 style="margin:0; color:'+(hat?'#0f0':'#fff')+'">' + it.name + ' <span style="float:right;">' + eur(it.preis) + '</span></h3>';
+    h += '<p style="font-size:13px; color:#aaa; margin:5px 0;">' + it.desc + '</p>';
+    if (hat) {
+      h += '<button disabled style="background:#111; color:#0f0; border:1px solid #0f0; padding:5px 10px;">Gehört dir</button>';
+    } else {
+      h += '<button onclick="kaufItem(\''+it.id+'\', '+it.preis+')" style="background:var(--gelb); color:#000; border:none; padding:5px 10px; cursor:pointer;">Kaufen</button>';
+    }
+    h += '</div>';
+  });
+  
+  h += '</div></div>';
+  $('fenster').innerHTML = h;
+  $('fenster').querySelector('button').onclick=()=>$('fenster').innerHTML='';
+}
+
+function oeffne(was){
+  if(was==='spiel'){
+    if(spielLaeuft){ zeig('b7'); male(); return; }   // läuft schon -> weiterspielen
+    zeig('b5'); comicStart(); return;
+  }
+  if(was==='boerse'){ boerseAuf(); return; }
+  if(was==='schwarzmarkt'){ schwarzmarktAuf(); return; }
+  if(was==='s7v3n'){ s7v3nAuf(); return; }
+  if(was==='buch'){ haushaltAuf(); return; }
+  if(was==='spende'){ spendeAuf(); return; }
+  if(was==='netzwerk'){ netzwerkOeffnen(); return; }
+  if(was==='strohhalm'){ strohhalmAuf(); return; }
+  if(was==='3dworld'){ draussenVon='desktop'; weltOeffnen(); return; }
+  if(was==='mitbewohner'){ mitbewohnerAuf(); return; }
+  const f=INFO[was];
+  $('fenster').innerHTML='<div class="kasten"><div class="kopf">'+f.t+'<button>×</button></div><div class="rumpf">'+f.x+'</div></div>';
+  $('fenster').querySelector('button').onclick=()=>$('fenster').innerHTML='';
+}
+$('icons').addEventListener('click',ev=>{
+  const b=ev.target.closest('.icon'); if(!b) return;
+  iSel=icons().indexOf(b); markiere(); oeffne(b.dataset.auf);
+});
+/* Taskleiste zeigt deine Uhrzeit — es ist ja dein Rechner.
+   Die Weltuhr fürs Spiel bleibt UTC, damit alle dasselbe Blatt haben. */
+/* ---------- unterstuetzen ----------
+   Nur ein Link nach draussen. Kein eingebettetes Bezahl-Skript, keine Cookies,
+   kein Einwilligungsbanner noetig. Hier die eigene Seite eintragen
+   (Ko-fi, Buy Me a Coffee, PayPal.me, Liberapay …). Leer = Hinweis statt Knopf. */
+/* Ko-fi, eingerichtet am 09.08.2026. Vor dem Eintragen im Browser geprüft:
+   ko-fi.com/issotv antwortet mit "Support isso.tv" und hat einen Tip-Knopf.
+   Eine geratene Adresse käme hier nie rein — eine fremde Ko-fi-Seite würde das
+   Geld anderer Leute woanders hinschicken.
+
+   Leeren String eintragen ist jederzeit möglich: dann zeigt das Fenster wieder den
+   ehrlichen Hinweis statt eines Knopfes, nichts geht kaputt. */
+const SPENDE_URL = 'https://ko-fi.com/issotv';
+/* Hier standen mal feste Stufen (1,99 / 2,99 / 4,99, "gedeckelt bei 4,99") samt
+   PayPal-Sonderweg, der den Betrag an die Adresse haengte. Beides ist raus:
+   Der Besucher soll geben, was er will, und beim Anbieter drueben entscheidet er
+   das ohnehin selbst. Ein Knopf ohne Zahl ist bei jedem Anbieter die Wahrheit. */
+/* Unterstuetzer-Zeichen: rein kosmetisch, auf Ehrenbasis.
+   Ohne Server ist eine Pruefung nicht moeglich — deshalb gibt es
+   bewusst nichts zu holen ausser dem Zeichen selbst. */
+const SPKEY='isso.tv.danke';
+const unterstuetzer=()=>{ try{ return localStorage.getItem(SPKEY)==='1'; }catch(e){ return false; } };
+const dankeAn=v=>{ try{ v?localStorage.setItem(SPKEY,'1'):localStorage.removeItem(SPKEY); }catch(e){} };
+
+/* ---------- VIP ----------
+   Spenden geht ab 1 €, jeder Betrag ist willkommen. Wer spendet, ist VIP;
+   ab 10 € VIP1, ab 50 € VIP2, ab 100 € VIP3.
+
+   Die Seite kann NICHT sehen, ob jemand bezahlt hat — beim Klick auf den Link ist
+   der Besucher weg, und von drüben kommt nichts zurück. Deshalb Codes: Chris kriegt
+   die Zahlungsmail mit dem Betrag, schickt einen Code zurück, der Code trägt die
+   Stufe in sich, das Spiel rechnet die Prüfsumme nach.
+
+   Ehrlich zur Grenze: Das Geheimwort steht in diesem Quelltext. Wer ihn liest, kann
+   sich Codes bauen. Ohne Server ist das nicht zu verhindern — und ein VIP-Abzeichen
+   ist bewusst reine Zierde, damit Fälschen sich nicht lohnt. Am Spiel ändert es
+   nichts; niemand wird ausgesperrt, der nicht zahlt. */
+const VIPKEY='isso.tv.vip';
+const VIP_WORT='353L-ISSO-EITELSTEDT';
+const VIP_NAMEN={1:'VIP 1',2:'VIP 2',3:'VIP 3'};
+
+/* Kurze Prüfsumme aus Stufe + Geheimwort. Kein Sicherheitsanspruch, nur ein
+   Riegel gegen Raten: ISSO-2-XXXX lässt sich nicht einfach hinschreiben. */
+function vipPruef(stufe){
+  const s=String(stufe)+VIP_WORT;
+  let h=0x811c9dc5;
+  for(let i=0;i<s.length;i++){ h^=s.charCodeAt(i); h=Math.imul(h,0x01000193)>>>0; }
+  const z='ABCDEFGHJKLMNPQRSTUVWXYZ23456789';   // ohne I,O,0,1 — vorlesbar
+  let out='';
+  for(let i=0;i<4;i++){ out+=z[h%z.length]; h=Math.floor(h/z.length); }
+  return out;
+}
+const vipCode=stufe=>'ISSO-'+stufe+'-'+vipPruef(stufe);
+function vipPruefen(eingabe){
+  const t=String(eingabe||'').toUpperCase().replace(/\s+/g,'');
+  const m=t.match(/^ISSO-([0-3])-([A-Z2-9]{4})$/);
+  if(!m) return 0;
+  const stufe=+m[1];
+  return vipPruef(stufe)===m[2] ? stufe : 0;
+}
+const vipStufe=()=>{ try{ const v=+localStorage.getItem(VIPKEY); return (v>=0&&v<=3)?v:0; }catch(e){ return 0; } };
+const vipSetzen=s=>{ try{ s>0?localStorage.setItem(VIPKEY,String(s)):localStorage.removeItem(VIPKEY); }catch(e){} };
+
+function spendeAuf(){
+  const hat = SPENDE_URL && /^https:\/\//.test(SPENDE_URL);
+  $('fenster').innerHTML =
+    '<div class="kasten"><div class="kopf">unterstuetzen<button>×</button></div><div class="rumpf">'+
+      /* Der Text widersprach sich: oben stand "es gibt nichts freizuschalten", unten
+         steht ein Feld mit "CODE EINLÖSEN" und die Meldung "VIP 2 freigeschaltet".
+         Seit es das Abzeichen gibt, stimmt der alte Satz nicht mehr. Neu formuliert,
+         ohne die Aussage aufzuweichen: freigeschaltet wird ein ZEICHEN, kein Inhalt.
+         Am Spiel selbst ändert weiterhin nichts. */
+      /* Der Text war vorher nur eine Aufzählung von "nein": keine Werbung, kein Konto,
+         kein Vorteil. Alles wahr — aber niemand gibt Geld, weil eine Seite aufzählt,
+         was sie nicht tut. Es fehlte, WER das gebaut hat und WOFÜR das Geld ist.
+         Beides steht jetzt drin, und keine Zeile davon ist geschönt. */
+      '<p style="font-weight:700;margin-bottom:10px">ISSO.TV ist umsonst und bleibt umsonst.</p>'+
+      '<p>Das hier hat <b>eine Person</b> gebaut. Kein Team, kein Verlag, kein Geld '+
+      'dahinter — Abende und Nächte. Keine Werbung, kein Konto, keine Datensammlung. '+
+      'Und es bleibt so.</p>'+
+      '<p style="margin-top:10px">Wenn dich das Spiel eine Weile festgehalten hat, '+
+      'kannst du was dalassen. <b>Ab 1 €</b>, jeder Betrag. Musst du nicht — das Spiel '+
+      'ist vollständig, auch wenn du nie etwas gibst.</p>'+
+      '<p style="margin-top:10px;background:var(--gelb);border:3px solid var(--tinte);'+
+      'padding:10px 13px"><b>Wofür es draufgeht:</b> Als Nächstes soll man sein Zimmer '+
+      'einrichten können — Couch, Teppich, Poster an der Wand. Erspielbar für alle. '+
+      'Jeder Euro geht da rein.</p>'+
+      '<p style="margin-top:10px">Und du kriegst ein <b>Zeichen</b>: einen goldenen '+
+      'Rahmen um deinen Namen und ein <b>VIP-Abzeichen</b> daneben — ab 10 € VIP 1, '+
+      'ab 50 € VIP 2, ab 100 € VIP 3.</p>'+
+      '<p style="margin-top:10px;font-size:12.5px;opacity:.8;font-weight:400">Mehr ist es '+
+      'nicht, und das ist Absicht: <b>sichtbar, nicht stärker</b>. Keine Abkürzung, kein '+
+      'Inhalt, den andere nicht auch bekommen. Wer nichts gibt, verpasst nichts.</p>'+
+      (unterstuetzer()
+        ? '<div style="margin-top:14px;background:var(--gelb);border:3px solid var(--tinte);'+
+          'padding:10px 14px;font-family:var(--fett);font-size:12px">★ RAHMEN IST AN. DANKE.'+
+          ' <button id="spOff" style="float:right;background:none;border:0;'+
+          'font-family:var(--mono);font-size:11px;cursor:pointer;text-decoration:underline">aus</button></div>'
+        : '')+
+      /* EIN Knopf, kein Betrag. Vorher standen hier drei feste Stufen
+         (1,99 / 2,99 / 4,99, "vorerst gedeckelt bei 4,99"). Zwei Gründe, warum das
+         weg ist:
+         1. Chris' Entscheidung: der Nutzer soll geben, was er will.
+         2. Ehrlichkeit: Nur bei PayPal.me hängt der Betrag wirklich an der Adresse.
+            Bei Ko-fi, Liberapay und allen anderen führten alle drei Knöpfe auf
+            dieselbe Seite — drei verschiedene Zahlen, ein Ziel. Der Knopf hätte
+            etwas versprochen, was die Technik nicht deckt.
+         Ohne Betrag stimmt es bei jedem Anbieter: der Besucher entscheidet drüben. */
+      (hat
+        ? '<div style="margin-top:16px">'+
+          '<a class="k job" style="text-decoration:none" '+
+          'href="'+SPENDE_URL+'" target="_blank" rel="noopener noreferrer">'+
+          '<span class="t"><u>Was dalassen</u>'+
+          '<em>du entscheidest, wie viel</em></span></a></div>'+
+          '<p style="margin-top:10px;font-size:11.5px;opacity:.65;font-weight:400">'+
+          'Der Link führt zu einem anderen Anbieter. Dort gelten dessen Bedingungen '+
+          'und dessen Datenschutz — von hier geht nichts mit.</p>'
+        /* Fallback fuer Besucher, NICHT fuer mich. Hier stand vorher "In index.html bei
+           SPENDE_URL die eigene Seite eintragen" — eine Notiz an mich selbst, die jeder
+           gelesen hat, der auf "unterstuetzen" geklickt hat. Peinlich und unnoetig:
+           Wer spenden will, kann nichts dafuer, dass ich noch kein Konto habe. */
+        : '<div style="margin-top:16px;background:var(--gelb);border:3px solid var(--tinte);'+
+          'padding:12px 14px;font-size:13px">Gerade gibt es keinen Weg, was dazulassen — '+
+          'da ist noch nichts eingerichtet. Macht aber nichts: Das Spiel ist vollständig, '+
+          'dir fehlt nichts.</div>')+
+      /* Code einlösen. Steht auch da, wenn noch keine Spendenadresse eingetragen ist —
+         wer schon gespendet hat, soll sein Abzeichen auf einem zweiten Gerät nachtragen
+         können, ohne dass irgendwas anderes fertig sein muss. */
+      '<div style="margin-top:18px;border-top:3px solid var(--tinte);padding-top:14px">'+
+        '<p style="font-family:var(--fett);font-size:11.5px;letter-spacing:.12em;'+
+        'text-transform:uppercase;margin-bottom:6px">Code einlösen</p>'+
+        (vipStufe()>0
+          ? '<p style="font-size:12.5px;font-weight:400;margin-bottom:8px">Dein Abzeichen: '+
+            '<b>'+VIP_NAMEN[vipStufe()]+'</b>. Danke. '+
+            '<button id="vipAus" style="background:none;border:0;font-family:var(--mono);'+
+            'font-size:11px;cursor:pointer;text-decoration:underline">entfernen</button></p>'
+          : '<p style="font-size:12.5px;opacity:.75;font-weight:400;margin-bottom:8px">'+
+            'Nach der Spende bekommst du einen Code. Hier eintragen — er bleibt auf '+
+            'diesem Gerät gespeichert.</p>')+
+        '<div style="display:flex;gap:8px;flex-wrap:wrap">'+
+          '<input id="vipFeld" type="text" maxlength="14" autocomplete="off" spellcheck="false" '+
+          /* Vorher stand hier "ISSO-1-ABCD" — sah aus wie ein echter Code und lud zum
+             Abtippen ein. Jetzt zeigt es nur die Form, ohne einer zu sein. */
+          'placeholder="ISSO-…" style="flex:1;min-width:150px;font-family:var(--mono);'+
+          'font-size:14px;letter-spacing:.1em;text-transform:uppercase;padding:8px 10px;'+
+          'border:3px solid var(--tinte);background:var(--kreide)">'+
+          '<button id="vipLos" style="font-family:var(--fett);font-size:12px;letter-spacing:.1em;'+
+          'text-transform:uppercase;padding:8px 14px;border:3px solid var(--tinte);'+
+          'background:var(--gelb);cursor:pointer">Einlösen</button>'+
+        '</div>'+
+        '<div id="vipMsg" style="margin-top:8px;font-family:var(--fett);font-size:12px;'+
+        'letter-spacing:.06em;min-height:16px"></div>'+
+      '</div>'+
+    '</div></div>';
+  $('fenster').querySelector('.kopf button').onclick=()=>$('fenster').innerHTML='';
+  const aus=$('spOff');
+  if(aus) aus.onclick=()=>{ dankeAn(false); zeichneDanke(); spendeAuf(); };
+  $('fenster').querySelectorAll('a.k.job').forEach(a=>{
+    a.addEventListener('click',()=>{ dankeAn(true); setTimeout(()=>{ zeichneDanke(); spendeAuf(); },400); });
+  });
+
+  const feld=$('vipFeld'), los=$('vipLos'), msg=$('vipMsg'), weg=$('vipAus');
+  if(weg) weg.onclick=()=>{ vipSetzen(0); zeichneDanke(); spendeAuf(); };
+  function einloesen(){
+    const st=vipPruefen(feld.value);
+    if(st>0){
+      vipSetzen(st); dankeAn(true); zeichneDanke();
+      msg.style.color='var(--tinte)';
+      msg.textContent='★ '+VIP_NAMEN[st]+' freigeschaltet. Danke.';
+      setTimeout(spendeAuf,900);
+    } else {
+      msg.style.color='var(--rot)';
+      msg.textContent='Der Code passt nicht. Schreibweise prüfen.';
+    }
+  }
+  if(los) los.onclick=einloesen;
+  if(feld) feld.addEventListener('keydown',e=>{ if(e.key==='Enter'){ e.preventDefault(); einloesen(); } });
+}
+/* Rahmen und Abzeichen zusammen — beides hängt am selben Zustand. */
+function zeichneDanke(){
+  const c=$('cName'); if(!c) return;
+  c.classList.toggle('danke', unterstuetzer()||vipStufe()>0);
+}
+
+/* ---------- haushalt.exe ----------
+   Rechnet, berät nicht. Alles bleibt im Browser — nichts geht raus. */
+const HKEY='isso.tv.haushalt';
+function hLade(){
+  try{ return JSON.parse(localStorage.getItem(HKEY))||{ein:0,posten:[]}; }
+  catch(e){ return {ein:0,posten:[]}; }
+}
+function hSpeichern(d){ try{ localStorage.setItem(HKEY,JSON.stringify(d)); }catch(e){} }
+function haushaltAuf(){
+  const d=hLade();
+  const summe=d.posten.reduce((a,p)=>a+(+p.b||0),0);
+  const rest=(+d.ein||0)-summe;
+  const proW=rest/4.33, proT=rest/30.4;
+  const g=n=>(n<0?'−':'')+Math.abs(n).toLocaleString('de-DE',{minimumFractionDigits:2,maximumFractionDigits:2})+' €';
+  $('fenster').innerHTML=
+    '<div class="kasten hb"><div class="kopf">haushalt.exe<button>×</button></div><div class="rumpf">'+
+      '<label>Was kommt im Monat rein?</label>'+
+      '<input id="hEin" type="number" inputmode="decimal" value="'+(d.ein||'')+'" placeholder="0">'+
+      '<label>Was geht jeden Monat fest raus?</label>'+
+      '<div id="hListe">'+ (d.posten.length
+        ? d.posten.map((p,i)=>'<div class="zeile"><input data-n="'+i+'" value="'+
+            String(p.n||'').replace(/"/g,'')+'" placeholder="Miete, Strom, Handy…">'+
+            '<input data-b="'+i+'" type="number" inputmode="decimal" value="'+(p.b||'')+'" placeholder="0">'+
+            '<button data-weg="'+i+'" title="Zeile löschen">×</button></div>').join('')
+        : '<p class="leer">Noch nichts eingetragen.</p>') +'</div>'+
+      '<button class="hplus" id="hPlus">+ Posten</button>'+
+      '<div class="summe">'+
+        '<div><span>Fixkosten</span><b>'+g(summe)+'</b></div>'+
+        '<div><span>Bleibt im Monat</span><b class="'+(rest<0?'neg':'pos')+'">'+g(rest)+'</b></div>'+
+        '<div><span>pro Woche</span><b class="'+(rest<0?'neg':'pos')+'">'+g(proW)+'</b></div>'+
+        '<div><span>pro Tag</span><b class="'+(rest<0?'neg':'pos')+'">'+g(proT)+'</b></div>'+
+      '</div>'+
+      '<p class="fuss">Nur ein Rechner. Deine Zahlen bleiben in diesem Browser — '+
+      'nichts wird hochgeladen, nichts gespeichert außer bei dir.</p>'+
+    '</div></div>';
+  const zu=()=>$('fenster').innerHTML='';
+  $('fenster').querySelector('.kopf button').onclick=zu;
+  const merk=()=>{
+    const neu={ein:+($('hEin').value||0), posten:[]};
+    $('hListe').querySelectorAll('[data-n]').forEach(inp=>{
+      const i=inp.dataset.n;
+      const b=$('hListe').querySelector('[data-b="'+i+'"]');
+      neu.posten.push({n:inp.value, b:+(b&&b.value||0)});
+    });
+    hSpeichern(neu); haushaltAuf();
+  };
+  $('hEin').onchange=merk;
+  $('hListe').querySelectorAll('input').forEach(i=>i.onchange=merk);
+  $('hListe').querySelectorAll('[data-weg]').forEach(b=>b.onclick=()=>{
+    const d2=hLade(); d2.posten.splice(+b.dataset.weg,1); hSpeichern(d2); haushaltAuf();
+  });
+  $('hPlus').onclick=()=>{ const d2=hLade(); d2.posten.push({n:'',b:0}); hSpeichern(d2); haushaltAuf(); };
+}
+
+/* ---------- datenstrohhalm.exe ---------- */
+let strohhalmAktiv = false;
+let strohhalmInterval = null;
+function strohhalmAuf() {
+  $('fenster').innerHTML=
+    '<div class="kasten"><div class="kopf">datenstrohhalm.exe<button>×</button></div><div class="rumpf">'+
+      '<p style="margin-bottom:12px;opacity:0.8">Zapft <b>'+ZEE_K+'</b> aus dem städtischen Daten-Netzwerk ab — '+
+        'die kleinste Einheit. 100 Millionen davon sind <b>1 '+COIN_K+'</b>.</p>'+
+      '<div style="text-align:center;margin:14px 0;font-family:var(--mono);font-size:15px">'+
+        '<b id="str-zee">'+zeeText(S.zee||0)+'</b>'+
+        '<span style="display:block;font-size:11px;opacity:.75;margin-top:3px">'+
+          'macht '+eur(zeeWert())+'</span>'+
+      '</div>'+
+      '<div style="text-align:center;margin:20px 0">'+
+        '<button id="str-toggle" style="background:'+(strohhalmAktiv?'var(--rot)':'var(--blau)')+';color:#fff;border:3px solid var(--tinte);font-family:var(--fett);padding:10px 20px;cursor:pointer;width:100%">'+
+        (strohhalmAktiv ? 'SAUGEN STOPPEN' : 'SAUGEN STARTEN')+'</button>'+
+      '</div>'+
+      '<p style="font-size:11px;color:var(--rot);opacity:0.9">WARNUNG: Solange der Halm saugt, ist das Risiko, von TA$CH€N entdeckt zu werden, massiv erhöht (+30%). <b>0xY3C4EV3R_CRYPT</b></p>'+
+    '</div></div>';
+  $('fenster').querySelector('.kopf button').onclick=()=>$('fenster').innerHTML='';
+  $('str-toggle').onclick=()=>{
+    if(typeof window.sfxClick==='function') window.sfxClick();
+    strohhalmAktiv = !strohhalmAktiv;
+    if(strohhalmAktiv) {
+      strohhalmInterval = setInterval(()=>{
+        /* Rund 100.000 ZEE pro Zug — ein Euro in Staub. Gleicher Ertrag wie
+           vorher, nur ehrlich benannt. deko(), nicht die Weltuhr: das hier
+           läuft in Echtzeit und darf den Wochenzufall nicht verdrehen. */
+        S.zee = (S.zee||0) + 80000 + Math.floor(deko()*40000);
+        const a=$('str-zee');
+        if(a){ a.textContent=zeeText(S.zee);
+               a.nextElementSibling.textContent='macht '+eur(zeeWert()); }
+        merke();
+      }, 1500);
+    } else {
+      clearInterval(strohhalmInterval);
+    }
+    strohhalmAuf();
+  };
+}
+
+/* ---------- mitbewohner.exe ---------- */
+function mitbewohnerAuf() {
+  const hatSchutz = S.mitbewohnerGezahlt;
+  $('fenster').innerHTML=
+    '<div class="kasten"><div class="kopf">mitbewohner.exe<button>×</button></div><div class="rumpf">'+
+      '<p style="margin-bottom:12px;opacity:0.8">Dein Mitbewohner hockt in der Küche. Er hat wenig Geld, aber er kriegt alles mit.</p>'+
+      '<div style="background:#111;padding:15px;border:1px solid #333;margin-bottom:15px;">'+
+        '<p style="color:var(--cyan);font-family:var(--fett)">"Hey... soll ich diese Woche ein Auge auf den Flur werfen? Kostet dich 50 €."</p>'+
+      '</div>'+
+      '<div style="text-align:center;margin:20px 0">'+
+        (hatSchutz ? '<p style="color:var(--cyan);font-family:var(--fett)">Er passt diese Woche auf den Flur auf.</p>' : 
+        '<button id="mb-kauf" style="background:var(--cyan);color:var(--tinte);border:3px solid var(--tinte);font-family:var(--fett);padding:10px 20px;cursor:pointer;width:100%">50 € GEBEN</button>')+
+      '</div>'+
+      '<p style="font-size:11px;color:#777">Schützt dich nicht zu 100%, senkt das Risiko aber massiv.</p>'+
+    '</div></div>';
+  $('fenster').querySelector('.kopf button').onclick=()=>$('fenster').innerHTML='';
+  if(!hatSchutz) {
+    $('mb-kauf').onclick=()=>{
+      if(S.geld < 50) return alert("Nicht genug Geld!");
+      if(typeof window.sfxClick==='function') window.sfxClick();
+      buchen(S, -50, 'Mitbewohner (Blocker)'); S.mitbewohnerGezahlt = true;
+      merke();
+      mitbewohnerAuf();
+    };
+  }
+}
+
+function deskUhr(){
+  const d=new Date();
+  const p=n=>String(n).padStart(2,'0');
+  $('deskuhr').textContent=p(d.getHours())+':'+p(d.getMinutes())+':'+p(d.getSeconds());
+  setTimeout(deskUhr,1000);
+}
+
+/* ========== COMIC ========== */
+const O='stroke="#0d0d0d" stroke-width="9" stroke-linejoin="round"';
+const BILDER=[
+ {k:'MONTAG BIS FREITAG.',f:'Und dann nochmal Montag.',bg:'#ffd21e',s:`
+  <rect width="900" height="620" fill="#ffd21e"/><rect width="900" height="470" fill="#29b6f6"/>
+  <path d="M0 470 L900 470 L900 620 L0 620 Z" fill="#7b2ff7" ${O}/>
+  <g fill="#ff7a18" ${O}><rect x="18" y="96" width="196" height="374"/><rect x="686" y="96" width="196" height="374"/></g>
+  <g ${O}><path d="M382 470 Q380 372 450 366 Q520 372 518 470 Z" fill="#fff3d6"/>
+   <ellipse cx="450" cy="316" rx="52" ry="56" fill="#f0a878"/>
+   <path d="M398 300 Q400 250 450 250 Q500 250 502 300 Q470 282 398 300 Z" fill="#0d0d0d"/></g>
+  <g ${O}><rect x="330" y="512" width="240" height="66" fill="#7ed321"/></g>`},
+ {k:'FREITAG ZÄHLST DU NACH.',f:'Es reicht. So gerade eben.',bg:'#7ed321',s:`
+  <rect width="900" height="620" fill="#7ed321"/>
+  <path d="M92 620 L268 620 L360 380 L206 336 Z" fill="#f0a878" ${O}/>
+  <path d="M206 336 Q268 280 366 288 L470 296 Q516 300 516 332 Q516 364 470 360 L394 354 Q358 352 340 370 L318 394 Z" fill="#f0a878" ${O}/>
+  <g transform="rotate(-8 590 300)"><rect x="452" y="212" width="304" height="196" fill="#fff3d6" ${O}/>
+   <path d="M452 212 L604 314 L756 212" fill="none" ${O}/></g>
+  <g fill="#ff3ea5" ${O}><rect x="606" y="168" width="140" height="66" transform="rotate(-14 676 201)"/></g>`},
+ {k:'UND JEDEN MONAT FEHLT WAS.',f:'Du hast nie gesehen, wer.',bg:'#ff2e4c',r:1,s:`
+  <rect width="900" height="620" fill="#ff2e4c"/>
+  <path d="M140 620 L140 196 Q140 140 254 140 L470 140 Q566 140 566 206 L566 620 Z" fill="#7b2ff7" ${O}/>
+  <path d="M296 332 Q382 308 466 332 L452 442 Q382 462 310 442 Z" fill="#5a1fb8" ${O}/>
+  <path d="M900 286 L668 316 Q604 326 566 352 L488 396 Q456 414 474 442 Q494 470 528 452 L606 408 Q644 388 696 384 L900 356 Z" fill="#f0a878" ${O}/>
+  <rect x="516" y="366" width="104" height="48" fill="#fff3d6" ${O} transform="rotate(-16 568 390)"/>`},
+ {k:'ABER DA LIEGT WAS.',f:'Und du weißt, dass es aufgeht.',bg:'#1ea7ff',s:`
+  <rect width="900" height="620" fill="#12234a"/>
+  <path d="M600 92 L860 512 L340 512 Z" fill="#ffd21e" opacity=".92" ${O}/>
+  <path d="M556 92 L644 92 L624 36 L576 36 Z" fill="#ff7a18" ${O}/>
+  <rect x="594" y="92" width="12" height="420" fill="#0d0d0d"/>
+  <rect x="96" y="506" width="740" height="26" fill="#ff7a18" ${O}/>
+  <g transform="rotate(-5 566 452)"><rect x="466" y="396" width="200" height="112" fill="#fff3d6" ${O}/>
+   <rect x="492" y="424" width="140" height="12" fill="#0d0d0d"/><rect x="492" y="450" width="104" height="12" fill="#0d0d0d"/></g>`},
+ {k:'ALSO MACHST DU IHN AN.',f:'ISSO.TV',bg:'#7b2ff7',s:`
+  <rect width="900" height="620" fill="#2a1258"/>
+  <path d="M330 214 L570 214 L790 620 L110 620 Z" fill="#ffd21e" opacity=".85"/>
+  <g ${O}><rect x="312" y="150" width="276" height="192" rx="14" fill="#ff3ea5"/>
+   <rect x="340" y="176" width="220" height="140" fill="#fff3d6"/>
+   <rect x="376" y="376" width="148" height="20" rx="8" fill="#ff3ea5"/></g>
+  <g ${O}><path d="M300 620 Q316 528 450 522 Q584 528 600 620 Z" fill="#29b6f6"/>
+   <ellipse cx="450" cy="498" rx="88" ry="94" fill="#0d0d0d"/></g>`}
+];
+let ci=0;
+function comicMal(){
+  const b=BILDER[ci];
+  $('comic').innerHTML='<div class="panel'+(b.r?' r':'')+'" style="--pbg:'+b.bg+'">'+
+    '<div class="kopf">'+b.k+'</div><div class="rahmen"><svg viewBox="0 0 900 620">'+b.s+'</svg></div>'+
+    '<div class="fuss">'+b.f+'</div></div>'+
+    '<div class="blaettern">'+(ci+1)+' / '+BILDER.length+' · '+
+      (TIPPGERAET?'Tippen zum Weiterblättern':'Klick oder Leertaste')+'</div>';
+  requestAnimationFrame(()=>$('comic').querySelector('.panel').classList.add('in'));
+}
+function comicStart(){ ci=0; comicMal(); }
+function comicWeiter(){ ci++; if(ci>=BILDER.length) zeigBerufe(); else comicMal(); }
+$('b5').addEventListener('click',comicWeiter);
+
+/* ========== SPIEL ========== */
+/* KX ist der Hebel von Blau: was im Haus liegt, kommt nach KW Wochen mit
+   diesem Faktor zurück. Bei 3.0 kam Blau nie über 28.000 und konnte die
+   50.000 nie erreichen — 4.0 macht das Einbetonieren zur echten Alternative
+   zum Zocken. Blaus Stärke ist Geduld, also muss Geduld sich lohnen. */
+/* PSCHUTZ = der Grundfreibetrag auf dem P-Konto. Echt sind es seit dem
+   1.7.2026 rund 1.590 € (§ 850c ZPO, vorher 1.560). Im Spiel 1.500, weil
+   hier runde Zahlen gelten — nah genug, und man erkennt die Größenordnung.
+   Vorher standen 1.000 € drin, das war deutlich zu niedrig. */
+/* Version. Gab es bisher nicht — man konnte nicht sagen, welchen Stand man
+   vor sich hat, und genau das hat schon Verwirrung gekostet (alte Seite im
+   Browser gegen neuen Stand auf der Platte). Steht jetzt am Eingang und in
+   der Fußzeile. 1.0 ist der Tag, an dem isso.tv wirklich online ging. */
+const VERSION='1.0';
+const ZIEL=50000, KW=6, KX=4.0, JOKER=3, PSCHUTZ=1500;
+
+/* ALLE STARTEN GLEICH. Das ist Absicht, nicht Bequemlichkeit.
+
+   Null Euro, 500 € Schulden, krankgeschrieben seit dem 9. März — und damit
+   längst im Krankengeld, die sechs Wochen Lohnfortzahlung sind durch.
+   Krankengeld richtet sich nach dem Job, den man vorher hatte, nicht nach
+   dem Auftrag, den man sich hier aussucht. Deshalb ist es für alle dieselbe
+   Zahl, und deshalb bringt die Berufswahl am Anfang genau nichts.
+   Man startet nicht mit einem Vorsprung. Man startet unten. */
+const SCHULDEN=1000, KRANK_START=4, KRANKENGELD=300;
+/* 1.000 € Schulden bei 1.500 € Verfügungsrahmen: man startet auf zwei
+   Dritteln des Limits. Mit 500 kamen kluge Spieler auf 86 % — das
+   Krankengeld war ein Anschub in genau den Wochen, wo Zinseszins am
+   meisten zählt. Jetzt frisst der Sockel den Vorsprung wieder auf. */
+/* Der Verfügungsrahmen. Steht seit zehn Jahren auf derselben Zahl,
+   während alles andere teurer wird. Genau das ist die Zange. */
+const DISPO=1500;
+const fixkosten=w=>rund(100+w*10);   /* runde Zahlen: 110, 120, 130 … 310 */   // Miete, Strom, Handy, Versicherung — steigt jede Woche
+const EPOCHE=Date.UTC(2026,0,1), TAG=86400000;
+const saison=()=>Math.floor((Date.now()-EPOCHE)/TAG);
+const MAXW=(()=>{ const j=new Date().getUTCFullYear();
+  return Math.max(8,Math.ceil((Date.UTC(j,11,31,23,59,59)-Date.now())/(7*TAG))); })();
+function samen(a){return function(){a|=0;a=a+0x6D2B79F5|0;let t=Math.imul(a^a>>>15,1|a);
+  t=t+Math.imul(t^t>>>7,61|t)^t;return((t^t>>>14)>>>0)/4294967296;};}
+let wf=samen(saison());
+
+/* ZWEI QUELLEN, und die Trennung ist wichtig.
+
+   zuf()  = die Weltuhr. Gesät aus saison()*1009 + woche. Alles, was über
+            Geld, Nerven, Szene oder TA$CH€N entscheidet, kommt hier raus.
+            Dadurch spielt am selben UTC-Tag jeder dasselbe Spiel.
+
+   deko()  = Ambiente. Flackernde Fenster, Getuschel, Chat-Ticker,
+            Minispiel-Klötze. Läuft pro Sekunde oder pro Bild.
+            Käme das aus der Weltuhr, würde bloßes Herumstehen auf der
+            Straße den Zufallsfaden weiterdrehen — und zwei Leute am
+            selben Tag hätten verschiedene Angriffe. Deshalb getrennt. */
+const zuf=()=>wf();
+const deko=Math.random;
+/* Runde Zahlen. Alles, was aus Prozentrechnung fällt, wird geglättet —
+   je größer der Betrag, desto gröber. Man soll es lesen, nicht entziffern. */
+function rund(n){
+  const a=Math.abs(n);
+  const s = a<200?10 : a<2000?50 : a<20000?100 : 500;
+  return Math.round(n/s)*s;
+}
+/* Zwei Ebenen:
+   € — was du verdienst und was dir abgezogen wird. Die Bauernwährung.
+   ZED — die Währung von ISSO.TV. Gekauft mit Euro, und da kommt keiner ran. */
+const WHG='€';
+const COIN='ZEDCOINZ', COIN_K='ZED';       // Name hier ändern, sonst nirgends
+/* ZEECOIN ist keine zweite Währung, sondern die kleinste Einheit:
+   1 ZEE = 0,00000001 ZED — sieben Nullen, dann die Eins.
+   Also 100 Millionen ZEE auf einen ZEDCOIN. Bei 1 ZED = 1.000 € ist ein
+   einzelnes ZEE ein tausendstel Cent. Deshalb kann der Datenstrohhalm
+   ehrlich behaupten, er zapfe Mikro-Beträge ab. */
+const ZEE_K='ZEE', ZEE_PRO_ZED=100000000;
+const zeeText=n=>Math.round(n).toLocaleString('de-DE')+' '+ZEE_K;
+const ZEDKURS=1000;                       // 1.000 € = 1 ZEDCOINZ
+const zedText=n=>n+' '+COIN_K;
+const eur=n=>(n<0?'−':'')+Math.abs(Math.round(n)).toLocaleString('de-DE')+' '+WHG;
+const rn=(a,b)=>a+zuf()*(b-a);
+const cl=(v,a,b)=>Math.max(a,Math.min(b,v));
+
+/* Berufe. Der Beruf steckt IM Spielstand (S.job) — deshalb kann man ihn
+   wechseln, verlieren und der Joker kann ihn zurücknehmen. */
+const BERUFE=[
+ {id:'druck',  n:'3D-Druck',      e:'Drucker laufen nachts durch. Einpacken, verschicken. Solide.',
+  p:'220 € · ausgeglichen',       lohn:220, nerv:.40, idee:1.10, haus:1.10, geld:0, nerven:7},
+ {id:'grafik', n:'Logo-Design',   e:'Fiverr-Grind. Die Kunden fressen deine Seele, aber zahlen gut.',
+  p:'350 € · zehrt an den Nerven',lohn:350, nerv:.85, idee:1.20, haus:1.00, geld:0, nerven:6},
+ {id:'prompt', n:'KI Prompting',  e:'Wer die Maschine beherrscht, den ersetzt sie nicht. Effizient.',
+  p:'300 € · schont die Nerven',  lohn:300, nerv:.25, idee:1.45, haus:1.00, geld:0, nerven:8},
+ {id:'scraping',n:'Code-Scraping',e:'Skripte schreiben, die Daten abgreifen. Monoton aber sicher.',
+  p:'180 € · sicheres Ding',      lohn:180, nerv:.35, idee:1.00, haus:1.25, geld:0, nerven:7},
+ {id:'ohne',   n:'Ohne Aufträge',     e:'Kein Auftrag, kein Geld. Aber der Tag gehört dir.',
+  /* 130 €/Woche = 563 €/Monat, der echte Regelsatz 2026 (Stufe 1, allein
+     lebend). Für 2026 gab es eine Nullrunde, er ist also nicht gestiegen.
+     Vorher standen hier 150 €, das wären ~650 € gewesen. */
+  p:'Bürgergeld · viel Zeit',     lohn:0,   nerv:.15, idee:1.15, haus:1.00, geld:0, nerven:9, buerger:130},
+ {id:'agent',  n:'KI Agenten',    e:'Autonome Systeme bauen. Läuft im Hintergrund.',
+  p:'450 € · High End',           lohn:450, nerv:.30, idee:1.35, haus:1.00, geld:0, nerven:8},
+ {id:'domains',n:'Domain-Flipping',e:'Brachliegende Domains snipen und teuer weiterverkaufen.',
+  p:'550 € · extremes Risiko',    lohn:550, nerv:.75, idee:1.30, haus:1.00, geld:0, nerven:6}
+];
+const JOB=()=>BERUFE[S.job]||BERUFE[0];
+const jobIndex=id=>BERUFE.findIndex(b=>b.id===id);
+
+function buchen(s, betrag, grund) {
+  if(betrag===0) return;
+  s.geld += betrag;
+  if(!s.auszuege) s.auszuege = [];
+  s.auszuege.unshift({woche: s.woche, betrag: betrag, grund: grund, stand: s.geld});
+  if(s.auszuege.length > 50) s.auszuege.pop();
+  
+  const wg = document.getElementById('wk-geld');
+  if(wg) {
+     wg.textContent = eur(s.geld);
+     wg.style.color = s.geld < 0 ? 'var(--rot)' : 'inherit';
+  }
+  const wz = document.getElementById('wk-zed');
+  if(wz) wz.textContent = s.zed;
+}
+const FRISCH=j=>({ woche:1,job:j,geld:-SCHULDEN,nerven:BERUFE[j].nerven,zed:0,zee:0,
+  rot:0,blau:0,haeuser:[],ende:null,szene:null,letzte:null,
+  joker:JOKER,verlauf:[],gesehen:{},krank:KRANK_START,pkonto:0,insolvenz:0, zeeKurs:1400, tuerBlocker:false, mietHack:0, auszuege:[],
+  zusammen:0,mahnung:0});
+let S=FRISCH(0);
+const waage=()=>{const g=S.rot+S.blau;return g?(S.blau-S.rot)/g:0;};
+const hausWert=b=>Math.round(b*KX*JOB().haus);
+/* Der Staub zählt mit. Sonst saugt man stundenlang und es war für nichts. */
+const zeeWert=()=>Math.floor((S.zee||0)/ZEE_PRO_ZED*ZEDKURS);
+const vermoegen=()=>S.geld+S.haeuser.reduce((a,h)=>a+hausWert(h.b),0)
+  +(S.zed||0)*ZEDKURS+zeeWert();
+
+/* Was man tatsächlich anfassen kann — im Unterschied zu dem, was dasteht.
+   Mit P-Konto reicht der Zugriff nur bis zum Freibetrag; alles darüber liegt
+   fest, reserviert für Gläubiger, ob die nun kommen oder nicht. Man sieht
+   das Geld und kommt nicht ran. Diese Regel gehört an EINE Stelle: SETZEN
+   hatte sie (falsch herum), HAUS KAUFEN gar nicht. */
+const verfuegbar=s=> s.pkonto ? Math.max(0,Math.min(s.geld,PSCHUTZ)) : s.geld;
+
+const TU={
+ arbeit:s=>{const B=JOB();
+   if(s.krank>0) return 'Du bist krankgeschrieben. Keine Aufträge diese Woche.';
+   if(!B.lohn) return 'Keine AUFTRÄGE. Du füllst den Tag anders.';
+   buchen(s, B.lohn, 'Gehalt: ' + B.n); if(zuf()<B.nerv)s.nerven=cl(s.nerven-1,0,10);
+   return eur(B.lohn)+' extra. Die Augen brennen vom Bildschirm, aber das Geld liegt da.';},
+ ruhe:s=>{s.nerven=cl(s.nerven+3,0,10);
+   return 'Du machst wirklich mal gar nichts. Kommt dir falsch vor und hilft dann doch.';},
+ /* Der Einsatz. Vorher rechnete sich das nie: 30 % setzen, 50 % auf das
+    Dreifache — das ist multiplikativ Gewinn ×1,6 / Verlust ×0,7, im Schnitt
+    ×1,058 die Woche. Bei 1.000 € sind das 58 €, während die Fixkosten 200 €
+    nehmen. Rot konnte also gar nicht wachsen, egal wie gut jemand spielt.
+    Jetzt zahlt der Treffer das Vierfache und die Waage zahlt mit: wer sich
+    zu Rot bekennt, kriegt größere Ausschläge in beide Richtungen. */
+ setzen:s=>{
+   /* Das P-Konto war hier genau falsch herum: frei = geld − PSCHUTZ hätte
+      geheißen, man kommt an den Teil ÜBER dem Freibetrag ran. In Wirklichkeit
+      ist es andersrum — der Freibetrag ist das, was man anfassen darf, alles
+      darüber liegt fest. Wer 2.100 € auf dem Konto hat, verfügt über 1.500
+      und sieht die restlichen 600 nur. Der Text sagte das schon richtig,
+      der Code tat das Gegenteil. */
+   const frei=verfuegbar(s);
+   if(s.pkonto&&frei<100) return 'Du kommst nicht ran. Das Geld liegt hinterm Pfändungsschutz — auch für dich.';
+   if(frei<100) return 'Womit denn? Du hast nichts, was du setzen könntest.';
+   const rotAnteil=Math.max(0,-waage());              // 0 bis 1
+   const e=rund(frei*.3); buchen(s, -e, 'Investition');
+   if(zuf()<.5){
+     const g=rund(e*(4+rotAnteil*2));                 // ×4 bis ×6
+     buchen(s, g, 'Auftrag (Erfolg)');
+     return 'Und es geht auf. Auf einmal hast du '+eur(g-e)+' mehr als vorhin.';}
+   s.nerven=cl(s.nerven-1,0,10);
+   return 'Weg. '+eur(e)+', einfach so. Du stehst danach noch zwei Minuten da und guckst.';},
+ idee:s=>{
+   /* Selten mal zäh — aber nie eine komplett verbrannte Woche. */
+   if(zuf()<.12){ const k=rund(rn(100,300)); buchen(s, k, 'Grafik-Auftrag (Bonus)');
+     return 'Zäh diesmal. Am Ende nur '+eur(k)+', aber nicht nichts.'; }
+   /* 30 %, nicht 40. Bei 40 kamen kluge Spieler auf 82 % — über zwanzig
+      Wochen fällt jeder Prozentpunkt hier enorm ins Gewicht, viel mehr als
+      Startgeld oder Schulden. Wer an der Balance dreht, dreht zuerst hier. */
+   const g=rund((rn(500,1000)+Math.max(0,s.geld)*.30)*JOB().idee); buchen(s, g, 'Auftrag (Erfolg)');
+   return 'Läuft. '+eur(g)+', und keiner hat blöd gefragt.';},
+ haus:s=>{
+   const frei=verfuegbar(s);
+   if(frei<500) return s.pkonto&&s.geld>=500
+     ? 'Auf dem Papier reicht es. Dran kommst du trotzdem nicht — der Rest liegt hinterm Pfändungsschutz.'
+     : 'Dafür ist nichts da. Erst muss was reinkommen.';
+   const b=rund(frei*.4); buchen(s, -b, 'Haus (Kauf)');
+   s.haeuser.push({b:b,f:s.woche+KW});
+   return 'Haus in der Bunkerstraße. '+eur(b)+' liegen jetzt drin, '+KW+' Wochen zu.';},
+ einbruch:s=>{const b=rund(rn(500,1000)*(1+s.woche*.10)+Math.max(0,s.geld)*.40);
+   s.geld+=b; s.nerven=cl(s.nerven-1,0,10);
+   return 'Du steigst bei jemandem zuhause ein. '+eur(b)+'. Du kriegst es nicht aus dem Kopf.';},
+ verkauf:s=>{const k=s.haeuser.shift(); const z=Math.round(k.b*.6); buchen(s, z, 'Haus-Verkauf');
+   return 'Du verkaufst dein Haus zu früh. '+eur(z)+' zurück, der Rest war umsonst gewartet.';},
+ krank:s=>{s.krank=3; s.nerven=cl(s.nerven+2,0,10);
+   return 'Krankgemeldet. Drei Wochen. Der Arzt hat nicht mal lange geguckt.';},
+ zed:s=>{
+   const n=Math.floor(s.geld/ZEDKURS);
+   if(n<1) return 'Für einen '+COIN+' fehlt noch was. '+eur(ZEDKURS)+' kostet einer.';
+   buchen(s, -(n*ZEDKURS), 'ZEDCOIN Kauf'); s.zed+=n;
+   return '★ '+n+' '+COIN+'. Du hast jetzt '+s.zed+' von '+(ZIEL/ZEDKURS)+'. Da kommt keiner mehr ran.';},
+ pkonto:s=>{s.pkonto=1;
+   if(s.geld<0) buchen(s, Math.abs(s.geld), 'Schuldenerlass (P-Konto)');          // kein Dispo mehr, das Minus fällt weg
+   return 'P-Konto beantragt. '+eur(PSCHUTZ)+' sind unantastbar — steht so im Gesetz.<br>'+
+     'Dafür ist der Dispo weg. Du kannst nicht mehr ins Minus, und über mehr als '+
+     eur(PSCHUTZ)+' verfügst du auch nicht. Der Rest liegt da und guckt dich an.';},
+ /* Das P-Konto wieder zurückgeben. Gibt es in echt, und im Spiel war es
+    bitter nötig: mit P-Konto gewann von 70 roten Läufen kein einziger, ohne
+    waren es 15. Der Schutz deckelt den Zugriff auf 1.500 €, und genau davon
+    lebt Rot. Vorher war das eine Sackgasse ohne Ausgang.
+
+    Die Option wegzunehmen wäre der falsche Weg gewesen — es sollen ja mehr
+    Antworten dastehen, nicht weniger. Also ein Ausgang statt einer Sperre. */
+ pkontoWeg:s=>{
+   s.pkonto=0; s.nerven=cl(s.nerven-1,0,10);
+   return 'Konto zurückgestellt. Du kommst wieder an alles ran — und der Dispo ist auch wieder da.<br>'+
+     '<b>Und er auch.</b> Ab jetzt greift dich wieder jeder an, der die Hand aufhält.';},
+ insolvenz:s=>{const w=s.geld; buchen(s, -s.geld, 'Insolvenz (Kontopfändung)'); s.haeuser=[]; s.insolvenz=9; s.nerven=cl(s.nerven+2,0,10);
+   return 'Privatinsolvenz. '+eur(-w)+' Schulden weg — und deine Häuser auch. Neun Wochen stillhalten.';}
+};
+/* Jobwechsel als Baustein */
+const wechsel=(zielId,txt)=>s=>{ s.job=jobIndex(zielId); s.nerven=cl(s.nerven+1,0,10); return txt; };
+
+const W={
+ arbeit:t=>({u:'AUFTRAG ANNEHMEN',p:'',w:'grau',e:t,f:TU.arbeit}),
+ ruhe:t=>({u:'AUSRUHEN',p:'Nerven +3',w:'grau',e:t,f:TU.ruhe}),
+ setzen:t=>({u:'SETZEN',p:'30 % rein · 50 % auf 3×',w:'rot',e:t,f:TU.setzen}),
+ einbruch:t=>({u:'BEI JEMANDEM EINSTEIGEN',p:'viel Geld · −1 Nerv',w:'rot',e:t,f:TU.einbruch}),
+ verkauf:t=>({u:'DEIN HAUS VERKAUFEN',p:'60 % sofort · Rest weg',w:'rot',e:t,f:TU.verkauf}),
+ idee:t=>({u:'IDEE MACHEN',p:'',w:'blau',e:t,f:TU.idee}),
+ haus:t=>({u:'HAUS KAUFEN',p:'',w:'blau',e:t,f:TU.haus}),
+ zed:t=>({u:COIN+' KAUFEN',p:eur(ZEDKURS)+' = 1 '+COIN_K,w:'blau',e:t,f:TU.zed}),
+ krank:t=>({u:'KRANKMELDEN',p:'3 Wochen · Nerven erholen',w:'grau',e:t,f:TU.krank}),
+ /* Beide Seiten müssen am Knopf stehen. Das P-Konto schützt und fesselt
+    gleichzeitig — wer nur "unpfändbar" liest, tappt in eine Falle. */
+ pkonto:t=>({u:'P-KONTO BEANTRAGEN',p:'sicher, aber nur '+eur(PSCHUTZ)+' verfügbar · kein Dispo',
+   w:'blau',e:t,f:TU.pkonto}),
+ pkontoWeg:t=>({u:'P-KONTO ZURÜCKGEBEN',p:'wieder voller Zugriff · aber er kommt auch wieder ran',
+   w:'rot',e:t,f:TU.pkontoWeg}),
+ insolvenz:t=>({u:'PRIVATINSOLVENZ',p:'Schulden weg · Häuser weg',w:'grau',e:t,f:TU.insolvenz}),
+ job:(id,label,hinweis,txt,folge)=>({u:label,p:hinweis,w:'job',e:txt,f:wechsel(id,folge)})
+};
+
+const SZ=[
+ {id:'marco',ok:()=>1,t:'Marco fragt, ob du Samstag einspringst. Bar auf die Hand.<br><em>Zuhause liegt dein Zettel mit der Idee. Seit Wochen.</em>',
+  w:[W.arbeit('Einspringen.'),W.setzen('Absagen, Geld woanders reinstecken.'),W.idee('Absagen, an der Idee sitzen.')]},
+ {id:'feind',ok:()=>1,t:'Einer grinst dich an der Kneipentür an. Du kennst ihn nicht. Er weiß trotzdem, was du diese Woche verdient hast.<br><em>An der Wand hinter ihm steht ein Tag: <b>TA$CH€N</b>. Ab jetzt nimmt er sich jede Woche was.</em>',
+  w:[W.haus('Nichts sagen. Morgen alles wegschließen.'),W.setzen('Mitspielen.'),W.ruhe('Umdrehen und heimgehen.')]},
+ {id:'zettel',ok:()=>1,t:'Der Zettel auf dem Schreibtisch. Zwei Zeilen und eine Zahl, mehr steht da nicht.<br><em>Du weißt genau, dass es funktioniert. Du hast es nur nie angefangen.</em>',
+  w:[W.idee('Diese Woche anfangen.'),W.haus('Erst Geld sammeln.'),W.arbeit('Wieder nicht.')]},
+ {id:'strasse',ok:()=>1,t:'Die Bunkerstraße. Kleine Betonhäuser in einer Allee, jedes mit einer Klappe.<br><em>Was da reinkommt, kriegt er nicht raus.</em>',
+  w:[W.haus('Eins mieten und zumachen.'),W.arbeit('Weitergehen, du brauchst das Geld jetzt.'),W.setzen('Sechs Wochen warten? Nee.')]},
+ {id:'kiosk',ok:()=>1,t:'Am Kiosk hängt ein Zettel. Einer verkauft was weit unter Wert, weil er schnell weg muss.<br><em>Du weißt, was das woanders bringt.</em>',
+  w:[W.idee('Kaufen und weiterreichen.'),W.setzen('Lieber verdoppeln.'),W.arbeit('Lassen.')]},
+ {id:'automat',ok:()=>1,t:'Hinten in der Kneipe steht ein Automat, um den sich keiner kümmert.<br><em>Zwei Typen gucken schon die ganze Zeit rüber.</em>',
+  w:[W.setzen('Einwerfen.'),W.ruhe('Austrinken und gehen.'),W.idee('Den Wirt fragen, wo er einkauft.')]},
+ {id:'fremd',ok:s=>s.woche>=3,t:'Ein Haus steht seit Wochen leer. Die Klappe sitzt locker.<br><em>Da drin liegt das Warten von irgendwem.</em>',
+  w:[W.einbruch('Aufmachen.'),W.haus('Weitergehen, deins füllen.'),W.arbeit('Weitergehen.')]},
+ {id:'muede',ok:s=>s.nerven<=4&&!s.krank,t:'Du stehst um halb fünf auf und weißt nicht mehr genau, wofür.<br><em>Der Wecker ist nicht das Problem.</em>',
+  w:[W.krank('Zum Arzt. Richtig krankmelden.'),W.ruhe('Einen Tag freinehmen.'),W.arbeit('Durchziehen.')]},
+ {id:'reich',ok:s=>s.geld>=12000,t:'Zum ersten Mal fragt jemand <em>dich</em>, ob du mitmachst.<br><em>Bei ihm hat es auch so angefangen.</em>',
+  w:[W.setzen('Groß einsteigen.'),W.haus('Nein danke.'),W.idee('Klein einsteigen und zugucken.')]},
+ {id:'brief',ok:s=>s.geld<600&&s.geld>=-400&&!s.pkonto,t:'Wieder ein Brief mit Fenster. Du machst ihn nicht auf.<br><em>Nächste Woche kommt der nächste.</em>',
+  w:[W.pkonto('Zur Bank, Konto umstellen lassen.'),W.arbeit('Doppelschicht.'),W.setzen('Den Rest setzen.')]},
+ /* Der Ausgang aus dem P-Konto. Kommt erst, wenn wirklich Geld feststeckt —
+    vorher wäre die Frage sinnlos, weil man den Deckel gar nicht spürt. */
+ {id:'gedeckelt',ok:s=>s.pkonto&&s.geld>PSCHUTZ+500,
+  t:'Auf dem Kontoauszug steht mehr, als du ausgeben kannst. Der Rest ist da und gehört dir und liegt trotzdem fest.<br><em>Geschützt ist nicht dasselbe wie deins.</em>',
+  w:[W.pkontoWeg('Reicht. Konto zurückstellen lassen.'),W.haus('Was rangeht, in Beton.'),W.ruhe('Damit leben. Wie bisher.')]},
+ {id:'bank',ok:s=>!s.pkonto&&s.woche>=3,t:'Die Frau bei der Bank sagt es dir von selbst: <em>Sie können das Konto umstellen lassen.</em><br><em>Kostet nichts. Man muss nur wissen, dass es das gibt.</em>',
+  w:[W.pkonto('Umstellen lassen.'),W.arbeit('Später. Erst Schicht.'),W.idee('Später. Erst die Idee.')]},
+ {id:'pleite',ok:s=>s.geld<-400&&!s.insolvenz,t:'Der Brief ist diesmal vom Gerichtsvollzieher. Er war schon zweimal da.<br><em>Es gibt einen Weg raus. Er dauert Jahre.</em>',
+  w:[W.insolvenz('Beantragen.'),W.arbeit('Noch eine Doppelschicht.'),W.setzen('Alles auf einmal.')]},
+ {id:'nacht',ok:s=>s.woche>=9,t:'Halb drei, du liegst wach und rechnest im Kopf.<br><em>Es geht auf. Auf dem Papier geht es immer auf.</em>',
+  w:[W.idee('Morgen früh anfangen.'),W.haus('Nichts riskieren, wegschließen.'),W.setzen('Oder einmal richtig.')]},
+ {id:'still',ok:()=>1,t:'Diese Woche passiert nichts. Regen, Schicht, Fernsehen.<br><em>Die zählt auch mit.</em>',
+  w:[W.arbeit('Arbeiten.'),W.ruhe('Ausschlafen.'),W.idee('Nachrechnen, wo was zu holen wäre.')]},
+ {id:'coin',ok:s=>s.geld>=ZEDKURS,
+  t:'Auf ISSO.TV läuft ein Band durchs Bild. <em>1.000 € = 1 '+COIN+'</em>.<br><em>Wer da drin ist, den kriegt keiner mehr an die Tasche.</em>',
+  w:[W.zed('Umtauschen.'),W.haus('Lieber ein Haus.'),W.setzen('Lieber setzen.')]},
+ {id:'coin2',ok:s=>s.zed>=3&&s.geld>=ZEDKURS,
+  t:'Du zählst nicht mehr in Euro. Du zählst in '+COIN_K+'.<br><em>Genau da fängt der andere Teil an.</em>',
+  w:[W.zed('Weiter umtauschen.'),W.idee('Erst noch was aufbauen.'),W.einbruch('Oder abkürzen.')]},
+
+ /* ---- Jobs kommen und gehen ---- */
+ {id:'raus',ok:s=>s.job!==jobIndex('ohne')&&s.woche>=5&&s.krank===0,
+  t:'Dein Haupt-Auftraggeber bricht weg. Die Mail kam nachts.<br><em>Es geht nicht um dich, schreibt er. Die KI macht es jetzt billiger.</em>',
+  w:[W.job('ohne','Aufgeben','erstmal ohne AUFTRÄGE','Laptop zuklappen.','Draußen ist es hell. Merkwürdiges Gefühl, dienstags um zehn.'),
+     W.arbeit('Neue Kunden suchen.'),W.idee('Pause machen — und die eigene Idee endlich bauen.')]},
+ {id:'angebot',ok:s=>s.woche>=4,
+  t:'Einer aus dem Forum fragt, ob du für ihn Logos auf Fiverr übernimmst.<br><em>Mehr Geld. Und du bist nie vor acht vom Rechner weg.</em>',
+  w:[W.job('grafik','Logo-Design','350 € · härtere Kunden','Den Auftrag annehmen.','Neuer Fokus. Mehr Geld, weniger Abend.'),
+     W.job('scraping','Lieber Scraping','180 € · ruhiger','Nein. Etwas Ruhigeres suchen.','Weniger Geld. Du schläfst wieder durch.'),
+     W.arbeit('Bleiben, was du machst.')]},
+ {id:'umschulung',ok:s=>(s.krank>0||s.job===jobIndex('ohne'))&&s.woche>=6&&s.job!==jobIndex('agent'),
+  t:'Im Netz läuft ein Kurs für "Autonome KI-Agenten".<br><em>Kostet nichts. Aber du musst das System verstehen.</em>',
+  w:[W.job('agent','Kurs durchziehen','450 € · schont die Nerven','Ja. Machen.','Zertifikat in der Tasche. Zum ersten Mal seit langem ein Plan.'),
+     W.ruhe('Erstmal drüber schlafen.'),W.arbeit('Nee. Du bleibst bei deinem alten Hustle.')]},
+ {id:'zurueck',ok:s=>s.job===jobIndex('ohne')&&s.woche>=8,
+  t:'Jemand fragt nach 3D-Druck-Gehäusen. Ein alter Kontakt.<br><em>Du weißt genau, wie laut die Maschinen sind.</em>',
+  w:[W.job('druck','Zurück an die Drucker','220 € · das Bekannte','Wieder anfangen.','Dieselbe Maschine, derselbe Lärm. Aber Geld kommt rein.'),
+     W.job('prompt','Lieber KI Prompting','300 € · ruhiger','Nach was anderem schauen.','Prompt Engineer. Du tippst Befehle, die Maschine arbeitet.'),
+     W.idee('Nein. Du machst jetzt dein eigenes Ding.')]}
+];
+const ANFANG=['marco','feind','zettel','strasse'];
+
+const EREIG=[
+ {t:'Vorm Kiosk war Messerstecherei. Du warst nicht da, weil zuhause jemand angerufen hat.',a:'gut'},
+ {t:'Du hättest bei der Sache mitgemacht. Hast du nicht. Zwei davon sitzen jetzt.',a:'gut'},
+ {t:'Fast in die Kontrolle gelaufen. Bist du aber nicht.',a:'gut'},
+ {t:'20 € in der Winterjacke gefunden.',a:'gut',f:s=>{buchen(s, 20, 'Gefundenes Geld');}},
+ {t:'Pfandflaschen aus dem Keller. 14 €.',a:'gut',f:s=>{buchen(s, 14, 'Pfandflaschen');}},
+ {t:'Einer zahlt die 50 € zurück, die du längst abgeschrieben hattest.',a:'gut',f:s=>{buchen(s, 50, 'Schulden zurückgezahlt');}},
+ {t:'Nachbar bringt Kuchen vorbei. Einfach so.',a:'gut',f:s=>{s.nerven=cl(s.nerven+1,0,10);}},
+ {t:'Handy runtergefallen. Display neu, 90 €.',a:'schlecht',f:s=>{buchen(s, -90, 'Handy-Reparatur');}},
+ {t:'Blitzer auf der Hauptstraße. 30 €.',a:'schlecht',f:s=>{buchen(s, -30, 'Blitzer');}},
+ {t:'Von oben Bass bis vier. Du liegst wach.',a:'schlecht',f:s=>{s.nerven=cl(s.nerven-1,0,10);}},
+ {t:'Regen die ganze Woche. Sonst nichts.',a:'gut'}
+];
+
+/* ---- BILDER ZU DEN SZENEN ----
+   Eine Silhouette pro Szene, 300×110, flach und fett. Sie sollen die Lage
+   auf einen Blick erzählen, damit man die Knöpfe versteht, ohne den Text zu
+   lesen — genau wie die Regel es verlangt. Kein Bild von außen, alles Code. */
+const HG=(f)=>'<rect width="300" height="110" fill="'+f+'"/>';
+const SZBILD={
+
+ /* Kumpel an der Tür */
+ marco:HG('var(--blau)')+
+  '<circle cx="96" cy="42" r="19" class="o" fill="var(--papier)"/>'+
+  '<path d="M70 110V78c0-15 12-22 26-22s26 7 26 22v32" class="o" fill="var(--gelb)"/>'+
+  '<circle cx="196" cy="42" r="19" class="o" fill="var(--papier)"/>'+
+  '<path d="M170 110V78c0-15 12-22 26-22s26 7 26 22v32" class="o" fill="var(--pink)"/>'+
+  '<path d="M132 46h30M132 58h22" class="o" stroke="var(--papier)" stroke-width="6"/>',
+
+ /* TA$CH€N — die Hand in der Tasche */
+ feind:HG('var(--rot)')+
+  '<path d="M104 110V56c0-10 8-18 18-18h56c10 0 18 8 18 18v54" class="o" fill="var(--tinte)"/>'+
+  '<path d="M122 62h56v22h-56z" class="o" fill="var(--gelb)"/>'+
+  '<path d="M150 20v42" class="o" stroke="var(--papier)" stroke-width="7"/>'+
+  '<circle cx="150" cy="16" r="12" class="o" fill="var(--papier)"/>'+
+  '<path d="M40 90c14-8 24-8 34 0M226 90c14-8 24-8 34 0" class="k"/>',
+
+ /* Zettel mit einer Zahl */
+ zettel:HG('var(--gelb)')+
+  '<path d="M96 14h108v82l-14 14H96z" class="o" fill="var(--papier)"/>'+
+  '<path d="M190 96h14l-14 14z" class="d"/>'+
+  '<path d="M114 40h72M114 56h72M114 72h40" class="o" stroke="var(--tinte)" stroke-width="5"/>',
+
+ /* Die Bunkerstraße */
+ strasse:HG('var(--tinte)')+
+  '<path d="M0 74h300v36H0z" fill="#191922"/>'+
+  '<path d="M150 74v36" stroke="var(--gelb)" stroke-width="6" stroke-dasharray="12 10"/>'+
+  '<g class="o" fill="#20202c">'+
+  '<rect x="10" y="30" width="58" height="46"/><rect x="80" y="18" width="58" height="58"/>'+
+  '<rect x="162" y="24" width="58" height="52"/><rect x="232" y="34" width="58" height="42"/></g>'+
+  '<g fill="var(--gelb)"><rect x="28" y="46" width="14" height="12"/>'+
+  '<rect x="100" y="34" width="14" height="12"/><rect x="184" y="42" width="14" height="12"/></g>',
+
+ /* Kiosk, immer Licht */
+ kiosk:HG('#12121a')+
+  '<rect x="52" y="26" width="196" height="84" class="o" fill="var(--gelb)"/>'+
+  '<rect x="72" y="44" width="156" height="40" class="o" fill="var(--papier)"/>'+
+  '<path d="M40 26h220l-14-16H54z" class="o" fill="var(--rot)"/>'+
+  '<path d="M96 56h108M96 70h72" class="o" stroke="var(--tinte)" stroke-width="5"/>',
+
+ /* Automat */
+ automat:HG('var(--pink)')+
+  '<rect x="94" y="8" width="112" height="102" class="o" fill="var(--tinte)"/>'+
+  '<rect x="110" y="22" width="80" height="34" class="o" fill="var(--gelb)"/>'+
+  '<g fill="var(--rot)"><circle cx="130" cy="76" r="11"/><circle cx="150" cy="76" r="11"/>'+
+  '<circle cx="170" cy="76" r="11"/></g>'+
+  '<path d="M124 34h16M148 34h16M172 34h4" class="o" stroke="var(--tinte)" stroke-width="7"/>',
+
+ /* Ein Fremder */
+ fremd:HG('#1b1b26')+
+  '<circle cx="150" cy="38" r="22" class="o" fill="#2a2a38"/>'+
+  '<path d="M112 110V84c0-18 17-28 38-28s38 10 38 28v26" class="o" fill="#2a2a38"/>'+
+  '<circle cx="141" cy="38" r="4" fill="var(--rot)"/><circle cx="159" cy="38" r="4" fill="var(--rot)"/>'+
+  '<path d="M20 100c10-6 18-6 28 0M252 100c10-6 18-6 28 0" class="k"/>',
+
+ /* Halb fünf, Wecker */
+ muede:HG('#101018')+
+  '<circle cx="150" cy="58" r="42" class="o" fill="var(--papier)"/>'+
+  '<path d="M150 58V30M150 58l22 14" class="o" stroke="var(--tinte)" stroke-width="6"/>'+
+  '<path d="M118 18l-18-12M182 18l18-12" class="o" stroke="var(--papier)" stroke-width="6"/>'+
+  '<path d="M40 96h40M220 96h40" class="k"/>',
+
+ /* Reich */
+ reich:HG('var(--gelb)')+
+  '<g class="o" fill="var(--gruen)">'+
+  '<rect x="86" y="62" width="128" height="20"/><rect x="94" y="42" width="112" height="20"/>'+
+  '<rect x="102" y="22" width="96" height="20"/></g>'+
+  '<rect x="78" y="82" width="144" height="20" class="o" fill="var(--gruen)"/>'+
+  '<text x="150" y="98" text-anchor="middle" font-family="Arial Black" font-size="15" fill="var(--tinte)">€ € €</text>',
+
+ /* Brief mit Fenster */
+ brief:HG('var(--orange)')+
+  '<rect x="76" y="24" width="148" height="72" class="o" fill="var(--papier)"/>'+
+  '<path d="M76 24l74 44 74-44" class="o" fill="none" stroke-width="5"/>'+
+  '<rect x="92" y="66" width="46" height="20" class="o" fill="var(--tinte)"/>',
+
+ /* Bank */
+ bank:HG('#14141e')+
+  '<path d="M40 40L150 8l110 32z" class="o" fill="var(--gelb)"/>'+
+  '<g class="o" fill="var(--papier)">'+
+  '<rect x="60" y="48" width="20" height="46"/><rect x="106" y="48" width="20" height="46"/>'+
+  '<rect x="152" y="48" width="20" height="46"/><rect x="198" y="48" width="20" height="46"/></g>'+
+  '<rect x="40" y="94" width="220" height="16" class="o" fill="var(--gelb)"/>',
+
+ /* Pleite */
+ pleite:HG('#1a1420')+
+  '<path d="M84 34h132v58c0 10-8 18-18 18h-96c-10 0-18-8-18-18z" class="o" fill="var(--rot)"/>'+
+  '<path d="M84 34c0-12 10-20 22-20h88c12 0 22 8 22 20" class="o" fill="var(--rot)"/>'+
+  '<path d="M116 62l68 34M184 62l-68 34" class="o" stroke="var(--papier)" stroke-width="7"/>',
+
+ /* Nacht am Fenster */
+ nacht:HG('#0b0b14')+
+  '<rect x="70" y="10" width="160" height="94" class="o" fill="#161628"/>'+
+  '<path d="M150 10v94M70 57h160" class="o" stroke="var(--tinte)" stroke-width="6"/>'+
+  '<circle cx="112" cy="34" r="15" fill="var(--papier)"/>'+
+  '<g fill="var(--papier)"><circle cx="190" cy="28" r="2.5"/><circle cx="205" cy="42" r="2"/>'+
+  '<circle cx="176" cy="46" r="2"/><circle cx="198" cy="80" r="2.5"/></g>',
+
+ /* Auftragsbrett */
+ still:HG('var(--cyan)')+
+  '<g class="o" fill="var(--papier)">'+
+  '<rect x="34" y="24" width="68" height="62"/><rect x="116" y="24" width="68" height="62"/>'+
+  '<rect x="198" y="24" width="68" height="62"/></g>'+
+  '<g class="o" stroke="var(--tinte)" stroke-width="5">'+
+  '<path d="M48 44h40M48 58h28"/><path d="M130 44h40M130 58h28"/><path d="M212 44h40M212 58h28"/></g>',
+
+ /* ZEDCOIN */
+ coin:HG('#141420')+
+  '<circle cx="150" cy="56" r="44" class="o" fill="var(--gelb)"/>'+
+  '<circle cx="150" cy="56" r="34" class="k"/>'+
+  '<text x="150" y="70" text-anchor="middle" font-family="Arial Black" font-size="34" fill="var(--tinte)">Z</text>',
+
+ /* Kurs steigt */
+ coin2:HG('#141420')+
+  '<path d="M30 96l50-30 40 18 50-46 44 24 56-46" class="o" fill="none" stroke="var(--gelb)" stroke-width="7"/>'+
+  '<circle cx="270" cy="16" r="10" class="o" fill="var(--gelb)"/>'+
+  '<path d="M30 104h240" class="o" stroke="var(--papier)" stroke-width="4"/>',
+
+ /* Raus */
+ raus:HG('var(--gruen)')+
+  '<rect x="94" y="10" width="112" height="100" class="o" fill="var(--tinte)"/>'+
+  '<circle cx="186" cy="62" r="7" fill="var(--gelb)"/>'+
+  '<path d="M20 60h56M62 44l16 16-16 16" class="o" fill="none" stroke="var(--papier)" stroke-width="7"/>',
+
+ /* Angebot */
+ angebot:HG('var(--blau)')+
+  '<path d="M76 62l38-22 36 20 36-20 38 22" class="o" fill="none" stroke="var(--papier)" stroke-width="8"/>'+
+  '<rect x="118" y="58" width="64" height="42" class="o" fill="var(--gelb)"/>'+
+  '<path d="M134 74h32M134 86h20" class="o" stroke="var(--tinte)" stroke-width="5"/>',
+
+ /* Umschulung */
+ umschulung:HG('#16161f')+
+  '<rect x="52" y="16" width="196" height="72" class="o" fill="var(--gruen)"/>'+
+  '<path d="M74 40h80M74 56h120M74 70h60" class="o" stroke="var(--papier)" stroke-width="5"/>'+
+  '<rect x="120" y="88" width="60" height="12" class="o" fill="var(--papier)"/>',
+
+ /* Zurück */
+ zurueck:HG('var(--grau)')+
+  '<path d="M200 84V60c0-24-20-42-44-42s-44 18-44 42v10" class="o" fill="none" stroke="var(--tinte)" stroke-width="10"/>'+
+  '<path d="M92 62l20 26 20-26z" class="o" fill="var(--tinte)"/>'+
+  '<circle cx="200" cy="94" r="12" class="o" fill="var(--gelb)"/>'
+};
+function malSzenenbild(id){
+  const el=$('szenenbild'); if(!el) return;
+  const s=SZBILD[id];
+  el.innerHTML = s ? '<svg viewBox="0 0 300 110" role="img" aria-hidden="true">'+s+'</svg>' : '';
+  el.style.display = s ? 'block' : 'none';
+}
+
+const ENDEN={
+ all:{c:'blau',t:'ERDE-1',x:'Irgendwann fliegt sie hoch. Nicht mit Ansage. An einem Dienstag.<br><br>Die Straßen sind weg. Die Automaten sind weg. Er ist auch weg.<br>Deine Häuser nicht. Beton hält mehr aus, als man denkt.<br><br>Du treibst jetzt durchs Schwarze, in deinem eigenen Kasten, mit allem drin, was du dir nie ausgezahlt hast.<br><br><b>Vielleicht sammelt dich einer auf. Und wenn nicht, bleibst du halt drin.</b>'},
+ rot:{c:'rot',t:'HIGHROLLER',x:'Du gehst jetzt in Läden, wo keine Preise dranstehen.<br><br>Und wenn du die Straße runtergehst, halten die Leute ihre Taschen zu.<br><b>Du hast ihn nicht besiegt. Du hast seinen Platz.</b>'},
+ blau:{c:'blau',t:'MEERKRAFT',x:'Langsamer als die anderen. Aber angekommen.<br><br>Die halbe Bunkerstraße gehört dir, und in jedem Haus liegt was, an das er nie rangekommen ist.<br><b>Er greift immer noch zu. Er greift nur ins Leere.</b>'},
+ grau:{c:'grau',t:'ANGEKOMMEN',x:'Mal gesetzt, mal weggeschlossen, meistens gearbeitet.<br><br><b>Reich geworden bist du trotzdem. Erzählen tut darüber keiner was.</b>'},
+ nerven:{c:'rot',t:'AUSGEBRANNT',x:'Du stehst morgens nicht mehr auf.<br><br>Das Geld war nie das Problem. Die Wochen waren es.<br><b>Hier ist Schluss.</b>'},
+ schulden:{c:'rot',t:'LEERGERÄUMT',x:'Der Brief kommt an einem Dienstag. Dann noch einer.<br><br><b>Er hat alles. Und du hast ihm jede Woche selbst aufgemacht.</b>'},
+ zeit:{c:'grau',t:'SILVESTER'},
+ driveby:{c:'rot',t:'FALSCHER MOMENT',x:'Ein Wagen wird langsamer, als du über die Kreuzung gehst. Du guckst hin, weil man hinguckt.<br><br>Es hat nichts mit dir zu tun. Es hat nie was mit dir zu tun. Du stehst nur gerade da.<br><br><b>Kein Joker. Keine zweite Woche. Von vorne, komplett.</b>'},
+ krypto:{c:'blau',t:'KRYPTO-KÖNIG',x:'Du hast den Taschengrabscher ausgetrickst.<br><br>Dein Geld liegt auf der Blockchain. 1 '+COIN_K+' entspricht aktuell ca. <b>500 Billiarden Euro</b>. Du hast nicht nur Eitelstedt besiegt, du hast das Konzept von Geld zerstört.<br><br><b>#dieletztedigitalewaehrung</b>'},
+
+  ende_777er:{c:'rot',t:'DIE 777er',x:'Du fährst mit deiner Maschine vor. Die 777 auf der Brust. Du willst nützlich sein. Sie nehmen dich auf. Aber du merkst schnell: Niemand hier ist echt. Alle sind wie du.'},
+  ende_chrome:{c:'grau',t:'CHROME SKULLS',x:'Ein kleiner Club. Du hast alles gegeben, Kurierfahrten gemacht, dich bewiesen. Jetzt hast du dein Patch. Ein harter Weg.'},
+  ende_rap:{c:'gelb',t:'RAP GOD',x:'Die MPC hat sich ausgezahlt. Die goldene Kette blinkt. Die Leute auf der Straße machen Platz, nicht aus Angst vor Gewalt, sondern aus Respekt. Dein Wahn hat dich zum Genie gemacht.'},
+  ende_buerger:{c:'blau',t:'BÜRGER 353L',x:'Du warst brav. Du hast deine Psychopharmaka genommen. Deine Paranoia ist weg. Du druckst 3D-Gehäuse bis an dein Lebensende. Sicher, aber unendlich leer.'},
+
+};
+
+function merke(){
+  S.verlauf.push({woche:S.woche,job:S.job,geld:S.geld,nerven:S.nerven,zed:S.zed,zee:S.zee,rot:S.rot,blau:S.blau,
+    haeuser:S.haeuser.map(h=>({b:h.b,f:h.f})),letzte:S.letzte,sid:S.szene&&S.szene.id,
+    krank:S.krank,pkonto:S.pkonto,insolvenz:S.insolvenz,zusammen:S.zusammen,mahnung:S.mahnung,
+    gesehen:Object.assign({},S.gesehen)});
+  if(S.verlauf.length>6) S.verlauf.shift();
+}
+function zurueck(){
+  if(!S.joker||!S.verlauf.length) return;
+  const v=S.verlauf.pop();
+  Object.assign(S,{woche:v.woche,job:v.job,geld:v.geld,nerven:v.nerven,zed:v.zed,zee:v.zee||0,rot:v.rot,blau:v.blau,
+    haeuser:v.haeuser.map(h=>({b:h.b,f:h.f})),letzte:v.letzte,krank:v.krank,
+    pkonto:v.pkonto,insolvenz:v.insolvenz,gesehen:v.gesehen,ende:null,
+    zusammen:v.zusammen||0,mahnung:v.mahnung||0});
+  S.szene=SZ.find(x=>x.id===v.sid)||S.szene;
+  S.joker--; $('ende').classList.remove('an'); $('ende').innerHTML='';
+  male([{t:'Nochmal. Die Woche zählt nicht.',a:'joker'}]);
+}
+const GIG_NAMEN = {
+  'druck': ['Kleinteile drucken', 'Gehäuse-Serie', 'Riesen-Prototyp'],
+  'grafik': ['Twitch-Emotes', 'Corporate Rebrand', 'Nachtschicht-Logo'],
+  'prompt': ['SEO-Content generieren', 'RAG-Pipeline tunen', 'Komplexe KI-App'],
+  'scraping': ['Adressen scrapen', 'API-Crawler schreiben', 'Datenbank rippen'],
+  'agent': ['Einfacher Chatbot', 'Autonomer Agent', 'Vollautomatisierung'],
+  'domains': ['Tippfehler-Domain flippen', 'Geplatzte Auktion snipen', 'Premium .com verkaufen']
+};
+function generiereGigs() {
+   const B = JOB();
+   if (!B.lohn) return [W.ruhe('Nichts da. Tag rumkriegen.'), W.idee('Nachrechnen, wo was zu holen wäre.')];
+   
+   const namen = GIG_NAMEN[B.id] || ['Einfacher Auftrag', 'Standard Auftrag', 'Rush Job'];
+   const AUFTRÄGE = [];
+   const basis = B.lohn;
+   const nBase = B.nerv;
+   
+   const pay1 = rund(basis * 0.6);
+   AUFTRÄGE.push({
+      u: namen[0].toUpperCase(), p: eur(pay1) + ' · sicher', w: 'grau', e: 'Ein kleiner Auftrag. Schnell erledigt.',
+      f: (s, win) => { 
+         let p = win ? pay1 : rund(pay1*0.5); 
+         s.geld += p; 
+         if(!win) s.nerven = cl(s.nerven-1, 0, 10);
+         return (win?'Einfaches Geld. ':'Kunde reklamiert. Halber Preis. ') + eur(p) + ' auf dem Konto.'; 
+      }
+   });
+   
+   const pay2 = rund(basis * (1 + (zuf()*0.4 - 0.2))); 
+   AUFTRÄGE.push({
+      u: namen[1].toUpperCase(), p: eur(pay2) + ' · normal', w: 'grau', e: 'Dein normales Tagesgeschäft.',
+      f: (s, win) => { 
+         let p = win ? pay2 : rund(pay2*0.5);
+         s.geld += p; 
+         let dmg = win ? (zuf() < nBase ? 1 : 0) : 2;
+         s.nerven = cl(s.nerven-dmg, 0, 10);
+         return (win?'Standard-Auftrag durchgeboxt. ':'Horror-Auftrag. Komplett verkackt. ') + eur(p) + ' verdient.'; 
+      }
+   });
+   
+   if (zuf() < 0.05) {
+      AUFTRÄGE.push({
+         u: 'DARKNET Auftrag', p: '1 ' + COIN_K + ' · hohes Risiko', w: 'rot', e: 'Jemand zahlt direkt in Krypto.',
+         f: (s, win) => {
+            if(win) {
+               s.zed += 1;
+               s.nerven = cl(s.nerven-2, 0, 10);
+               return '★ 1 ' + COIN_K + ' direkt bekommen. Das war den Stress wert.';
+            } else {
+               s.nerven = cl(s.nerven-4, 0, 10);
+               return 'Krypto-Auftrag geplatzt. Nichts bekommen. Nerven liegen völlig blank.';
+            }
+         }
+      });
+   } else {
+      const pay3 = rund(basis * 2.2);
+      AUFTRÄGE.push({
+         u: namen[2].toUpperCase(), p: eur(pay3) + ' · -2 Nerven', w: 'rot', e: 'Deadline morgen. Das brennt dich aus.',
+         f: (s, win) => {
+            let p = win ? pay3 : rund(pay3*0.2);
+            s.geld += p;
+            s.nerven = cl(s.nerven-(win?2:4), 0, 10);
+            return (win?'Abgeliefert. ':'Komplett zusammengebrochen. ') + eur(p) + ', und du bist im Eimer.';
+         }
+      });
+   }
+   
+   
+   // Special Faction AUFTRÄGE based on Ranks
+   if (S.zimmer) {
+      if (S.zimmer['rank1_rocker']) {
+         AUFTRÄGE.push({
+            u: 'HANGAROUND', p: '50 €', w: 'blau', e: 'Bier holen, Müll rausbringen, Fresse halten.',
+            f: (s, win) => { s.geld += 50; return 'Du warst nützlich für die 777er. 50 € Trinkgeld.'; }
+         });
+      }
+      if (S.zimmer['rank2_rocker']) {
+         AUFTRÄGE.push({
+            u: 'CLUB KURIER', p: '200 € · -1 Nerv', w: 'blau', e: 'Ein Paket für den Club von A nach B bringen. Anwärter-Arbeit.',
+            f: (s, win) => {
+               s.geld += 200;
+               s.nerven = cl(s.nerven-1, 0, 10);
+               return 'Paket abgeliefert. Die Gang nickt dir zu. 200 €.';
+            }
+         });
+      }
+      if (S.zimmer['rank4_rocker']) {
+         AUFTRÄGE.push({
+            u: 'ENFORCER MISSION', p: '1000 € · hohes Risiko', w: 'rot', e: 'Du gehst mit den Jungs auf einen "Hausbesuch".',
+            f: (s, win) => {
+               if(win) {
+                  s.geld += 1000;
+                  s.nerven = cl(s.nerven-2, 0, 10);
+                  return 'Der Einsatz war blutig, aber lukrativ. Dein Anteil: 1.000 €.';
+               } else {
+                  s.nerven = cl(s.nerven-5, 0, 10);
+                  return 'Polizei-Razzia! Du konntest gerade noch abhauen. -5 Nerven!';
+               }
+            }
+         });
+      }
+      
+      if (S.zimmer['rank2_rap']) {
+         AUFTRÄGE.push({
+            u: 'GHOSTWRITING', p: '250 €', w: 'blau', e: 'Schreibe einen Part für einen anderen Rapper.',
+            f: (s, win) => { s.geld += 250; return 'Bars verkauft. 250 € sind 250 €.'; }
+         });
+      }
+      if (S.zimmer['rank3_rap']) {
+         AUFTRÄGE.push({
+            u: 'BEAT PLACEMENT', p: '800 € · Hit or Miss', w: 'rot', e: 'Schick einen krassen Beat an ein Label.',
+            f: (s, win) => {
+               if(win) {
+                  s.geld += 800;
+                  return 'Der Beat wurde gepickt! 800 € Vorschuss. Dein Face-Tattoo hat geholfen.';
+               } else {
+                  s.nerven = cl(s.nerven-2, 0, 10);
+                  return 'Beat wurde abgelehnt. "Zu abgefuckt" meinte das Label. -2 Nerven.';
+               }
+            }
+         });
+      }
+   }
+
+   return AUFTRÄGE;
+}
+
+function ziehe(){
+  wf=samen(saison()*1009+S.woche);
+  if(S.woche<=ANFANG.length){ S.szene=SZ.find(x=>x.id===ANFANG[S.woche-1]); S.letzte=S.szene.id; return; }
+  const m=SZ.filter(x=>x.ok(S)&&x.id!==S.letzte&&ANFANG.indexOf(x.id)<0);
+  const p=m.length?m:SZ.filter(x=>x.ok(S));
+  let gewaehlt = p[Math.floor(zuf()*p.length)];
+  
+  if (gewaehlt.id === 'still') {
+     S.szene = Object.assign({}, gewaehlt);
+     S.szene.w = generiereGigs();
+     S.szene.t = 'Das Auftragsbrett. Drei Anfragen in deiner Inbox.<br><em>Welchen Auftrag nimmst du an?</em>';
+  } else {
+     S.szene = gewaehlt;
+  }
+
+  /* Jede Woche muss mindestens ein Weg nach oben offen sein.
+
+     Vorher war rund die Hälfte der Wochen tot: Jobangebote und Auftragsbretts
+     zahlen flach, während Fixkosten und TA$CH€N unbeirrt weiterlaufen. Wer
+     nie bauen darf, baut nichts auf — genau daran sind die 50.000 gescheitert,
+     nicht an zu schwachen Aktionen. Die Szene wird dafür kopiert, sonst
+     würde der Anhang dauerhaft in der Szenenliste kleben. */
+  const WEGE=['IDEE MACHEN','SETZEN','HAUS KAUFEN','BEI JEMANDEM EINSTEIGEN'];
+  const rotDrauf = waage() < -.15;
+
+  /* Und der Weg muss zur Seite passen, auf der man steht.
+
+     SETZEN ist reine Multiplikation ohne Sockel: bei 500 € bringt es im
+     Schnitt 150 €, während die Fixkosten 200 € nehmen. Wer rot spielt und
+     arm ist, kommt damit nie hoch — Rot hatte schlicht keinen Anlauf.
+     Blau hat den Sockel in IDEE (500–1.000 € flat), Rot kriegt ihn hier. */
+  const hatWeg = S.szene.w.some(x=>WEGE.includes(x.u));
+  const nurGluecksspiel = rotDrauf && S.geld < 2000 &&
+        !S.szene.w.some(x=>x.u==='BEI JEMANDEM EINSTEIGEN');
+
+  if(!hatWeg || nurGluecksspiel){
+    S.szene = Object.assign({}, S.szene);
+    S.szene.w = [...S.szene.w, rotDrauf
+      ? W.einbruch('Du weißt, wo diese Woche keiner zuhause ist.')
+      : W.idee('Nebenbei an der eigenen Sache weiterbauen.')];
+  }
+
+  /* Wenn Geld hinterm Pfändungsschutz feststeckt, steht der Ausgang ab
+     sofort in JEDER Woche zur Wahl — nicht nur, wenn die passende Szene
+     zufällig kommt. Sonst sitzt man fest, ohne dass es je zur Frage wird:
+     mit P-Konto gewann von 70 roten Läufen kein einziger, ohne 15. */
+  if(S.pkonto && S.geld > PSCHUTZ + 500 &&
+     !S.szene.w.some(x=>x.u==='P-KONTO ZURÜCKGEBEN')){
+    S.szene = Object.assign({}, S.szene);
+    S.szene.w = [...S.szene.w, W.pkontoWeg('Der Rest liegt fest. Konto zurückstellen lassen.')];
+  }
+  S.letzte=S.szene.id;
+}
+const GESPERRT=['SETZEN','HAUS KAUFEN','BEI JEMANDEM EINSTEIGEN'];
+/* Was gerade wirklich nicht geht — und warum. Ein Knopf, der eine Woche
+   frisst und dann "geht nicht" sagt, wäre genauso gelogen wie einer,
+   der immer funktioniert. */
+function gesperrt(u){
+  if(S.insolvenz>0 && GESPERRT.includes(u)) return 'gesperrt · Insolvenz';
+  if(S.krank>0 && u==='ARBEITEN') return 'gesperrt · krankgeschrieben';
+  if(u==='ARBEITEN' && !JOB().lohn) return 'gesperrt · kein Job';
+  /* Der Knopf muss sagen, WARUM. "Nichts da" ist gelogen, wenn Geld
+     dasteht und nur hinterm Pfändungsschutz liegt. */
+  const frei=verfuegbar(S);
+  if(u==='SETZEN' && frei<100)
+    return S.pkonto&&S.geld>=100 ? 'gesperrt · hinterm P-Konto' : 'gesperrt · nichts da';
+  if(u==='HAUS KAUFEN' && frei<500)
+    return S.pkonto&&S.geld>=500 ? 'gesperrt · hinterm P-Konto' : 'gesperrt · nichts da';
+  if(u===COIN+' KAUFEN' && S.geld<ZEDKURS) return 'gesperrt · unter '+eur(ZEDKURS);
+  return null;
+}
+/* Alle Auftrag-Minispiele laufen über diesen Haken statt direkt über
+   starteMinigame. Zwei Gründe: so lässt sich der Wochenmotor ohne
+   Reflexspiel durchmessen (Balance), und hier hängt später der
+   Zugänglichkeits-Schalter dran, für alle die das Minispiel nicht
+   spielen können. Normalbetrieb ändert sich dadurch nicht. */
+let gigSpiel = (diff, cb) => starteMinigame(diff, cb);
+
+function waehle(i){
+  if(S.ende) return;
+  const w=S.szene.w[i]; if(!w) return;
+  if(gesperrt(w.u)) return;
+  
+  if (S.szene.id === 'still') {
+     let diff = 2;
+     if (w.p.includes('sicher')) diff = 1;
+     else if (w.p.includes('Nerven') || w.p.includes(COIN_K)) diff = 3;
+     
+     /* Ohne diesen Wechsel laeuft das Minispiel unsichtbar und die
+        Woche geht nie weiter — der Spieler sieht nur eine tote Szene. */
+     merke();
+     zeig('b9');
+     gigSpiel(diff, (win) => {
+        zeig('b7');
+        if(w.w==='rot') S.rot+=2; if(w.w==='blau') S.blau+=2;
+        const txt = w.f(S, win);
+        abschliessenWoche([{t:txt, a:w.w}]);
+     });
+     return;
+  }
+  
+  merke();
+  if(w.w==='rot') S.rot+=2; if(w.w==='blau') S.blau+=2;
+  abschliessenWoche([{t:w.f(S, true),a:w.w}]);
+}
+function abschliessenWoche(z) {
+  const faellig=S.haeuser.filter(h=>h.f<=S.woche);
+  S.haeuser=S.haeuser.filter(h=>h.f>S.woche);
+  faellig.forEach(h=>{const a=hausWert(h.b); buchen(S, a, 'Haus-Rendite');
+    z.push({t:'Haus auf. '+eur(h.b)+' sind '+eur(a)+' geworden.',a:'blau'});});
+
+  if(zuf()<.34){const e=EREIG[Math.floor(zuf()*EREIG.length)]; if(e.f)e.f(S); z.push({t:e.t,a:e.a});}
+
+  const B=JOB();
+  if(B.buerger){ buchen(S, B.buerger, 'Bürgergeld'); z.push({t:'Bürgergeld: '+eur(B.buerger)+'.',a:'grau'}); }
+
+  let fix=fixkosten(S.woche);
+  if (S.mietHack > 0) {
+     S.mietHack--;
+     fix = 0;
+     z.push({t:'Miet-Aussetzer aktiv. Keine Fixkosten diese Woche. (Noch '+S.mietHack+' Wochen)',a:'gut'});
+  }
+  if(S.pkonto && S.geld-fix<0){
+    const ging=Math.max(0,S.geld); buchen(S, -ging, 'Fixkosten (Lastschrift geplatzt)');
+    z.push({t:'Lastschrift geplatzt. Nur '+eur(ging)+' von '+eur(fix)+' durchgegangen.',a:'schlecht'});
+  } else if(fix > 0) { buchen(S, -fix, 'Fixkosten (Miete/Leben)');
+    z.push({t:'Fixkosten: '+eur(-fix)+'.'+(S.woche%5===0?' Und sie steigen weiter.':''),a:'schlecht'});
+  }
+  const pets = ['hund', 'katze', 'vogel', 'schildkroete', 'maus', 'emu', 'hase'];
+  
+  // Vehicle Upkeep
+  if (S.zimmer && S.zimmer['harley']) {
+      buchen(S, -50, 'Unterhalt der Maschine (Sprit/Öl)');
+      z.push({t:'Deine Maschine schluckt ordentlich. -50 € Unterhalt.', a:'schlecht'});
+  }
+  if (S.zimmer && S.zimmer['cla']) {
+      buchen(S, -150, 'AMG-Unterhalt (Leasing/Sprit)');
+      z.push({t:'Das Support Car (AMG) kostet dich 150 € diese Woche.', a:'schlecht'});
+  }
+
+  const meinPet = S.zimmer ? pets.find(p => S.zimmer[p]) : null;
+  
+  // Karma & Paranoia Logic
+  if (meinPet) {
+      S.karma = (S.karma || 0) + 1;
+  }
+  
+  // High karma creates good events but spikes paranoia
+  if (S.karma > 5 && Math.random() < 0.3) {
+      const geschenk = 100 + Math.floor(Math.random() * 400);
+      buchen(S, geschenk, 'Zufällige Gutschrift');
+      z.push({t:'Ein Unbekannter hat dir '+eur(geschenk)+' geschickt. Das Universum meint es gut.', a:'gut'});
+      S.paranoia = (S.paranoia || 0) + 2;
+      if(typeof window.denke==='function') window.denke('Warum stalken die mich alle? Sind das Fans? Das ist eine Falle.', 'var(--rot)');
+  }
+
+  // Natural paranoia increase if high karma
+  if (S.karma > 10) S.paranoia = (S.paranoia || 0) + 1;
+
+  // Panic Attack
+  if (S.paranoia >= 8) {
+      // Screen shake and UI glitch
+      document.body.style.animation = 'flicker 0.1s 5';
+      setTimeout(() => { document.body.style.animation = ''; }, 500);
+
+      const schaden = 200 + Math.floor(Math.random() * 800);
+      buchen(S, -schaden, 'Wahnhafter Kauf (Panik)');
+      S.nerven = Math.max(0, S.nerven - 3);
+      if(Math.random()<0.5) z.push({t:'Du hast im Wahn spontan 16 Bars gerappt.', a:'grau'});
+      z.push({t:'Psychose-Schub! Du schiebst Filme und hast im Wahn für '+eur(schaden)+' Zeug gegen die Stalker gekauft.', a:'schlecht'});
+      if(typeof window.denke==='function') window.denke('Scheiße, ich bin zu berühmt. Ich droppe gleich ungewollt Bars.', 'var(--rot)');
+  }
+
+  if(meinPet) {
+     if(S.geld >= 25) {
+        buchen(S, -25, 'Haustier (Futter)');
+        S.nerven = cl(S.nerven + 2, 0, 10);
+        z.push({t:'Dein Haustier liebt dich (+2 Nerven). Futterkosten: 25 €.',a:'gut'});
+         if(typeof window.denke==='function') window.denke('Jeder mag mich. Ich helfe allen.', 'var(--cyan)');
+     } else {
+        S.zimmer[meinPet] = false;
+        S.nerven = cl(S.nerven - 3, 0, 10);
+        z.push({t:'Du konntest das Futter nicht zahlen. Dein Haustier ist weg.',a:'schlecht'});
+        zimmerZeichnen();
+     }
+  }
+  if(S.krank>0){
+    S.krank--; S.nerven=cl(S.nerven+2,0,10);
+    /* Krankengeld, nicht Lohnfortzahlung — die sechs Wochen sind seit dem
+       9. März durch. Es kommt von der Kasse und richtet sich nach dem alten
+       Job, also fester Betrag für alle. */
+    buchen(S, KRANKENGELD, 'Krankengeld');
+    z.push({t:'Krankengeld '+eur(KRANKENGELD)+'. Krankgeschrieben, noch '+S.krank+
+              (S.krank===1?' Woche.':' Wochen.'),a:'grau'});
+  }
+  if(S.insolvenz>0){
+    S.insolvenz--;
+    z.push({t:'Wohlverhaltensphase. Er darf nicht ran. Noch '+S.insolvenz+' Wochen.',a:'gut'});
+  } else {
+    let taschenChance = 0.22;
+    /* Der Halm kostet auch dann etwas, wenn nichts auf der Hand liegt.
+       Sonst könnte man mit leerem Konto risikofrei durchsaugen — das
+       Risiko trifft ja nur Bargeld, und ZEE kriegt er nicht. Er zieht
+       an den Nerven, wie jede Sache, die man nicht weglegt. */
+    if(strohhalmAktiv){
+      taschenChance += 0.30;
+      S.nerven=cl(S.nerven-1,0,10);
+      z.push({t:'Der Halm lief die ganze Woche. Du hast schlecht geschlafen.',a:'schlecht'});
+    }
+    if(tuerAbgeschlossen) taschenChance -= 0.15;
+    if(S.mitbewohnerGezahlt) taschenChance -= 0.25;
+    
+    const gier=1+Math.max(0,-waage())*.6;
+    let griff=rund(Math.max(0,S.geld)*.03*gier);
+    if(S.pkonto) griff=Math.max(0,Math.min(griff,S.geld-PSCHUTZ));
+    if(zuf() < taschenChance) griff += rund(Math.max(0,S.geld)*0.15);
+    
+    if(griff > 0 && S.tuerBlocker) {
+      griff = 0;
+      S.tuerBlocker = false;
+      z.push({t:'TA$CH€N stand vor der Tür, aber der Tür-Blocker hat gehalten!',a:'gut'});
+    } else if(griff > 0 && tuerAbgeschlossen && zuf() < 0.35) {
+      griff = 0;
+      z.push({t:'Jemand hat an der Klinke gerüttelt. Aber du hattest abgeschlossen.',a:'gut'});
+    } else if(griff > 0 && S.mitbewohnerGezahlt && zuf() < 0.6) {
+      griff = 0;
+      z.push({t:'Dein Mitbewohner stand im Flur, als TA$CH€N kam. Er hat ihn abgewimmelt.',a:'gut'});
+    } else { buchen(S, -griff, 'TA$CH€N (Schutzgeld)');
+      z.push(griff>0
+        ? {t:'<b>TA$CH€N</b> war da. '+eur(-griff)+'.',a:'feind'}
+        : S.pkonto
+          ? {t:'<b>TA$CH€N</b> greift zu und kommt nicht ran. P-Konto.',a:'gut'}
+          : {t:'<b>TA$CH€N</b> war da. Bei dir war nichts zu holen.',a:'feind'});
+      if(griff>0){ $('b7').classList.add('bad'); setTimeout(()=>$('b7').classList.remove('bad'),600); }
+    }
+  }
+  S.woche++; S.zeeKurs = Math.floor(800 + zuf() * 2200);
+  netDropGenutzt = false;
+  S.mitbewohnerGezahlt = false;      // Mitbewohner-Schutz gilt nur eine Woche
+
+  /* Diese zwei Zeilen sind der Motor. Ohne sie klebt das Spiel
+     ewig auf derselben Szene und kein Ende feuert je. */
+  pruefe(z);                          // z sammelt auch Warnungen ein
+  if(!S.ende) ziehe();
+
+  male(z);                            // z = die Ergebniszeilen dieser Woche
+}
+/* Man geht hier nicht plötzlich drauf.
+
+   Vorher endete das Spiel in der Sekunde, in der die Nerven auf 0 fielen oder
+   der Dispo riss — ohne Vorwarnung, mitten im Zug. Das fühlte sich nicht nach
+   Verlieren an, sondern nach Abgeschaltetwerden.
+
+   Jetzt kriegt beides eine Vorstufe: der Körper macht zuerst schlapp
+   (krankgeschrieben, Nerven zurück), die Bank mahnt zuerst. Erst wenn man da
+   nicht rauskommt, ist Schluss. Das passt auch besser zur Sache — das System
+   bringt einen nicht um, es mahlt einen. */
+/* GODMODE — für den, der das Spiel gebaut hat.
+
+   Schaltet die drei Verlier-Enden ab: Ausgebrannt, Leergeräumt, Driveby.
+   Gewinnen geht weiter normal, und ein Sieg unter Godmode sagt das auch,
+   damit man sich die Zahl nicht selbst schönlügt.
+
+   An und aus: in der Konsole ISSO.gott(true) / ISSO.gott(false),
+   oder im Spiel die Tastenfolge G-O-T-T hintereinander. */
+let gott=false;
+try{ gott = localStorage.getItem('isso.tv.gott')==='an'; }catch(e){}
+function gottSchalten(an){
+  gott = (an===undefined) ? !gott : !!an;
+  try{ localStorage.setItem('isso.tv.gott', gott?'an':'aus'); }catch(e){}
+  const b=$('gott-schild');
+  if(b) b.hidden = !gott;
+  return gott;
+}
+
+function pruefe(z){
+  const w=waage(), v=vermoegen();
+  const sag=t=>{ if(z) z.push({t:t,a:'schlecht'}); };
+
+  /* Das Driveby. Kein Münzwurf ins Blaue — es hängt daran, wie weit man
+     sich rausgelehnt hat. Wer blau baut, steht bei ~0,3 % die Woche; wer
+     ganz rot nimmt, bei ~1,5 %. Über die Wochen bis Silvester macht das
+     rund 6 % gegen rund 27 %. Das ist der Preis dafür, dass man sich
+     bei Leuten bedient, die zurückkommen. Der Joker greift hier nicht. */
+  if(S.woche>3 && !S.ende && !gott){
+    const rotAnteil=Math.max(0,-waage());
+    if(zuf() < .003 + rotAnteil*.012){ S.ende='driveby'; return; }
+  }
+
+  
+  
+  // Multiple Endings Check
+  if(v>=ZIEL && S.zimmer) {
+    if (S.zimmer['rank4_rocker'] && S.zimmer['cla'] && S.zimmer['harley']) { S.ende='ende_777er'; return; }
+    if (S.zimmer['rank4_rap'] && S.zimmer['kette']) { S.ende='ende_rap'; return; }
+  }
+  // Bürger-Ende (Meds immer genommen, keine Ränge, 25k erreicht)
+  if(v>=ZIEL && S.zimmer && S.zimmer['meds'] && !S.zimmer['rank1_rocker'] && !S.zimmer['rank1_rap']) { S.ende='ende_buerger'; return; }
+
+  if(v>=ZIEL&&S.haeuser.length>=3&&w>.4){ S.ende='all'; return; }
+
+
+  if(v>=ZIEL){ S.ende=w<-.15?'rot':(w>.15?'blau':'grau'); return; }
+
+  if(S.nerven<=0){
+    if(gott){ S.nerven=6; sag('Du kippst um — und stehst wieder auf. (Godmode)'); return; }
+    if(S.zusammen>=2){ S.ende='nerven'; return; }
+    S.zusammen++;
+    S.nerven=4; S.krank=2;
+    sag(S.zusammen===1
+      ? 'Du klappst zusammen. Zwei Wochen krankgeschrieben — das war die Reißleine.'
+      : 'Schon wieder umgekippt. Beim nächsten Mal stehst du nicht mehr auf.');
+    return;
+  }
+
+  /* Mit P-Konto gibt es keinen Dispo — man kann gar nicht ins Minus, also
+     kann einen das Minus auch nicht umbringen. Das ist die Gegenleistung
+     dafür, dass man nur noch über den Freibetrag verfügt. */
+  if(S.pkonto && S.geld<0) S.geld=0;
+
+  if(S.geld < -DISPO){
+    if(gott){ S.geld=-DISPO; sag('Die Bank zieht den Strich — und du stehst noch. (Godmode)'); return; }
+    if(S.mahnung>=1){ S.ende='schulden'; return; }
+    S.mahnung++;
+    sag('Die Bank meldet sich: Verfügungsrahmen gerissen. Du hast eine Woche, das geradezuziehen.');
+    return;
+  }
+  /* Wieder im Rahmen? Dann ist die Mahnung vom Tisch. */
+  if(S.mahnung>0 && S.geld >= -DISPO) S.mahnung=0;
+
+  if(S.woche>MAXW) S.ende='zeit';
+}
+function male(z){
+  const B=JOB(), v=vermoegen();
+  /* Reihenfolge: Name · safeID · VIP-Abzeichen. Das Abzeichen steht hinten, damit
+     es die safeID nicht vom Namen wegdrückt — es ist Zierde, nicht Kennung. */
+  const st = vipStufe();
+  $('cName').innerHTML=(spielerName||'—')+'<i class="sid">'+safeID+'</i>'+
+    (st>0 ? '<b class="vip v'+st+'">'+VIP_NAMEN[st]+'</b>'
+     : unterstuetzer() ? '<b class="vip v0">VIP</b>' : '');
+  $('cName').classList.toggle('danke', unterstuetzer()||st>0);
+  $('cWoche').textContent='Woche '+Math.min(S.woche,MAXW)+' / '+MAXW;
+  $('cJob').textContent = S.insolvenz>0 ? 'Insolvenz ('+S.insolvenz+')'
+                        : S.krank>0     ? B.n+' · krank ('+S.krank+')'
+                        : B.n+(S.pkonto?' · P-Konto':'');
+  $('cJob').style.background = S.insolvenz>0?'var(--orange)':(S.krank>0?'var(--grau)':'var(--cyan)');
+  const altGeld = parseInt($('cGeld').dataset.v || v);
+  $('cGeld').dataset.v = v;
+  $('cGeld').textContent=eur(v)+' / '+eur(ZIEL)+(v!==S.geld?' ('+eur(S.geld)+' bar)':'');
+  $('cGeld').className='chip geld'+(S.geld<0?' neg':'');
+  if (v < altGeld) {
+    $('cGeld').classList.add('hit');
+    setTimeout(() => $('cGeld').classList.remove('hit'), 400);
+  }
+  /* Der Vergleich ist der Punkt: die Fixkosten klettern jede Woche, der
+     Verfügungsrahmen steht. Beides nebeneinander, in Worten statt in Farbe. */
+  const fixJetzt=fixkosten(S.woche), fixStart=fixkosten(1);
+  $('cFix').innerHTML='Fixkosten <b>'+eur(fixJetzt)+'</b>'+
+    (fixJetzt>fixStart ? ' <i class="steigt">+'+eur(fixJetzt-fixStart)+' seit Woche 1</i>' : '')+
+    ' · Dispo <b>'+eur(DISPO)+'</b> <i class="starr">unverändert</i>'+
+    (S.geld<0 ? ' <i class="starr">'+eur(-S.geld)+' gezogen</i>' : '')+
+    ' · <b>'+(S.zed||0)+' / '+(ZIEL/ZEDKURS)+' '+COIN_K+'</b>'+
+    (S.zee ? ' <i class="starr">'+zeeText(S.zee)+' = '+eur(zeeWert())+'</i>' : '');
+  $('cNerv').innerHTML='●'.repeat(S.nerven)+'<i>'+'●'.repeat(10-S.nerven)+'</i>';
+  const w=waage();
+  $('kn').style.left=(50-w*38)+'%';
+  $('kn').style.background=w<-.15?'var(--rot)':(w>.15?'var(--blau)':'var(--grau)');
+  $('lRot').classList.toggle('lit',w<-.15); $('lBlau').classList.toggle('lit',w>.15);
+  const H='<svg viewBox="0 0 24 24" width="13" height="13"><path d="M2.5 12 L12 3.5 L21.5 12 L18.5 12 L18.5 20.5 L5.5 20.5 L5.5 12 Z" fill="currentColor" stroke="#0d0d0d" stroke-width="2.4" stroke-linejoin="round"/></svg>';
+  $('strasse').innerHTML=S.haeuser.length
+    ? '<span class="lbl">Bunkerstraße</span>'+S.haeuser.slice().sort((a,b)=>a.f-b.f)
+        .map(h=>'<span class="haus">'+H+' '+eur(h.b)+' <s>'+Math.max(0,h.f-S.woche)+' W</s></span>').join('')
+    : '<span class="lbl">Bunkerstraße — noch kein Haus</span>';
+  $('joker').innerHTML=S.joker>0&&S.verlauf.length
+    ? '<button id="zur"><kbd>Z</kbd>Zurück ('+S.joker+')</button>'
+    : '<span class="aus">Zurück ('+S.joker+')</span>';
+  const zb=$('zur'); if(zb) zb.onclick=zurueck;
+  if(z&&z.length){
+    $('folge').innerHTML=z.map(x=>'<div class="fz '+x.a+'">'+x.t+'</div>').join('');
+    $('folge').classList.add('in');
+    $('wahl').classList.add('warte'); setTimeout(()=>$('wahl').classList.remove('warte'),700);
+  }
+  if(S.ende){ zeigeEnde(); return; }
+  malSzenenbild(S.szene.id);
+  $('text').innerHTML=S.szene.t;
+
+  /* Wenn wirklich nichts geht, bleibt genau eine Sache: den Tag rumkriegen.
+     Das ist kein Trostpreis, das ist manchmal die ganze Woche. */
+  if(S.szene.w.every(x=>gesperrt(x.u)) && !S.szene.w.some(x=>x.u==='AUSRUHEN')){
+    S.szene={...S.szene, w:[...S.szene.w, W.ruhe('Nichts davon geht. Tag rumkriegen.')]};
+  }
+  $('wahl').innerHTML=S.szene.w.map((x,i)=>{
+    const sperre=gesperrt(x.u), aus=!!sperre;
+    const p = aus ? sperre
+      : x.u==='ARBEITEN'    ? '+'+eur(B.lohn)
+      : x.u==='IDEE MACHEN' ? 'sicher · rund +'+Math.round(20*B.idee)+' %'
+      : x.u==='HAUS KAUFEN' ? '40 % rein · '+(KX*B.haus).toFixed(1)+'× in '+KW+' W'
+      : x.p;
+    return '<button class="k '+x.w+'" data-i="'+i+'"'+(aus?' disabled':'')+'><kbd>'+(i+1)+
+      '</kbd><span class="t"><u>'+x.u+'</u><em>'+x.e+'</em></span><span class="p">'+p+'</span></button>';
+  }).join('');
+}
+function zeigeEnde(){
+  const e=ENDEN[S.ende];
+  const x = S.ende==='zeit'
+    ? 'Silvester. Zusammen hast du '+eur(vermoegen())+'.<br><br><b>Nicht die 50.000. Aber auch nicht nichts.</b>'
+    : e.x;
+  $('text').innerHTML=''; $('wahl').innerHTML='';
+  $('ende').innerHTML='<h2 class="'+e.c+'">'+e.t+'</h2><p>'+x+'</p>'+
+    '<button class="k grau" id="neu"><kbd>⏎</kbd><span class="t"><u>Nochmal</u></span><span class="p">Berufswahl</span></button>';
+  $('ende').classList.add('an');
+  $('neu').onclick=()=>{ $('ende').classList.remove('an'); $('ende').innerHTML='';
+    $('folge').classList.remove('in'); $('folge').innerHTML=''; zeigBerufe(); };
+}
+/* Wer sich nach dem Gegner benennt, kriegt das gesagt.
+
+   Der Taschengrabscher heißt voll ausgeschrieben TA$CH€NGR4BSCH3R. Nennt
+   sich jemand so — oder TASCHEN — dann steht sein Name zweimal auf dem
+   Schirm: einmal oben als Spieler, einmal unten als der, der ihm jede Woche
+   was wegnimmt. Das ist kein Fehler, den man sperren müsste. Das ist die
+   beste Geschichte, die das Spiel von allein erzählt.
+
+   Und es lässt offen, was man daraus macht: ein Schatten kann auch ein
+   guter sein. Die Waage entscheidet das später, nicht der Name. */
+const NUR_BUCHSTABEN = s => (s||'').toUpperCase()
+  .replace(/\$/g,'S').replace(/€/g,'E').replace(/4/g,'A').replace(/3/g,'E')
+  .replace(/0/g,'O').replace(/1/g,'I').replace(/[^A-Z]/g,'');
+const heisstWieDerFeind = () => {
+  const n = NUR_BUCHSTABEN(spielerName);
+  if(n==='TASCHEN') return true;
+  /* Der volle Name hat 16 Buchstaben, erlaubt sind 13 — TA$CH€NGR4B$CH€R
+     wird also immer abgeschnitten. Deshalb zählt schon der Anfang: wer
+     TASCHENGRAB… tippt, meint keinen anderen. */
+  return n.length>=10 && 'TASCHENGRABSCHER'.startsWith(n);
+};
+
+const startText=()=>{
+  const z=[
+    {t:spielerName+'. 34, Homeoffice, '+JOB().n+'.',a:'grau'},
+    {t:'Du willst '+eur(ZIEL)+' zusammenkriegen. Bis Silvester.',a:'blau'},
+    {t:'<b>TA$CH€N</b> nimmt sich jede Woche was davon.',a:'feind'}];
+  if(heisstWieDerFeind()){
+    z.push({t:'Moment. So heißt er doch.<br><br>Dein Name steht jetzt zweimal hier — '+
+              'oben als du, unten als der, der dir was wegnimmt.',a:'feind'});
+    z.push({t:'<b>Ein Schatten kann auch ein guter sein.</b><br>'+
+              'Wie du am Ende dastehst, entscheidet die Waage. Nicht der Name.',a:'blau'});
+  }
+  return z;
+};
+
+let spielerName='', safeID='', spielLaeuft=false;
+/* SafeID wie eine ICQ-UIN: neunstellig, aus dem Namen abgeleitet.
+   Gleicher Name = immer dieselbe Nummer. Kein Server nötig. */
+function macheSafeID(name){
+  let h=2166136261;
+  for(let i=0;i<name.length;i++){ h^=name.charCodeAt(i); h=Math.imul(h,16777619); }
+  const n=100000000+(Math.abs(h)%899999999);
+  return String(n).replace(/(\d{3})(\d{3})(\d{3})/,'$1-$2-$3');
+}
+function zeigBerufe(){
+  zeig('b6');
+  try{ const n=localStorage.getItem('isso.tv.name'); if(n) $('spielername').value=n; }catch(e){}
+  $('berufe').innerHTML=BERUFE.filter(b=>b.id!=='agent').map((b,i)=>
+    '<button class="k grau" data-b="'+BERUFE.indexOf(b)+'"><kbd>'+(i+1)+'</kbd>'+
+    '<span class="t"><u>'+b.n+'</u><em>'+b.e+'</em></span><span class="p">'+b.p+'</span></button>').join('');
+  setTimeout(()=>$('spielername').focus(),80);
+}
+function nameOk(){
+  const n=$('spielername').value.trim();
+  return n.length>=5 && n.length<=13;
+}
+function nimmBeruf(j){
+  if(j<0||j>=BERUFE.length) return;
+  if(!nameOk()){
+    $('namensfehler').classList.add('bad');
+    $('namensfehler').textContent='5 bis 13 Buchstaben — so geht das nicht';
+    $('spielername').focus();
+    return;
+  }
+  $('namensfehler').classList.remove('bad');
+  spielerName=$('spielername').value.trim().toUpperCase();
+  safeID=macheSafeID(spielerName);
+  try{ localStorage.setItem('isso.tv.name',spielerName); }catch(e){}
+  S=FRISCH(j); spielLaeuft=true;
+  /* Die Endtafel mit abräumen. Sonst klebt sie über der neuen Runde: das
+     Ende der letzten Partie stand über Woche 1 der nächsten. Der
+     "Nochmal"-Knopf hat das gemacht, jeder andere Weg in eine neue Runde
+     nicht — und es gibt mehrere. */
+  $('ende').innerHTML=''; $('ende').classList.remove('an');
+  $('folge').innerHTML=''; $('folge').classList.remove('in');
+  zeig('b7'); ziehe(); male(startText());
+}
+$('berufe').addEventListener('click',ev=>{
+  const b=ev.target.closest('button[data-b]'); if(b) nimmBeruf(+b.dataset.b);
+});
+$('wahl').addEventListener('click',ev=>{
+  const b=ev.target.closest('button[data-i]'); if(b) waehle(+b.dataset.i);
+});
+
+/* ========== TASTATUR ========== */
+window.addEventListener('keydown',e=>{
+  if (document.activeElement && document.activeElement.tagName === 'INPUT' && e.key !== 'Escape' && e.key !== 'Enter') return;
+  const k=e.key.toLowerCase(); tast[k]=true;
+  if(bild==='b1'&&(k===' '||k==='enter')){ e.preventDefault(); schlafen(); }
+  else if(bild==='b2'){
+    if(k==='e'&&nah()){ e.preventDefault(); anmachen(); }
+    else if(k==='e'&&anDerTuer()){ e.preventDefault(); rausgehen(); }
+    if(k==='v'){ e.preventDefault(); perspektive(); }
+    if(['w','a','s','d','arrowup','arrowdown','arrowleft','arrowright'].includes(k)) e.preventDefault();
+  }
+  else if(bild==='b10'){
+    if(k==='e'){ e.preventDefault(); strasseHier(); }
+    if(k==='v'){ e.preventDefault(); perspektive(); }
+    if(k==='escape'){ e.preventDefault(); window.weltSchliessen(); }
+    if(['w','a','s','d','arrowup','arrowdown','arrowleft','arrowright'].includes(k)) e.preventDefault();
+  }
+  else if(bild==='b4'){
+    const n=icons().length;
+    if(k==='arrowright'||k==='d'){ iSel=(iSel+1)%n; markiere(); e.preventDefault(); }
+    if(k==='arrowleft'||k==='a'){ iSel=(iSel-1+n)%n; markiere(); e.preventDefault(); }
+    if(k==='enter'||k===' '){ e.preventDefault(); oeffne(icons()[iSel].dataset.auf); }
+    if(k==='escape') $('fenster').innerHTML='';
+  }
+  else if(bild==='b5'&&(k===' '||k==='enter')){ e.preventDefault(); comicWeiter(); }
+  else if(bild==='b6'){
+    /* Nicht auslösen, während im Namensfeld getippt wird. */
+    if(document.activeElement===$('spielername')){
+      if(k==='enter'){ e.preventDefault(); $('spielername').blur(); }
+      return;
+    }
+    if(k>='1'&&k<='9'){
+      const b=$('berufe').querySelectorAll('button')[+k-1];
+      if(b){ e.preventDefault(); b.click(); }
+    }
+  }
+  else if(bild==='b7'){
+    if(k==='escape'){ e.preventDefault(); zeig('b4'); return; }   // zurück zum Desktop
+    if(k>='1'&&k<='3'){ const b=$('wahl').querySelectorAll('button')[+k-1]; if(b){e.preventDefault();b.click();} }
+    if(k==='z'){ const b=$('zur'); if(b){e.preventDefault();b.click();} }
+    if(k==='enter'){ const b=$('neu'); if(b){e.preventDefault();b.click();} }
+  }
+  else if(bild==='b9'){
+    if(k==='a'||k==='arrowleft'){ e.preventDefault(); mgInput('l'); }
+    if(k==='d'||k==='arrowright'){ e.preventDefault(); mgInput('r'); }
+  }
+});
+window.addEventListener('keyup',e=>{ tast[e.key.toLowerCase()]=false; });
+window.addEventListener('click',()=>window.focus());
+
+/* ========== MINIGAME LOGIK ========== */
+let mgTimer = 0, mgScore = 0, mgZiel = 0, mgAktiv = false, mgLauf = null, mgCallback = null, mgLast = 0;
+let mgItems = [];
+function starteMinigame(diff, cb) {
+  mgCallback = cb; mgAktiv = true; mgScore = 0; mgTimer = 10.0;
+  mgZiel = diff * 5 + 3; // safe: 8, normal: 13, rush: 18
+  $('mg-time').textContent = mgTimer.toFixed(1);
+  $('mg-msg').classList.remove('an');
+  $('mg-track').innerHTML = ''; mgItems = [];
+  zeig('b9');
+  for(let i=0; i<3; i++) spawnMgItem(i);
+  mgLast = performance.now();
+  mgLauf = requestAnimationFrame(mgTick);
+}
+function spawnMgItem(delayIndex = 0) {
+  if(!mgAktiv) return;
+  const isB = deko() > 0.5;
+  const div = document.createElement('div');
+  div.className = 'mg-item ' + (isB ? 'b' : 'r');
+  div.dataset.type = isB ? 'b' : 'r';
+  div.textContent = isB ? '✔' : '✖';
+  div.style.top = '-80px';
+  $('mg-track').appendChild(div);
+  mgItems.push({el: div, y: -80 - (delayIndex * 120), spd: 15 + (mgZiel/1.5)});
+}
+function mgTick(time) {
+  if(!mgAktiv) return;
+  const dt = Math.min((time - mgLast) / 1000, 0.1);
+  mgLast = time;
+  mgTimer -= dt;
+  $('mg-time').textContent = Math.max(0, mgTimer).toFixed(1);
+  if(mgTimer <= 0) { endeMinigame(false); return; }
+  mgItems.forEach(it => {
+    it.y += it.spd * (dt * 10);
+    it.el.style.top = it.y + 'px';
+  });
+  if (mgItems.length > 0 && mgItems[0].y > $('mg-track').clientHeight - 60) {
+    $('mg-track').removeChild(mgItems[0].el);
+    mgItems.shift();
+    if(typeof window.sfxGlitch==='function') window.sfxGlitch();
+    mgScore = Math.max(0, mgScore - 1);
+    spawnMgItem();
+  }
+  mgLauf = requestAnimationFrame(mgTick);
+}
+function mgInput(dir) {
+  if(!mgAktiv || mgItems.length === 0) return;
+  const first = mgItems[0];
+  if(first.y < 0) return; // not on screen yet
+  const type = first.el.dataset.type;
+  if((dir === 'l' && type === 'r') || (dir === 'r' && type === 'b')) {
+    mgScore++;
+    if(typeof window.sfxClick==='function') window.sfxClick();
+    first.el.style.transform = dir === 'l' ? 'translateX(-200px) rotate(-45deg)' : 'translateX(200px) rotate(45deg)';
+    first.el.style.opacity = '0';
+    setTimeout(() => { if(first.el.parentNode) first.el.parentNode.removeChild(first.el); }, 200);
+    mgItems.shift(); spawnMgItem();
+    if(mgScore >= mgZiel) endeMinigame(true);
+  } else {
+    mgTimer -= 1.5;
+    if(typeof window.sfxGlitch==='function') window.sfxGlitch();
+    $('mg-ui').classList.add('bad'); setTimeout(() => $('mg-ui').classList.remove('bad'), 200);
+  }
+}
+document.getElementById('mg-btn-l').onclick = () => mgInput('l');
+document.getElementById('mg-btn-r').onclick = () => mgInput('r');
+function endeMinigame(win) {
+  mgAktiv = false; cancelAnimationFrame(mgLauf);
+  $('mg-msg').textContent = win ? 'PERFEKT' : 'VERKACKT';
+  $('mg-msg').style.color = win ? 'var(--gruen)' : 'var(--rot)';
+  $('mg-msg').classList.add('an');
+  setTimeout(() => { zeig('b7'); mgCallback(win); }, 1400);
+}
+
+/* Ego ist Standard. Wer einmal auf Schulter stellt, kriegt es wieder. */
+try{ if(localStorage.getItem('isso.tv.sicht')==='3') perspektive(true); }catch(e){}
+
+/* Version sichtbar machen — am Eingang und in der Fußzeile. Damit kann man
+   auf einen Blick sagen, welchen Stand man vor sich hat. */
+(function(){
+  const u=$('untertitel');
+  if(u) u.textContent='VERZWEIFLUNGSSIMULATOR · V'+VERSION;
+  const m=document.querySelector('.marke');
+  if(m) m.insertAdjacentHTML('afterbegin','V'+VERSION+' · ');
+})();
+
+/* G-O-T-T hintereinander tippen. Läuft überall, auch mitten im Spiel. */
+let gottTipp='';
+window.addEventListener('keydown',e=>{
+  if(document.activeElement && document.activeElement.tagName==='INPUT') return;
+  gottTipp=(gottTipp+e.key.toLowerCase()).slice(-4);
+  if(gottTipp==='gott'){
+    gottTipp='';
+    const an=gottSchalten();
+    const s=$('gott-schild');
+    if(s){ s.textContent = an ? 'GODMODE AN — du gehst nicht mehr drauf' : 'Godmode aus';
+           s.hidden=false;
+           if(!an) setTimeout(()=>{ s.hidden=true; },2500); }
+  }
+});
+gottSchalten(gott);   // Schild gleich richtig setzen
+
+window.ISSO={get S(){return S;},perspektive,gott:gottSchalten,
+             /* Heisst weiter gig, nicht Auftrag: das ist die Schnittstelle zum
+                Messen und fuer den spaeteren Zugaenglichkeits-Schalter, kein
+                Text fuer Spieler. Eine Umbenennung hier hat den Pruefstand
+                stillgelegt, ohne dass es jemand gemerkt haette. */
+             set gig(f){ gigSpiel = f || ((d,cb)=>starteMinigame(d,cb)); },
+             get gig(){ return gigSpiel; },BERUFE,SZ,W,TU,ENDEN,waehle,pruefe,waage,vermoegen,
+             nimmBeruf,zeigBerufe,zeig,MAXW,ZIEL,JOB,gesperrt,male,ziehe,
+             rausgehen,aufstehen,anDerTuer,nah};
+
+/* ========== AUDIO ==========
+   Hier war einiges falsch eingestellt:
+
+   · sfxTurnOn spielte 15.000 Hz volle anderthalb Sekunden. Gemeint war das
+     Pfeifen einer Bildröhre, angekommen ist ein Bohrer im Ohr.
+   · Das 50-Hz-Brummen lief ab dem ersten Klick und hörte nie wieder auf.
+   · Und es gab keinen Ausschalter.
+
+   Jetzt: ein Schalter, der die Wahl merkt, und das Brummen lässt sich
+   wirklich stoppen statt nur leiser zu drehen. */
+let actx=null, humOsc=null, humGain=null, stumm=false;
+try{ stumm = localStorage.getItem('isso.tv.ton')==='aus'; }catch(e){}
+
+function tonSchalten(){
+  stumm=!stumm;
+  try{ localStorage.setItem('isso.tv.ton', stumm?'aus':'an'); }catch(e){}
+  if(humGain && actx) humGain.gain.setTargetAtTime(stumm?0:0.012, actx.currentTime, .05);
+  const b=$('ton-schalt');
+  if(b){ b.textContent = stumm?'Ton: aus':'Ton: an'; b.setAttribute('aria-pressed', stumm?'true':'false'); }
+}
+
+function initAudio() {
+  if(actx) return;
+  actx = new (window.AudioContext || window.webkitAudioContext)();
+  humOsc = actx.createOscillator();
+  humOsc.type = 'sawtooth';
+  humOsc.frequency.setValueAtTime(50, actx.currentTime); // 50Hz Netzbrummen
+  humGain = actx.createGain();
+  humGain.gain.setValueAtTime(stumm?0:0.012, actx.currentTime);
+  const lpf = actx.createBiquadFilter();
+  lpf.type = 'lowpass'; lpf.frequency.value = 130;
+  humOsc.connect(lpf); lpf.connect(humGain); humGain.connect(actx.destination);
+  humOsc.start();
+}
+function playBeep(freq, type, dur, vol) {
+  if(!actx || stumm) return;
+  const osc = actx.createOscillator();
+  const gain = actx.createGain();
+  osc.type = type; osc.frequency.setValueAtTime(freq, actx.currentTime);
+  gain.gain.setValueAtTime(vol, actx.currentTime);
+  gain.gain.exponentialRampToValueAtTime(0.001, actx.currentTime + dur);
+  osc.connect(gain); gain.connect(actx.destination);
+  osc.start(); osc.stop(actx.currentTime + dur);
+}
+window.sfxClick = function() { playBeep(120, 'square', 0.05, 0.1); playBeep(400, 'triangle', 0.02, 0.05); }
+window.sfxGlitch = function() {
+  if(ruhig) return;                 // kein Schlag, den man nicht sieht
+  playBeep(60, 'sawtooth', 0.15, 0.2); playBeep(2000, 'square', 0.05, 0.03);
+}
+/* Das Röhrenpfeifen: kurz andeuten, nicht bohren. Von 15.000 Hz auf 12.000
+   runter, von 1,5 s auf 0,35 s, und deutlich leiser. Das Einschaltploppen
+   trägt den Moment ohnehin. */
+window.sfxTurnOn = function() { playBeep(12000, 'sine', 0.35, 0.012); playBeep(80, 'square', 0.25, 0.15); }
+
+/* Die Abwehr. Der scharfe Ton, den du gemeint hast — aber nur für den, der
+   ohne Kennung ans Tor hämmert. Er braucht keinen Klick vorher, sonst käme
+   er bei genau der Person nie an. */
+window.sfxAbwehr = function() {
+  initAudio();
+  if(stumm) return;
+  playBeep(15000,'sine',1.2,0.030);
+  playBeep(3400,'square',0.9,0.045);
+  playBeep(70,'sawtooth',1.1,0.10);
+};
+
+document.addEventListener('click', (e) => {
+  if(e.target.closest('#ton-schalt')) return;   // der Schalter macht keinen Krach
+  initAudio();
+  if(e.target.closest('button') || e.target.closest('.k') || e.target.closest('.icon')) window.sfxClick();
+});
+
+$('ton-schalt').addEventListener('click',tonSchalten);
+$('ton-schalt').textContent = stumm?'Ton: aus':'Ton: an';
+$('ton-schalt').setAttribute('aria-pressed', stumm?'true':'false');
+
+$('ruhe-schalt').addEventListener('click',ruheSchalten);
+$('ruhe-schalt').textContent = ruhig?'Bild: ruhig':'Bild: flimmert';
+$('ruhe-schalt').setAttribute('aria-pressed', ruhig?'true':'false');
+document.body.classList.toggle('ruhig',ruhig);
+
+/* ========== NETZWERK / MOTHERBROWSER ========== */
+let netAktiv = false;
+let netGl = null, netProg = null, netLocVP, netLocOff, netIdxLen;
+let netChatTimer = null;
+let netDropGenutzt = false; // nur ein Drop pro Woche!
+const feed = document.getElementById('chat-feed');
+const msgs = [
+  "suche 3D drucker für kleinserie, zahle in ZEE",
+  "TA$CH€N war bei mir. 3 wochen grind weg. fml.",
+  "hamburg ranking update: x_shadow ist auf #1.",
+  "verkaufe datensätze, pm me.",
+  "wer hat den rush job bei 40h überlebt?",
+  "bunkerstraße 4 ist frei geworden.",
+  "ZEE kurs geht hoch, haltet eure coins!",
+  "brauche jemanden für grafik, zahle 1000",
+  "hat jemand den zeed für nächste woche geknackt?",
+  "[WARNUNG] aktivität von TA$CH€N im umkreis 100m"
+];
+function addChatMsg(user, text, isGig=false) {
+  if(!netAktiv) return;
+  const div = document.createElement('div');
+  div.className = 'chat-msg';
+  if(isGig) {
+    div.innerHTML = '<span class="user" style="color:var(--rot)">'+user+'</span><span class="text">'+text+'<br><a onclick="nimmNetGig()">[Auftrag ANNEHMEN]</a></span>';
+  } else {
+    div.innerHTML = '<span class="user">'+user+'</span><span class="text">'+text+'</span>';
+  }
+  feed.appendChild(div);
+  feed.scrollTop = feed.scrollHeight;
+  if(feed.children.length > 50) feed.removeChild(feed.firstChild);
+}
+function netzwerkChatTick() {
+  if(!netAktiv) return;
+  if($('stadt-wahl').value === 'none') {
+    netChatTimer = setTimeout(netzwerkChatTick, 1000);
+    return;
+  }
+  if(deko() < 0.08 && !netDropGenutzt) {
+    addChatMsg('ANONYM', 'DARKNET DROP GEFUNDEN. SCHNELL!', true);
+    netDropGenutzt = true; // Chat spawnt es nur einmal
+  } else {
+    const u = 'USER_' + Math.floor(deko()*9999);
+    const m = msgs[Math.floor(deko()*msgs.length)];
+    addChatMsg(u, m);
+  }
+  netChatTimer = setTimeout(netzwerkChatTick, 1500 + deko()*3500);
+}
+window.nimmNetGig = function() {
+  if(typeof window.sfxClick==='function') window.sfxClick();
+  netzwerkSchliessen();
+  zeig('b9');
+  starteMinigame(2, (win) => {
+    zeig('b7');
+    if(win) { 
+      const diff = 1500;
+      S.geld += diff;
+      document.getElementById('b7').innerHTML = '<div class="spalte" style="margin-top:20vh"><div class="karte" style="border-color:var(--gelb)"><h2>DARKNET DROP ERFOLGREICH</h2><p>Du hast den Drop gesichert und warst schneller als der Taschengrabscher.</p><div class="kopfz"><span class="chip geld">+'+diff+' €</span></div><button onclick="ISSO.zeig(\'b4\');" class="k job"><div class="t"><u>ZURÜCK ZUM DESKTOP</u></div></button></div></div>';
+    } else {
+      /* Stand vorher auf S.nerv — die Variable gibt es im Spielstand nicht.
+         Der Text sagte "deine Nerven liegen blank", der Chip "NERVEN VERLOREN",
+         passiert ist nie etwas. Jetzt kostet es wirklich zwei Nerven. */
+      S.nerven = cl(S.nerven - 2, 0, 10);
+      document.getElementById('b7').innerHTML = '<div class="spalte" style="margin-top:20vh"><div class="karte" style="border-color:var(--rot)"><h2>DROP VERLOREN</h2><p>Du warst zu langsam. Du hast nichts bekommen und deine Nerven liegen blank.</p><div class="kopfz"><span class="chip geld neg">NERVEN VERLOREN</span></div><button onclick="ISSO.zeig(\'b4\');" class="k rot"><div class="t"><u>ZURÜCK ZUM DESKTOP</u></div></button></div></div>';
+    }
+    merke();
+  });
+}
+
+function initNetGL() {
+  const cvs = document.getElementById('cNet');
+  netGl = cvs.getContext("webgl", { antialias: true });
+  if(!netGl) return;
+  const VS = 'attribute vec3 aPos; uniform mat4 uViewProj; uniform float uOffset; varying vec3 vWorldPos; float h(vec2 p) { return sin(p.x*0.05*0.5 + p.y*0.05*0.3)*4.0 + sin(p.x*0.05*1.2 - p.y*0.05*0.8)*2.0; } void main() { vec3 wp=aPos; wp.y+=h(vec2(wp.x, wp.z+uOffset)); vWorldPos=wp; gl_Position=uViewProj*vec4(wp,1.0); }';
+  const FS = 'precision mediump float; varying vec3 vWorldPos; const vec3 SAND=vec3(0.16,0.07,0.34); const vec3 FOG=vec3(0.02,0.02,0.04); const vec3 CAM=vec3(0.0,5.0,0.0); void main() { float d=length(CAM-vWorldPos); float f=clamp((d-10.0)/120.0,0.0,1.0); vec3 c=mix(SAND, SAND*0.2, clamp(vWorldPos.y/4.0,0.0,1.0)); float g = mod(vWorldPos.x, 2.0) < 0.1 || mod(vWorldPos.z, 2.0) < 0.1 ? 1.0 : 0.0; c = mix(c, vec3(0.48,0.18,0.96), g*0.3); gl_FragColor=vec4(mix(c,FOG,f),1.0); }';
+  function cmp(type,src){ const s=netGl.createShader(type); netGl.shaderSource(s,src); netGl.compileShader(s); return s; }
+  netProg = netGl.createProgram(); netGl.attachShader(netProg, cmp(netGl.VERTEX_SHADER,VS)); netGl.attachShader(netProg, cmp(netGl.FRAGMENT_SHADER,FS)); netGl.linkProgram(netProg); netGl.useProgram(netProg);
+  const SIZE=200, SEG=100; const v=new Float32Array((SEG+1)*(SEG+1)*3); let vi=0;
+  for(let iz=0;iz<=SEG;iz++) for(let ix=0;ix<=SEG;ix++){ v[vi++]=-SIZE/2+(ix/SEG)*SIZE; v[vi++]=0; v[vi++]=-SIZE/2+(iz/SEG)*SIZE; }
+  const idx=new Uint16Array(SEG*SEG*6); let ii=0;
+  for(let iz=0;iz<SEG;iz++) for(let ix=0;ix<SEG;ix++){
+    const a=iz*(SEG+1)+ix, b=a+1, c2=a+SEG+1, d=c2+1;
+    idx[ii++]=a; idx[ii++]=c2; idx[ii++]=b; idx[ii++]=b; idx[ii++]=c2; idx[ii++]=d;
+  }
+  netIdxLen=idx.length;
+  const vbo=netGl.createBuffer(); netGl.bindBuffer(netGl.ARRAY_BUFFER,vbo); netGl.bufferData(netGl.ARRAY_BUFFER,v,netGl.STATIC_DRAW);
+  const ibo=netGl.createBuffer(); netGl.bindBuffer(netGl.ELEMENT_ARRAY_BUFFER,ibo); netGl.bufferData(netGl.ELEMENT_ARRAY_BUFFER,idx,netGl.STATIC_DRAW);
+  const locPos=netGl.getAttribLocation(netProg,"aPos"); netGl.enableVertexAttribArray(locPos); netGl.vertexAttribPointer(locPos,3,netGl.FLOAT,false,0,0);
+  netLocVP=netGl.getUniformLocation(netProg,"uViewProj"); netLocOff=netGl.getUniformLocation(netProg,"uOffset");
+  netGl.enable(netGl.DEPTH_TEST); netGl.clearColor(0.02, 0.02, 0.04, 1);
+  const dpr = Math.min(window.devicePixelRatio||1, 2); cvs.width = Math.round(cvs.clientWidth*dpr); cvs.height = Math.round(cvs.clientHeight*dpr); netGl.viewport(0,0,cvs.width,cvs.height);
+}
+function pers(f,a,n,fa){ const t=1/Math.tan(f/2),nf=1/(n-fa); return [t/a,0,0,0,0,t,0,0,0,0,(fa+n)*nf,-1,0,0,2*fa*n*nf,0]; }
+function mul(a,b){ const o=new Array(16); for(let r=0;r<4;r++) for(let c=0;c<4;c++){ o[c*4+r]=a[r]*b[c*4]+a[4+r]*b[c*4+1]+a[8+r]*b[c*4+2]+a[12+r]*b[c*4+3]; } return o; }
+const netView = [-1,0,0,0,0,1,0,0,0,0,-1,0,0,-5,0,1];
+
+function netzwerkFrame(){
+  if(!netAktiv) return;
+  const cvs = document.getElementById('cNet');
+  if(cvs.width !== Math.round(cvs.clientWidth*Math.min(window.devicePixelRatio||1,2))) {
+    const dpr = Math.min(window.devicePixelRatio||1, 2); cvs.width = Math.round(cvs.clientWidth*dpr); cvs.height = Math.round(cvs.clientHeight*dpr); netGl.viewport(0,0,cvs.width,cvs.height);
+  }
+  const off = ((Date.now()-Date.UTC(2026,0,1))/1000*2.0)%(400*Math.PI);
+  const proj = pers(Math.PI/3, cvs.width/cvs.height, 0.3, 300);
+  netGl.uniformMatrix4fv(netLocVP, false, new Float32Array(mul(proj,netView)));
+  netGl.uniform1f(netLocOff, off);
+  netGl.clear(netGl.COLOR_BUFFER_BIT | netGl.DEPTH_BUFFER_BIT);
+  netGl.drawElements(netGl.TRIANGLES, netIdxLen, netGl.UNSIGNED_SHORT, 0);
+  requestAnimationFrame(netzwerkFrame);
+}
+
+window.netzwerkOeffnen = function() {
+  zeig('b8');
+  netAktiv = true;
+  $('stadt-wahl').value = 'none';
+  feed.innerHTML = '<div class="chat-msg"><span class="user" style="color:var(--gelb)">IRONMIND BLACKCORE 3K</span><span class="text">Wähle einen lokalen Hub aus, um beizutreten.</span></div>';
+  if(!netGl) initNetGL();
+  netzwerkFrame();
+  netzwerkChatTick();
+}
+window.netzwerkSchliessen = function() {
+  netAktiv = false;
+  clearTimeout(netChatTimer);
+  zeig('b4'); 
+}
+document.getElementById('net-raus').addEventListener('click', netzwerkSchliessen);
+document.getElementById('stadt-wahl').addEventListener('change', (e) => {
+  if(e.target.value !== 'none') {
+    addChatMsg('SYSTEM', 'Verbindung zu Hub ' + e.target.value.toUpperCase() + ' hergestellt.');
+  }
+});
+
+/* ========== 3DWORLD (BONZENVIERTEL) ========== */
+let weltAktiv = false;
+let weltTimer = null;
+const strRaum = document.getElementById('str-raum');
+const bl1 = document.getElementById('bl1');
+const bl2 = document.getElementById('bl2');
+const bl3 = document.getElementById('bl3');
+const bl4 = document.getElementById('bl4');
+const strWarn = document.getElementById('str-warn');
+let strMouseX = 0, strMouseY = 0;
+
+function spawnTratsch(msgs, color, isDaemon) {
+  const msg = msgs[Math.floor(deko()*msgs.length)];
+  const div = document.createElement('div');
+  div.textContent = msg;
+  div.style.position = 'absolute';
+  div.style.top = (20 + deko()*60) + '%';
+  div.style.left = (10 + deko()*80) + '%';
+  div.style.color = color;
+  div.style.fontFamily = 'var(--fett)';
+  div.style.fontSize = isDaemon ? '14px' : '12px';
+  div.style.pointerEvents = 'none';
+  div.style.opacity = '0';
+  div.style.transition = 'opacity 2s';
+  div.style.textShadow = isDaemon ? '0 0 8px var(--rot)' : '0 0 5px #000';
+  strRaum.appendChild(div);
+  setTimeout(() => div.style.opacity = '1', 50);
+  setTimeout(() => {
+    div.style.opacity = '0';
+    setTimeout(() => div.remove(), 2000);
+  }, 3000);
+}
+
+function weltTick() {
+  if(!weltAktiv) return;
+  const blank = S.geld < 100;
+  const daemon = S.geld > 10000; // Dämonische Aura, wenn zu reich
+  
+  // Parallax
+  const rotY = (strMouseX - 0.5) * 15;
+  const rotX = (strMouseY - 0.5) * -10;
+  strRaum.style.transform = 'rotateX('+rotX+'deg) rotateY('+rotY+'deg)';
+  
+  if(blank) {
+    strWarn.style.opacity = '1';
+    strWarn.textContent = 'Schiefe Blicke...';
+    strWarn.style.color = 'var(--rot)';
+    strWarn.style.textShadow = '0 0 10px var(--rot)';
+    bl1.style.opacity = deko() > 0.3 ? '1' : '0.2';
+    bl2.style.opacity = deko() > 0.5 ? '1' : '0.2';
+    bl3.style.opacity = deko() > 0.4 ? '1' : '0.2';
+    bl4.style.opacity = deko() > 0.6 ? '1' : '0.2';
+    
+    /* Hier stand ein "leichter Nerven-Drain", der auf S.nerv schrieb — eine
+       Variable, die es im Spielstand gar nicht gibt (die echte heißt S.nerven).
+       Er zählte also stumm bis 100 und tat nichts, feuerte aber jede Sekunde
+       mit 20 % Glitch und Ton. Man kassierte Schläge, die es nicht gab.
+       Der Zähler ist raus. Was bleibt, ist ein seltenes Zucken als Stimmung —
+       und zwar wirklich selten. */
+    if(deko() < 0.02) {
+      flimmer();
+      if(typeof window.sfxGlitch==='function') window.sfxGlitch();
+    }
+    
+    // Nachbarn tratschen (Flüstern) - Alle denken, sie wüssten was
+    if(deko() < 0.1) {
+      spawnTratsch([
+        '"Ich hab gehört, der hat sich verspekuliert..."', 
+        '"Mein Broker meinte schon, das geht schief."', 
+        '"Das passiert, wenn man den Seed nicht checkt."', 
+        '"Der weiß doch gar nicht, wie das Game läuft."', 
+        '"Ich hab Insider-Infos... der ist durch."',
+        '"Typisch. Hat die Zeichen nicht gelesen."',
+        '"Wir wussten das alle schon gestern."'
+      ], '#555', false);
+    }
+    
+  } else if(daemon) {
+    strWarn.style.opacity = '1';
+    strWarn.textContent = 'DÄMONISCHE AURA';
+    strWarn.style.color = '#fff';
+    strWarn.style.textShadow = '0 0 15px var(--rot)';
+    
+    // Rot glühende Augen bei Dämonen-Aura
+    bl1.style.opacity = '1'; bl1.style.filter = 'drop-shadow(0 0 5px red)';
+    bl2.style.opacity = '1'; bl2.style.filter = 'drop-shadow(0 0 5px red)';
+    bl3.style.opacity = '1'; bl3.style.filter = 'drop-shadow(0 0 5px red)';
+    bl4.style.opacity = '1'; bl4.style.filter = 'drop-shadow(0 0 5px red)';
+    
+    if(deko() < 0.15) {
+      spawnTratsch([
+        '"Lass uns lieber auf die andere Straßenseite gehen..."', 
+        '"Ich sag da besser gar nichts zu."', 
+        '"Irgendwas stimmt mit dem nicht."', 
+        '"Hast du dieses Gefühl auch?"', 
+        '"Lächeln und weitergehen. Bloß nicht ansehen."',
+        '"Man weiß nie, was so jemand vorhat."'
+      ], 'var(--rot)', true);
+    }
+  } else {
+    strWarn.style.opacity = '0';
+    bl1.style.opacity = '0'; bl1.style.filter = 'none';
+    bl2.style.opacity = '0'; bl2.style.filter = 'none';
+    bl3.style.opacity = '0'; bl3.style.filter = 'none';
+    bl4.style.opacity = '0'; bl4.style.filter = 'none';
+  }
+  
+  $('str-konto').textContent = S.geld + ' €';
+  weltTimer = setTimeout(weltTick, 1000);
+}
+
+document.getElementById('b10').addEventListener('mousemove', (e) => {
+  if(!weltAktiv) return;
+  strMouseX = e.clientX / window.innerWidth;
+  strMouseY = e.clientY / window.innerHeight;
+});
+
+/* ========== STRASSE: LAUFEN ==========
+   Die Straße war eine Kulisse, die auf Mausbewegung schielte. Jetzt ist sie
+   ein Gang mit Orten drin. Die Häuserreihe recycelt sich im Kreis, damit man
+   nie ins Leere läuft; die Orte liegen auf festen Metern und kommen auf einen zu. */
+const ORTE=[
+  {z:0,    n:'Dein Haus',       i:'Ein Zimmer deins, eins dem Mitbewohner. Mehr brauchst du nicht — sagst du.', rein:true},
+  {z:780,  n:'Kiosk',           i:'Licht an, immer. Der Einzige hier, der dich grüßt.'},
+  {z:1560, n:'Die Bunker',      i:'Betonklappen in der Allee. Was da reinkommt, kriegt er nicht raus.'},
+  {z:2340, n:'Haltestelle',     i:'Linie ins Bonzenviertel. Fährt alle 20 Minuten, wenn sie fährt.'},
+  {z:3120, n:'Ende der Straße', i:'Absperrgitter. Dahinter fängt eine andere Stadt an.'}
+];
+const SEGN=9, SEGD=340, MAXZ=3120, RUNDE=SEGN*SEGD;
+let strZ=0, strX=0, strBob=0, strNah=null, strGebaut=false, strMeter=-1;
+
+function strasseBauen(){
+  if(strGebaut) return; strGebaut=true;
+  const lauf=$('str-lauf');
+  for(let i=0;i<SEGN;i++){
+    for(const s of ['l','r']){
+      const d=document.createElement('div');
+      d.className='seg '+s; d.dataset.i=i; d.dataset.s=s;
+      d.innerHTML='<span class="klappe"></span><span class="klappe" style="bottom:52%"></span>';
+      lauf.appendChild(d);
+    }
+    const la=document.createElement('div');
+    la.className='lampe'; la.dataset.i=i; lauf.appendChild(la);
+  }
+  for(const o of ORTE){
+    const d=document.createElement('div');
+    d.className='ort-schild'; d.textContent=o.n; o.el=d; lauf.appendChild(d);
+  }
+}
+
+/* Ego ist Standard. In der dritten Person rückt die Welt weg und nach oben,
+   damit die Figur davor Platz hat — sonst steht man in der eigenen Kulisse. */
+let dritte=false;
+function perspektive(an){
+  dritte = (an===undefined) ? !dritte : !!an;
+  document.body.classList.toggle('dritte',dritte);
+  const b=$('p-schalt');
+  if(b) b.textContent='Ansicht: '+(dritte?'Schulter':'Ego')+' · V';
+  try{ localStorage.setItem('isso.tv.sicht', dritte?'3':'1'); }catch(e){}
+  strasseStell();
+}
+
+function strasseStell(){
+  const lauf=$('str-lauf');
+  lauf.style.transform='translateX('+(-strX*7).toFixed(2)+'vw)'
+    + (dritte ? ' translateZ(-210px) translateY(-6vh)' : '');
+
+  for(const el of lauf.querySelectorAll('.seg,.lampe')){
+    const i=+el.dataset.i;
+    const d=((i*SEGD-strZ)%RUNDE+RUNDE)%RUNDE;
+    const dreh = el.dataset.s==='l' ? 15 : el.dataset.s==='r' ? -15 : 0;
+    el.style.transform='translateZ('+(-d-380)+'px)'+(dreh?' rotateY('+dreh+'deg)':'');
+    el.style.opacity = d>RUNDE-420 ? '0' : '1';
+  }
+  let nah=null;
+  for(const o of ORTE){
+    const d=o.z-strZ;
+    /* Beim Ausblenden die Markierung mit abräumen — sonst bleibt ein Ort,
+       den man längst hinter sich hat, für den Rest der Straße „hier". */
+    if(d<-140||d>2100){ o.el.style.display='none'; o.el.classList.remove('hier'); continue; }
+    o.el.style.display='block';
+    o.el.style.transform='translateX(-50%) translateZ('+(-Math.max(d,0))+'px)';
+    const hier = Math.abs(d)<190;
+    o.el.classList.toggle('hier',hier);
+    if(hier) nah=o;
+  }
+  /* Beine: zwei Stelzen, gegenläufig. Reicht völlig — man merkt nur, ob man geht. */
+  const asp=$('str-asphalt');
+  if(asp) asp.style.backgroundPositionY = (strZ*1.9).toFixed(0)+'px, 0px';
+  const a=Math.sin(strBob)*13, c=Math.sin(strBob+Math.PI)*13;
+  const b=$('str-beine');
+  if(b && !dritte){
+    b.children[0].style.transform='rotate('+a.toFixed(1)+'deg)';
+    b.children[1].style.transform='rotate('+c.toFixed(1)+'deg)';
+    b.style.bottom=(Math.abs(Math.sin(strBob))*7+52).toFixed(1)+'px';
+  }
+  const f=$('str-figur');
+  if(f && dritte){
+    /* Arme gegenläufig zu den Beinen — sonst watschelt die Figur. */
+    f.querySelector('.bein.l').style.transform='rotate('+(a*1.5).toFixed(1)+'deg)';
+    f.querySelector('.bein.r').style.transform='rotate('+(c*1.5).toFixed(1)+'deg)';
+    f.querySelector('.arm.l').style.transform='rotate('+(c*1.1).toFixed(1)+'deg)';
+    f.querySelector('.arm.r').style.transform='rotate('+(a*1.1).toFixed(1)+'deg)';
+    f.style.bottom=(15+Math.abs(Math.sin(strBob))*1.1).toFixed(2)+'%';
+  }
+  const o=$('str-ort'), s=$('str-schritt');
+  if(nah!==strNah){
+    strNah=nah; strMeter=-1;
+    if(o&&nah) o.innerHTML='<b>'+nah.n+'</b><i>'+nah.i+'</i>';
+    if(s) s.textContent = nah ? (nah.rein?'E — rein ins Haus':'E — '+nah.n+' ansehen')
+                              : 'W A S D — laufen · E — hingehen';
+  }
+  /* Zwischen den Orten zählt der Zähler mit. In Zehnerschritten, sonst
+     schreiben wir das Feld sinnlos sechzig Mal pro Sekunde neu. */
+  if(o && !nah){
+    const m=Math.round(strZ/10)*10;
+    if(m!==strMeter){
+      strMeter=m;
+      o.innerHTML='<b>Bunkerstraße · Eitelstedt</b><i>'+m+' von '+MAXZ+' Metern. W — weiter.</i>';
+    }
+  }
+}
+
+/* Nur eine Laufschleife darf leben. Ohne diese Marke startet jedes Rausgehen
+   eine zweite, und der Spieler rennt plötzlich doppelt so schnell. */
+let strLoop=0;
+function strasseTick(meins){
+  if(!weltAktiv || meins!==strLoop) return;
+  let dz=0, dx=0;
+  if(tast.w||tast.arrowup)    dz+=3.1;
+  if(tast.s||tast.arrowdown)  dz-=3.1;
+  if(tast.a||tast.arrowleft)  dx-=.022;
+  if(tast.d||tast.arrowright) dx+=.022;
+  if(dz||dx){
+    strZ=klemm(strZ+dz,0,MAXZ);
+    strX=klemm(strX+dx,-1,1);
+    strBob+=.15;
+  }
+  strasseStell();
+  requestAnimationFrame(()=>strasseTick(meins));
+}
+
+/* E an einem Ort: das Haus lässt einen rein, alles andere erzählt nur. */
+function strasseHier(){
+  if(!strNah) return;
+  if(strNah.rein && draussenVon==='raum'){ window.weltSchliessen(); return; }
+  const s=$('str-schritt');
+  if(s){ s.textContent=strNah.i; setTimeout(()=>{ if(strNah) s.textContent='E — '+strNah.n+' ansehen'; },3600); }
+}
+
+window.weltOeffnen = function() {
+  if(draussenVon !== 'raum'){
+    const b=document.querySelector('#b10 .str-ui .k');
+    if(b) b.textContent='ZURÜCK ZUM DESKTOP';
+    const o=document.getElementById('str-ort');
+    if(o) o.innerHTML='<b>Bonzenviertel</b><i>Hier wohnt keiner, den du kennst.</i>';
+  }
+  zeig('b10');
+  weltAktiv = true;
+  strMouseX = 0.5; strMouseY = 0.5;
+  strasseBauen();
+  const sb=$('p-schalt');
+  if(sb && !sb.dataset.an){ sb.dataset.an='1'; sb.addEventListener('click',()=>perspektive()); }
+  strZ=0; strX=0; strBob=0; strNah=null;
+  strasseStell();
+  const meins = ++strLoop;
+  requestAnimationFrame(()=>strasseTick(meins));
+  weltTick();
+}
+window.weltSchliessen = function() {
+  weltAktiv = false;
+  clearTimeout(weltTimer);
+  if(draussenVon === 'raum'){ zeig('b2'); losRaum(); }
+  else zeig('b4');
+}
+
+/* ========== PARANOIA (TÜR ABSCHLIESSEN) ========== */
+let tuerAbgeschlossen = false;
+document.getElementById('tuer-schloss').addEventListener('click', () => {
+  tuerAbgeschlossen = !tuerAbgeschlossen;
+  const icn = document.getElementById('schloss-icon');
+  const txt = document.getElementById('schloss-text');
+  const knopf = document.getElementById('tuer-schloss');
+
+  if(tuerAbgeschlossen) {
+    icn.setAttribute('stroke', 'var(--gelb)');
+    // Schloss zu (Bügel runter)
+    icn.innerHTML = '<rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path>';
+    /* Hier stand S.log.push(...) — S.log gibt es im Spielstand gar nicht.
+       Jeder Klick aufs Schloss ist also in einen Fehler gelaufen, und weil
+       der Handler dabei abbrach, wurde merke() nie erreicht: Tür abschließen
+       hat den Joker-Stand nie gesichert. Zwei Fehler in einer Zeile. */
+  } else {
+    icn.setAttribute('stroke', 'var(--rot)');
+    // Schloss auf (Bügel offen)
+    icn.innerHTML = '<rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 9.9-1"></path>';
+  }
+  /* Der Zustand hing vorher allein an der Strichfarbe, rot gegen gelb. Das
+     sieht nicht jeder. Jetzt steht er als Wort daneben. */
+  if(txt) txt.textContent = tuerAbgeschlossen ? 'Tür: zu' : 'Tür: offen';
+  knopf.setAttribute('aria-pressed', tuerAbgeschlossen ? 'true' : 'false');
+  knopf.title = tuerAbgeschlossen
+    ? 'Tür ist abgeschlossen — TA$CH€N kommt schlechter rein'
+    : 'Tür ist offen — abschließen senkt das Risiko';
+
+  if(typeof window.sfxClick==='function') window.sfxClick();
+  /* Der Wächter fragte window.merke ab — merke() liegt aber im inneren
+     Bereich und steht auf window gar nicht. Die Bedingung war also immer
+     falsch und der Aufruf lief nie. Direkt aufrufen, wie gemeint. */
+  merke();
+});
+
+})();
+</script>
+</body>
+</html>
+
+
+
