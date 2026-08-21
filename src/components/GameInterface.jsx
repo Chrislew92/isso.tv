@@ -1,3 +1,4 @@
+import { useState } from 'react'
 import { BUILD, PLACES, formatWorldTime } from '../game/canon.js'
 import { formatEuro } from '../game/economy.js'
 import { updateTouchInput } from '../game/touch.js'
@@ -28,6 +29,7 @@ function TouchControls({ inputState }) {
 export default function GameInterface({ run, position, prompt, voice, settings, inputState, cinematic, onAction }) {
   const place = PLACES[position.location] ?? PLACES.room
   const currentEvent = run.events.at(-1)
+  const [panelOpen, setPanelOpen] = useState(true)
 
   return (
     <div className="game-interface">
@@ -53,14 +55,21 @@ export default function GameInterface({ run, position, prompt, voice, settings, 
         </nav>
       </header>
 
-      <aside className="chapter-panel">
-        <p className="eyebrow">{currentEvent?.chapter ?? 'SIGNAL AM MORGEN'}</p>
-        <h2>{currentEvent?.label ?? 'Die Wohnung ist wach.'}</h2>
-        <p>{run.lastLine}</p>
-        <div className="chapter-panel__rule">
-          <span />
-          <small>Keine Punkte. Kein falscher Weg. Nur Folgen, die du sehen kannst.</small>
-        </div>
+      <aside className={`chapter-panel${panelOpen ? '' : ' chapter-panel--closed'}`}>
+        <button className="chapter-panel__toggle" onClick={() => setPanelOpen((v) => !v)} aria-expanded={panelOpen} title="Auftrag ein- oder ausklappen">
+          <span className="chapter-panel__caret">{panelOpen ? '▾' : '▸'}</span>
+          <span className="eyebrow">{currentEvent?.chapter ?? 'SIGNAL AM MORGEN'}</span>
+        </button>
+        {panelOpen && (
+          <>
+            <h2>{currentEvent?.label ?? 'Die Wohnung ist wach.'}</h2>
+            <p>{run.lastLine}</p>
+            <div className="chapter-panel__rule">
+              <span />
+              <small>Keine Punkte. Kein falscher Weg. Nur Folgen, die du sehen kannst.</small>
+            </div>
+          </>
+        )}
       </aside>
 
       <MiniMap position={position} />

@@ -42,6 +42,7 @@ basisu/KTX2-Texturen mit Maßen, die nicht durch 4 teilbar sind → hunderte
 ## LOG (was wirklich passiert ist)
 - 20.08 — Liste angelegt. Absturz-Ursache: kaputte basisu-Texturen.
 - 20.08 — SCHRITT 1 ✔ Welt entkomprimiert → Context Lost weg, Szene läuft stabil.
+- 20.08 — SCHRITT 6 ✔ Minimap unten rechts, Missions-Panel einklappbar.
          Character-Warnungen bleiben (kein Crash). SCHRITT 2a (Wände) drin.
 
 ## 🟠 SCHRITT 5 — Kamera schwenkt am Hauseingang, Laufrichtung dreht sich um
@@ -52,3 +53,7 @@ bei hartem Schwenk invertiert "vorwärts".
 **Fix:** Richtung während Kameraschwenk stabil halten / Schwenk sanft.
 - [ ] 5a diagnostizieren
 - [ ] 5b fixen + prüfen
+
+## 🟢 SCHRITT 6 — UI-Wünsche
+- [x] 6a Minimap nach unten rechts — geprüft
+- [x] 6b Missionsanzeige einklappbar (Klick auf Kopfzeile) — geprüft

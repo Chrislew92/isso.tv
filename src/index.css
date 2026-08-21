@@ -119,7 +119,16 @@ button:focus-visible, a:focus-visible, canvas:focus-visible { outline: 2px solid
 .chapter-panel__rule span { flex: 0 0 auto; width: 7px; height: 7px; margin-top: 3px; border: 1px solid var(--blue); transform: rotate(45deg); }
 .chapter-panel__rule small { color: #858b89; font-size: .59rem; line-height: 1.4; }
 
-.mini-map { position: absolute; top: 108px; right: clamp(18px, 3vw, 46px); width: 258px; padding: 12px; border: 1px solid var(--line); background: rgba(4, 12, 16, .78); backdrop-filter: blur(11px); }
+/* Auftrag/Signal-Panel: einklappbar per Knopf (Kopfzeile ist der Schalter) */
+.chapter-panel__toggle { display: flex; align-items: center; gap: 8px; width: 100%; margin: 0 0 8px; padding: 0; background: none; border: 0; cursor: pointer; text-align: left; }
+.chapter-panel__toggle .eyebrow { margin: 0; }
+.chapter-panel__caret { color: var(--amber); font-size: .7rem; line-height: 1; }
+.chapter-panel__toggle:hover .eyebrow { color: var(--amber); }
+.chapter-panel--closed { padding: 10px 14px; width: auto; }
+.chapter-panel--closed .chapter-panel__toggle { margin: 0; }
+
+
+.mini-map { position: absolute; bottom: clamp(56px, 8vh, 92px); right: clamp(18px, 3vw, 46px); width: 258px; padding: 12px; border: 1px solid var(--line); background: rgba(4, 12, 16, .78); backdrop-filter: blur(11px); }
 .mini-map__head { display: flex; justify-content: space-between; align-items: center; margin-bottom: 9px; }
 .mini-map__head > span { color: var(--amber); font-size: .63rem; font-weight: 1000; letter-spacing: .16em; }
 .mini-map__head small { color: var(--dim); font-size: .48rem; font-weight: 900; letter-spacing: .1em; }
