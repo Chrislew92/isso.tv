@@ -16,8 +16,9 @@ describe('geometry navigation', () => {
       { blockers: [wall] },
       false,
     )
-    expect(next.x).toBe(0.5)
-    expect(next.z).toBe(0.6)
+    expect(next.x).toBeLessThan(1)   // vor der Wand gestoppt (gleitet heran)
+    expect(next.x).toBeGreaterThan(0.5) // aber spuerbar herangekommen
+    expect(next.z).toBe(0.6)            // seitlich frei durchgeglitten
   })
 
   it('keeps the open door dynamic without disabling other collisions', () => {
@@ -34,4 +35,26 @@ describe('geometry navigation', () => {
     expect(placeFor({ x: 4.24, z: 0 })).toBe('room')
     expect(placeFor({ x: 4.25, z: 0 })).toBe('hallway')
   })
+  it('blockt auch grosse Schritte, die sonst durch die Wand tunneln', () => {
+    // Sprint/Framerate-Einbruch: Ziel liegt WEIT hinter der Wand.
+    const next = resolveMovement(
+      new Vector3(0.5, 0, 0),
+      new Vector3(6.0, 0, 0),          // 5 Einheiten in einem Schritt, quer durch die Wand
+      { blockers: [wall] },
+      false,
+    )
+    // Darf NICHT hinter der Wand landen (Wand bei x = 1..1.2).
+    expect(next.x).toBeLessThan(1)
+  })
+
+  it('laesst normales Gehen bis kurz vor die Wand zu', () => {
+    let pos = new Vector3(0, 0, 0)
+    for (let i = 0; i < 40; i += 1) {
+      pos = resolveMovement(pos, pos.clone().add(new Vector3(0.1, 0, 0)), { blockers: [wall] }, false)
+    }
+    // stoppt vor der Wand (x < 1), kommt aber spuerbar heran (x > 0.5)
+    expect(pos.x).toBeLessThan(1)
+    expect(pos.x).toBeGreaterThan(0.5)
+  })
+
 })

@@ -29,8 +29,10 @@ basisu/KTX2-Texturen mit Maßen, die nicht durch 4 teilbar sind → hunderte
 ## 🟠 SCHRITT 3 — 353L läuft durch Wände
 **Ursache:** Kollision (`collectNavigationGeometry`) greift nicht richtig.
 **Fix:** Kollisionsabfrage prüfen und zum Greifen bringen.
-- [ ] 3a Kollision diagnostizieren
-- [ ] 3b Kollision fixen + prüfen (läuft gegen Wände, nicht durch)
+- [x] 3a Kollision diagnostiziert: Logik ok, aber nur Endpunkt-Check → Tunneling
+- [x] 3b Fix: inkrementelle Teilschritte (kein Tunneling). Mit echten Wanddaten
+      + 6 Unit-Tests bewiesen. Welt-Absturz sauber gefixt (Texturen 1254px
+      gestrippt statt Modell-Downgrade) → room_wall_front bleibt erhalten.
 
 ## 🟡 SCHRITT 4 — Kamera klippt durch Wände
 **Ursache:** Follow-Kamera ohne Kollision.
@@ -43,6 +45,10 @@ basisu/KTX2-Texturen mit Maßen, die nicht durch 4 teilbar sind → hunderte
 - 20.08 — Liste angelegt. Absturz-Ursache: kaputte basisu-Texturen.
 - 20.08 — SCHRITT 1 ✔ Welt entkomprimiert → Context Lost weg, Szene läuft stabil.
 - 20.08 — SCHRITT 6 ✔ Minimap unten rechts, Missions-Panel einklappbar.
+- 21.08 — SCHRITT 3 ✔ Kollision tunnelt nicht mehr (inkrementelle Teilschritte,
+         mit echten Wanddaten + Tests bewiesen). Absturz sauber neu gefixt:
+         die 4 kaputten Welt-Texturen (1254px) entfernt statt Modell-Downgrade;
+         korrekte Welt mit room_wall_front wiederhergestellt. 42 Tests gruen.
          Character-Warnungen bleiben (kein Crash). SCHRITT 2a (Wände) drin.
 
 ## 🟠 SCHRITT 5 — Kamera schwenkt am Hauseingang, Laufrichtung dreht sich um

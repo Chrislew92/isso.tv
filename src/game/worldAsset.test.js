@@ -27,8 +27,11 @@ describe('ISSO.TV V3 world asset', () => {
   it('uses the browser delivery budget and production compression extensions', () => {
     const gltf = readGlbJson()
     expect(statSync(worldUrl).size).toBeLessThan(10 * 1024 * 1024)
-    expect(gltf.extensionsUsed).toEqual(expect.arrayContaining([
-      'EXT_meshopt_compression', 'KHR_texture_basisu',
-    ]))
+    // Crash-Workaround (21.08.2026): die 4 HD-Welt-Texturen waren 1254x1254
+    // (nicht durch 4 teilbar) -> KTX2/basisu liess den WebGL-Kontext abstuerzen
+    // (Context Lost). Texturen entfernt; der App-Code faerbt diese Flaechen
+    // ohnehin selbst (material.color.set...). Mesh-Kompression bleibt.
+    expect(gltf.extensionsUsed).toEqual(expect.arrayContaining(['EXT_meshopt_compression']))
+    expect(gltf.extensionsUsed).not.toContain('KHR_texture_basisu')
   })
 })

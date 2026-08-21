@@ -39,16 +39,48 @@ function isBlocked(point, blockers, radius, doorOpen) {
   })
 }
 
-/** Capsule-like X/Z sliding against bounds extracted from visible world meshes. */
-export function resolveMovement(current, desired, navigation, doorOpen, radius = 0.27) {
+/** Ein einzelner X/Z-Slide-Schritt gegen die Wand-Boxen. */
+function slideStep(current, desired, blockers, doorOpen, radius) {
   let resolved = current.clone()
-  const blockers = navigation?.blockers ?? []
   const xOnly = resolved.clone()
   xOnly.x = desired.x
   if (!isBlocked(xOnly, blockers, radius, doorOpen)) resolved = xOnly
   const zOnly = resolved.clone()
   zOnly.z = desired.z
   if (!isBlocked(zOnly, blockers, radius, doorOpen)) resolved = zOnly
+  return resolved
+}
+
+/**
+ * Capsule-like X/Z sliding against bounds extracted from visible world meshes.
+ *
+ * Wichtig: die Bewegung wird in Teilschritte zerlegt, die nie groesser als der
+ * Koerperradius sind. Ohne das prueft die Kollision nur den Zielpunkt - und bei
+ * einem grossen Schritt (Sprint, Framerate-Einbruch) liegt der schon HINTER der
+ * Wand, sodass 353L glatt durchlaeuft. Mit Teilschritten kann keine Wand mehr
+ * uebersprungen werden (kein Tunneling).
+ */
+export function resolveMovement(current, desired, navigation, doorOpen, radius = 0.27) {
+  const blockers = navigation?.blockers ?? []
+  const dx = desired.x - current.x
+  const dz = desired.z - current.z
+  const distance = Math.hypot(dx, dz)
+  const maxStep = Math.max(radius * 0.75, 0.0001)
+  const steps = Math.max(1, Math.ceil(distance / maxStep))
+  const stepX = dx / steps
+  const stepZ = dz / steps
+  let resolved = current.clone()
+  // WICHTIG: jeder Teilschritt geht von der ZULETZT AUFGELOESTEN Position aus,
+  // nicht absolut interpoliert. Sonst zielt ein Teilschritt in einem Sprung auf
+  // einen Punkt knapp HINTER der Wand (der nicht mehr ueberlappt) und 353L
+  // springt durch. Inkrementell kann kein Teilschritt die Wand ueberspringen.
+  for (let i = 0; i < steps; i += 1) {
+    const target = resolved.clone()
+    target.x = resolved.x + stepX
+    target.z = resolved.z + stepZ
+    resolved = slideStep(resolved, target, blockers, doorOpen, radius)
+  }
+  resolved.y = desired.y
   return resolved
 }
 

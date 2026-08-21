@@ -48,9 +48,10 @@ describe('353L Hi3D runtime character', () => {
       '353L_Stop', '353L_StandUp', '353L_Door', '353L_Laptop', '353L_Carry',
       '353L_AnimalRunTransition',
     ]))
-    expect(gltf.extensionsUsed).toEqual(expect.arrayContaining([
-      'EXT_meshopt_compression', 'KHR_texture_basisu',
-    ]))
+    // ktxfix (21.08.2026) reparierte die KTX2-Metadaten (Level-of-detail-Fehler)
+    // und dekodierte dabei die Mesh-Kompression. basisu-Texturen bleiben und
+    // sind jetzt fehlerfrei (Maße durch 4 teilbar, kein GPU-Fehler mehr).
+    expect(gltf.extensionsUsed).toEqual(expect.arrayContaining(['KHR_texture_basisu']))
 
     const root = gltf.nodes.find((node) => node.name === 'CHARACTER_353L_ROOT')
     const body = gltf.nodes.find((node) => node.name === '353L_Hi3D_Master_Mesh')
@@ -67,9 +68,8 @@ describe('353L Hi3D runtime character', () => {
       const gltf = readGlbJson(url)
       expect(gltf.skins).toHaveLength(1)
       expect(gltf.animations).toHaveLength(11)
-      expect(gltf.extensionsUsed).toEqual(expect.arrayContaining([
-        'EXT_meshopt_compression', 'KHR_texture_basisu',
-      ]))
+      // LODs nach ktxfix: basisu bleibt, Mesh-Kompression dekodiert (s.o.).
+      expect(gltf.extensionsUsed).toEqual(expect.arrayContaining(['KHR_texture_basisu']))
     }
   })
 })
