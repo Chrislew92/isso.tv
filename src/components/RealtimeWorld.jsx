@@ -640,13 +640,17 @@ function Level({ run, paused, wakeSequence, cinematicMode = false, reducedMotion
           material.needsUpdate = true
         }
         if (material?.name === 'room_plaster_worn_hd_v2') {
-          material.emissive?.set('#3a4649')
-          material.emissiveIntensity = 0.22
+          // Grundfarbe explizit setzen: die Textur wurde als Crash-Workaround
+          // entfernt (1254px-KTX2), sonst blieben Wand/Boden weiss.
+          material.color.set('#6f736f')
+          material.emissive?.set('#2b3437')
+          material.emissiveIntensity = 0.16
           material.needsUpdate = true
         }
         if (material?.name === 'room_floor_worn_hd_v2') {
-          material.emissive?.set('#242b2d')
-          material.emissiveIntensity = 0.11
+          material.color.set('#4c514d')
+          material.emissive?.set('#1c2224')
+          material.emissiveIntensity = 0.08
           material.needsUpdate = true
         }
         if (material?.name === 'hall_terrazzo_hd') {
@@ -1096,10 +1100,13 @@ function Level({ run, paused, wakeSequence, cinematicMode = false, reducedMotion
         .intersectObjects(level.children, true)
         .find((hit) => !/(floor|character|rain|water|puddle|hall_(door|frame|knob|light|mail|dado|baseboard|wainscot))/i.test(hit.object.name))
       motion.current.cameraObstruction = obstruction ? `${obstruction.object.name}@${obstruction.distance.toFixed(2)}` : null
-      if (obstruction && obstruction.distance < desiredCameraDistance - 0.12) {
-        const safeDistance = Math.max(0.72, obstruction.distance - 0.22)
+      if (obstruction && obstruction.distance < desiredCameraDistance - 0.05) {
+        const safeDistance = Math.max(0.35, obstruction.distance - 0.2)
         cameraSafe.copy(target).addScaledVector(cameraRay, safeDistance)
-        camera.position.lerp(cameraSafe, 1 - Math.exp(-dt * 18))
+        // HART klemmen statt lerpen: waehrend eines schnellen Zonen-Schwenks zog
+        // der langsame lerp die Kamera fuer einige Frames durch die Wand. Direkt
+        // setzen heisst: die Kamera durchdringt keine Wand, nicht mal einen Frame.
+        camera.position.copy(cameraSafe)
         controls.current?.update()
       }
     }
