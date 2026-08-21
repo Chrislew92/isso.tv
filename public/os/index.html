@@ -1281,6 +1281,12 @@ function schwarzmarktAuf() {
 
 function oeffne(was){
   if(was==='spiel'){
+    /* In DE-BIOS (im-pc) startet 353L.exe NICHT das interne Spiel, sondern
+       den ISSO.TV-Film draussen in der 3D-Welt. Wir melden das der Welt. */
+    if(document.body.classList.contains('im-pc')){
+      try{ parent.postMessage({ debios:'film' }, '*'); }catch(e){}
+      return;
+    }
     if(spielLaeuft){ zeig('b7'); male(); return; }   // läuft schon -> weiterspielen
     zeig('b5'); comicStart(); return;
   }

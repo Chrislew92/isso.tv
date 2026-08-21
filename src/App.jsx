@@ -100,6 +100,19 @@ export default function App() {
     }
   }, [voice.play, voice.playWorldCue])
 
+  // Nachricht aus DE-BIOS (der PC im Spiel): 353L.exe soll den ISSO.TV-Film
+  // in der 3D-Welt starten, nicht das interne Spiel.
+  useEffect(() => {
+    const onMsg = (event) => {
+      if (event.data && event.data.debios === 'film') {
+        setModal(null)
+        setCinematic(true)
+      }
+    }
+    window.addEventListener('message', onMsg)
+    return () => window.removeEventListener('message', onMsg)
+  }, [])
+
   const chooseCart = useCallback((choice) => {
     dispatch({ type: 'CART_STANCE', stance: choice.id, aftermath: CART_AFTERMATH[choice.id] })
     setModal(null)
