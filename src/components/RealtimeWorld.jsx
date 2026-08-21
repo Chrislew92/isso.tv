@@ -625,6 +625,10 @@ function Level({ run, paused, wakeSequence, cinematicMode = false, reducedMotion
       object.frustumCulled = true
       const materials = Array.isArray(object.material) ? object.material : [object.material]
       for (const material of materials) {
+        // Waende beidseitig rendern. Im GLB zeigen die Wandflaechen nur nach
+        // innen; ohne die naechste Zeile verschwinden sie, sobald die Kamera
+        // hinter eine Wand rutscht - dann sieht man durch die Wand ins Zimmer.
+        if (material && material.transparent !== true) material.side = DoubleSide
         if (material?.map) {
           material.map.anisotropy = maxAnisotropy
           material.map.colorSpace = SRGBColorSpace
