@@ -839,7 +839,21 @@ function Level({ run, paused, wakeSequence, cinematicMode = false, reducedMotion
     }
     camera.getWorldDirection(forward)
     forward.y = 0
-    forward.normalize()
+    if (forward.lengthSq() > 0.0001) forward.normalize()
+    // SCHRITT 5: Eingabe-Basis stabilisieren. Bewegung ist kamera-relativ; beim
+    // Zonen-Schwenk dreht sich die Kamera und "vorwaerts" wuerde mitten im Lauf
+    // kippen - 353L dreht sich um. Waehrend eines Schwenks frieren wir die
+    // Richtung darum ein; sonst fuehren wir sie sanft nach (kein harter Sprung).
+    if (!motion.current.moveForward) motion.current.moveForward = forward.clone()
+    const moveForward = motion.current.moveForward
+    if (motion.current.cameraTransition > 0) {
+      forward.copy(moveForward)
+    } else {
+      moveForward.lerp(forward, 1 - Math.exp(-dt * 6))
+      moveForward.y = 0
+      if (moveForward.lengthSq() > 0.0001) moveForward.normalize()
+      forward.copy(moveForward)
+    }
     right.crossVectors(forward, UP).normalize()
     direction.set(0, 0, 0)
     const activeKeys = keys.current
@@ -1051,6 +1065,25 @@ function Level({ run, paused, wakeSequence, cinematicMode = false, reducedMotion
       controls.current.update()
     }
 
+    if (motion.current.cameraTransition > 0 && controls.current) {
+      if (zone === 'hallway') cameraGoal.set(root.position.x - 2.4, root.position.y + 2.35, root.position.z + (root.position.z >= 0 ? 0.78 : -0.78))
+      else if (zone === 'harbor') {
+        const cameraOutsideHall = camera.position.x > 11.65
+        cameraGoal.set(
+          root.position.x - 3.2,
+          root.position.y + 2.85,
+          cameraOutsideHall ? root.position.z - 2.7 : camera.position.z,
+        )
+      }
+      else cameraGoal.set(root.position.x, root.position.y + 2.2, root.position.z + 6.2)
+      camera.position.lerp(cameraGoal, 1 - Math.exp(-dt * 5.5))
+      controls.current.update()
+      motion.current.cameraTransition = Math.max(0, motion.current.cameraTransition - dt)
+    }
+
+    // SCHRITT 4: Kamera-Kollision als LETZTES Wort. Vorher lief sie VOR dem
+    // Zonen-Schwenk, der die Kamera danach wieder zum Ziel schob - u.U. durch
+    // die Wand. Jetzt clamped sie die endgueltige Kameraposition.
     // Camera collision and automatic occlusion correction use the actual exported meshes.
     // The desired orbit direction stays intact; only its safe distance is shortened.
     cameraRay.copy(camera.position).sub(target)
@@ -1071,21 +1104,6 @@ function Level({ run, paused, wakeSequence, cinematicMode = false, reducedMotion
       }
     }
 
-    if (motion.current.cameraTransition > 0 && controls.current) {
-      if (zone === 'hallway') cameraGoal.set(root.position.x - 2.4, root.position.y + 2.35, root.position.z + (root.position.z >= 0 ? 0.78 : -0.78))
-      else if (zone === 'harbor') {
-        const cameraOutsideHall = camera.position.x > 11.65
-        cameraGoal.set(
-          root.position.x - 3.2,
-          root.position.y + 2.85,
-          cameraOutsideHall ? root.position.z - 2.7 : camera.position.z,
-        )
-      }
-      else cameraGoal.set(root.position.x, root.position.y + 2.2, root.position.z + 6.2)
-      camera.position.lerp(cameraGoal, 1 - Math.exp(-dt * 5.5))
-      controls.current.update()
-      motion.current.cameraTransition = Math.max(0, motion.current.cameraTransition - dt)
-    }
 
     motion.current.doorAngle = MathUtils.lerp(motion.current.doorAngle, run.doorOpen ? -1.46 : 0, 1 - Math.exp(-dt * 6))
     if (door.current) door.current.rotation.y = motion.current.doorAngle

@@ -37,7 +37,8 @@ basisu/KTX2-Texturen mit Maßen, die nicht durch 4 teilbar sind → hunderte
 ## 🟡 SCHRITT 4 — Kamera klippt durch Wände
 **Ursache:** Follow-Kamera ohne Kollision.
 **Fix:** Kamera bei Wandkontakt näher ranziehen (Raycast).
-- [ ] 4a Kamera-Kollision + prüfen
+- [x] 4a Kamera-Kollision laeuft jetzt als LETZTES (nach dem Zonen-Schwenk),
+      damit der Schwenk sie nicht mehr ueberschreibt
 
 ---
 
@@ -45,6 +46,10 @@ basisu/KTX2-Texturen mit Maßen, die nicht durch 4 teilbar sind → hunderte
 - 20.08 — Liste angelegt. Absturz-Ursache: kaputte basisu-Texturen.
 - 20.08 — SCHRITT 1 ✔ Welt entkomprimiert → Context Lost weg, Szene läuft stabil.
 - 20.08 — SCHRITT 6 ✔ Minimap unten rechts, Missions-Panel einklappbar.
+- 21.08 — SCHRITT 4+5 ✔ Kamera-Kollision ans Ende verschoben (Schwenk klippt
+         nicht mehr durch); Eingabe-Richtung beim Schwenk stabilisiert (dreht
+         nicht mehr um). Code-Fix + 42 Tests gruen + Konsole fehlerfrei.
+         Sicht-Abnahme im echten Browser noch offen (Vorschau-Pane rendert 3D nicht).
 - 21.08 — SCHRITT 3 ✔ Kollision tunnelt nicht mehr (inkrementelle Teilschritte,
          mit echten Wanddaten + Tests bewiesen). Absturz sauber neu gefixt:
          die 4 kaputten Welt-Texturen (1254px) entfernt statt Modell-Downgrade;
@@ -57,8 +62,9 @@ die WASD-Richtung (vor wird zurück), 353L dreht um und läuft weg.
 **Ursache (Verdacht):** Zonen-Kamerawechsel + Bewegung relativ zur Kamera →
 bei hartem Schwenk invertiert "vorwärts".
 **Fix:** Richtung während Kameraschwenk stabil halten / Schwenk sanft.
-- [ ] 5a diagnostizieren
-- [ ] 5b fixen + prüfen
+- [x] 5a diagnostiziert: Bewegung kamera-relativ, beim Zonen-Schwenk kippt
+      camera.getWorldDirection → "vorwaerts" dreht sich um
+- [x] 5b Eingabe-Richtung waehrend Schwenk eingefroren, sonst sanft nachgefuehrt
 
 ## 🟢 SCHRITT 6 — UI-Wünsche
 - [x] 6a Minimap flush in die untere rechte Ecke — geprüft
