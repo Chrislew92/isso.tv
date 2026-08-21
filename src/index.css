@@ -128,7 +128,7 @@ button:focus-visible, a:focus-visible, canvas:focus-visible { outline: 2px solid
 .chapter-panel--closed .chapter-panel__toggle { margin: 0; }
 
 
-.mini-map { position: absolute; bottom: clamp(56px, 8vh, 92px); right: clamp(18px, 3vw, 46px); width: 258px; padding: 12px; border: 1px solid var(--line); background: rgba(4, 12, 16, .78); backdrop-filter: blur(11px); }
+.mini-map { position: absolute; top: auto; bottom: 14px; right: 14px; width: 258px; padding: 12px; border: 1px solid var(--line); background: rgba(4, 12, 16, .78); backdrop-filter: blur(11px); }
 .mini-map__head { display: flex; justify-content: space-between; align-items: center; margin-bottom: 9px; }
 .mini-map__head > span { color: var(--amber); font-size: .63rem; font-weight: 1000; letter-spacing: .16em; }
 .mini-map__head small { color: var(--dim); font-size: .48rem; font-weight: 900; letter-spacing: .1em; }
@@ -228,7 +228,7 @@ button:focus-visible, a:focus-visible, canvas:focus-visible { outline: 2px solid
   .master-bar { grid-template-columns: 1fr auto; }
   .world-readout { position: absolute; top: 77px; left: 18px; justify-content: flex-start; padding: 7px 10px; background: rgba(4,11,15,.75); }
   .chapter-panel { top: 116px; }
-  .mini-map { top: 116px; width: 220px; }
+  .mini-map { top: auto; bottom: 14px; width: 220px; }
   .interaction-prompt > button { min-width: 210px; }
   .control-strip span:nth-child(n+4) { display: none; }
 }
@@ -250,7 +250,7 @@ button:focus-visible, a:focus-visible, canvas:focus-visible { outline: 2px solid
   .world-readout span:last-child { display: none; }
   .chapter-panel { top: 99px; left: 12px; width: calc(100% - 24px); padding: 13px 15px; }
   .chapter-panel__rule { display: none; }
-  .mini-map { top: auto; right: 12px; bottom: 150px; width: 148px; padding: 7px; }
+  .mini-map { top: auto; right: 12px; bottom: 14px; width: 148px; padding: 7px; }
   .mini-map__head small, .map-marker b { display: none; }
   .mini-map__field { height: 86px; }
   .interaction-prompt { left: 12px; right: 12px; bottom: 101px; transform: none; }
@@ -298,3 +298,11 @@ button:focus-visible, a:focus-visible, canvas:focus-visible { outline: 2px solid
   *, *::before, *::after { scroll-behavior: auto !important; animation-duration: .01ms !important; transition-duration: .01ms !important; }
 }
 .app--reduced-motion *, .app--reduced-motion *::before, .app--reduced-motion *::after { scroll-behavior: auto !important; animation-duration: .01ms !important; transition-duration: .01ms !important; }
+
+/* --- Desktop vs. echtes Touch --- */
+@media (hover: none) and (pointer: coarse) {
+  .mini-map { bottom: 150px; }
+}
+@media (hover: hover) and (pointer: fine) {
+  .touch-controls { display: none !important; }
+}

@@ -55,5 +55,6 @@ bei hartem Schwenk invertiert "vorwärts".
 - [ ] 5b fixen + prüfen
 
 ## 🟢 SCHRITT 6 — UI-Wünsche
-- [x] 6a Minimap nach unten rechts — geprüft
+- [x] 6a Minimap flush in die untere rechte Ecke — geprüft
 - [x] 6b Missionsanzeige einklappbar (Klick auf Kopfzeile) — geprüft
+- [x] 6c Steuerkreuz nur noch auf echten Touch-Geräten (Desktop: aus) — geprüft
