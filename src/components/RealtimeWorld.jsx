@@ -1158,8 +1158,8 @@ function Level({ run, paused, wakeSequence, cinematicMode = false, reducedMotion
 function WorldLighting() {
   return (
     <>
-      <ambientLight color="#b7c7cc" intensity={0.68} />
-      <hemisphereLight args={['#a9c1c9', '#343839', 2.05]} />
+      <ambientLight color="#8ea4ab" intensity={0.34} />
+      <hemisphereLight args={['#8ba3ab', '#20272a', 0.95]} />
       <directionalLight
         castShadow
         color="#c6d5da"
@@ -1255,7 +1255,7 @@ function WorldScene(props) {
         gl={{ antialias: true, powerPreference: 'high-performance', alpha: false }}
         onCreated={({ gl }) => {
           gl.toneMapping = ACESFilmicToneMapping
-          gl.toneMappingExposure = 1.08
+          gl.toneMappingExposure = 1.0
           gl.outputColorSpace = SRGBColorSpace
           gl.shadowMap.type = PCFShadowMap
           gl.setClearColor(new Color('#071117'))
@@ -1263,7 +1263,7 @@ function WorldScene(props) {
           gl.domElement.addEventListener('webglcontextlost', () => setLost(true), { once: true })
         }}
       >
-        <fog attach="fog" args={['#12232b', 16, 78]} />
+        <fog attach="fog" args={['#0f1e25', 13, 70]} />
         <WorldLighting />
         <Rain />
         <HarborWater />
